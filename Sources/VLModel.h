@@ -151,7 +151,7 @@ struct VLChord : VLNote {
 		kmDim5th	= (1 << kDim5th),
 		km5th		= (1 << k5th),
 		kmAug5th	= (1 << kAug5th),
-		kmDim7th	= (1 << kDim7th),
+		kmDim7th		= (1 << kDim7th),
 		kmMin7th	= (1 << kMin7th),
 		kmMaj7th	= (1 << kMaj7th),
 		kmOctave	= (1 << kOctave),

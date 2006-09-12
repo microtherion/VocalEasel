@@ -428,7 +428,7 @@
 				GCC_PREFIX_HEADER = Sources/Vocalese_Prefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				PREBINDING = NO;
 				PRODUCT_NAME = Vocalese;

@@ -35,6 +35,7 @@ enum VLMusicElement {
 
 @interface VLSheetView : NSView {
 	BOOL				needsRecalc;
+	BOOL				showFieldEditor;
 	float				clefKeyW;
 	float				measureW;
 	int 				groups; 
@@ -51,13 +52,17 @@ enum VLMusicElement {
 	int		  			noteCursorMeasure;
 	VLFract 			noteCursorAt;
 	int					noteCursorPitch;
+	id					fieldBeingEdited;
 
-	IBOutlet id	chords;
+	IBOutlet id			chords;
+	IBOutlet id			fieldEditor;
 }
 
 - (IBAction) setKey:(id)sender;
 - (IBAction) setTime:(id)sender;
 - (IBAction) setDivisions:(id)sender;
+- (IBAction) showFieldEditor:(id)sender withAction:(SEL)selector;
+- (IBAction) hideFieldEditor:(id)sender;
 
 - (void) setFirstMeasure: (NSNumber *)measure;
 

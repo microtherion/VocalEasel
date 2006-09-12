@@ -135,6 +135,7 @@ static const VLChordModifier kModifiers[] = {
 	{"11", VLChord::kmMin7th | VLChord::kmMaj9th | VLChord::km11th, 0},
 	{"#9", VLChord::kmMin7th | VLChord::kmAug9th, VLChord::kmMaj9th},
 	{"b9", VLChord::kmMin7th | VLChord::kmMin9th, VLChord::kmMaj9th},
+	{"69", VLChord::kmDim7th | VLChord::kmMaj9th, 0},
 	{"9", VLChord::kmMin7th | VLChord::kmMaj9th, 0},
 	{"7", VLChord::kmMin7th, 0},
 	{"maj", VLChord::kmMaj7th, VLChord::kmMin7th},
@@ -152,7 +153,7 @@ static const VLChordModifier kModifiers[] = {
 };
 
 static const char * kStepNames[] = {
-	"", "", "sus2", "", "", "sus", "♭5", "", "+", "♭7", "7", "♯7", "",
+	"", "", "sus2", "", "", "sus", "♭5", "", "+", "6", "7", "♯7", "",
 	"♭9", "9", "♯9", "", "11", "♯11", "", "♭9", "13"
 };
 
@@ -204,6 +205,7 @@ VLChord::VLChord(std::string name)
 		} else
 			name.erase(root, 2);
 	}
+			
 	//
 	// Apply modifiers
 	//
@@ -259,6 +261,13 @@ void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bo
 	if (steps & kmMaj7th) {
 		ext += "Maj";
 		steps&= ~kmMaj7th;
+	}
+	//
+	// 6/9
+	//
+	if ((steps & (kmDim7th|kmMaj9th)) == (kmDim7th|kmMaj9th)) {
+		ext += "69";
+		steps&= ~(kmDim7th|kmMaj9th);
 	}
 	//
 	// Other extensions. Only the highest unaltered extension is listed.

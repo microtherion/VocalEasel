@@ -4,10 +4,10 @@
         {CLASS = MyDocument; LANGUAGE = ObjC; SUPERCLASS = NSDocument; }, 
         {CLASS = VLDocument; LANGUAGE = ObjC; SUPERCLASS = NSDocument; }, 
         {
-            ACTIONS = {scroll = id; setDivisions = id; setKey = id; setTime = id; }; 
+            ACTIONS = {hideFieldEditor = id; setDivisions = id; setKey = id; setTime = id; }; 
             CLASS = VLSheetView; 
             LANGUAGE = ObjC; 
-            OUTLETS = {chords = id; }; 
+            OUTLETS = {chords = id; fieldEditor = id; }; 
             SUPERCLASS = NSView; 
         }
     ); 

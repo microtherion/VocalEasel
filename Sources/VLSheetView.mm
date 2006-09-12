@@ -79,6 +79,7 @@ static float sFlatPos[] = {
 			}
 		}
 		needsRecalc			= YES;
+		showFieldEditor		= NO;
 		firstMeasure		= 0;
 		noteRectTracker 	= 0;
 		noteCursorCache 	= nil;
@@ -309,6 +310,22 @@ static float sFlatPos[] = {
 
 	[self setupChords];
 	[self setNeedsDisplay: YES];	
+}
+
+- (IBAction)showFieldEditor:(id)sender withAction:(SEL)selector
+{
+	fieldBeingEdited = sender;
+	[fieldEditor setObjectValue:[sender title]];
+	[fieldEditor setAction:selector];
+	[self setValue: [NSNumber numberWithBool:YES] 
+			  forKey: @"showFieldEditor"];
+}
+
+- (IBAction)hideFieldEditor:(id)sender
+{
+	[fieldEditor setAction:nil];
+	[self setValue: [NSNumber numberWithBool:NO] 
+			  forKey: @"showFieldEditor"];
 }
 
 @end

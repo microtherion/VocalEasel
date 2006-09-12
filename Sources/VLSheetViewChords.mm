@@ -83,7 +83,6 @@
 	//
 	// Build new list
 	//
-	NSView * prevKeyView = nil;
 	NSFont * chordFont   = [NSFont controlContentFontOfSize: 14];
 	int beatsPerGroup = quarterBeats / groups;
 	for (int m = 0; m<visibleMeasures; ++m) {
@@ -95,30 +94,30 @@
 		for (int beat = 0; beat<quarterBeats; ++beat) {
 			const float x = x0+kNoteW*(beat*prop.fDivisions+(beat / beatsPerGroup)+0.5f);
 			NSRect f = NSMakeRect(x, 0, kChordW, kChordH);
-			NSTextField * chord = [[NSTextField alloc] initWithFrame: f];
+			NSButton * chord = [[NSButton alloc] initWithFrame: f];
 			[chordView addSubview: chord];
-			[prevKeyView setNextKeyView: chord];
-			prevKeyView = chord;
 			[chord setBordered: NO];
-			[chord setBezeled: NO];
-			[chord setDrawsBackground: NO];
 			[chord setTarget: self];
 			[chord setAction: @selector(editChord:)];
-			[[chord cell] setSendsActionOnEndEditing: YES];
 			[chord setTag: (measure << 8) | beat];
 			[chord setFont: chordFont];
+			[chord setTitle: @""];
 			while (cCur != cEnd && at < VLFraction(beat, 4)) 
 				at += (cCur++)->fDuration;
 			if (cCur != cEnd && at == VLFraction(beat, 4) && cCur->fPitch != VLNote::kNoPitch)
-				[chord setAttributedStringValue: [self stringWithChord:*cCur]];
+				[chord setTitle: [self stringWithChord:*cCur]];
 			[chord release];
 		}
 	}
 	[chords setNeedsDisplay: YES];
 }
 
-
 - (IBAction) editChord:(id)sender
+{
+	[self showFieldEditor:sender withAction:@selector(doneEditingChord:)];
+}
+
+- (IBAction) doneEditingChord:(id)sender
 {
 	VLSong * 				song = [self song];
 
@@ -163,12 +162,10 @@
 	} else {
 		NSAttributedString * s =  [self stringWithChord:chord];
 		[sender setAttributedStringValue: s];
+		[fieldBeingEdited setTitle: s];
 		[sender setTextColor: [NSColor blackColor]];
-		NSSize sz = [sender frame].size;
-		sz.width  = [s size].width+10.0;
-		[sender setFrameSize: sz];
 		VLSoundOut::Instance()->PlayChord(chord);
-		int tag = [sender tag];
+		int tag = [fieldBeingEdited tag];
 		song->AddChord(chord, tag >> 8, VLFraction(tag & 0xFF, 4));
 	}
 }
