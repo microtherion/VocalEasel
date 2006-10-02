@@ -33,25 +33,29 @@ enum VLMusicElement {
 	kMusicElements
 };
 
+enum VLRegion {
+	kRegionNowhere,
+	kRegionNote,
+	kRegionChord,
+	kRegionLyrics
+};
+
 @interface VLSheetView : NSView {
 	BOOL				fNeedsRecalc;
+	BOOL				fIsRest;
 	float				fClefKeyW;
 	float				fMeasureW;
-	float				fLineH;
 	int 				fGroups; 
 	int 				fQuarterBeats;
 	int 				fDivPerGroup;
 	int					fMeasPerSystem;
 	int					fNumSystems;
 	float				fDisplayScale;
-	NSImageRep *		fNoteCursorCache;
-	NSPoint				fNoteCursorLocation;
 	NSPoint				fLastNoteCenter;
-	NSRect				fNoteRect;
-	NSTrackingRectTag	fNoteRectTracker;
-	int		  			fNoteCursorMeasure;
-	VLFract 			fNoteCursorAt;
-	int					fNoteCursorPitch;
+	NSTrackingRectTag	fCursorTracking;
+	int		  			fCursorMeasure;
+	VLFract 			fCursorAt;
+	int					fCursorPitch;
 	id					fFieldBeingEdited;
 
 	BOOL				fShowFieldEditor;
@@ -71,7 +75,13 @@ enum VLMusicElement {
 
 - (float) systemY:(int)system;
 - (float) noteYWithPitch:(int)pitch;
+- (float) noteYInMeasure:(int)measure withPitch:(int)pitch;
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at;
+
+- (void) mouseMoved:(NSEvent *)event;
+- (void) mouseDown:(NSEvent *)event;
+- (void) mouseEntered:(NSEvent *)event;
+- (void) mouseExited:(NSEvent *)event;
 
 @end
 

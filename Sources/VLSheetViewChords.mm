@@ -66,52 +66,31 @@
 	return s;
 }
 
-- (void) setupChords
+- (void) drawChordsForSystem:(int)system
 {
-#if 0
 	const VLSong *			song 		= [self song];
-	const VLProperties & 	prop		= song->fProperties.front();
-	NSView *				chordView	= [chords contentView];
-
-	//	
-	// Delete old list of chord boxes
-	//
-	for (NSEnumerator * e = [[chordView subviews] objectEnumerator];
-		 NSView * subview = [e nextObject];
-	) 
-		[subview removeFromSuperview];
 	
 	//
 	// Build new list
 	//
-	NSFont * chordFont   = [NSFont controlContentFontOfSize: 14];
-	int beatsPerGroup = quarterBeats / groups;
-	for (int m = 0; m<visibleMeasures; ++m) {
-		const float x0 = clefKeyW+m*measureW;
-		int measure = firstMeasure+m;
-		VLChordList::const_iterator cCur = song->fMeasures[measure].fChords.begin();
-		VLChordList::const_iterator cEnd = song->fMeasures[measure].fChords.end();
-		VLFraction			  at(0);
-		for (int beat = 0; beat<quarterBeats; ++beat) {
-			const float x = x0+kNoteW*(beat*prop.fDivisions+(beat / beatsPerGroup)+0.5f);
-			NSRect f = NSMakeRect(x, 0, kChordW, kChordH);
-			NSButton * chord = [[NSButton alloc] initWithFrame: f];
-			[chordView addSubview: chord];
-			[chord setBordered: NO];
-			[chord setTarget: self];
-			[chord setAction: @selector(editChord:)];
-			[chord setTag: (measure << 8) | beat];
-			[chord setFont: chordFont];
-			[chord setTitle: @""];
-			while (cCur != cEnd && at < VLFraction(beat, 4)) 
-				at += (cCur++)->fDuration;
-			if (cCur != cEnd && at == VLFraction(beat, 4) && cCur->fPitch != VLNote::kNoPitch)
-				[chord setTitle: [self stringWithChord:*cCur]];
-			[chord release];
+	for (int m = 0; m<fMeasPerSystem; ++m) {
+		int	measIdx = m+system*fMeasPerSystem;
+		if (measIdx >= song->CountMeasures())
+			break;
+		const VLMeasure		measure = song->fMeasures[measIdx];
+		const VLChordList &	chords	= measure.fChords;
+		VLFraction at(0);
+		for (VLChordList::const_iterator chord = chords.begin();
+			 chord != chords.end();
+			 ++chord
+		) {
+			NSAttributedString * chordName 	= [self stringWithChord:*chord];
+			NSPoint				 chordLoc  	=
+				NSMakePoint(kClefX+kClefW+(m+at)*fMeasureW+0.5f*kNoteW, 
+							kSystemY+kChordY);
+			[chordName drawAtPoint:chordLoc];
 		}
 	}
-	[chords setNeedsDisplay: YES];
-#endif
 }
 
 - (IBAction) editChord:(id)sender

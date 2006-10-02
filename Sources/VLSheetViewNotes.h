@@ -10,14 +10,11 @@
 
 @interface VLSheetView (Notes)
 
-- (void) mouseMoved:(NSEvent *)event;
-- (void) mouseDown:(NSEvent *)event;
-- (void) mouseEntered:(NSEvent *)event;
-- (void) mouseExited:(NSEvent *)event;
-
-- (void) drawNotes;
-
-- (void) setNoteCursorMeasure:(int)measure at:(VLFraction)at pitch:(int)pitch;
-- (void) hideNoteCursor;
+- (void) drawNotesForSystem:(int)system;
+- (void) addNoteAtCursor;
 
 @end
+
+// Local Variables:
+// mode:ObjC
+// End:

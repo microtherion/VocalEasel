@@ -6,8 +6,8 @@
 //  Copyright 2006 __MyCompanyName__. All rights reserved.
 //
 
-const float kLineX		=  5;
-const float kLineH  	= 10;
+const float kLineX		=  5.0;
+const float kLineH  	= 10.0;
 const float kSystemH	= 15.0f*kLineH;
 const float kSystemY	=  3.0f*kLineH;
 const float kClefX		= 20.5f;
@@ -21,8 +21,10 @@ const float kAccW		= 10.0f;
 const float kSharpY		=-15.0f;
 const float kFlatY		= -7.0f;
 const float kImgScale	= 0.04f;
+const float kChordY		=  7.0f*kLineH;
 const float kChordW		= 40.0f;
 const float kChordH		= 25.0f;
+const float kLyricsY	= -3.0*kLineH;
 const float kNoteX		=  7.0f;
 const float kNoteY		=  5.0f;
 const float kStemX		=  0.0f;

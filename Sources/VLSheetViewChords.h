@@ -11,6 +11,10 @@
 - (IBAction) editChord:(id)sender;
 - (IBAction) doneEditingChord:(id)sender;
 
-- (void) setupChords;
+- (void) drawChordsForSystem:(int)system;
 
 @end
+
+// Local Variables:
+// mode:ObjC
+// End:

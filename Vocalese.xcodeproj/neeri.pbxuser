@@ -62,8 +62,12 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 181460906;
-			PBXWorkspaceStateSaveDate = 181460906;
+			PBXPerProjectTemplateStateSaveDate = 181465162;
+			PBXWorkspaceStateSaveDate = 181465162;
+		};
+		perUserProjectItems = {
+			95DFE8370AD1053A00375606 /* PBXBookmark */ = 95DFE8370AD1053A00375606 /* PBXBookmark */;
+			95DFE83E0AD105C900375606 /* PBXTextBookmark */ = 95DFE83E0AD105C900375606 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 954D7413095406B2007D9571 /* Source Control */;
 		userBuildSettings = {
@@ -155,9 +159,9 @@
 	};
 	952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {703, 2114}}";
-			sepNavSelRange = "{4746, 0}";
-			sepNavVisRect = "{{0, 1851}, {703, 261}}";
+			sepNavIntBoundsRect = "{{0, 0}, {703, 1400}}";
+			sepNavSelRange = "{3987, 0}";
+			sepNavVisRect = "{{0, 1125}, {703, 261}}";
 			sepNavWindowFrame = "{{15, 92}, {763, 649}}";
 		};
 	};
@@ -313,9 +317,9 @@
 	};
 	95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {703, 4130}}";
-			sepNavSelRange = "{1225, 0}";
-			sepNavVisRect = "{{0, 479}, {703, 261}}";
+			sepNavIntBoundsRect = "{{0, 0}, {703, 2534}}";
+			sepNavSelRange = "{5830, 0}";
+			sepNavVisRect = "{{0, 1499}, {703, 261}}";
 			sepNavWindowFrame = "{{38, 71}, {763, 649}}";
 		};
 	};
@@ -332,7 +336,7 @@
 		hitCount = 0;
 		ignoreCount = 0;
 		lineNumber = 21;
-		modificationTime = 181461973.028078;
+		modificationTime = 181470420.561138;
 		state = 2;
 	};
 	95BDA15709540BF1009F9D65 /* VLSheetView.h */ = {
@@ -345,10 +349,24 @@
 	};
 	95BDA15809540BF1009F9D65 /* VLSheetView.mm */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {703, 2814}}";
-			sepNavSelRange = "{8722, 0}";
-			sepNavVisRect = "{{0, 2553}, {703, 261}}";
+			sepNavIntBoundsRect = "{{0, 0}, {703, 3584}}";
+			sepNavSelRange = "{11149, 30}";
+			sepNavVisRect = "{{0, 3262}, {703, 261}}";
 			sepNavWindowFrame = "{{164, 35}, {763, 649}}";
 		};
+	};
+	95DFE8370AD1053A00375606 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */;
+	};
+	95DFE83E0AD105C900375606 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */;
+		name = "VLSheetView.mm: 394";
+		rLen = 0;
+		rLoc = 9493;
+		rType = 0;
+		vrLen = 1225;
+		vrLoc = 9100;
 	};
 }

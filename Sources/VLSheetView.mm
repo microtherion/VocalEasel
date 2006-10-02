@@ -10,6 +10,7 @@
 #import "VLSheetViewInternal.h"
 #import "VLSheetViewChords.h"
 #import "VLSheetViewNotes.h"
+#import "VLSoundOut.h"
 
 #import "VLDocument.h"
 
@@ -79,11 +80,10 @@ static float sFlatPos[] = {
 			}
 		}
 		fNeedsRecalc		= YES;
+		fIsRest				= NO;
 		fShowFieldEditor	= NO;
 		fDisplayScale		= 1.0f;
-		fNoteRectTracker 	= 0;
-		fNoteCursorCache 	= nil;
-		fNoteCursorMeasure	= -1;
+		fCursorPitch		= VLNote::kNoPitch;
 	}
     return self;
 }
@@ -148,6 +148,11 @@ static float sFlatPos[] = {
 	}
 }
 
+- (float) noteYInMeasure:(int)measure withPitch:(int)pitch
+{
+	return [self systemY:measure/fMeasPerSystem]+[self noteYWithPitch:pitch];
+}
+
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at
 {
 	const VLProperties & prop	= [self song]->fProperties.front();
@@ -161,11 +166,12 @@ static float sFlatPos[] = {
 
 - (void) recalculateDimensions 
 {
+	NSScrollView * scroll = [self enclosingScrollView];
 	fNeedsRecalc	= NO;	
 
-	NSSize sz =  [[self enclosingScrollView] contentSize];
-	sz.width	/=	fDisplayScale;
-	sz.height/= 	fDisplayScale;
+	NSSize sz 	=  [scroll contentSize];
+	sz.width   /=	fDisplayScale;
+	sz.height  /= 	fDisplayScale;
 
 	const VLSong * 			song = [self song];
 	const VLProperties & 	prop = song->fProperties.front();
@@ -179,21 +185,16 @@ static float sFlatPos[] = {
 	fNumSystems 	= (song->CountMeasures()+fMeasPerSystem-1)/fMeasPerSystem;
 	sz.height		= fNumSystems*kSystemH;
 
-#if 0
-	noteRect		= NSMakeRect(clefKeyW, kLineY-kMaxLedgers*kLineH, 
-								 visibleMeasures*fMeasureW, 
-								 (4.0f+2.0f*kMaxLedgers)*kLineH);
+	NSRect	r		= [scroll bounds];
 	NSPoint	mouse	= 
-		[self convertPoint:[[self window] mouseLocationOutsideOfEventStream]
+		[scroll convertPoint:[[self window] mouseLocationOutsideOfEventStream]
 			  fromView: nil];
-	BOOL inNoteRect	= [self mouse:mouse inRect:noteRect];
+	BOOL within		= [scroll mouse:mouse inRect:r];
 	
-	[self removeTrackingRect:noteRectTracker];
-	noteRectTracker = [self addTrackingRect:noteRect owner:self
-							userData:nil assumeInside:inNoteRect];
-	[[self window] setAcceptsMouseMovedEvents:inNoteRect];
-#endif
-
+	[self removeTrackingRect:fCursorTracking];
+	fCursorTracking = [self addTrackingRect:r owner:self
+							userData:nil assumeInside:within];
+	[[self window] setAcceptsMouseMovedEvents:within];
 	[[self window] makeFirstResponder:self];
 
 	NSSize frameSz	= {sz.width * fDisplayScale, sz.height * fDisplayScale};
@@ -203,7 +204,7 @@ static float sFlatPos[] = {
 	[self setNeedsDisplay:YES];
 }
 
-- (void)drawRect:(NSRect)rect
+- (void)drawGridForSystem:(int)system
 {
 	static NSDictionary * sMeasNoFont 	 = nil;
 	if (!sMeasNoFont)
@@ -212,6 +213,9 @@ static float sFlatPos[] = {
 				[NSFont fontWithName: @"Helvetica" size: 10],
                 NSFontAttributeName,
 				nil];
+
+	const float kSystemY 	= [self systemY:system];
+	const float kLineW 		= fClefKeyW + fMeasPerSystem*fMeasureW;
 
 	const VLSong * 			song = [self song];
 	const VLProperties & 	prop = song->fProperties.front();
@@ -222,17 +226,10 @@ static float sFlatPos[] = {
 	// Draw lines
 	//
 	[bz setLineWidth:0.0];
-	if (fNeedsRecalc)
-		[self recalculateDimensions];
-	for (int system = 0; system<fNumSystems; ++system) {
-		float kLineY = [self systemY:system];
-		for (int line = 0; line<5; ++line) {
-			const float x0	= kLineX;
-			const float xx	= x0 + fClefKeyW + fMeasPerSystem*fMeasureW;
-			const float y	= kLineY+line*kLineH;
-			[bz moveToPoint: NSMakePoint(x0, y)];
-			[bz lineToPoint: NSMakePoint(xx, y)];
-		}
+	for (int line = 0; line<5; ++line) {
+		const float y	= kSystemY+line*kLineH;
+		[bz moveToPoint: NSMakePoint(kLineX, y)];
+		[bz lineToPoint: NSMakePoint(kLineX+kLineW, y)];
 	}
 	[bz stroke];
 	[bz removeAllPoints];
@@ -240,14 +237,11 @@ static float sFlatPos[] = {
 	// Draw measure lines
 	//
 	[bz setLineWidth:2.0];
-	for (int system = 0; system<fNumSystems; ++system) {
-		float kLineY = [self systemY:system];
-		for (int measure = 0; measure<=fMeasPerSystem; ++measure) {
-			const float x	= fClefKeyW+measure*fMeasureW;
-			const float yy	= kLineY+4.0f*kLineH;
-			[bz moveToPoint: NSMakePoint(x, kLineY)];
-			[bz lineToPoint: NSMakePoint(x, yy)];
-		}
+	for (int measure = 0; measure<=fMeasPerSystem; ++measure) {
+		const float x	= fClefKeyW+measure*fMeasureW;
+		const float yy	= kSystemY+4.0f*kLineH;
+		[bz moveToPoint: NSMakePoint(x, kSystemY)];
+		[bz lineToPoint: NSMakePoint(x, yy)];
 	}
 	[bz stroke];
 	[bz removeAllPoints];
@@ -257,63 +251,73 @@ static float sFlatPos[] = {
 	//
 	[bz setLineWidth:0.0];
 	[[NSColor colorWithDeviceWhite:0.8f alpha:1.0f] set];
-	for (int system = 0; system<fNumSystems; ++system) {
-		float kLineY = [self systemY:system];
-		for (int measure = 0; measure<fMeasPerSystem; ++measure) {
-			const float mx	= fClefKeyW+measure*fMeasureW;
-			const float y0	= kLineY-2.0f*kLineH;
-			const float yy	= kLineY+6.0f*kLineH;
-			for (int group = 0; group < fGroups; ++group) {
-				for (int div = 0; div < fDivPerGroup; ++div) {
-					const float x = mx+(group*(fDivPerGroup+1)+div+1)*kNoteW;
-					[bz moveToPoint: NSMakePoint(x, y0)];
-					[bz lineToPoint: NSMakePoint(x, yy)];
-				}
-			}
-		}
-	}	
-	[bz stroke];
-
-	for (int system = 0; system<fNumSystems; ++system) {
-		float kLineY = [self systemY:system];
-		//
-		// Draw clef
-		//
-		[[self musicElement:kMusicGClef] 
-			compositeToPoint: NSMakePoint(kClefX, kLineY+kClefY)
-			operation: NSCompositeSourceOver];
-		//
-		// Draw measure #
-		//
-		[[NSString stringWithFormat:@"%d", system*fMeasPerSystem+1]
-			drawAtPoint: NSMakePoint(kMeasNoX, kLineY+kMeasNoY)
-			withAttributes: sMeasNoFont];
-		//
-		// Draw key (sharps & flats)
-		//
-		if (prop.fKey > 0) {
-			float x = kClefX+kClefW;
-			for (int i=0; i<prop.fKey; ++i) {
-				[[self musicElement:kMusicSharp] 
-					compositeToPoint: NSMakePoint(x, kLineY+sSharpPos[i]+kSharpY)
-					operation: NSCompositeSourceOver];
-				x += kAccW;
-			}
-		} else if (prop.fKey < 0) {
-			float x = kClefX+kClefW;
-			for (int i=0; -i>prop.fKey; ++i) {
-				[[self musicElement: kMusicFlat] 
-					compositeToPoint: NSMakePoint(x, kLineY+sFlatPos[i]+kFlatY)
-					operation: NSCompositeSourceOver];
-				x += kAccW;
+	for (int measure = 0; measure<fMeasPerSystem; ++measure) {
+		const float mx	= fClefKeyW+measure*fMeasureW;
+		const float y0	= kSystemY-2.0f*kLineH;
+		const float yy	= kSystemY+6.0f*kLineH;
+		for (int group = 0; group < fGroups; ++group) {
+			for (int div = 0; div < fDivPerGroup; ++div) {
+				const float x = mx+(group*(fDivPerGroup+1)+div+1)*kNoteW;
+				[bz moveToPoint: NSMakePoint(x, y0)];
+				[bz lineToPoint: NSMakePoint(x, yy)];
 			}
 		}
 	}
+	[bz stroke];
 
 	//
-	// Draw notes	
+	// Draw clef
 	//
-	[self drawNotes];
+	[[self musicElement:kMusicGClef] 
+		compositeToPoint: NSMakePoint(kClefX, kSystemY+kClefY)
+		operation: NSCompositeSourceOver];
+	//
+	// Draw measure #
+	//
+	[[NSString stringWithFormat:@"%d", system*fMeasPerSystem+1]
+		drawAtPoint: NSMakePoint(kMeasNoX, kSystemY+kMeasNoY)
+		withAttributes: sMeasNoFont];
+	//
+	// Draw key (sharps & flats)
+	//
+	if (prop.fKey > 0) {
+		float x = kClefX+kClefW;
+		for (int i=0; i<prop.fKey; ++i) {
+			[[self musicElement:kMusicSharp] 
+				compositeToPoint: 
+					NSMakePoint(x, kSystemY+sSharpPos[i]+kSharpY)
+				operation: NSCompositeSourceOver];
+			x += kAccW;
+		}
+	} else if (prop.fKey < 0) {
+		float x = kClefX+kClefW;
+		for (int i=0; -i>prop.fKey; ++i) {
+			[[self musicElement: kMusicFlat] 
+				compositeToPoint: 
+					NSMakePoint(x, kSystemY+sFlatPos[i]+kFlatY)
+				operation: NSCompositeSourceOver];
+			x += kAccW;
+		}
+	}
+}
+
+- (void)drawRect:(NSRect)rect
+{
+	if (fNeedsRecalc)
+		[self recalculateDimensions];
+
+	const float kLineW = fClefKeyW + fMeasPerSystem*fMeasureW;
+	for (int system = 0; system<fNumSystems; ++system) {
+		const float kSystemY = [self systemY:system];
+		if (!NSIntersectsRect(rect, 
+							  NSMakeRect(kLineX, kSystemY+kClefY, 
+										 kLineW, kSystemH-kClefY)
+		))
+			continue; // This system does not need to be drawn
+		[self drawGridForSystem:system];
+		[self drawNotesForSystem:system];
+		[self drawChordsForSystem:system];
+	}
 }
 
 - (IBAction) setKey:(id)sender
@@ -356,6 +360,114 @@ static float sFlatPos[] = {
 	[fFieldEditor setAction:nil];
 	[self setValue: [NSNumber numberWithBool:NO] 
 			  forKey: @"fShowFieldEditor"];
+}
+
+const float kSemiFloor = -2.5f*kLineH;
+static int sSemiToPitch[] = {
+	53, // F
+	55,	57, // A
+	59, 60, // Middle C
+	62, 64, // E
+	65, 67, // G
+	69, 71, // B
+	72, 74, // D
+	76, 77, // F
+	79, 81, // A
+	83, 84, // C
+	86, 88  // E
+};
+
+- (VLRegion) findRegionForEvent:(NSEvent *) event
+{
+	fCursorPitch = VLNote::kNoPitch;
+
+	const VLProperties & 	prop = [self song]->fProperties.front();
+	NSPoint loc 	= [event locationInWindow];
+	loc 			= [self convertPoint:loc fromView:nil];
+
+	if (loc.y < 0.0f || loc.y >= fNumSystems*kSystemH)
+		return kRegionNowhere;
+
+	int system = fNumSystems - static_cast<int>(loc.y / kSystemH) - 1;
+	loc.y      = fmodf(loc.y, kSystemH);
+
+	loc.x -= fClefKeyW;
+	if (loc.x < 0.0f || loc.x >= fMeasPerSystem*fMeasureW)
+		return kRegionNowhere;
+	
+	int measure 	= static_cast<int>(loc.x / fMeasureW);
+	loc.x	   	   -= measure*fMeasureW;
+	int group	  	= static_cast<int>(loc.x / ((fDivPerGroup+1)*kNoteW));
+	loc.x		   -= group*(fDivPerGroup+1)*kNoteW;
+	int div			= static_cast<int>(roundf(loc.x / kNoteW))-1;
+	div				= std::min(std::max(div, 0), fDivPerGroup-1);
+	fCursorAt 		= VLFraction(div+group*fDivPerGroup, 4*prop.fDivisions);
+	fCursorMeasure	= measure+system*fMeasPerSystem;
+
+	if (loc.y >= kSystemY+kChordY)
+		return kRegionChord;
+	else if (loc.y < kSystemY+kLyricsY)
+		return kRegionLyrics;
+
+	loc.y		   -= kSystemY+kSemiFloor;
+	int semi		= static_cast<int>(roundf(loc.y / (0.5f*kLineH)));
+	fCursorPitch	= sSemiToPitch[semi];
+
+	return kRegionNote;
+}
+
+- (void) mouseMoved:(NSEvent *)event
+{
+   	if ([event modifierFlags] & NSAlphaShiftKeyMask)
+		return; // Keyboard mode, ignore mouse
+
+	bool hadCursor = fCursorPitch != VLNote::kNoPitch;
+	[self findRegionForEvent:event];
+	bool hasCursor = fCursorPitch != VLNote::kNoPitch;
+
+	[self setNeedsDisplay:(hadCursor || hasCursor)];
+}
+
+- (void) mouseEntered:(NSEvent *)event
+{
+	[[self window] setAcceptsMouseMovedEvents:YES];
+	[self mouseMoved:event];
+}
+
+- (void) mouseExited:(NSEvent *)event
+{
+	[[self window] setAcceptsMouseMovedEvents:NO];
+	[self mouseMoved:event];
+}
+
+- (void) mouseDown:(NSEvent *)event
+{
+	switch ([self findRegionForEvent:event]) {
+	case kRegionNote:
+		[self addNoteAtCursor];
+		break;
+	default:
+		break;
+	}
+}
+
+- (void) keyDown:(NSEvent *)event
+{
+	NSString * k = [event charactersIgnoringModifiers];
+	
+	switch ([k characterAtIndex:0]) {
+	case '\r':
+		[self startKeyboardCursor];
+		[self addNoteAtCursor];
+		break;
+	case ' ':
+		[self startKeyboardCursor];
+		VLSoundOut::Instance()->PlayNote(VLNote(1, fCursorPitch));
+		break;
+	case 'r':
+		fIsRest = !fIsRest;
+		break;
+	}
 }
 
 @end

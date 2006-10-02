@@ -15,112 +15,35 @@
 
 @implementation VLSheetView (Notes)
 
-static int sSemiToPitch[] = {
-	53, // F
-	55,	57, // A
-	59, 60, // Middle C
-	62, 64, // E
-	65, 67, // G
-	69, 71, // B
-	72, 74, // D
-	76, 77, // F
-	79, 81, // A
-	83, 84, // C
-	86, 88  // E
-};
-
-- (void) mouseMoved:(NSEvent *)event
-{
-   	if ([event modifierFlags] & NSAlphaShiftKeyMask)
-		return; // Keyboard mode, ignore mouse
-	const VLProperties & 	prop = [self song]->fProperties.front();
-	NSPoint loc 	= [event locationInWindow];
-	loc 			= [self convertPoint:loc fromView:nil];
-
-	loc.x	   	   -= fNoteRect.origin.x;
-	int measure 	= static_cast<int>(loc.x / fMeasureW);
-	loc.x	   	   -= measure*fMeasureW;
-	int group	  	= static_cast<int>(loc.x / ((fDivPerGroup+1)*kNoteW));
-	loc.x		   -= group*(fDivPerGroup+1)*kNoteW;
-	int div			= static_cast<int>(roundf(loc.x / kNoteW))-1;
-	div				= std::min(std::max(div, 0), fDivPerGroup-1);
-	VLFraction at(div+group*fDivPerGroup, 4*prop.fDivisions);
-
-	loc.y		   -= fNoteRect.origin.y;
-	int semi		= static_cast<int>(roundf(loc.y / (0.5f*kLineH)));
-	int pitch 		= sSemiToPitch[semi];
-
-	[self setNoteCursorMeasure:measure at:at pitch:pitch];
-}
-
-- (void) addNoteAtCursor:(BOOL)isRest
+- (void) addNoteAtCursor
 {	
-	if (fNoteCursorMeasure > -1) {
-		VLNote	newNote(1, !isRest ? fNoteCursorPitch : VLNote::kNoPitch);
+	if (fCursorMeasure > -1) {
+		VLNote	newNote(1, !fIsRest ? fCursorPitch : VLNote::kNoPitch);
 
-		[self song]->AddNote(newNote, fNoteCursorMeasure, fNoteCursorAt);
+		[self song]->AddNote(newNote, fCursorMeasure, fCursorAt);
 
 		[self setNeedsDisplay:YES];
 
 		VLSoundOut::Instance()->PlayNote(newNote);
+
+		fIsRest	= NO;
 	}
-}
-
-- (void) mouseDown:(NSEvent *)event
-{
-	[self mouseMoved:event];
-	[self addNoteAtCursor: ([event modifierFlags] & NSShiftKeyMask) != 0];
-}
-
-- (void) mouseEntered:(NSEvent *)event
-{
-	[[self window] setAcceptsMouseMovedEvents:YES];
-	[self mouseMoved:event];
-}
-
-- (void) mouseExited:(NSEvent *)event
-{
-	[[self window] setAcceptsMouseMovedEvents:NO];
-   	if (!([event modifierFlags] & NSAlphaShiftKeyMask))
-		[self hideNoteCursor];
 }
 
 - (void) startKeyboardCursor
 {
-	if (fNoteCursorMeasure < 0) {
-		fNoteCursorMeasure	= 0;
-		fNoteCursorPitch		= VLNote::kMiddleC;
-		fNoteCursorAt		= VLFraction(0);
+	if (fCursorMeasure < 0) {
+		fCursorMeasure	= 0;
+		fCursorPitch	= VLNote::kMiddleC;
+		fCursorAt		= VLFraction(0);
 	}
-}
-
-- (void) keyDown:(NSEvent *)event
-{
-	NSString * k = [event charactersIgnoringModifiers];
-	
-	switch ([k characterAtIndex:0]) {
-	case '\r':
-		[self startKeyboardCursor];
-		[self addNoteAtCursor];
-		break;
-	case ' ':
-		[self startKeyboardCursor];
-		VLSoundOut::Instance()->PlayNote(VLNote(1, fNoteCursorPitch));
-		break;
-	}
-}
-
-- (void) hideNoteCursor
-{
-	fNoteCursorMeasure = -1;
-	[self setNeedsDisplay:YES];
 }
 
 - (void) drawNoteCursor
 {
 	NSPoint note = 
-		NSMakePoint([self noteXInMeasure:fNoteCursorMeasure at:fNoteCursorAt],
-					[self noteYWithPitch:fNoteCursorPitch]);
+		NSMakePoint([self noteXInMeasure:fCursorMeasure at:fCursorAt],
+					[self noteYInMeasure:fCursorMeasure withPitch:fCursorPitch]);
 	NSRect 	noteCursorRect =
 		NSMakeRect(note.x-kNoteX, note.y-kNoteY, 2.0f*kNoteX, 2.0f*kNoteY);
 	[[self musicElement:kMusicNoteCursor] 
@@ -245,7 +168,7 @@ static int sSemiToPitch[] = {
 		  operation: NSCompositeSourceOver];
 }
 
-- (void) drawNotes
+- (void) drawNotesForSystem:(int)system
 {
 	const VLSong 		*	song = [self song];
 	const VLProperties & 	prop = song->fProperties.front();
@@ -253,79 +176,64 @@ static int sSemiToPitch[] = {
 	VLFraction				swung(3, prop.fDivisions*8, true);	// Which notes to swing
 	VLFraction				swingGrid(2*swung);					// Alignment of swing notes
 
-	for (int system = 0; system<fNumSystems; ++system) {
-		float kLineY = [self systemY:system];
-		for (int m = 0; m<fMeasPerSystem; ++m) {
-			int	measIdx = m+system*fMeasPerSystem;
-			if (measIdx >= song->CountMeasures())
-				break;
-			const VLMeasure		measure = song->fMeasures[measIdx];
-			const VLNoteList &	melody	= measure.fMelody;
-			VLFraction 			at(0);
-			for (VLNoteList::const_iterator note = melody.begin(); 
-				 note != melody.end(); 
-				 ++note
-			) {
-				VLFraction 	dur 	= note->fDuration;
-				BOOL       	first	= !m || !note->fTied;
-				int			pitch	= note->fPitch;
-				while (dur > 0) {
-					VLFraction partialDur; // Actual value of note drawn
-					measure.fProperties->PartialNote(at, dur, &partialDur);
+	float kSystemY = [self systemY:system];
+	for (int m = 0; m<fMeasPerSystem; ++m) {
+		int	measIdx = m+system*fMeasPerSystem;
+		if (measIdx >= song->CountMeasures())
+			break;
+		const VLMeasure		measure = song->fMeasures[measIdx];
+		const VLNoteList &	melody	= measure.fMelody;
+		VLFraction 			at(0);
+		for (VLNoteList::const_iterator note = melody.begin(); 
+			 note != melody.end(); 
+			 ++note
+		) {
+			VLFraction 	dur 	= note->fDuration;
+			BOOL       	first	= !m || !note->fTied;
+			int			pitch	= note->fPitch;
+			while (dur > 0) {
+				VLFraction partialDur; // Actual value of note drawn
+				measure.fProperties->PartialNote(at, dur, &partialDur);
 				
-					BOOL triplet = !(partialDur.fDenom % 3);
-					VLFraction noteDur(1); // Visual value of note
+				BOOL triplet = !(partialDur.fDenom % 3);
+				VLFraction noteDur(1); // Visual value of note
 				
-					if (triplet) {
-						if (swing) {	// Swing 8ths / 16ths are written as straight 8ths
-							if (partialDur == 4*swung/3 && (at % swingGrid) == 0) {	
-								noteDur	= swung;
-								triplet	= NO;
-							} else if (partialDur == 2*swung/3 && ((at+partialDur) % swingGrid) == 0) {
-								noteDur	= swung;
-								triplet	= NO;
-							} else {
-								noteDur = 4*partialDur/3;
-							}
+				if (triplet) {
+					if (swing) {	// Swing 8ths / 16ths are written as straight 8ths	
+						if (partialDur == 4*swung/3 && (at % swingGrid) == 0) {	
+							noteDur	= swung;
+							triplet	= NO;
+						} else if (partialDur == 2*swung/3 && ((at+partialDur) % swingGrid) == 0) {
+							noteDur	= swung;
+							triplet	= NO;
 						} else {
 							noteDur = 4*partialDur/3;
 						}
 					} else {
-						noteDur = partialDur;
+						noteDur = 4*partialDur/3;
 					}
-					if (pitch != VLNote::kNoPitch) 
-						[self drawNote:noteDur 
-							  at: NSMakePoint(
-									[self noteXInMeasure:m at:at],
-									kLineY+[self noteYWithPitch:pitch])
-							  tied:!first];
-					else 
-						[self drawRest:noteDur 
-							  at: NSMakePoint(
-									[self noteXInMeasure:m at:at],
-									kLineY+[self noteYWithPitch:65])];
-					dur	   -= partialDur;
-					at	   += partialDur;
-					first	= NO;
+				} else {
+					noteDur = partialDur;
 				}
+				if (pitch != VLNote::kNoPitch) 
+					[self drawNote:noteDur 
+						  at: NSMakePoint(
+								[self noteXInMeasure:m at:at],
+								kSystemY+[self noteYWithPitch:pitch])
+						  tied:!first];
+				else 
+					[self drawRest:noteDur 
+						  at: NSMakePoint(
+							    [self noteXInMeasure:m at:at],
+								kSystemY+[self noteYWithPitch:65])];
+				dur	   -= partialDur;
+				at	   += partialDur;
+				first	= NO;
 			}
 		}
 	}
-	if (fNoteCursorMeasure > -1)
+	if (fCursorPitch != VLNote::kNoPitch && fCursorMeasure/fMeasPerSystem == system)
 		[self drawNoteCursor];
-}
-
-- (void) setNoteCursorMeasure:(int)measure at:(VLFraction)at pitch:(int)pitch
-{
-	if (measure != fNoteCursorMeasure || at != fNoteCursorAt
-	 || pitch != fNoteCursorPitch
-	) {
-		fNoteCursorMeasure 	= measure;
-		fNoteCursorAt	  	= at;
-		fNoteCursorPitch	= pitch;
-
-		[self setNeedsDisplay:YES];
-	}
 }
 
 @end

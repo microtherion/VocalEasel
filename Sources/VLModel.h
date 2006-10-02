@@ -31,6 +31,11 @@ private:
 	VLFraction & Normalize();
 };
 
+inline float operator*(VLFraction f, float sc)
+{
+	return sc*f.fNum/f.fDenom;
+}
+
 inline VLFraction operator+(VLFraction one, VLFraction other)
 {
 	return one += other;
