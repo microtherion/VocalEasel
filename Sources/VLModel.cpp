@@ -354,13 +354,13 @@ VLSong::VLSong()
 	VLProperties 		defaultProperties = {fourFour, 0, 1, 3};
 	
 	fProperties.push_back(defaultProperties);
-	fMeasures.resize(33); // Leadin, AABA
+	fMeasures.resize(32); // Leadin, AABA
 	
 	VLNote 	rest = VLRest(1);
 	VLChord rchord;
 	rchord.fDuration = 1;
 	
-	for (int i=0; i<33; ++i) {
+	for (int i=0; i<32; ++i) {
 		fMeasures[i].fProperties = &fProperties.front();
 		fMeasures[i].fChords.push_back(rchord);
 		fMeasures[i].fMelody.push_back(rest);

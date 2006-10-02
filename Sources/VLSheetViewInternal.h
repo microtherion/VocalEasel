@@ -7,11 +7,14 @@
 //
 
 const float kLineX		=  5;
-const float kLineY		= 90.5;
 const float kLineH  	= 10;
+const float kSystemH	= 15.0f*kLineH;
+const float kSystemY	=  3.0f*kLineH;
 const float kClefX		= 20.5f;
-const float kClefY		= 75.0f;
+const float kClefY		=-15.0f;
 const float kClefW		= 30.0f;
+const float kMeasNoX	= 10.0f;
+const float kMeasNoY	=  4.5f*kLineH;
 const float kNoteW		= 12.0f;
 const float kKeyW		= 10.0f;
 const float kAccW		= 10.0f;

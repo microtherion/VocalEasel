@@ -68,6 +68,7 @@
 
 - (void) setupChords
 {
+#if 0
 	const VLSong *			song 		= [self song];
 	const VLProperties & 	prop		= song->fProperties.front();
 	NSView *				chordView	= [chords contentView];
@@ -110,6 +111,7 @@
 		}
 	}
 	[chords setNeedsDisplay: YES];
+#endif
 }
 
 - (IBAction) editChord:(id)sender

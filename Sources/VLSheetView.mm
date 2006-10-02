@@ -40,23 +40,23 @@ static NSString * sElementNames[kMusicElements] = {
 };
 
 static float sSharpPos[] = {
-	kLineY+4.0f*kLineH, // F#
-	kLineY+2.5f*kLineH, // C#
-	kLineY+4.5f*kLineH, // G#
-	kLineY+3.0f*kLineH, // D#
-	kLineY+1.5f*kLineH, // A#
-	kLineY+3.5f*kLineH, // E#
-	kLineY+2.0f*kLineH, // B#
+	4.0f*kLineH, // F#
+	2.5f*kLineH, // C#
+	4.5f*kLineH, // G#
+	3.0f*kLineH, // D#
+	1.5f*kLineH, // A#
+	3.5f*kLineH, // E#
+	2.0f*kLineH, // B#
 };
 
 static float sFlatPos[] = {
-	kLineY+2.0f*kLineH, // Bb
-	kLineY+3.5f*kLineH, // Eb
-	kLineY+1.5f*kLineH, // Ab
-	kLineY+3.0f*kLineH, // Db
-	kLineY+1.0f*kLineH, // Gb
-	kLineY+2.5f*kLineH, // Cb
-	kLineY+0.5f*kLineH, // Fb
+	2.0f*kLineH, // Bb
+	3.5f*kLineH, // Eb
+	1.5f*kLineH, // Ab
+	3.0f*kLineH, // Db
+	1.0f*kLineH, // Gb
+	2.5f*kLineH, // Cb
+	0.5f*kLineH, // Fb
 };
 
 - (id)initWithFrame:(NSRect)frame 
@@ -80,6 +80,7 @@ static float sFlatPos[] = {
 		}
 		needsRecalc			= YES;
 		showFieldEditor		= NO;
+		displayScale		= 1.0f;
 		firstMeasure		= 0;
 		noteRectTracker 	= 0;
 		noteCursorCache 	= nil;
@@ -103,13 +104,20 @@ static float sFlatPos[] = {
 	return sMusic[elt];
 }
 
+- (float) systemY:(int)system
+{
+	NSRect b = [self bounds];
+
+	return kSystemY+b.origin.y+b.size.height-(system+1)*kSystemH;
+}
+
 - (float) noteYWithPitch:(int)pitch
 {
 	int 	semi 		= pitch % 12;
 	int		octave  	= (pitch / 12) - 5;
 	bool 	useSharps	= [self song]->fProperties.front().fKey >= 0;
 
-	float y 	= kLineY+octave*3.5f*kLineH;
+	float y 	= octave*3.5f*kLineH;
 	float sharp = useSharps ? 0.0f : 0.5f*kLineH;
 
 	switch (semi) {
@@ -156,6 +164,10 @@ static float sFlatPos[] = {
 {
 	needsRecalc	= NO;	
 
+	NSSize contentSz =  [[self enclosingScrollView] contentSize];
+	contentSz.width	/=	displayScale;
+	contentSz.height/= 	displayScale;
+
 	const VLSong * 			song = [self song];
 	const VLProperties & 	prop = song->fProperties.front();
 
@@ -164,18 +176,12 @@ static float sFlatPos[] = {
 	divPerGroup			= prop.fDivisions * (quarterBeats / groups);
 	clefKeyW			= kClefX+kClefW+(std::labs(prop.fKey)+1)*kKeyW;
 	measureW			= groups*(divPerGroup+1)*kNoteW;
-	visibleMeasures		= (int)std::floor(([self bounds].size.width - clefKeyW) 
-									 / measureW);
-	[self setValue: 
-			  [NSNumber numberWithInt:
-				 std::max((int)song->fMeasures.size()-visibleMeasures, 0)]
-		  forKey: @"lastMeasure"];
-	if (firstMeasure > lastMeasure) 
-		[self setValue: [NSNumber numberWithInt:lastMeasure] 
-			  forKey: @"firstMeasure"];
+	measuresPerSystem	=
+		(int)std::floor((contentSz.width - clefKeyW) / measureW);
+	numSystems 			= (song->CountMeasures()+measuresPerSystem-1)/measuresPerSystem;
+	contentSz.height	= numSystems*kSystemH;
 
-	[self setupChords];
-
+#if 0
 	noteRect		= NSMakeRect(clefKeyW, kLineY-kMaxLedgers*kLineH, 
 								 visibleMeasures*measureW, 
 								 (4.0f+2.0f*kMaxLedgers)*kLineH);
@@ -188,11 +194,27 @@ static float sFlatPos[] = {
 	noteRectTracker = [self addTrackingRect:noteRect owner:self
 							userData:nil assumeInside:inNoteRect];
 	[[self window] setAcceptsMouseMovedEvents:inNoteRect];
+#endif
+
 	[[self window] makeFirstResponder:self];
+
+	NSSize frameSz	= {contentSz.width * displayScale, contentSz.height * displayScale};
+
+	[self setFrameSize:frameSz];
+	[self setBoundsSize:contentSz];
+	[self setNeedsDisplay:YES];
 }
 
 - (void)drawRect:(NSRect)rect
 {
+	static NSDictionary * sMeasNoFont 	 = nil;
+	if (!sMeasNoFont)
+		sMeasNoFont =
+			[[NSDictionary alloc] initWithObjectsAndKeys:
+				[NSFont fontWithName: @"Helvetica" size: 10],
+                NSFontAttributeName,
+				nil];
+
 	const VLSong * 			song = [self song];
 	const VLProperties & 	prop = song->fProperties.front();
 
@@ -204,12 +226,15 @@ static float sFlatPos[] = {
 	[bz setLineWidth:0.0];
 	if (needsRecalc)
 		[self recalculateDimensions];
-	for (int line = 0; line<5; ++line) {
-		const float x0	= kLineX;
-		const float xx	= x0 + clefKeyW + visibleMeasures*measureW;
-		const float y	= kLineY+line*kLineH;
-		[bz moveToPoint: NSMakePoint(x0, y)];
-		[bz lineToPoint: NSMakePoint(xx, y)];
+	for (int system = 0; system<numSystems; ++system) {
+		float kLineY = [self systemY:system];
+		for (int line = 0; line<5; ++line) {
+			const float x0	= kLineX;
+			const float xx	= x0 + clefKeyW + measuresPerSystem*measureW;
+			const float y	= kLineY+line*kLineH;
+			[bz moveToPoint: NSMakePoint(x0, y)];
+			[bz lineToPoint: NSMakePoint(xx, y)];
+		}
 	}
 	[bz stroke];
 	[bz removeAllPoints];
@@ -217,11 +242,14 @@ static float sFlatPos[] = {
 	// Draw measure lines
 	//
 	[bz setLineWidth:2.0];
-	for (int measure = 0; measure<=visibleMeasures; ++measure) {
-		const float x	= clefKeyW+measure*measureW;
-		const float yy	= kLineY+4.0f*kLineH;
-		[bz moveToPoint: NSMakePoint(x, kLineY)];
-		[bz lineToPoint: NSMakePoint(x, yy)];
+	for (int system = 0; system<numSystems; ++system) {
+		float kLineY = [self systemY:system];
+		for (int measure = 0; measure<=measuresPerSystem; ++measure) {
+			const float x	= clefKeyW+measure*measureW;
+			const float yy	= kLineY+4.0f*kLineH;
+			[bz moveToPoint: NSMakePoint(x, kLineY)];
+			[bz lineToPoint: NSMakePoint(x, yy)];
+		}
 	}
 	[bz stroke];
 	[bz removeAllPoints];
@@ -231,44 +259,56 @@ static float sFlatPos[] = {
 	//
 	[bz setLineWidth:0.0];
 	[[NSColor colorWithDeviceWhite:0.8f alpha:1.0f] set];
-	for (int measure = 0; measure<visibleMeasures; ++measure) {
-		const float mx	= clefKeyW+measure*measureW;
-		const float y0	= kLineY-2.0f*kLineH;
-		const float yy	= kLineY+6.0f*kLineH;
-		for (int group = 0; group < groups; ++group) {
-			for (int div = 0; div < divPerGroup; ++div) {
-				const float x = mx+(group*(divPerGroup+1)+div+1)*kNoteW;
-				[bz moveToPoint: NSMakePoint(x, y0)];
-				[bz lineToPoint: NSMakePoint(x, yy)];
+	for (int system = 0; system<numSystems; ++system) {
+		float kLineY = [self systemY:system];
+		for (int measure = 0; measure<measuresPerSystem; ++measure) {
+			const float mx	= clefKeyW+measure*measureW;
+			const float y0	= kLineY-2.0f*kLineH;
+			const float yy	= kLineY+6.0f*kLineH;
+			for (int group = 0; group < groups; ++group) {
+				for (int div = 0; div < divPerGroup; ++div) {
+					const float x = mx+(group*(divPerGroup+1)+div+1)*kNoteW;
+					[bz moveToPoint: NSMakePoint(x, y0)];
+					[bz lineToPoint: NSMakePoint(x, yy)];
+				}
 			}
 		}
 	}	
 	[bz stroke];
 
-	//
-	// Draw clef
-	//
-	[[self musicElement:kMusicGClef] 
-		compositeToPoint:NSMakePoint(kClefX, kClefY)
-		operation: NSCompositeSourceOver];
-	//
-	// Draw key (sharps & flats)
-	//
-	if (prop.fKey > 0) {
-		float x = kClefX+kClefW;
-		for (int i=0; i<prop.fKey; ++i) {
-			[[self musicElement:kMusicSharp] compositeToPoint:
-					   NSMakePoint(x, sSharpPos[i]+kSharpY)
-				   operation: NSCompositeSourceOver];
-			x += kAccW;
-		}
-	} else if (prop.fKey < 0) {
-		float x = kClefX+kClefW;
-		for (int i=0; -i>prop.fKey; ++i) {
-			[[self musicElement: kMusicFlat] compositeToPoint:
-					   NSMakePoint(x, sFlatPos[i]+kFlatY)
-				   operation: NSCompositeSourceOver];
-			x += kAccW;
+	for (int system = 0; system<numSystems; ++system) {
+		float kLineY = [self systemY:system];
+		//
+		// Draw clef
+		//
+		[[self musicElement:kMusicGClef] 
+			compositeToPoint: NSMakePoint(kClefX, kLineY+kClefY)
+			operation: NSCompositeSourceOver];
+		//
+		// Draw measure #
+		//
+		[[NSString stringWithFormat:@"%d", system*measuresPerSystem+1]
+			drawAtPoint: NSMakePoint(kMeasNoX, kLineY+kMeasNoY)
+			withAttributes: sMeasNoFont];
+		//
+		// Draw key (sharps & flats)
+		//
+		if (prop.fKey > 0) {
+			float x = kClefX+kClefW;
+			for (int i=0; i<prop.fKey; ++i) {
+				[[self musicElement:kMusicSharp] 
+					compositeToPoint: NSMakePoint(x, kLineY+sSharpPos[i]+kSharpY)
+					operation: NSCompositeSourceOver];
+				x += kAccW;
+			}
+		} else if (prop.fKey < 0) {
+			float x = kClefX+kClefW;
+			for (int i=0; -i>prop.fKey; ++i) {
+				[[self musicElement: kMusicFlat] 
+					compositeToPoint: NSMakePoint(x, kLineY+sFlatPos[i]+kFlatY)
+					operation: NSCompositeSourceOver];
+				x += kAccW;
+			}
 		}
 	}
 

@@ -38,12 +38,15 @@ enum VLMusicElement {
 	BOOL				showFieldEditor;
 	float				clefKeyW;
 	float				measureW;
+	float				lineH;
 	int 				groups; 
 	int 				quarterBeats;
 	int 				divPerGroup;
 	int					firstMeasure;
 	int					lastMeasure;
-	int					visibleMeasures;
+	int					measuresPerSystem;
+	int					numSystems;
+	float				displayScale;
 	NSImageRep *		noteCursorCache;
 	NSPoint				noteCursorLocation;
 	NSPoint				lastNoteCenter;
@@ -70,6 +73,7 @@ enum VLMusicElement {
 - (VLSong *) song;
 - (NSImage *) musicElement:(VLMusicElement)elt;
 
+- (float) systemY:(int)system;
 - (float) noteYWithPitch:(int)pitch;
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at;
 

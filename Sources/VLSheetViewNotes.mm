@@ -253,56 +253,61 @@ static int sSemiToPitch[] = {
 	VLFraction				swung(3, prop.fDivisions*8, true);	// Which notes to swing
 	VLFraction				swingGrid(2*swung);					// Alignment of swing notes
 
-	for (int m = 0; m<visibleMeasures; ++m) {
- 		int 				measIdx = m+firstMeasure;
-		const VLMeasure		measure = song->fMeasures[measIdx];
-		const VLNoteList &	melody	= measure.fMelody;
-		VLFraction 			at(0);
-		for (VLNoteList::const_iterator note = melody.begin(); 
-			 note != melody.end(); 
-			 ++note
-		) {
-			VLFraction 	dur 	= note->fDuration;
-			BOOL       	first	= !m || !note->fTied;
-			int			pitch	= note->fPitch;
-			while (dur > 0) {
-				VLFraction partialDur; // Actual value of note drawn
-				measure.fProperties->PartialNote(at, dur, &partialDur);
+	for (int system = 0; system<numSystems; ++system) {
+		float kLineY = [self systemY:system];
+		for (int m = 0; m<measuresPerSystem; ++m) {
+			int 				measIdx = m+system*measuresPerSystem;
+			if (measIdx >= song->CountMeasures())
+				break;
+			const VLMeasure		measure = song->fMeasures[measIdx];
+			const VLNoteList &	melody	= measure.fMelody;
+			VLFraction 			at(0);
+			for (VLNoteList::const_iterator note = melody.begin(); 
+				 note != melody.end(); 
+				 ++note
+			) {
+				VLFraction 	dur 	= note->fDuration;
+				BOOL       	first	= !m || !note->fTied;
+				int			pitch	= note->fPitch;
+				while (dur > 0) {
+					VLFraction partialDur; // Actual value of note drawn
+					measure.fProperties->PartialNote(at, dur, &partialDur);
 				
-				BOOL triplet = !(partialDur.fDenom % 3);
-				VLFraction noteDur(1); // Visual value of note
+					BOOL triplet = !(partialDur.fDenom % 3);
+					VLFraction noteDur(1); // Visual value of note
 				
-				if (triplet) {
-					if (swing) {	// Swing 8ths / 16ths are written as straight 8ths
-						if (partialDur == 4*swung/3 && (at % swingGrid) == 0) {
-							noteDur	= swung;
-							triplet	= NO;
-						} else if (partialDur == 2*swung/3 && ((at+partialDur) % swingGrid) == 0) {
-							noteDur	= swung;
-							triplet	= NO;
+					if (triplet) {
+						if (swing) {	// Swing 8ths / 16ths are written as straight 8ths
+							if (partialDur == 4*swung/3 && (at % swingGrid) == 0) {	
+								noteDur	= swung;
+								triplet	= NO;
+							} else if (partialDur == 2*swung/3 && ((at+partialDur) % swingGrid) == 0) {
+								noteDur	= swung;
+								triplet	= NO;
+							} else {
+								noteDur = 4*partialDur/3;
+							}
 						} else {
 							noteDur = 4*partialDur/3;
 						}
 					} else {
-						noteDur = 4*partialDur/3;
+						noteDur = partialDur;
 					}
-				} else {
-					noteDur = partialDur;
+					if (pitch != VLNote::kNoPitch) 
+						[self drawNote:noteDur 
+							  at: NSMakePoint(
+									[self noteXInMeasure:m at:at],
+									kLineY+[self noteYWithPitch:pitch])
+							  tied:!first];
+					else 
+						[self drawRest:noteDur 
+							  at: NSMakePoint(
+									[self noteXInMeasure:m at:at],
+									kLineY+[self noteYWithPitch:65])];
+					dur	   -= partialDur;
+					at	   += partialDur;
+					first	= NO;
 				}
-				if (pitch != VLNote::kNoPitch) 
-					[self drawNote:noteDur 
-						at: NSMakePoint(
-							[self noteXInMeasure:measIdx at:at],
-							[self noteYWithPitch:pitch])
-						tied:!first];
-				else 
-					[self drawRest:noteDur 
-						at: NSMakePoint(
-							[self noteXInMeasure:measIdx at:at],
-							[self noteYWithPitch:65])];
-				dur	   -= partialDur;
-				at	   += partialDur;
-				first	= NO;
 			}
 		}
 	}
