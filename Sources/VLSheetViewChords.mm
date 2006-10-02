@@ -164,10 +164,10 @@
 	} else {
 		NSAttributedString * s =  [self stringWithChord:chord];
 		[sender setAttributedStringValue: s];
-		[fieldBeingEdited setTitle: s];
+		[fFieldBeingEdited setTitle: s];
 		[sender setTextColor: [NSColor blackColor]];
 		VLSoundOut::Instance()->PlayChord(chord);
-		int tag = [fieldBeingEdited tag];
+		int tag = [fFieldBeingEdited tag];
 		song->AddChord(chord, tag >> 8, VLFraction(tag & 0xFF, 4));
 	}
 }

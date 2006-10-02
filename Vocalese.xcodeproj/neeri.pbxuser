@@ -62,13 +62,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 181286523;
-			PBXWorkspaceStateSaveDate = 181286523;
-		};
-		perUserProjectItems = {
-			95B042F40ACE42E800236B52 /* PBXBookmark */ = 95B042F40ACE42E800236B52 /* PBXBookmark */;
-			95B042F90ACE431A00236B52 /* PBXTextBookmark */ = 95B042F90ACE431A00236B52 /* PBXTextBookmark */;
-			95B043000ACE435E00236B52 /* PBXTextBookmark */ = 95B043000ACE435E00236B52 /* PBXTextBookmark */;
+			PBXPerProjectTemplateStateSaveDate = 181460906;
+			PBXWorkspaceStateSaveDate = 181460906;
 		};
 		sourceControlManager = 954D7413095406B2007D9571 /* Source Control */;
 		userBuildSettings = {
@@ -160,9 +155,9 @@
 	};
 	952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {703, 2268}}";
-			sepNavSelRange = "{3383, 0}";
-			sepNavVisRect = "{{0, 1151}, {703, 261}}";
+			sepNavIntBoundsRect = "{{0, 0}, {703, 2114}}";
+			sepNavSelRange = "{4746, 0}";
+			sepNavVisRect = "{{0, 1851}, {703, 261}}";
 			sepNavWindowFrame = "{{15, 92}, {763, 649}}";
 		};
 	};
@@ -300,30 +295,6 @@
 			sepNavWindowFrame = "{{120, 85}, {763, 649}}";
 		};
 	};
-	95B042F40ACE42E800236B52 /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */;
-	};
-	95B042F90ACE431A00236B52 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */;
-		name = "VLSheetView.mm: 244";
-		rLen = 0;
-		rLoc = 5713;
-		rType = 0;
-		vrLen = 966;
-		vrLoc = 5150;
-	};
-	95B043000ACE435E00236B52 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */;
-		name = "VLSheetView.mm: 181";
-		rLen = 0;
-		rLoc = 3996;
-		rType = 0;
-		vrLen = 1309;
-		vrLoc = 3259;
-	};
 	95B66653096BC6A100FE18C9 /* VLSheetViewInternal.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {704, 497}}";
@@ -342,9 +313,9 @@
 	};
 	95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {703, 2660}}";
-			sepNavSelRange = "{8068, 0}";
-			sepNavVisRect = "{{0, 1965}, {703, 238}}";
+			sepNavIntBoundsRect = "{{0, 0}, {703, 4130}}";
+			sepNavSelRange = "{1225, 0}";
+			sepNavVisRect = "{{0, 479}, {703, 261}}";
 			sepNavWindowFrame = "{{38, 71}, {763, 649}}";
 		};
 	};
@@ -361,7 +332,7 @@
 		hitCount = 0;
 		ignoreCount = 0;
 		lineNumber = 21;
-		modificationTime = 181290725.024457;
+		modificationTime = 181461973.028078;
 		state = 2;
 	};
 	95BDA15709540BF1009F9D65 /* VLSheetView.h */ = {
@@ -374,9 +345,9 @@
 	};
 	95BDA15809540BF1009F9D65 /* VLSheetView.mm */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {704, 5208}}";
-			sepNavSelRange = "{3996, 0}";
-			sepNavVisRect = "{{0, 2269}, {704, 497}}";
+			sepNavIntBoundsRect = "{{0, 0}, {703, 2814}}";
+			sepNavSelRange = "{8722, 0}";
+			sepNavVisRect = "{{0, 2553}, {703, 261}}";
 			sepNavWindowFrame = "{{164, 35}, {763, 649}}";
 		};
 	};

@@ -7,7 +7,7 @@
             ACTIONS = {hideFieldEditor = id; setDivisions = id; setKey = id; setTime = id; }; 
             CLASS = VLSheetView; 
             LANGUAGE = ObjC; 
-            OUTLETS = {chords = id; fieldEditor = id; }; 
+            OUTLETS = {fChords = id; fFieldBeingEdited = id; fFieldEditor = id; }; 
             SUPERCLASS = NSView; 
         }
     ); 

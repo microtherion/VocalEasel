@@ -34,31 +34,29 @@ enum VLMusicElement {
 };
 
 @interface VLSheetView : NSView {
-	BOOL				needsRecalc;
-	BOOL				showFieldEditor;
-	float				clefKeyW;
-	float				measureW;
-	float				lineH;
-	int 				groups; 
-	int 				quarterBeats;
-	int 				divPerGroup;
-	int					firstMeasure;
-	int					lastMeasure;
-	int					measuresPerSystem;
-	int					numSystems;
-	float				displayScale;
-	NSImageRep *		noteCursorCache;
-	NSPoint				noteCursorLocation;
-	NSPoint				lastNoteCenter;
-	NSRect				noteRect;
-	NSTrackingRectTag	noteRectTracker;
-	int		  			noteCursorMeasure;
-	VLFract 			noteCursorAt;
-	int					noteCursorPitch;
-	id					fieldBeingEdited;
+	BOOL				fNeedsRecalc;
+	float				fClefKeyW;
+	float				fMeasureW;
+	float				fLineH;
+	int 				fGroups; 
+	int 				fQuarterBeats;
+	int 				fDivPerGroup;
+	int					fMeasPerSystem;
+	int					fNumSystems;
+	float				fDisplayScale;
+	NSImageRep *		fNoteCursorCache;
+	NSPoint				fNoteCursorLocation;
+	NSPoint				fLastNoteCenter;
+	NSRect				fNoteRect;
+	NSTrackingRectTag	fNoteRectTracker;
+	int		  			fNoteCursorMeasure;
+	VLFract 			fNoteCursorAt;
+	int					fNoteCursorPitch;
+	id					fFieldBeingEdited;
 
-	IBOutlet id			chords;
-	IBOutlet id			fieldEditor;
+	BOOL				fShowFieldEditor;
+	IBOutlet id			fChords;
+	IBOutlet id			fFieldEditor;
 }
 
 - (IBAction) setKey:(id)sender;
@@ -66,8 +64,6 @@ enum VLMusicElement {
 - (IBAction) setDivisions:(id)sender;
 - (IBAction) showFieldEditor:(id)sender withAction:(SEL)selector;
 - (IBAction) hideFieldEditor:(id)sender;
-
-- (void) setFirstMeasure: (NSNumber *)measure;
 
 - (VLDocument *) document;
 - (VLSong *) song;

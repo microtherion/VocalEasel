@@ -78,13 +78,12 @@ static float sFlatPos[] = {
 				[sMusic[i] setSize:sz];
 			}
 		}
-		needsRecalc			= YES;
-		showFieldEditor		= NO;
-		displayScale		= 1.0f;
-		firstMeasure		= 0;
-		noteRectTracker 	= 0;
-		noteCursorCache 	= nil;
-		noteCursorMeasure	= -1;
+		fNeedsRecalc		= YES;
+		fShowFieldEditor	= NO;
+		fDisplayScale		= 1.0f;
+		fNoteRectTracker 	= 0;
+		fNoteCursorCache 	= nil;
+		fNoteCursorMeasure	= -1;
 	}
     return self;
 }
@@ -152,38 +151,37 @@ static float sFlatPos[] = {
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at
 {
 	const VLProperties & prop	= [self song]->fProperties.front();
-	const float mx				= clefKeyW+(measure-firstMeasure)*measureW;
+	const float mx				= fClefKeyW+(measure%fMeasPerSystem)*fMeasureW;
 
 	at 		/= prop.fTime / (4 * prop.fDivisions);
 	int div	=  at.fNum / at.fDenom;
 
-	return mx + (div + (div / divPerGroup) + 1)*kNoteW;
+	return mx + (div + (div / fDivPerGroup) + 1)*kNoteW;
 }
 
 - (void) recalculateDimensions 
 {
-	needsRecalc	= NO;	
+	fNeedsRecalc	= NO;	
 
-	NSSize contentSz =  [[self enclosingScrollView] contentSize];
-	contentSz.width	/=	displayScale;
-	contentSz.height/= 	displayScale;
+	NSSize sz =  [[self enclosingScrollView] contentSize];
+	sz.width	/=	fDisplayScale;
+	sz.height/= 	fDisplayScale;
 
 	const VLSong * 			song = [self song];
 	const VLProperties & 	prop = song->fProperties.front();
 
-	groups 				= prop.fTime.fNum / std::max(prop.fTime.fDenom / 4, 1); 
-	quarterBeats 		= (prop.fTime.fNum*4) / prop.fTime.fDenom;
-	divPerGroup			= prop.fDivisions * (quarterBeats / groups);
-	clefKeyW			= kClefX+kClefW+(std::labs(prop.fKey)+1)*kKeyW;
-	measureW			= groups*(divPerGroup+1)*kNoteW;
-	measuresPerSystem	=
-		(int)std::floor((contentSz.width - clefKeyW) / measureW);
-	numSystems 			= (song->CountMeasures()+measuresPerSystem-1)/measuresPerSystem;
-	contentSz.height	= numSystems*kSystemH;
+	fGroups 		= prop.fTime.fNum / std::max(prop.fTime.fDenom / 4, 1); 
+	fQuarterBeats 	= (prop.fTime.fNum*4) / prop.fTime.fDenom;
+	fDivPerGroup	= prop.fDivisions * (fQuarterBeats / fGroups);
+	fClefKeyW		= kClefX+kClefW+(std::labs(prop.fKey)+1)*kKeyW;
+	fMeasureW		= fGroups*(fDivPerGroup+1)*kNoteW;
+	fMeasPerSystem	= (int)std::floor((sz.width-fClefKeyW) / fMeasureW);
+	fNumSystems 	= (song->CountMeasures()+fMeasPerSystem-1)/fMeasPerSystem;
+	sz.height		= fNumSystems*kSystemH;
 
 #if 0
 	noteRect		= NSMakeRect(clefKeyW, kLineY-kMaxLedgers*kLineH, 
-								 visibleMeasures*measureW, 
+								 visibleMeasures*fMeasureW, 
 								 (4.0f+2.0f*kMaxLedgers)*kLineH);
 	NSPoint	mouse	= 
 		[self convertPoint:[[self window] mouseLocationOutsideOfEventStream]
@@ -198,10 +196,10 @@ static float sFlatPos[] = {
 
 	[[self window] makeFirstResponder:self];
 
-	NSSize frameSz	= {contentSz.width * displayScale, contentSz.height * displayScale};
+	NSSize frameSz	= {sz.width * fDisplayScale, sz.height * fDisplayScale};
 
 	[self setFrameSize:frameSz];
-	[self setBoundsSize:contentSz];
+	[self setBoundsSize:sz];
 	[self setNeedsDisplay:YES];
 }
 
@@ -224,13 +222,13 @@ static float sFlatPos[] = {
 	// Draw lines
 	//
 	[bz setLineWidth:0.0];
-	if (needsRecalc)
+	if (fNeedsRecalc)
 		[self recalculateDimensions];
-	for (int system = 0; system<numSystems; ++system) {
+	for (int system = 0; system<fNumSystems; ++system) {
 		float kLineY = [self systemY:system];
 		for (int line = 0; line<5; ++line) {
 			const float x0	= kLineX;
-			const float xx	= x0 + clefKeyW + measuresPerSystem*measureW;
+			const float xx	= x0 + fClefKeyW + fMeasPerSystem*fMeasureW;
 			const float y	= kLineY+line*kLineH;
 			[bz moveToPoint: NSMakePoint(x0, y)];
 			[bz lineToPoint: NSMakePoint(xx, y)];
@@ -242,10 +240,10 @@ static float sFlatPos[] = {
 	// Draw measure lines
 	//
 	[bz setLineWidth:2.0];
-	for (int system = 0; system<numSystems; ++system) {
+	for (int system = 0; system<fNumSystems; ++system) {
 		float kLineY = [self systemY:system];
-		for (int measure = 0; measure<=measuresPerSystem; ++measure) {
-			const float x	= clefKeyW+measure*measureW;
+		for (int measure = 0; measure<=fMeasPerSystem; ++measure) {
+			const float x	= fClefKeyW+measure*fMeasureW;
 			const float yy	= kLineY+4.0f*kLineH;
 			[bz moveToPoint: NSMakePoint(x, kLineY)];
 			[bz lineToPoint: NSMakePoint(x, yy)];
@@ -259,15 +257,15 @@ static float sFlatPos[] = {
 	//
 	[bz setLineWidth:0.0];
 	[[NSColor colorWithDeviceWhite:0.8f alpha:1.0f] set];
-	for (int system = 0; system<numSystems; ++system) {
+	for (int system = 0; system<fNumSystems; ++system) {
 		float kLineY = [self systemY:system];
-		for (int measure = 0; measure<measuresPerSystem; ++measure) {
-			const float mx	= clefKeyW+measure*measureW;
+		for (int measure = 0; measure<fMeasPerSystem; ++measure) {
+			const float mx	= fClefKeyW+measure*fMeasureW;
 			const float y0	= kLineY-2.0f*kLineH;
 			const float yy	= kLineY+6.0f*kLineH;
-			for (int group = 0; group < groups; ++group) {
-				for (int div = 0; div < divPerGroup; ++div) {
-					const float x = mx+(group*(divPerGroup+1)+div+1)*kNoteW;
+			for (int group = 0; group < fGroups; ++group) {
+				for (int div = 0; div < fDivPerGroup; ++div) {
+					const float x = mx+(group*(fDivPerGroup+1)+div+1)*kNoteW;
 					[bz moveToPoint: NSMakePoint(x, y0)];
 					[bz lineToPoint: NSMakePoint(x, yy)];
 				}
@@ -276,7 +274,7 @@ static float sFlatPos[] = {
 	}	
 	[bz stroke];
 
-	for (int system = 0; system<numSystems; ++system) {
+	for (int system = 0; system<fNumSystems; ++system) {
 		float kLineY = [self systemY:system];
 		//
 		// Draw clef
@@ -287,7 +285,7 @@ static float sFlatPos[] = {
 		//
 		// Draw measure #
 		//
-		[[NSString stringWithFormat:@"%d", system*measuresPerSystem+1]
+		[[NSString stringWithFormat:@"%d", system*fMeasPerSystem+1]
 			drawAtPoint: NSMakePoint(kMeasNoX, kLineY+kMeasNoY)
 			withAttributes: sMeasNoFont];
 		//
@@ -322,7 +320,7 @@ static float sFlatPos[] = {
 {
 	int key = [[sender selectedItem] tag];
 	[[self document] setKey: key transpose: YES];
-	needsRecalc = YES;
+	fNeedsRecalc = YES;
 	[self setNeedsDisplay: YES];
 }
 
@@ -331,7 +329,7 @@ static float sFlatPos[] = {
 	int time = [[sender selectedItem] tag];
 
 	[[self document] setTimeNum: time >> 8 denom: time & 0xFF];
-	needsRecalc = YES;
+	fNeedsRecalc = YES;
 	[self setNeedsDisplay: YES];	
 }
 
@@ -340,32 +338,24 @@ static float sFlatPos[] = {
 	int div = [[sender selectedItem] tag];
 
 	[[self document] setDivisions: div];
-	needsRecalc = YES;
-	[self setNeedsDisplay: YES];	
-}
-
-- (void) setFirstMeasure: (NSNumber *)measure
-{
-	firstMeasure = [measure intValue];
-
-	[self setupChords];
+	fNeedsRecalc = YES;
 	[self setNeedsDisplay: YES];	
 }
 
 - (IBAction)showFieldEditor:(id)sender withAction:(SEL)selector
 {
-	fieldBeingEdited = sender;
-	[fieldEditor setObjectValue:[sender title]];
-	[fieldEditor setAction:selector];
+	fFieldBeingEdited = sender;
+	[fFieldEditor setObjectValue:[sender title]];
+	[fFieldEditor setAction:selector];
 	[self setValue: [NSNumber numberWithBool:YES] 
-			  forKey: @"showFieldEditor"];
+			  forKey: @"fShowFieldEditor"];
 }
 
 - (IBAction)hideFieldEditor:(id)sender
 {
-	[fieldEditor setAction:nil];
+	[fFieldEditor setAction:nil];
 	[self setValue: [NSNumber numberWithBool:NO] 
-			  forKey: @"showFieldEditor"];
+			  forKey: @"fShowFieldEditor"];
 }
 
 @end

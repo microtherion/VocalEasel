@@ -37,16 +37,16 @@ static int sSemiToPitch[] = {
 	NSPoint loc 	= [event locationInWindow];
 	loc 			= [self convertPoint:loc fromView:nil];
 
-	loc.x	   	   -= noteRect.origin.x;
-	int measure 	= static_cast<int>(loc.x / measureW)+firstMeasure;
-	loc.x	   	   -= (measure-firstMeasure)*measureW;
-	int group	  	= static_cast<int>(loc.x / ((divPerGroup+1)*kNoteW));
-	loc.x		   -= group*(divPerGroup+1)*kNoteW;
+	loc.x	   	   -= fNoteRect.origin.x;
+	int measure 	= static_cast<int>(loc.x / fMeasureW);
+	loc.x	   	   -= measure*fMeasureW;
+	int group	  	= static_cast<int>(loc.x / ((fDivPerGroup+1)*kNoteW));
+	loc.x		   -= group*(fDivPerGroup+1)*kNoteW;
 	int div			= static_cast<int>(roundf(loc.x / kNoteW))-1;
-	div				= std::min(std::max(div, 0), divPerGroup-1);
-	VLFraction at(div+group*divPerGroup, 4*prop.fDivisions);
+	div				= std::min(std::max(div, 0), fDivPerGroup-1);
+	VLFraction at(div+group*fDivPerGroup, 4*prop.fDivisions);
 
-	loc.y		   -= noteRect.origin.y;
+	loc.y		   -= fNoteRect.origin.y;
 	int semi		= static_cast<int>(roundf(loc.y / (0.5f*kLineH)));
 	int pitch 		= sSemiToPitch[semi];
 
@@ -55,10 +55,10 @@ static int sSemiToPitch[] = {
 
 - (void) addNoteAtCursor:(BOOL)isRest
 {	
-	if (noteCursorMeasure > -1) {
-		VLNote	newNote(1, !isRest ? noteCursorPitch : VLNote::kNoPitch);
+	if (fNoteCursorMeasure > -1) {
+		VLNote	newNote(1, !isRest ? fNoteCursorPitch : VLNote::kNoPitch);
 
-		[self song]->AddNote(newNote, noteCursorMeasure, noteCursorAt);
+		[self song]->AddNote(newNote, fNoteCursorMeasure, fNoteCursorAt);
 
 		[self setNeedsDisplay:YES];
 
@@ -87,10 +87,10 @@ static int sSemiToPitch[] = {
 
 - (void) startKeyboardCursor
 {
-	if (noteCursorMeasure < 0) {
-		noteCursorMeasure	= firstMeasure;
-		noteCursorPitch		= VLNote::kMiddleC;
-		noteCursorAt		= VLFraction(0);
+	if (fNoteCursorMeasure < 0) {
+		fNoteCursorMeasure	= 0;
+		fNoteCursorPitch		= VLNote::kMiddleC;
+		fNoteCursorAt		= VLFraction(0);
 	}
 }
 
@@ -105,22 +105,22 @@ static int sSemiToPitch[] = {
 		break;
 	case ' ':
 		[self startKeyboardCursor];
-		VLSoundOut::Instance()->PlayNote(VLNote(1, noteCursorPitch));
+		VLSoundOut::Instance()->PlayNote(VLNote(1, fNoteCursorPitch));
 		break;
 	}
 }
 
 - (void) hideNoteCursor
 {
-	noteCursorMeasure = -1;
+	fNoteCursorMeasure = -1;
 	[self setNeedsDisplay:YES];
 }
 
 - (void) drawNoteCursor
 {
 	NSPoint note = 
-		NSMakePoint([self noteXInMeasure:noteCursorMeasure at:noteCursorAt],
-					[self noteYWithPitch:noteCursorPitch]);
+		NSMakePoint([self noteXInMeasure:fNoteCursorMeasure at:fNoteCursorAt],
+					[self noteYWithPitch:fNoteCursorPitch]);
 	NSRect 	noteCursorRect =
 		NSMakeRect(note.x-kNoteX, note.y-kNoteY, 2.0f*kNoteX, 2.0f*kNoteY);
 	[[self musicElement:kMusicNoteCursor] 
@@ -191,22 +191,22 @@ static int sSemiToPitch[] = {
 	//
 	if (tied) {
 		NSPoint mid = 
-			NSMakePoint(0.5f*(lastNoteCenter.x+c.x),
-						0.5f*(lastNoteCenter.y+c.y));
+			NSMakePoint(0.5f*(fLastNoteCenter.x+c.x),
+						0.5f*(fLastNoteCenter.y+c.y));
 		NSPoint dir = NSMakePoint(c.y-mid.y, c.x-mid.x);
 		float   n   = dir.x*dir.x+dir.y*dir.y;
 		float 	r	= (kTieDepth*kTieDepth+n) / (2.0f*kTieDepth);
 		float   l	= (r-kTieDepth) / sqrtf(n);
 		mid.x      += dir.x*l;
 		mid.y      += dir.y*l;
-		float a1	= atan2(lastNoteCenter.y-mid.y, lastNoteCenter.x-mid.x);
+		float a1	= atan2(fLastNoteCenter.y-mid.y, fLastNoteCenter.x-mid.x);
 		float a2	= atan2(c.y-mid.y, c.x-mid.x);
 		NSBezierPath * bz = [NSBezierPath bezierPath];		
 		[bz appendBezierPathWithArcWithCenter:mid radius:r
 			startAngle:a1*180.0f/M_PI endAngle:a2*180.0f/M_PI];
 		[bz stroke];
 	}
-	lastNoteCenter	= c;
+	fLastNoteCenter	= c;
 }
 
 - (void) drawRest:(VLFraction)dur at:(NSPoint)p
@@ -253,10 +253,10 @@ static int sSemiToPitch[] = {
 	VLFraction				swung(3, prop.fDivisions*8, true);	// Which notes to swing
 	VLFraction				swingGrid(2*swung);					// Alignment of swing notes
 
-	for (int system = 0; system<numSystems; ++system) {
+	for (int system = 0; system<fNumSystems; ++system) {
 		float kLineY = [self systemY:system];
-		for (int m = 0; m<measuresPerSystem; ++m) {
-			int 				measIdx = m+system*measuresPerSystem;
+		for (int m = 0; m<fMeasPerSystem; ++m) {
+			int	measIdx = m+system*fMeasPerSystem;
 			if (measIdx >= song->CountMeasures())
 				break;
 			const VLMeasure		measure = song->fMeasures[measIdx];
@@ -311,18 +311,18 @@ static int sSemiToPitch[] = {
 			}
 		}
 	}
-	if (noteCursorMeasure > -1)
+	if (fNoteCursorMeasure > -1)
 		[self drawNoteCursor];
 }
 
 - (void) setNoteCursorMeasure:(int)measure at:(VLFraction)at pitch:(int)pitch
 {
-	if (measure != noteCursorMeasure || at != noteCursorAt
-	 || pitch != noteCursorPitch
+	if (measure != fNoteCursorMeasure || at != fNoteCursorAt
+	 || pitch != fNoteCursorPitch
 	) {
-		noteCursorMeasure 	= measure;
-		noteCursorAt	  	= at;
-		noteCursorPitch		= pitch;
+		fNoteCursorMeasure 	= measure;
+		fNoteCursorAt	  	= at;
+		fNoteCursorPitch	= pitch;
 
 		[self setNeedsDisplay:YES];
 	}
