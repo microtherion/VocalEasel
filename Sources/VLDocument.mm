@@ -8,6 +8,24 @@
 
 #import "VLDocument.h"
 
+@implementation VLEditable
+
+- (NSString *) stringValue
+{
+	return @"";
+}
+
+- (void) setStringValue:(NSString*)val
+{
+}
+
+- (BOOL) validValue:(NSString*)val
+{
+	return YES;
+}
+
+@end
+
 @implementation VLDocument
 
 - (id)init
@@ -18,7 +36,8 @@
         // Add your subclass-specific initialization here.
         // If an error occurs here, send a [self release] message and return nil.
     
-		song = new VLSong;
+		song 		= new VLSong;
+		editTarget	= nil;
     }
     return self;
 }

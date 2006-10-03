@@ -12,10 +12,49 @@
 
 #import "VLModel.h"
 #import "VLSoundOut.h"
+#import "VLDocument.h"
 
-@implementation VLSheetView (Chords)
+std::string NormalizeName(NSString* rawName)
+{
+	std::string chordName =
+		(const char *)[[rawName lowercaseString] UTF8String];
+	//
+	// Normalize # and b
+	//
+	for (;;) {
+		size_t found;
 
-- (NSAttributedString *) attributedStringWithCppString:(const std::string &)s
+		found = chordName.find("\xE2\x99\xAF", 0, 3);
+		if (found != std::string::npos) {
+			chordName.replace(found, 3, 1, '#');
+			continue;
+		}
+		found = chordName.find("\xE2\x99\xAD", 0, 3);
+		if (found != std::string::npos) {
+			chordName.replace(found, 3, 1, 'b');
+			continue;
+		} 
+		found = chordName.find(" ", 0, 1);
+		if (found != std::string::npos) {
+			chordName.erase(found);
+			continue;
+		} 		
+		break;
+	}
+
+	return chordName;
+}
+
+@interface NSAttributedString (Chords) 
+
++ (NSAttributedString *) attributedStringWithCppString:(const std::string &)s
+											attributes:(NSDictionary *)a;
+
+@end
+
+@implementation NSAttributedString (Chords)
+
++ (NSAttributedString *) attributedStringWithCppString:(const std::string &)s
 											attributes:(NSDictionary *)a
 {
 	return [[[NSAttributedString alloc]
@@ -23,6 +62,98 @@
 				attributes: a]
 			   autorelease];
 }
+
+@end
+
+@interface VLChordEditable : VLEditable {
+	NSView *	fView;
+	VLSong *	fSong;
+	int			fMeasure;
+	VLFract		fAt;
+}
+
+- (VLChordEditable *)initWithView:(NSView *)view
+							 song:(VLSong *)song 
+						  measure:(int)measure
+							   at:(VLFract)at;
+- (NSString *) stringValue;
+- (void) setStringValue:(NSString*)val;
+- (BOOL) validValue:(NSString*)val;
+
+@end
+
+@implementation VLChordEditable
+
+- (VLChordEditable *)initWithView:(NSView *)view
+							 song:(VLSong *)song 
+						  measure:(int)measure
+							   at:(VLFract)at;
+{
+	self 	= [super init];
+	fView	= view;
+	fSong	= song;
+	fMeasure= measure;
+	fAt		= at;
+	
+	return self;
+}
+
+- (NSString *) stringValue
+{
+	const VLMeasure		measure = fSong->fMeasures[fMeasure];
+	const VLChordList &	chords	= measure.fChords;
+	VLFraction at(0);
+	for (VLChordList::const_iterator chord = chords.begin();
+		 chord != chords.end() && at <= fAt;
+		 ++chord
+	) {
+		if (at == fAt && chord->fPitch != VLNote::kNoPitch) {
+			//
+			// Found it!
+			//
+			const VLProperties & 	prop	= fSong->fProperties.front();
+			std::string name, ext, root;
+			chord->Name(name, ext, root, prop.fKey > 0);
+			
+			return [NSString stringWithFormat:@"%s%s%s",
+							 name.c_str(), ext.c_str(),
+							 root.size() ? ("/"+root).c_str() : ""];
+		}
+		at += chord->fDuration;
+	}
+	return @"";
+}
+
+- (void) setStringValue:(NSString *)val
+{
+	std::string	chordName	= NormalizeName(val);
+	if (!chordName.size()) {
+		fSong->DelChord(fMeasure, fAt);
+	} else {
+		VLChord 	chord(chordName);
+		VLSoundOut::Instance()->PlayChord(chord);
+		fSong->AddChord(chord, fMeasure, fAt);
+		[fView setNeedsDisplay:YES];
+	}
+}
+
+- (BOOL) validValue:(NSString *)val
+{
+	std::string	chordName	= NormalizeName(val);
+	if (!chordName.size())
+		return YES;
+
+	//
+	// Check for valid chord
+	//
+	VLChord 	chord(chordName);
+	
+	return chord.fPitch != VLNote::kNoPitch;
+}
+
+@end
+
+@implementation VLSheetView (Chords)
 
 - (NSAttributedString *) stringWithChord:(const VLChord &)chord
 {
@@ -53,14 +184,14 @@
 	NSMutableAttributedString * s =
 		[[[NSMutableAttributedString alloc] init] autorelease];
 	[s appendAttributedString: 
-		   [self attributedStringWithCppString: name
+		   [NSAttributedString attributedStringWithCppString: name
 				 attributes: sBigFont]];
 	[s appendAttributedString:
-		   [self attributedStringWithCppString: ext.size() ? ext : " "
+		   [NSAttributedString attributedStringWithCppString: ext.size() ? ext : " "
 				 attributes: sSuperFont]];
 	if (root.size())
 		[s appendAttributedString:
-			   [self attributedStringWithCppString: "/" + root
+			   [NSAttributedString attributedStringWithCppString: "/" + root
 					 attributes: sBigFont]];
 
 	return s;
@@ -68,7 +199,8 @@
 
 - (void) drawChordsForSystem:(int)system
 {
-	const VLSong *			song 		= [self song];
+	const VLSong * 	song 		= [self song];
+	const float 	kSystemY	= [self systemY:system];
 	
 	//
 	// Build new list
@@ -86,69 +218,25 @@
 		) {
 			NSAttributedString * chordName 	= [self stringWithChord:*chord];
 			NSPoint				 chordLoc  	=
-				NSMakePoint(kClefX+kClefW+(m+at)*fMeasureW+0.5f*kNoteW, 
+				NSMakePoint(fClefKeyW+(m+at)*fMeasureW+0.5f*kNoteW, 
 							kSystemY+kChordY);
 			[chordName drawAtPoint:chordLoc];
+			at += chord->fDuration;
 		}
 	}
 }
 
-- (IBAction) editChord:(id)sender
+- (void) editChord
 {
-	[self showFieldEditor:sender withAction:@selector(doneEditingChord:)];
-}
-
-- (IBAction) doneEditingChord:(id)sender
-{
-	VLSong * 				song = [self song];
-
-	std::string chordName =
-		(const char *)[[[sender stringValue] lowercaseString] UTF8String];
-	//
-	// Normalize # and b
-	//
-	for (;;) {
-		size_t found;
-
-		found = chordName.find("\xE2\x99\xAF", 0, 3);
-		if (found != std::string::npos) {
-			chordName.replace(found, 3, 1, '#');
-			continue;
-		}
-		found = chordName.find("\xE2\x99\xAD", 0, 3);
-		if (found != std::string::npos) {
-			chordName.replace(found, 3, 1, 'b');
-			continue;
-		} 
-		found = chordName.find(" ", 0, 1);
-		if (found != std::string::npos) {
-			chordName.erase(found);
-			continue;
-		} 		
-		break;
-	}
-	//
-	// Check for valid chord
-	//
-	VLChord chord(chordName);
-	if (!chordName.size()) {
-		[sender setTextColor: [NSColor blackColor]];
-	} else if (chord.fPitch == VLChord::kNoPitch) {
-		if (chordName.size()) {
-			NSBeep();
-			[sender setTextColor: [NSColor redColor]];
-		}
-		int tag = [sender tag];
-		song->DelChord(tag >> 8, VLFraction(tag & 0xFF, 4));
-	} else {
-		NSAttributedString * s =  [self stringWithChord:chord];
-		[sender setAttributedStringValue: s];
-		[fFieldBeingEdited setTitle: s];
-		[sender setTextColor: [NSColor blackColor]];
-		VLSoundOut::Instance()->PlayChord(chord);
-		int tag = [fFieldBeingEdited tag];
-		song->AddChord(chord, tag >> 8, VLFraction(tag & 0xFF, 4));
-	}
+	VLDocument * doc= [self document];
+	VLEditable * e	= 
+		[[VLChordEditable alloc]
+			initWithView:self
+			song:[self song]
+			measure:fCursorMeasure
+			at:fCursorAt];
+	[doc setValue:e forKey:@"editTarget"];
+	[self setValue:[NSNumber numberWithBool:YES] forKey:@"fShowFieldEditor"];
 }
 
 @end

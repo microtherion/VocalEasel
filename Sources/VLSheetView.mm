@@ -346,15 +346,6 @@ static float sFlatPos[] = {
 	[self setNeedsDisplay: YES];	
 }
 
-- (IBAction)showFieldEditor:(id)sender withAction:(SEL)selector
-{
-	fFieldBeingEdited = sender;
-	[fFieldEditor setObjectValue:[sender title]];
-	[fFieldEditor setAction:selector];
-	[self setValue: [NSNumber numberWithBool:YES] 
-			  forKey: @"fShowFieldEditor"];
-}
-
 - (IBAction)hideFieldEditor:(id)sender
 {
 	[fFieldEditor setAction:nil];
@@ -386,14 +377,14 @@ static int sSemiToPitch[] = {
 	loc 			= [self convertPoint:loc fromView:nil];
 
 	if (loc.y < 0.0f || loc.y >= fNumSystems*kSystemH)
-		return kRegionNowhere;
+		return fCursorRegion = kRegionNowhere;
 
 	int system = fNumSystems - static_cast<int>(loc.y / kSystemH) - 1;
 	loc.y      = fmodf(loc.y, kSystemH);
 
 	loc.x -= fClefKeyW;
 	if (loc.x < 0.0f || loc.x >= fMeasPerSystem*fMeasureW)
-		return kRegionNowhere;
+		return fCursorRegion = kRegionNowhere;
 	
 	int measure 	= static_cast<int>(loc.x / fMeasureW);
 	loc.x	   	   -= measure*fMeasureW;
@@ -404,16 +395,25 @@ static int sSemiToPitch[] = {
 	fCursorAt 		= VLFraction(div+group*fDivPerGroup, 4*prop.fDivisions);
 	fCursorMeasure	= measure+system*fMeasPerSystem;
 
-	if (loc.y >= kSystemY+kChordY)
-		return kRegionChord;
-	else if (loc.y < kSystemY+kLyricsY)
-		return kRegionLyrics;
+	if (fCursorMeasure > [self song]->fMeasures.size())
+		return fCursorRegion = kRegionNowhere;
+		
+	if (loc.y >= kSystemY+kChordY) {
+		//
+		// Chord, round to quarters
+		//
+		int scale = fCursorAt.fDenom / 4;
+		fCursorAt = VLFraction(fCursorAt.fNum / scale, 4);
+		return fCursorRegion = kRegionChord;
+	} else if (loc.y < kSystemY+kLyricsY) {
+		return fCursorRegion = kRegionLyrics;
+	}
 
 	loc.y		   -= kSystemY+kSemiFloor;
 	int semi		= static_cast<int>(roundf(loc.y / (0.5f*kLineH)));
 	fCursorPitch	= sSemiToPitch[semi];
 
-	return kRegionNote;
+	return fCursorRegion = kRegionNote;
 }
 
 - (void) mouseMoved:(NSEvent *)event
@@ -446,6 +446,9 @@ static int sSemiToPitch[] = {
 	case kRegionNote:
 		[self addNoteAtCursor];
 		break;
+	case kRegionChord:
+		[self editChord];
+		break;
 	default:
 		break;
 	}
@@ -468,6 +471,13 @@ static int sSemiToPitch[] = {
 		fIsRest = !fIsRest;
 		break;
 	}
+}
+
+- (BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor
+{
+	VLDocument * doc      = [self document];
+	VLEditable * editable = [[self document] valueForKey: @"editTarget"];
+	return [editable validValue:[fFieldEditor stringValue]];
 }
 
 @end

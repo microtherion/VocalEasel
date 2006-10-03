@@ -8,9 +8,7 @@
 
 @interface VLSheetView (Chords)
 
-- (IBAction) editChord:(id)sender;
-- (IBAction) doneEditingChord:(id)sender;
-
+- (void) editChord;
 - (void) drawChordsForSystem:(int)system;
 
 @end
