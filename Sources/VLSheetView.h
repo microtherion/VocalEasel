@@ -40,8 +40,14 @@ enum VLRegion {
 	kRegionLyrics
 };
 
+enum VLRecalc {
+	kNoRecalc,
+	kRecalc,
+	kFirstRecalc
+};
+
 @interface VLSheetView : NSView {
-	BOOL				fNeedsRecalc;
+	VLRecalc			fNeedsRecalc;
 	BOOL				fIsRest;
 	float				fClefKeyW;
 	float				fMeasureW;
@@ -58,7 +64,6 @@ enum VLRegion {
 	VLFract 			fCursorAt;
 	int					fCursorPitch;
 
-	BOOL				fShowFieldEditor;
 	IBOutlet id			fFieldEditor;
 }
 

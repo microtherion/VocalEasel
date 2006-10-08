@@ -12,12 +12,11 @@
 
 #import "VLModel.h"
 #import "VLSoundOut.h"
-#import "VLDocument.h"
 
 std::string NormalizeName(NSString* rawName)
 {
 	std::string chordName =
-		(const char *)[[rawName lowercaseString] UTF8String];
+		rawName ? (const char *)[[rawName lowercaseString] UTF8String] : "";
 	//
 	// Normalize # and b
 	//
@@ -65,26 +64,9 @@ std::string NormalizeName(NSString* rawName)
 
 @end
 
-@interface VLChordEditable : VLEditable {
-	NSView *	fView;
-	VLSong *	fSong;
-	int			fMeasure;
-	VLFract		fAt;
-}
-
-- (VLChordEditable *)initWithView:(NSView *)view
-							 song:(VLSong *)song 
-						  measure:(int)measure
-							   at:(VLFract)at;
-- (NSString *) stringValue;
-- (void) setStringValue:(NSString*)val;
-- (BOOL) validValue:(NSString*)val;
-
-@end
-
 @implementation VLChordEditable
 
-- (VLChordEditable *)initWithView:(NSView *)view
+- (VLChordEditable *)initWithView:(VLSheetView *)view
 							 song:(VLSong *)song 
 						  measure:(int)measure
 							   at:(VLFract)at;
@@ -94,6 +76,8 @@ std::string NormalizeName(NSString* rawName)
 	fSong	= song;
 	fMeasure= measure;
 	fAt		= at;
+	
+	[fView setNeedsDisplay: YES];
 	
 	return self;
 }
@@ -149,6 +133,33 @@ std::string NormalizeName(NSString* rawName)
 	VLChord 	chord(chordName);
 	
 	return chord.fPitch != VLNote::kNoPitch;
+}
+
+- (void) moveToNext
+{	
+	const VLProperties & prop = fSong->fProperties.front();
+
+	fAt = fAt+VLFraction(1,4);
+	if (fAt >= prop.fTime) {
+		fAt 		= VLFraction(0,4);
+		fMeasure 	= (fMeasure+1) % fSong->CountMeasures();
+	}
+}
+
+- (void) moveToPrev
+{
+	if (fAt < VLFraction(1,4)) {
+		const VLProperties & prop = fSong->fProperties.front();
+		fAt 		= prop.fTime - VLFraction(1,4);
+		fMeasure  	= 
+			(fMeasure+fSong->CountMeasures()-1) % fSong->CountMeasures();
+	} else
+		fAt = fAt-VLFraction(1,4);
+}
+
+- (void) highlightCursor
+{
+	[fView highlightChordInMeasure:fMeasure at:fAt];
 }
 
 @end
@@ -236,7 +247,17 @@ std::string NormalizeName(NSString* rawName)
 			measure:fCursorMeasure
 			at:fCursorAt];
 	[doc setValue:e forKey:@"editTarget"];
-	[self setValue:[NSNumber numberWithBool:YES] forKey:@"fShowFieldEditor"];
+	[fFieldEditor selectText:self];
+}
+
+- (void) highlightChordInMeasure:(int)measure at:(VLFraction)at
+{
+	const float 	kSystemY	= [self systemY:measure / fMeasPerSystem];
+	NSRect 			r 			=
+		NSMakeRect([self noteXInMeasure:measure at:at],
+				   kSystemY+kChordY, 3.0f*kNoteW, 20.0f);
+	[[NSColor colorWithCalibratedWhite:0.8f alpha:1.0f] setFill];
+	NSRectFillUsingOperation(r, NSCompositePlusDarker);
 }
 
 @end

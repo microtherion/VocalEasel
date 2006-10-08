@@ -16,6 +16,9 @@
 - (NSString *) stringValue;
 - (void) setStringValue:(NSString*)val;
 - (BOOL) validValue:(NSString*)val;
+- (void) moveToNext;
+- (void) moveToPrev;
+- (void) highlightCursor;
 
 @end
 

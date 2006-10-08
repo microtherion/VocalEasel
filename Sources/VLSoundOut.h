@@ -9,9 +9,26 @@
 
 #include "VLModel.h"
 
+class VLSoundEvent {
+protected:
+	VLSoundEvent() {}
+public:
+	virtual ~VLSoundEvent();
+
+	virtual void Perform() {}
+};
+
+class VLSoundScheduler {
+public:
+	virtual void Schedule(VLSoundEvent * what, float when);
+	
+	virtual ~VLSoundScheduler() {}
+};
+
 class VLSoundOut {
 public:
 	static VLSoundOut * Instance();
+	static void SetScheduler(VLSoundScheduler * scheduler);
 
 	virtual void PlayNote(const VLNote & note) = 0;
 	virtual void PlayChord(const VLChord & chord) = 0; 

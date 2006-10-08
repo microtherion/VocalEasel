@@ -42,16 +42,64 @@ private:
 	void		Run();
 	void		Stop();
 	void 		Play(const int8_t * note, size_t numNotes = 1);
+protected:
+	friend class VLAUSoundEvent;
+
+	void 		Play(const int8_t * note, size_t numNotes, 
+					 UInt32 msg, UInt32 velocity);
 };
 
-static std::auto_ptr<VLSoundOut>	sSoundOut;
+VLSoundEvent::~VLSoundEvent()
+{
+}
+
+class VLAUSoundEvent : public VLSoundEvent {
+public:
+	VLAUSoundEvent(VLAUSoundOut * soundOut,
+				   const int8_t * note, size_t numNotes,
+				   UInt32 msg, UInt32 velocity)
+	  : fSoundOut(soundOut), fNotes(note, note+numNotes), 
+		fMsg(msg), fVelocity(velocity)
+	{}
+
+	virtual void Perform();
+private:
+	VLAUSoundOut *		fSoundOut;
+	std::vector<int8_t>	fNotes;
+	UInt32				fMsg;
+	UInt32				fVelocity;
+};
+
+void VLAUSoundEvent::Perform()
+{
+	fSoundOut->Play(&fNotes[0], fNotes.size(), fMsg, fVelocity);
+
+	delete this;
+}
+
+void VLSoundScheduler::Schedule(VLSoundEvent * what, float when)
+{
+	usleep((int)(1000000.0f*when));
+	what->Perform();
+}
+
+static std::auto_ptr<VLSoundOut>		sSoundOut;
+static std::auto_ptr<VLSoundScheduler>	sSoundScheduler;
 
 VLSoundOut * VLSoundOut::Instance()
 {
-	if (!sSoundOut.get())
+	if (!sSoundOut.get()) {
 		sSoundOut.reset(new VLAUSoundOut);
+		if (!sSoundScheduler.get())
+			sSoundScheduler.reset(new VLSoundScheduler);
+	}
 
 	return sSoundOut.get();
+}
+
+void VLSoundOut::SetScheduler(VLSoundScheduler * scheduler)
+{
+	sSoundScheduler.reset(scheduler);
 }
 
 VLSoundOut::~VLSoundOut()
@@ -149,11 +197,14 @@ void VLAUSoundOut::Play(const int8_t * note, size_t numNotes)
 	const UInt32 kNoteOff = kMidiMessage_NoteOff << 4 | kMidiChannelInUse;
 	const UInt32 kNoteVelocity= 127;
 
-	for (size_t i = 0; i<numNotes; ++i) 
-		MusicDeviceMIDIEvent(fSynth, kNoteOn, note[i], kNoteVelocity, 0);
+	Play(note, numNotes, kNoteOn, kNoteVelocity);
+	sSoundScheduler.get()->Schedule(
+		new VLAUSoundEvent(this, note, numNotes, kNoteOff, kNoteVelocity), 0.5f);
+}
 
-	usleep (500 * 1000);
-
+void VLAUSoundOut::Play(const int8_t * note, size_t numNotes, 
+						UInt32 msg, UInt32 velocity)
+{
 	for (size_t i = 0; i<numNotes; ++i)
-		MusicDeviceMIDIEvent(fSynth, kNoteOff, note[i], kNoteVelocity, 0);
+		MusicDeviceMIDIEvent(fSynth, msg, note[i], velocity, 0);	
 }

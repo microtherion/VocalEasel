@@ -31,6 +31,7 @@
 		95B3E1A70960E58B000E9C0D /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 95B3E1980960E58B000E9C0D /* Music */; };
 		95B66658096BCA1F00FE18C9 /* VLSheetViewNotes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */; };
 		95BDA15909540BF1009F9D65 /* VLSheetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */; };
+		95D44D1F0AD8BFEF00384FE5 /* VLSoundSched.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95D44D1E0AD8BFEF00384FE5 /* VLSoundSched.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,8 @@
 		95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetViewNotes.mm; path = Sources/VLSheetViewNotes.mm; sourceTree = "<group>"; };
 		95BDA15709540BF1009F9D65 /* VLSheetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSheetView.h; path = Sources/VLSheetView.h; sourceTree = "<group>"; };
 		95BDA15809540BF1009F9D65 /* VLSheetView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetView.mm; path = Sources/VLSheetView.mm; sourceTree = "<group>"; };
+		95D44D1D0AD8BFEF00384FE5 /* VLSoundSched.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSoundSched.h; path = Sources/VLSoundSched.h; sourceTree = "<group>"; };
+		95D44D1E0AD8BFEF00384FE5 /* VLSoundSched.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSoundSched.mm; path = Sources/VLSoundSched.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +170,8 @@
 				952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */,
 				95B66656096BCA1F00FE18C9 /* VLSheetViewNotes.h */,
 				95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */,
+				95D44D1D0AD8BFEF00384FE5 /* VLSoundSched.h */,
+				95D44D1E0AD8BFEF00384FE5 /* VLSoundSched.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -329,6 +334,7 @@
 				952CBB9D095FD1CA00434E43 /* VLSoundOut.cpp in Sources */,
 				952DCD78096BBB11001C2316 /* VLSheetViewChords.mm in Sources */,
 				95B66658096BCA1F00FE18C9 /* VLSheetViewNotes.mm in Sources */,
+				95D44D1F0AD8BFEF00384FE5 /* VLSoundSched.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,7 +453,7 @@
 				GCC_PREFIX_HEADER = Sources/Vocalese_Prefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				PREBINDING = NO;
 				PRODUCT_NAME = Vocalese;

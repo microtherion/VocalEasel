@@ -79,13 +79,17 @@ static float sFlatPos[] = {
 				[sMusic[i] setSize:sz];
 			}
 		}
-		fNeedsRecalc		= YES;
+		fNeedsRecalc		= kFirstRecalc;
 		fIsRest				= NO;
-		fShowFieldEditor	= NO;
 		fDisplayScale		= 1.0f;
 		fCursorPitch		= VLNote::kNoPitch;
 	}
     return self;
+}
+
+- (BOOL)acceptsFirstResponder
+{
+	return YES;
 }
 
 - (VLDocument *) document
@@ -167,7 +171,6 @@ static float sFlatPos[] = {
 - (void) recalculateDimensions 
 {
 	NSScrollView * scroll = [self enclosingScrollView];
-	fNeedsRecalc	= NO;	
 
 	NSSize sz 	=  [scroll contentSize];
 	sz.width   /=	fDisplayScale;
@@ -202,6 +205,16 @@ static float sFlatPos[] = {
 	[self setFrameSize:frameSz];
 	[self setBoundsSize:sz];
 	[self setNeedsDisplay:YES];
+
+	if (fNeedsRecalc == kFirstRecalc) {
+		NSView *dv = [scroll documentView];
+		NSView *cv = [scroll contentView];
+ 
+		[dv scrollPoint:
+			NSMakePoint(0.0, NSMaxY([dv frame])-NSHeight([cv bounds]))];
+	}
+
+	fNeedsRecalc	= kNoRecalc;	
 }
 
 - (void)drawGridForSystem:(int)system
@@ -317,15 +330,16 @@ static float sFlatPos[] = {
 		[self drawGridForSystem:system];
 		[self drawNotesForSystem:system];
 		[self drawChordsForSystem:system];
-	}
+	}	
+	VLEditable * editable = [[self document] valueForKey: @"editTarget"];
+	[editable highlightCursor];
 }
 
 - (IBAction) setKey:(id)sender
 {
 	int key = [[sender selectedItem] tag];
 	[[self document] setKey: key transpose: YES];
-	fNeedsRecalc = YES;
-	[self setNeedsDisplay: YES];
+	fNeedsRecalc = kRecalc;
 }
 
 - (IBAction) setTime:(id)sender
@@ -333,7 +347,7 @@ static float sFlatPos[] = {
 	int time = [[sender selectedItem] tag];
 
 	[[self document] setTimeNum: time >> 8 denom: time & 0xFF];
-	fNeedsRecalc = YES;
+	fNeedsRecalc = kRecalc;
 	[self setNeedsDisplay: YES];	
 }
 
@@ -342,15 +356,13 @@ static float sFlatPos[] = {
 	int div = [[sender selectedItem] tag];
 
 	[[self document] setDivisions: div];
-	fNeedsRecalc = YES;
+	fNeedsRecalc = kRecalc;
 	[self setNeedsDisplay: YES];	
 }
 
 - (IBAction)hideFieldEditor:(id)sender
 {
 	[fFieldEditor setAction:nil];
-	[self setValue: [NSNumber numberWithBool:NO] 
-			  forKey: @"fShowFieldEditor"];
 }
 
 const float kSemiFloor = -2.5f*kLineH;
@@ -478,6 +490,28 @@ static int sSemiToPitch[] = {
 	VLDocument * doc      = [self document];
 	VLEditable * editable = [[self document] valueForKey: @"editTarget"];
 	return [editable validValue:[fFieldEditor stringValue]];
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)note
+{
+	VLEditable * editable = [[self document] valueForKey: @"editTarget"];
+	switch ([[[note userInfo] objectForKey:@"NSTextMovement"] intValue]) {
+	case NSTabTextMovement:
+		[editable moveToNext];
+		break;
+	case NSBacktabTextMovement:
+		[editable moveToPrev];
+		break;
+	default:
+		[editable autorelease];
+		editable = nil;
+	}
+	[[self document] setValue:editable forKey: @"editTarget"];
+	if (editable) 
+		[fFieldEditor selectText:self];
+    [[self window] performSelectorOnMainThread:@selector(makeFirstResponder:)
+				   withObject:(editable ? fFieldEditor : self)
+				   waitUntilDone:NO];
 }
 
 @end

@@ -24,6 +24,18 @@
 	return YES;
 }
 
+- (void) moveToNext
+{
+}
+
+- (void) moveToPrev
+{
+}
+
+- (void) highlightCursor
+{
+}
+
 @end
 
 @implementation VLDocument

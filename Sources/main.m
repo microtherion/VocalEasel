@@ -7,8 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "VLSoundSched.h"
 
 int main(int argc, char *argv[])
 {
+	[VLSoundSched setup];
     return NSApplicationMain(argc, (const char **) argv);
 }
