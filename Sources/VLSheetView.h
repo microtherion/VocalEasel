@@ -81,6 +81,8 @@ enum VLRecalc {
 - (float) noteYInMeasure:(int)measure withPitch:(int)pitch;
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at;
 
+- (void) scrollMeasureToVisible:(int)measure;
+
 - (void) mouseMoved:(NSEvent *)event;
 - (void) mouseDown:(NSEvent *)event;
 - (void) mouseEntered:(NSEvent *)event;

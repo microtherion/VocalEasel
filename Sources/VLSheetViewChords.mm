@@ -143,6 +143,7 @@ std::string NormalizeName(NSString* rawName)
 	if (fAt >= prop.fTime) {
 		fAt 		= VLFraction(0,4);
 		fMeasure 	= (fMeasure+1) % fSong->CountMeasures();
+		[fView scrollMeasureToVisible:fMeasure];
 	}
 }
 
@@ -153,6 +154,7 @@ std::string NormalizeName(NSString* rawName)
 		fAt 		= prop.fTime - VLFraction(1,4);
 		fMeasure  	= 
 			(fMeasure+fSong->CountMeasures()-1) % fSong->CountMeasures();
+		[fView scrollMeasureToVisible:fMeasure];
 	} else
 		fAt = fAt-VLFraction(1,4);
 }
@@ -252,10 +254,11 @@ std::string NormalizeName(NSString* rawName)
 
 - (void) highlightChordInMeasure:(int)measure at:(VLFraction)at
 {
-	const float 	kSystemY	= [self systemY:measure / fMeasPerSystem];
-	NSRect 			r 			=
-		NSMakeRect([self noteXInMeasure:measure at:at],
-				   kSystemY+kChordY, 3.0f*kNoteW, 20.0f);
+	const VLProperties & 	prop = [self song]->fProperties.front();
+	const float 	   	kSystemY = [self systemY:measure / fMeasPerSystem];
+	NSRect 				r 	   	 =
+		NSMakeRect([self noteXInMeasure:measure at:at]-kNoteW*0.5f,
+				   kSystemY+kChordY, prop.fDivisions*kNoteW, kChordH);
 	[[NSColor colorWithCalibratedWhite:0.8f alpha:1.0f] setFill];
 	NSRectFillUsingOperation(r, NSCompositePlusDarker);
 }

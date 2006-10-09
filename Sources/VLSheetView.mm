@@ -162,10 +162,18 @@ static float sFlatPos[] = {
 	const VLProperties & prop	= [self song]->fProperties.front();
 	const float mx				= fClefKeyW+(measure%fMeasPerSystem)*fMeasureW;
 
-	at 		/= prop.fTime / (4 * prop.fDivisions);
+	at 		*= 4 * prop.fDivisions;
 	int div	=  at.fNum / at.fDenom;
 
 	return mx + (div + (div / fDivPerGroup) + 1)*kNoteW;
+}
+
+- (void) scrollMeasureToVisible:(int)measure
+{
+	NSRect r = NSMakeRect(fClefKeyW+(measure%fMeasPerSystem)*fMeasureW,
+						  [self systemY:measure/fMeasPerSystem]-kSystemY,
+						  fMeasureW, kSystemH);
+	[self scrollRectToVisible:r];
 }
 
 - (void) recalculateDimensions 
@@ -512,6 +520,7 @@ static int sSemiToPitch[] = {
     [[self window] performSelectorOnMainThread:@selector(makeFirstResponder:)
 				   withObject:(editable ? fFieldEditor : self)
 				   waitUntilDone:NO];
+	[self setNeedsDisplay: YES];
 }
 
 @end
