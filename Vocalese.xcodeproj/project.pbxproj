@@ -32,6 +32,8 @@
 		95B66658096BCA1F00FE18C9 /* VLSheetViewNotes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */; };
 		95BDA15909540BF1009F9D65 /* VLSheetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */; };
 		95D44D1F0AD8BFEF00384FE5 /* VLSoundSched.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95D44D1E0AD8BFEF00384FE5 /* VLSoundSched.mm */; };
+		95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
+		95F5F5340ADCCFBB003980B2 /* DTD in Resources */ = {isa = PBXBuildFile; fileRef = 95F5F51E0ADCCFBB003980B2 /* DTD */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +73,9 @@
 		95BDA15809540BF1009F9D65 /* VLSheetView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetView.mm; path = Sources/VLSheetView.mm; sourceTree = "<group>"; };
 		95D44D1D0AD8BFEF00384FE5 /* VLSoundSched.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSoundSched.h; path = Sources/VLSoundSched.h; sourceTree = "<group>"; };
 		95D44D1E0AD8BFEF00384FE5 /* VLSoundSched.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSoundSched.mm; path = Sources/VLSoundSched.mm; sourceTree = "<group>"; };
+		95F5F50D0ADCC433003980B2 /* VLXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLXMLDocument.h; path = Sources/VLXMLDocument.h; sourceTree = "<group>"; };
+		95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLXMLDocument.mm; path = Sources/VLXMLDocument.mm; sourceTree = "<group>"; };
+		95F5F51E0ADCCFBB003980B2 /* DTD */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DTD; path = Resources/DTD; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +177,8 @@
 				95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */,
 				95D44D1D0AD8BFEF00384FE5 /* VLSoundSched.h */,
 				95D44D1E0AD8BFEF00384FE5 /* VLSoundSched.mm */,
+				95F5F50D0ADCC433003980B2 /* VLXMLDocument.h */,
+				95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -188,6 +195,7 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				95F5F51E0ADCCFBB003980B2 /* DTD */,
 				95B3E1980960E58B000E9C0D /* Music */,
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
 				2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */,
@@ -317,6 +325,7 @@
 				8D15AC2E0486D014006FF6A4 /* VLDocument.nib in Resources */,
 				8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */,
 				95B3E1A70960E58B000E9C0D /* Music in Resources */,
+				95F5F5340ADCCFBB003980B2 /* DTD in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +344,7 @@
 				952DCD78096BBB11001C2316 /* VLSheetViewChords.mm in Sources */,
 				95B66658096BCA1F00FE18C9 /* VLSheetViewNotes.mm in Sources */,
 				95D44D1F0AD8BFEF00384FE5 /* VLSoundSched.mm in Sources */,
+				95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

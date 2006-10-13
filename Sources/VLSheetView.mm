@@ -348,6 +348,7 @@ static float sFlatPos[] = {
 	int key = [[sender selectedItem] tag];
 	[[self document] setKey: key transpose: YES];
 	fNeedsRecalc = kRecalc;
+	[self setNeedsDisplay: YES];	
 }
 
 - (IBAction) setTime:(id)sender
@@ -373,7 +374,7 @@ static float sFlatPos[] = {
 	[fFieldEditor setAction:nil];
 }
 
-const float kSemiFloor = -2.5f*kLineH;
+const float kSemiFloor = -3.0f*kLineH;
 static int sSemiToPitch[] = {
 	53, // F
 	55,	57, // A
