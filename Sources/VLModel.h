@@ -217,6 +217,7 @@ struct VLSong {
 	void AddNote(VLNote note, size_t measure, VLFraction at);
 	void DelChord(size_t measure, VLFraction at);
 	void DelNote(size_t measure, VLFraction at);
+	void Transpose(int semitones);
 
 	size_t	CountMeasures() const { return fMeasures.size(); }
 };

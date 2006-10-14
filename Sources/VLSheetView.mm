@@ -345,8 +345,24 @@ static float sFlatPos[] = {
 
 - (IBAction) setKey:(id)sender
 {
+	[[NSAlert alertWithMessageText:@"Transpose Song?"
+			 defaultButton:@"Transpose"
+			 alternateButton:@"Cancel"
+			 otherButton:@"Change Key"
+			 informativeTextWithFormat:
+				 @"Do you want to transpose the song into the new key?"]
+		beginSheetModalForWindow:[self window]
+		modalDelegate:self didEndSelector:@selector(setKey:returnCode:contextInfo:)
+		contextInfo:sender];
+}
+
+- (void)setKey:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(id)sender
+{
+	if (returnCode == NSAlertAlternateReturn)
+		return;
+
 	int key = [[sender selectedItem] tag];
-	[[self document] setKey: key transpose: YES];
+	[[self document] setKey:key transpose:returnCode==NSAlertDefaultReturn];
 	fNeedsRecalc = kRecalc;
 	[self setNeedsDisplay: YES];	
 }

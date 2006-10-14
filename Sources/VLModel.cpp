@@ -541,3 +541,53 @@ void VLSong::DelNote(size_t measure, VLFraction at)
 	}
 }
 
+static void TransposePinned(int8_t & pitch, int semi)
+{
+	if (pitch == VLNote::kNoPitch)
+		return;
+
+	int pitchInOctave = pitch % 12;
+	int octave		  = pitch-pitchInOctave;
+	pitchInOctave	 += semi;
+	if (pitchInOctave < 0)
+		pitch		  = octave+pitchInOctave+12;
+	else if (pitchInOctave > 11)
+		pitch		  = octave+pitchInOctave-12;
+	else
+		pitch 		  = octave+pitchInOctave;
+}
+
+void VLSong::Transpose(int semi)
+{
+	for (int pass=0; pass<2 && semi;) {
+		int8_t low		= 127;
+		int8_t high	= 0;
+		for (int measure=0; measure<fMeasures.size(); ++measure) {
+			VLNoteList::iterator i = fMeasures[measure].fMelody.begin();
+			VLNoteList::iterator e = fMeasures[measure].fMelody.end();
+
+			for (; i!=e; ++i) {
+				if (i->fPitch == VLNote::kNoPitch)
+					continue;
+				i->fPitch	+= semi;
+				low			 = std::min(low, i->fPitch);
+				high		 = std::max(high, i->fPitch);
+			}
+		}
+		if (low < VLNote::kMiddleC-6 && high < VLNote::kMiddleC+7)
+			semi	+= 12;	// Transpose an Octave up
+		else if (low > VLNote::kMiddleC+7 && high > VLNote::kMiddleC+16)
+			semi 	-= 12;	// Transpose an Octave down
+		else
+			break;			// Looks like we're done
+	}
+	for (int measure=0; measure<fMeasures.size(); ++measure) {
+		VLChordList::iterator i = fMeasures[measure].fChords.begin();
+		VLChordList::iterator e = fMeasures[measure].fChords.end();
+
+		for (; i!=e; ++i) {
+			TransposePinned(i->fPitch, semi);
+			TransposePinned(i->fRootPitch, semi);
+		}
+	}
+}
