@@ -119,6 +119,7 @@ std::string NormalizeName(NSString* rawName)
 		fSong->AddChord(chord, fMeasure, fAt);
 		[fView setNeedsDisplay:YES];
 	}
+	[[fView document] updateChangeCount:NSChangeDone];
 }
 
 - (BOOL) validValue:(NSString *)val

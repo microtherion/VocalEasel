@@ -1,8 +1,8 @@
 {
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {CLASS = MyDocument; LANGUAGE = ObjC; SUPERCLASS = NSDocument; }, 
         {CLASS = VLDocument; LANGUAGE = ObjC; SUPERCLASS = NSDocument; }, 
+        {CLASS = VLEditable; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
             ACTIONS = {hideFieldEditor = id; setDivisions = id; setKey = id; setTime = id; }; 
             CLASS = VLSheetView; 

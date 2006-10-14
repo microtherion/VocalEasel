@@ -20,7 +20,8 @@
 
 - (id) nodeForXPath:(NSString *)path error:(NSError **)outError
 {
-	return [[self nodesForXPath:path error:outError] objectAtIndex:0];
+	NSArray * nodes = [self nodesForXPath:path error:outError];
+	return [nodes count] ? [nodes objectAtIndex:0] : nil;
 }
 
 - (NSString *)stringForXPath:(NSString *)path error:(NSError **)outError
@@ -259,6 +260,105 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 	return YES;
 }
 
+int8_t sStepToPitch[] = {
+	9, 11, 0, 2, 4, 5, 7
+};
+
+- (VLNote) readNote:(NSXMLElement*)note withUnit:(VLFraction)unit
+{
+	NSError *	outError;
+	VLNote		n;
+	
+	n.fTied = 0;
+
+	if ([[note elementsForName:@"rest"] count]) {
+		n.fPitch  = VLNote::kNoPitch;
+	} else {
+		n.fPitch  = ([note intForXPath:@"./pitch/octave" error:&outError]+1)*12;
+		n.fPitch += 
+			sStepToPitch[[[note stringForXPath:@"./pitch/step" error:&outError]
+							 characterAtIndex:0] - 'A'];
+		if (NSXMLElement * alter = [note nodeForXPath:@"./pitch/alter" error:&outError])
+			n.fPitch += [[alter stringValue] intValue];
+	}
+	n.fDuration = VLFraction([note intForXPath:@"./duration" error:&outError])*unit;
+
+	return n;
+}
+
+- (void) readMelody:(NSArray *)measures error:(NSError **)outError
+{
+	NSEnumerator * e = [measures objectEnumerator];
+	
+	for (NSXMLElement * measure; measure = [e nextObject]; ) {
+		VLProperties & 	prop = song->fProperties.front();
+		VLFraction		unit(1, 4*prop.fDivisions);
+		VLFraction		at(0);
+		int				m = [[[measure attributeForName:@"number"]
+								 stringValue] intValue]-1;
+
+		if (m >= song->CountMeasures())
+			song->fMeasures.resize(m);
+
+		NSEnumerator * n = [[measure elementsForName:@"note"] objectEnumerator];
+
+		for (NSXMLElement * note; note = [n nextObject]; ) {
+			VLNote n = [self readNote:note withUnit:unit];
+			if (n.fPitch != VLNote::kNoPitch)
+				song->AddNote(n, m, at);
+			at += n.fDuration;
+		}
+	}
+}
+
+- (void) readChords:(NSArray *)measures error:(NSError **)outError
+{
+	NSEnumerator * e = [measures objectEnumerator];
+	
+	for (NSXMLElement * measure; measure = [e nextObject]; ) {
+		VLProperties & 	prop = song->fProperties.front();
+		VLFraction		unit(1, 4*prop.fDivisions);
+		VLFraction		at(0);
+		VLFraction		dur(0);
+		int				m = [[[measure attributeForName:@"number"]
+								 stringValue] intValue]-1;
+		VLChord			chord;
+
+		chord.fSteps	= 0;
+		if (m >= song->CountMeasures())
+			song->fMeasures.resize(m);
+
+		NSEnumerator * n = [[measure elementsForName:@"note"] objectEnumerator];
+
+		for (NSXMLElement * note; note = [n nextObject]; ) {
+			VLNote n = [self readNote:note withUnit:unit];
+			if (![[note elementsForName:@"chord"] count]) {
+				//
+				// Start of new chord
+				//
+				if (chord.fSteps)
+					song->AddChord(chord, m, at);
+				at 			   += dur;
+				chord.fPitch	= n.fPitch;
+				chord.fRootPitch= VLNote::kNoPitch;
+				chord.fDuration	= n.fDuration;
+				chord.fSteps 	= n.fPitch == VLNote::kNoPitch ? 0 : VLChord::kmUnison;
+				dur			 	= n.fDuration;
+				if (n.fPitch < VLNote::kMiddleC) {
+					chord.fPitch	= VLNote::kNoPitch;
+					chord.fRootPitch= n.fPitch;
+				}
+			} else if (chord.fPitch == VLNote::kNoPitch) {
+				chord.fPitch	= n.fPitch;
+			} else {
+				chord.fSteps   |= 1 << (n.fPitch-chord.fPitch);
+			}
+		}
+		if (chord.fSteps)
+			song->AddChord(chord, m, at);
+	}
+}
+
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
 {
 	NSXMLDocument * doc 	= [[NSXMLDocument alloc] initWithData:data
@@ -280,7 +380,12 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 			   error:outError]
 	)
 		return NO;
-		
+	
+	[self readMelody:[melody nodesForXPath:@"./measure" error:outError] 
+		  error:outError];
+	[self readChords:[chords nodesForXPath:@"./measure" error:outError]
+		  error:outError];
+
 	return YES;
 }
 

@@ -23,6 +23,7 @@
 		[self song]->AddNote(newNote, fCursorMeasure, fCursorAt);
 
 		[self setNeedsDisplay:YES];
+		[[self document] updateChangeCount:NSChangeDone];
 
 		VLSoundOut::Instance()->PlayNote(newNote);
 
