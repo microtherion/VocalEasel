@@ -26,6 +26,8 @@
 		955E59640957C15A0045FDA5 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		95932B91096527700008B0DB /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB3095FD34F00434E43 /* AudioUnit.framework */; };
 		95932B92096527710008B0DB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB2095FD34F00434E43 /* AudioToolbox.framework */; };
+		9593E4E80AE0ED1F00035816 /* vlsong.icns in Resources */ = {isa = PBXBuildFile; fileRef = 9593E4E60AE0ED1F00035816 /* vlsong.icns */; };
+		9593E4E90AE0ED1F00035816 /* vocalese.icns in Resources */ = {isa = PBXBuildFile; fileRef = 9593E4E70AE0ED1F00035816 /* vocalese.icns */; };
 		959408AD096922EA007CCCF8 /* TVLEdit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959408AC096922EA007CCCF8 /* TVLEdit.cpp */; };
 		959408AE096922F7007CCCF8 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		95B3E1A70960E58B000E9C0D /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 95B3E1980960E58B000E9C0D /* Music */; };
@@ -63,6 +65,8 @@
 		955E58E4095658AB0045FDA5 /* VLModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VLModel.cpp; path = Sources/VLModel.cpp; sourceTree = "<group>"; };
 		955E595C0957C0FC0045FDA5 /* TVLChord */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLChord; sourceTree = BUILT_PRODUCTS_DIR; };
 		955E59600957C1400045FDA5 /* TVLChord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TVLChord.cpp; path = Tests/TVLChord.cpp; sourceTree = "<group>"; };
+		9593E4E60AE0ED1F00035816 /* vlsong.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = vlsong.icns; path = Resources/vlsong.icns; sourceTree = "<group>"; };
+		9593E4E70AE0ED1F00035816 /* vocalese.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = vocalese.icns; path = Resources/vocalese.icns; sourceTree = "<group>"; };
 		959408A0096922CA007CCCF8 /* TVLEdit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLEdit; sourceTree = BUILT_PRODUCTS_DIR; };
 		959408AC096922EA007CCCF8 /* TVLEdit.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = TVLEdit.cpp; path = Tests/TVLEdit.cpp; sourceTree = "<group>"; };
 		95B3E1980960E58B000E9C0D /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Music; path = Resources/Music; sourceTree = "<group>"; };
@@ -195,6 +199,8 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9593E4E60AE0ED1F00035816 /* vlsong.icns */,
+				9593E4E70AE0ED1F00035816 /* vocalese.icns */,
 				95F5F51E0ADCCFBB003980B2 /* DTD */,
 				95B3E1980960E58B000E9C0D /* Music */,
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
@@ -326,6 +332,8 @@
 				8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */,
 				95B3E1A70960E58B000E9C0D /* Music in Resources */,
 				95F5F5340ADCCFBB003980B2 /* DTD in Resources */,
+				9593E4E80AE0ED1F00035816 /* vlsong.icns in Resources */,
+				9593E4E90AE0ED1F00035816 /* vocalese.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
