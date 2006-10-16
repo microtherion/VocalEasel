@@ -30,6 +30,7 @@ enum VLMusicElement {
 	kMusicSixteenthFlag,
 	kMusicThirtysecondthFlag,
 	kMusicNoteCursor,
+	kMusicRestCursor,
 	kMusicElements
 };
 
@@ -48,7 +49,7 @@ enum VLRecalc {
 
 @interface VLSheetView : NSView {
 	VLRecalc			fNeedsRecalc;
-	BOOL				fIsRest;
+	char				fClickMode;
 	float				fClefKeyW;
 	float				fMeasureW;
 	int 				fGroups; 

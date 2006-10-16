@@ -12,6 +12,7 @@
 
 - (void) drawNotesForSystem:(int)system;
 - (void) addNoteAtCursor;
+- (void) startKeyboardCursor;
 
 @end
 

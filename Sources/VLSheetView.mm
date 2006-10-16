@@ -37,7 +37,8 @@ static NSString * sElementNames[kMusicElements] = {
 	@"eighth-flag",
 	@"sixteenth-flag",
 	@"thirtysecondth-flag",
-	@"notecursor"
+	@"notecursor",
+	@"restcursor"
 };
 
 static float sSharpPos[] = {
@@ -80,7 +81,7 @@ static float sFlatPos[] = {
 			}
 		}
 		fNeedsRecalc		= kFirstRecalc;
-		fIsRest				= NO;
+		fClickMode			= ' ';
 		fDisplayScale		= 1.0f;
 		fCursorPitch		= VLNote::kNoPitch;
 	}
@@ -176,6 +177,46 @@ static float sFlatPos[] = {
 	[self scrollRectToVisible:r];
 }
 
+- (void) setTrackingRect
+{
+	NSRect	r		= [self bounds];
+	NSPoint	mouse	= 
+		[self convertPoint:[[self window] mouseLocationOutsideOfEventStream]
+			  fromView: nil];
+	BOOL within		= [self mouse:mouse inRect:r];
+	
+	fCursorTracking = [self addTrackingRect:r owner:self
+							userData:nil assumeInside:within];
+	[[self window] setAcceptsMouseMovedEvents:within];
+	if (within && ![[self document] valueForKey: @"editTarget"])
+		[[self window] makeFirstResponder:self];
+}
+
+- (void) clearTrackingRect
+{
+	[self removeTrackingRect:fCursorTracking];
+}
+
+-(void)resetCursorRects
+{
+	[super resetCursorRects];
+	[self clearTrackingRect];
+	[self setTrackingRect];
+}
+
+-(void)viewWillMoveToWindow:(NSWindow *)win
+{
+	if (!win && [self window]) [self clearTrackingRect];
+}
+
+-(void)viewDidMoveToWindow
+{
+	if ([self window]) {
+		[self setTrackingRect];
+		[[self window] makeFirstResponder:self];
+	}
+}
+
 - (void) recalculateDimensions 
 {
 	NSScrollView * scroll = [self enclosingScrollView];
@@ -195,18 +236,6 @@ static float sFlatPos[] = {
 	fMeasPerSystem	= (int)std::floor((sz.width-fClefKeyW) / fMeasureW);
 	fNumSystems 	= (song->CountMeasures()+fMeasPerSystem-1)/fMeasPerSystem;
 	sz.height		= fNumSystems*kSystemH;
-
-	NSRect	r		= [scroll bounds];
-	NSPoint	mouse	= 
-		[scroll convertPoint:[[self window] mouseLocationOutsideOfEventStream]
-			  fromView: nil];
-	BOOL within		= [scroll mouse:mouse inRect:r];
-	
-	[self removeTrackingRect:fCursorTracking];
-	fCursorTracking = [self addTrackingRect:r owner:self
-							userData:nil assumeInside:within];
-	[[self window] setAcceptsMouseMovedEvents:within];
-	[[self window] makeFirstResponder:self];
 
 	NSSize frameSz	= {sz.width * fDisplayScale, sz.height * fDisplayScale};
 
@@ -505,14 +534,24 @@ static int sSemiToPitch[] = {
 		VLSoundOut::Instance()->PlayNote(VLNote(1, fCursorPitch));
 		break;
 	case 'r':
-		fIsRest = !fIsRest;
+		if (fClickMode == 'r')
+			fClickMode = ' ';
+		else
+			fClickMode = 'r';
+		[self setNeedsDisplay:YES];
 		break;
+	case 'k':
+		if (fClickMode == 'k')
+			fClickMode = ' ';
+		else
+			fClickMode = 'k';
+		break;
+		[self setNeedsDisplay:YES];
 	}
 }
 
 - (BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor
 {
-	VLDocument * doc      = [self document];
 	VLEditable * editable = [[self document] valueForKey: @"editTarget"];
 	return [editable validValue:[fFieldEditor stringValue]];
 }

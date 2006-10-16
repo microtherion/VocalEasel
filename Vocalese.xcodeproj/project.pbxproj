@@ -21,6 +21,7 @@
 		952CBBB5095FD34F00434E43 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB3095FD34F00434E43 /* AudioUnit.framework */; };
 		952CBBB6095FD37300434E43 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		952DCD78096BBB11001C2316 /* VLSheetViewChords.mm in Sources */ = {isa = PBXBuildFile; fileRef = 952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */; };
+		95498DBD0AE3812F006B5F81 /* VLSoundSched.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */; };
 		955E58E5095658AB0045FDA5 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		955E59610957C1400045FDA5 /* TVLChord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E59600957C1400045FDA5 /* TVLChord.cpp */; };
 		955E59640957C15A0045FDA5 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
@@ -33,7 +34,6 @@
 		95B3E1A70960E58B000E9C0D /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 95B3E1980960E58B000E9C0D /* Music */; };
 		95B66658096BCA1F00FE18C9 /* VLSheetViewNotes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */; };
 		95BDA15909540BF1009F9D65 /* VLSheetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */; };
-		95D44D1F0AD8BFEF00384FE5 /* VLSoundSched.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95D44D1E0AD8BFEF00384FE5 /* VLSoundSched.mm */; };
 		95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
 		95F5F5340ADCCFBB003980B2 /* DTD in Resources */ = {isa = PBXBuildFile; fileRef = 95F5F51E0ADCCFBB003980B2 /* DTD */; };
 /* End PBXBuildFile section */
@@ -61,6 +61,8 @@
 		952CBBB3095FD34F00434E43 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = /System/Library/Frameworks/AudioUnit.framework; sourceTree = "<absolute>"; };
 		952DCD76096BBB11001C2316 /* VLSheetViewChords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSheetViewChords.h; path = Sources/VLSheetViewChords.h; sourceTree = "<group>"; };
 		952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetViewChords.mm; path = Sources/VLSheetViewChords.mm; sourceTree = "<group>"; };
+		95498DBB0AE3812F006B5F81 /* VLSoundSched.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSoundSched.h; path = Sources/VLSoundSched.h; sourceTree = "<group>"; };
+		95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSoundSched.mm; path = Sources/VLSoundSched.mm; sourceTree = "<group>"; };
 		955E58E3095658AB0045FDA5 /* VLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLModel.h; path = Sources/VLModel.h; sourceTree = "<group>"; };
 		955E58E4095658AB0045FDA5 /* VLModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VLModel.cpp; path = Sources/VLModel.cpp; sourceTree = "<group>"; };
 		955E595C0957C0FC0045FDA5 /* TVLChord */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLChord; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,8 +77,6 @@
 		95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetViewNotes.mm; path = Sources/VLSheetViewNotes.mm; sourceTree = "<group>"; };
 		95BDA15709540BF1009F9D65 /* VLSheetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSheetView.h; path = Sources/VLSheetView.h; sourceTree = "<group>"; };
 		95BDA15809540BF1009F9D65 /* VLSheetView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetView.mm; path = Sources/VLSheetView.mm; sourceTree = "<group>"; };
-		95D44D1D0AD8BFEF00384FE5 /* VLSoundSched.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSoundSched.h; path = Sources/VLSoundSched.h; sourceTree = "<group>"; };
-		95D44D1E0AD8BFEF00384FE5 /* VLSoundSched.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSoundSched.mm; path = Sources/VLSoundSched.mm; sourceTree = "<group>"; };
 		95F5F50D0ADCC433003980B2 /* VLXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLXMLDocument.h; path = Sources/VLXMLDocument.h; sourceTree = "<group>"; };
 		95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLXMLDocument.mm; path = Sources/VLXMLDocument.mm; sourceTree = "<group>"; };
 		95F5F51E0ADCCFBB003980B2 /* DTD */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DTD; path = Resources/DTD; sourceTree = "<group>"; };
@@ -166,6 +166,8 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				95498DBB0AE3812F006B5F81 /* VLSoundSched.h */,
+				95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */,
 				952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */,
 				952CBB9B095FD1CA00434E43 /* VLSoundOut.h */,
 				2A37F4AEFDCFA73011CA2CEA /* VLDocument.h */,
@@ -179,8 +181,6 @@
 				952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */,
 				95B66656096BCA1F00FE18C9 /* VLSheetViewNotes.h */,
 				95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */,
-				95D44D1D0AD8BFEF00384FE5 /* VLSoundSched.h */,
-				95D44D1E0AD8BFEF00384FE5 /* VLSoundSched.mm */,
 				95F5F50D0ADCC433003980B2 /* VLXMLDocument.h */,
 				95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */,
 			);
@@ -351,8 +351,8 @@
 				952CBB9D095FD1CA00434E43 /* VLSoundOut.cpp in Sources */,
 				952DCD78096BBB11001C2316 /* VLSheetViewChords.mm in Sources */,
 				95B66658096BCA1F00FE18C9 /* VLSheetViewNotes.mm in Sources */,
-				95D44D1F0AD8BFEF00384FE5 /* VLSoundSched.mm in Sources */,
 				95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */,
+				95498DBD0AE3812F006B5F81 /* VLSoundSched.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

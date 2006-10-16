@@ -18,16 +18,20 @@
 - (void) addNoteAtCursor
 {	
 	if (fCursorMeasure > -1) {
-		VLNote	newNote(1, !fIsRest ? fCursorPitch : VLNote::kNoPitch);
+		VLNote	newNote(1, fClickMode==' ' ? fCursorPitch : VLNote::kNoPitch);
 
-		[self song]->AddNote(newNote, fCursorMeasure, fCursorAt);
+		if (fClickMode == 'k')
+			[self song]->DelNote(fCursorMeasure, fCursorAt);
+		else	
+			[self song]->AddNote(newNote, fCursorMeasure, fCursorAt);
 
 		[self setNeedsDisplay:YES];
 		[[self document] updateChangeCount:NSChangeDone];
 
-		VLSoundOut::Instance()->PlayNote(newNote);
-
-		fIsRest	= NO;
+		if (fClickMode == ' ')
+			VLSoundOut::Instance()->PlayNote(newNote);
+		else
+			fClickMode	= ' ';
 	}
 }
 
@@ -42,13 +46,22 @@
 
 - (void) drawNoteCursor
 {
-	NSPoint note = 
-		NSMakePoint([self noteXInMeasure:fCursorMeasure at:fCursorAt],
-					[self noteYInMeasure:fCursorMeasure withPitch:fCursorPitch]);
-	NSRect 	noteCursorRect =
-		NSMakeRect(note.x-kNoteX, note.y-kNoteY, 2.0f*kNoteX, 2.0f*kNoteY);
-	[[self musicElement:kMusicNoteCursor] 
-		compositeToPoint:NSMakePoint(note.x-kNoteX, note.y-kNoteY)
+	int 			cursorX;
+	int				cursorY;
+	VLMusicElement	cursorElt;
+	
+	cursorX = [self noteXInMeasure:fCursorMeasure at:fCursorAt]-kNoteX;
+	if (fClickMode == ' ') {
+		cursorY 	= 
+			[self noteYInMeasure:fCursorMeasure withPitch:fCursorPitch]-kNoteY;
+		cursorElt 	= kMusicNoteCursor;
+	} else {
+		cursorY 	= [self noteYInMeasure:fCursorMeasure withPitch:65];
+		cursorElt	= kMusicRestCursor;
+	}
+	
+	[[self musicElement:cursorElt] 
+		compositeToPoint:NSMakePoint(cursorX, cursorY)
 		operation: NSCompositeSourceOver];
 }
 
