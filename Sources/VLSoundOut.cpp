@@ -15,76 +15,38 @@
 #include <memory>
 #include <vector>
 
-const int kMidiChannelInUse = 0;
-
-enum {
-	kMidiMessage_ControlChange 		= 0xB,
-	kMidiMessage_ProgramChange 		= 0xC,
-	kMidiMessage_BankMSBControl 	= 0,
-	kMidiMessage_BankLSBControl		= 32,
-	kMidiMessage_NoteOn 			= 0x9,
-	kMidiMessage_NoteOff			= 0x8
-};
-
 class VLAUSoundOut : public VLSoundOut {
 public:
 	VLAUSoundOut();
 
 	virtual void PlayNote(const VLNote & note);
 	virtual void PlayChord(const VLChord & chord); 
-
+	
 	virtual ~VLAUSoundOut();
-private:
-	AUGraph		fGraph;
-	AudioUnit	fSynth;
-	bool		fRunning;
 
-	void		Run();
 	void		Stop();
-	void 		Play(const int8_t * note, size_t numNotes = 1);
-protected:
-	friend class VLAUSoundEvent;
+private:
+	AUGraph			fGraph;
+	MusicPlayer		fPlayer;
+	MusicSequence	fMusic;
+	bool			fRunning;
 
-	void 		Play(const int8_t * note, size_t numNotes, 
-					 UInt32 msg, UInt32 velocity);
+	void		PlaySequence(MusicSequence music);
+	void 		Play(const int8_t * note, size_t numNotes = 1);
 };
 
 VLSoundEvent::~VLSoundEvent()
 {
 }
 
-class VLAUSoundEvent : public VLSoundEvent {
-public:
-	VLAUSoundEvent(VLAUSoundOut * soundOut,
-				   const int8_t * note, size_t numNotes,
-				   UInt32 msg, UInt32 velocity)
-	  : fSoundOut(soundOut), fNotes(note, note+numNotes), 
-		fMsg(msg), fVelocity(velocity)
-	{}
-
-	virtual void Perform();
-private:
-	VLAUSoundOut *		fSoundOut;
-	std::vector<int8_t>	fNotes;
-	UInt32				fMsg;
-	UInt32				fVelocity;
-};
-
-void VLAUSoundEvent::Perform()
-{
-	fSoundOut->Play(&fNotes[0], fNotes.size(), fMsg, fVelocity);
-
-	delete this;
-}
-
 void VLSoundScheduler::Schedule(VLSoundEvent * what, float when)
 {
 	usleep((int)(1000000.0f*when));
-	what->Perform();
+    what->Perform();
 }
 
 static std::auto_ptr<VLSoundOut>		sSoundOut;
-static std::auto_ptr<VLSoundScheduler>	sSoundScheduler;
+static std::auto_ptr<VLSoundScheduler> sSoundScheduler;
 
 VLSoundOut * VLSoundOut::Instance()
 {
@@ -93,6 +55,12 @@ VLSoundOut * VLSoundOut::Instance()
 		if (!sSoundScheduler.get())
 			sSoundScheduler.reset(new VLSoundScheduler);
 	}
+}
+
+VLSoundOut * VLSoundOut::Instance()
+{
+	if (!sSoundOut.get()) 
+		sSoundOut.reset(new VLAUSoundOut);
 
 	return sSoundOut.get();
 }
@@ -107,7 +75,7 @@ VLSoundOut::~VLSoundOut()
 }
 
 VLAUSoundOut::VLAUSoundOut()
-	: fRunning(false)
+	: fRunning(false), fMusic(0)
 {
 	AUNode synthNode, limiterNode, outNode;
    	ComponentDescription cd;
@@ -136,39 +104,42 @@ VLAUSoundOut::VLAUSoundOut()
 	AUGraphOpen(fGraph);
 	AUGraphConnectNodeInput(fGraph, synthNode, 0, limiterNode, 0);
 	AUGraphConnectNodeInput(fGraph, limiterNode, 0, outNode, 0);
-	AUGraphGetNodeInfo(fGraph, synthNode, 0, 0, 0, &fSynth);
 
 	AUGraphInitialize(fGraph);
-
-	MusicDeviceMIDIEvent(fSynth, 
-						 kMidiMessage_ControlChange << 4 | kMidiChannelInUse, 
-						 kMidiMessage_BankMSBControl, 0,
-						 0/*sample offset*/);
-	MusicDeviceMIDIEvent(fSynth, 
-						 kMidiMessage_ProgramChange << 4 | kMidiChannelInUse, 	
-						 0/*prog change num*/, 0,
-						 0/*sample offset*/);
+	
+	NewMusicPlayer(&fPlayer);
 }
 
 VLAUSoundOut::~VLAUSoundOut()
 {
+	DisposeMusicPlayer(fPlayer);
 	Stop();
 	DisposeAUGraph(fGraph);
 }
 
-void VLAUSoundOut::Run()
+void VLAUSoundOut::PlaySequence(MusicSequence music)
 {
-	if (!fRunning) {
-		AUGraphStart(fGraph);
-		fRunning	= true;
-	}
+	Stop();
+
+	fMusic	= music;
+
+	MusicSequenceSetAUGraph(fMusic, fGraph);
+	MusicPlayerSetSequence(fPlayer, fMusic);
+	MusicPlayerStart(fPlayer);
+
+	fRunning	= true;
 }
 
 void VLAUSoundOut::Stop()
 {
+	MusicPlayerStop(fPlayer);
 	if (fRunning) {
-		AUGraphStop(fGraph);
 		fRunning	= false;
+		if (fMusic) {
+			MusicPlayerSetSequence(fPlayer, NULL);
+			DisposeMusicSequence(fMusic);
+			fMusic = 0;
+		}
 	}
 }
 
@@ -191,20 +162,17 @@ void VLAUSoundOut::PlayChord(const VLChord & chord)
 
 void VLAUSoundOut::Play(const int8_t * note, size_t numNotes)
 {
-	Run();
-
-	const UInt32 kNoteOn  = kMidiMessage_NoteOn  << 4 | kMidiChannelInUse;
-	const UInt32 kNoteOff = kMidiMessage_NoteOff << 4 | kMidiChannelInUse;
-	const UInt32 kNoteVelocity= 127;
-
-	Play(note, numNotes, kNoteOn, kNoteVelocity);
-	sSoundScheduler.get()->Schedule(
-		new VLAUSoundEvent(this, note, numNotes, kNoteOff, kNoteVelocity), 0.5f);
-}
-
-void VLAUSoundOut::Play(const int8_t * note, size_t numNotes, 
-						UInt32 msg, UInt32 velocity)
-{
-	for (size_t i = 0; i<numNotes; ++i)
-		MusicDeviceMIDIEvent(fSynth, msg, note[i], velocity, 0);	
+	MusicSequence	music;
+	MusicTrack		track;
+	
+	NewMusicSequence(&music);
+	MusicSequenceNewTrack(music, &track);
+	
+	const int8_t kNoteVelocity = 127;
+	for (int i=0; i<numNotes; ++i) {
+		MIDINoteMessage	n = {0, note[i], kNoteVelocity, 0, 1.0}; 
+		MusicTrackNewMIDINoteEvent(track, 0.0, &n);
+	}
+		
+	PlaySequence(music);
 }
