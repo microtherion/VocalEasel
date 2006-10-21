@@ -89,6 +89,19 @@ static std::string	PitchName(int8_t pitch, bool useSharps)
 		return static_cast<char>(std::toupper(kScale[pitch+1])) + std::string("♭");
 }
 
+static std::string	LilypondPitchName(int8_t pitch, bool useSharps)
+{
+	if (pitch == VLNote::kNoPitch)
+		return "r";
+	pitch %= 12;
+	if (kScale[pitch] != ' ')
+		return kScale[pitch] + std::string();
+	else if (useSharps)
+		return kScale[pitch-1] + std::string("is");
+	else
+		return kScale[pitch+1] + std::string("es");
+}
+
 VLNote::VLNote(std::string name)
 {
 	//
@@ -122,6 +135,11 @@ void VLNote::Name(std::string & name, bool useSharps) const
 	name = PitchName(fPitch, useSharps);
 }
 
+void VLNote::LilypondName(std::string & name, bool useSharps) const
+{
+	name = LilypondPitchName(fPitch, useSharps);
+}
+
 struct VLChordModifier {
 	const char *	fName;
 	uint32_t		fAddSteps;
@@ -152,11 +170,6 @@ static const VLChordModifier kModifiers[] = {
 	{NULL, 0, 0}
 };
 
-static const char * kStepNames[] = {
-	"", "", "sus2", "", "", "sus", "♭5", "", "+", "6", "7", "♯7", "",
-	"♭9", "9", "♯9", "", "11", "♯11", "", "♭9", "13"
-};
-
 VLChord::VLChord(std::string name)
 {
 	size_t		root;
@@ -174,7 +187,7 @@ VLChord::VLChord(std::string name)
 	if (name.size())
 		if (name[0] == '#') {
 			++fPitch;
-			name.erase(0);
+			name.erase(0, 1);
 		} else if (name[0] == 'b') {
 			--fPitch;
 			name.erase(0, 1);
@@ -234,6 +247,11 @@ failed:
 	fPitch = kNoPitch;
 }
 
+static const char * kStepNames[] = {
+	"", "", "sus2", "", "", "sus", "♭5", "", "+", "6", "7", "♯7", "",
+	"♭9", "9", "♯9", "", "11", "♯11", "", "♭13", "13"
+};
+
 void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bool useSharps) const
 {
 	base = PitchName(fPitch, useSharps);
@@ -291,6 +309,88 @@ void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bo
 	//
 	if (fRootPitch != kNoPitch)
 		root = PitchName(fRootPitch, useSharps);
+}
+
+static const char * kLilypondStepNames[] = {
+	"", "", "sus2", "", "", "sus", "5-", "", "5+", "7-", "7", "7+", "",
+	"9-", "9", "9+", "", "11", "11+", "", "13-", "13"
+};
+
+void VLChord::LilypondName(std::string & name, bool useSharps) const
+{
+	name = LilypondPitchName(fPitch, useSharps);
+	char duration[16];
+	if (fDuration.fNum == 1 && !(fDuration.fDenom & (fDuration.fDenom-1)))
+		sprintf(duration, "%d", fDuration.fDenom);
+	else
+		sprintf(duration, "1*%d/%d", fDuration.fNum, fDuration.fDenom);
+	name += std::string(duration);
+
+	std::string ext;
+	uint32_t steps = fSteps & ~(kmUnison | km5th);
+	//
+	// m / dim
+	//
+	if (steps & kmMin3rd)
+		if (steps & (kmDim5th|kmDim7th) 
+		 && !(steps & (km5th|kmMin7th|kmMaj7th|kmMin9th|kmMaj9th|km11th|kmAug11th|kmMin13th|kmMaj13th))
+		) {
+			ext = "dim";
+			steps|= (steps & kmDim7th) << 1;
+			steps&=	~(kmMin3rd|kmDim5th|kmDim7th);
+		} else {
+			ext = "m";
+			steps&= ~kmMin3rd;
+		}
+	//
+	// Maj
+	//
+	if (steps & kmMaj7th) {
+		if (ext.size())
+			ext += '.';
+		ext += "maj";
+		steps&= ~kmMaj7th;
+	}
+	//
+	// 6/9
+	//
+	if ((steps & (kmDim7th|kmMaj9th)) == (kmDim7th|kmMaj9th)) {
+		if (ext.size())
+			ext += '.';
+		ext += "6.9";
+		steps&= ~(kmDim7th|kmMaj9th);
+	}
+	//
+	// Other extensions. Only the highest unaltered extension is listed.
+	//
+	if (uint32_t unaltered = steps & (kmMin7th | kmMaj9th | km11th | kmMaj13th)) {
+		steps			  &= ~unaltered;
+	
+		for (int step = kMaj13th; step > kDim7th; --step)
+			if (unaltered & (1 << step)) {
+				std::string sn = kLilypondStepNames[step];
+				if (ext.size() && sn.size())
+					ext += '.';
+				ext += sn;
+				break;
+			}
+	}
+	for (int step = kMin2nd; steps; ++step) 
+		if (steps & (1 << step)) {
+			std::string sn = kLilypondStepNames[step];
+			if (ext.size() && sn.size())
+				ext += '.';
+			ext   += sn;
+			steps &= ~(1 << step);
+		}
+	
+	if (ext.size())
+		name += ':' + ext;
+	//
+	// Root
+	//
+	if (fRootPitch != kNoPitch)
+		name += "/+" + LilypondPitchName(fRootPitch, useSharps);
 }
 
 static VLFraction MaxNote(VLFraction d)
@@ -562,7 +662,7 @@ void VLSong::Transpose(int semi)
 	for (int pass=0; pass<2 && semi;) {
 		int8_t low		= 127;
 		int8_t high	= 0;
-		for (int measure=0; measure<fMeasures.size(); ++measure) {
+		for (size_t measure=0; measure<fMeasures.size(); ++measure) {
 			VLNoteList::iterator i = fMeasures[measure].fMelody.begin();
 			VLNoteList::iterator e = fMeasures[measure].fMelody.end();
 
@@ -581,7 +681,7 @@ void VLSong::Transpose(int semi)
 		else
 			break;			// Looks like we're done
 	}
-	for (int measure=0; measure<fMeasures.size(); ++measure) {
+	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
 		VLChordList::iterator i = fMeasures[measure].fChords.begin();
 		VLChordList::iterator e = fMeasures[measure].fChords.end();
 

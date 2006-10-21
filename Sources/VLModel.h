@@ -115,6 +115,7 @@ struct VLNote {
 	VLNote(std::string name);
 
 	void Name(std::string & name, bool useSharps = false) const;
+	void LilypondName(std::string & name, bool useSharps = false) const;
 };
 
 struct VLRest : VLNote {
@@ -156,7 +157,7 @@ struct VLChord : VLNote {
 		kmDim5th	= (1 << kDim5th),
 		km5th		= (1 << k5th),
 		kmAug5th	= (1 << kAug5th),
-		kmDim7th		= (1 << kDim7th),
+		kmDim7th	= (1 << kDim7th),
 		kmMin7th	= (1 << kMin7th),
 		kmMaj7th	= (1 << kMaj7th),
 		kmOctave	= (1 << kOctave),
@@ -175,6 +176,7 @@ struct VLChord : VLNote {
 	VLChord() {}
 	VLChord(std::string name);
 	void	Name(std::string & base, std::string & ext, std::string & root, bool useSharps = false) const;
+	void 	LilypondName(std::string & name, bool useSharps = false) const;
 };
 
 struct VLProperties {
