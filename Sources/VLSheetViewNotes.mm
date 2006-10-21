@@ -18,7 +18,7 @@
 - (void) addNoteAtCursor
 {	
 	if (fCursorMeasure > -1) {
-		VLNote	newNote(1, fClickMode==' ' ? fCursorPitch : VLNote::kNoPitch);
+		VLNote	newNote(1, fClickMode==' ' ? fCursorActualPitch : VLNote::kNoPitch);
 
 		if (fClickMode == 'k')
 			[self song]->DelNote(fCursorMeasure, fCursorAt);
@@ -38,9 +38,10 @@
 - (void) startKeyboardCursor
 {
 	if (fCursorMeasure < 0) {
-		fCursorMeasure	= 0;
-		fCursorPitch	= VLNote::kMiddleC;
-		fCursorAt		= VLFraction(0);
+		fCursorMeasure		= 0;
+		fCursorPitch		= VLNote::kMiddleC;
+		fCursorActualPitch	= fCursorPitch;
+		fCursorAt			= VLFraction(0);
 	}
 }
 
@@ -48,24 +49,61 @@
 {
 	int 			cursorX;
 	int				cursorY;
+	VLMusicElement	accidental;
 	VLMusicElement	cursorElt;
 	
 	cursorX = [self noteXInMeasure:fCursorMeasure at:fCursorAt]-kNoteX;
-	if (fClickMode == ' ') {
+	switch (fClickMode) {
+	default:
 		cursorY 	= 
-			[self noteYInMeasure:fCursorMeasure withPitch:fCursorPitch]-kNoteY;
+			[self noteYInMeasure:fCursorMeasure 
+				  withPitch:fCursorPitch
+				  accidental:&accidental]
+			-kNoteY;
 		cursorElt 	= kMusicNoteCursor;
-	} else {
-		cursorY 	= [self noteYInMeasure:fCursorMeasure withPitch:65];
+		break;
+	case 'r':
+		cursorY 	= [self noteYInMeasure:fCursorMeasure 
+							withPitch:65 
+							accidental:&accidental];
 		cursorElt	= kMusicRestCursor;
+		break;
+	case 'k':
+		cursorY 	= [self noteYInMeasure:fCursorMeasure 
+							withPitch:fCursorPitch
+							accidental:&accidental];
+		cursorElt	= kMusicKillCursor;
+		break;
 	}
 	
+	NSPoint	at = NSMakePoint(cursorX, cursorY);
 	[[self musicElement:cursorElt] 
-		compositeToPoint:NSMakePoint(cursorX, cursorY)
+		compositeToPoint:at
 		operation: NSCompositeSourceOver];
+	if (fCursorAccidental) {
+		at.y	+= kNoteY;
+		switch (cursorElt= fCursorAccidental) {
+		case kMusicFlatCursor:
+			at.x	+= kFlatW;
+			at.y	+= kFlatY;
+			break;
+		case kMusicSharpCursor:
+			at.x	+= kSharpW;
+			at.y	+= kSharpY;
+			break;
+		default:
+			at.x	+= kNaturalW;
+			at.y	+= kNaturalY;
+			break;
+		}
+		[[self musicElement:cursorElt] 
+			compositeToPoint:at
+			operation: NSCompositeSourceOver];
+	}
 }
 
-- (void) drawNote:(VLFraction)dur at:(NSPoint)p tied:(BOOL)tied
+- (void) drawNote:(VLFraction)dur at:(NSPoint)p 
+	   accidental:(VLMusicElement)accidental tied:(BOOL)tied
 {
 	NSPoint s = p;
 	NSPoint c = p;
@@ -91,7 +129,30 @@
 		break;
 	}
 	[head compositeToPoint:p
-		  operation: NSCompositePlusDarker];
+		  operation: NSCompositePlusDarker];	
+	//
+	// Draw accidental
+	//
+	if (accidental) {
+		NSPoint at = p;
+		at.y 	  += kNoteY;
+		switch (accidental) {
+		case kMusicSharp:
+			at.x	+= kSharpW;
+			at.y	+= kSharpY;
+			break;
+		case kMusicFlat:
+			at.x	+= kFlatW;
+			at.y	+= kFlatY;
+			break;
+		case kMusicNatural:
+			at.x	+= kNaturalW;
+			at.y	+= kNaturalY;
+			break;
+		}
+		[[self musicElement:accidental] 
+			compositeToPoint:at operation: NSCompositeSourceOver];
+	}
 	//
 	// Draw stem
 	//
@@ -192,6 +253,8 @@
 
 	float kSystemY = [self systemY:system];
 	for (int m = 0; m<fMeasPerSystem; ++m) {
+		VLMusicElement accidentals[7];
+		memset(accidentals, 0, 7*sizeof(VLMusicElement));
 		int	measIdx = m+system*fMeasPerSystem;
 		if (measIdx >= song->CountMeasures())
 			break;
@@ -229,17 +292,34 @@
 				} else {
 					noteDur = partialDur;
 				}
-				if (pitch != VLNote::kNoPitch) 
+				if (pitch != VLNote::kNoPitch) {
+					VLMusicElement		accidental;
+					NSPoint pos = 
+						NSMakePoint([self noteXInMeasure:m at:at],
+									kSystemY+[self noteYWithPitch:pitch 
+												   accidental:&accidental]);
+					VLMusicElement 	acc = accidental;
+					int				step= [self stepWithPitch:pitch];
+					if (acc == accidentals[step])
+						acc = kMusicNothing; 	// Don't repeat accidentals
+					else if (acc == kMusicNothing) 
+						if (accidentals[step] == kMusicNatural) // Resume signature
+							acc = prop.fKey < 0 ? kMusicFlat : kMusicSharp;
+						else 
+							acc = kMusicNatural;
 					[self drawNote:noteDur 
-						  at: NSMakePoint(
-								[self noteXInMeasure:m at:at],
-								kSystemY+[self noteYWithPitch:pitch])
+						  at: pos
+						  accidental: acc
 						  tied:!first];
-				else 
-					[self drawRest:noteDur 
-						  at: NSMakePoint(
-							    [self noteXInMeasure:m at:at],
-								kSystemY+[self noteYWithPitch:65])];
+					accidentals[step] = accidental;
+				} else {
+					VLMusicElement		accidental;
+					NSPoint pos = 
+						NSMakePoint([self noteXInMeasure:m at:at],
+									kSystemY+[self noteYWithPitch:65 
+												   accidental:&accidental]);
+					[self drawRest:noteDur at: pos];
+				}
 				dur	   -= partialDur;
 				at	   += partialDur;
 				first	= NO;

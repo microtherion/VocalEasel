@@ -13,7 +13,8 @@
 @class VLDocument;
 
 enum VLMusicElement {
-	kMusicGClef,
+	kMusicNothing = 0,
+	kMusicGClef = 0,
 	kMusicFlat,
 	kMusicSharp,
 	kMusicNatural,
@@ -30,7 +31,11 @@ enum VLMusicElement {
 	kMusicSixteenthFlag,
 	kMusicThirtysecondthFlag,
 	kMusicNoteCursor,
+	kMusicFlatCursor,
+	kMusicSharpCursor,
+	kMusicNaturalCursor,
 	kMusicRestCursor,
+	kMusicKillCursor,
 	kMusicElements
 };
 
@@ -64,6 +69,8 @@ enum VLRecalc {
 	int		  			fCursorMeasure;
 	VLFract 			fCursorAt;
 	int					fCursorPitch;
+	int					fCursorActualPitch;
+	VLMusicElement 		fCursorAccidental;
 
 	IBOutlet id			fFieldEditor;
 }
@@ -77,9 +84,10 @@ enum VLRecalc {
 - (VLSong *) song;
 - (NSImage *) musicElement:(VLMusicElement)elt;
 
+- (int) stepWithPitch:(int)pitch;
 - (float) systemY:(int)system;
-- (float) noteYWithPitch:(int)pitch;
-- (float) noteYInMeasure:(int)measure withPitch:(int)pitch;
+- (float) noteYWithPitch:(int)pitch accidental:(VLMusicElement*)accidental;
+- (float) noteYInMeasure:(int)measure withPitch:(int)pitch accidental:(VLMusicElement*)accidental;
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at;
 
 - (void) scrollMeasureToVisible:(int)measure;

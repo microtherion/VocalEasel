@@ -38,7 +38,11 @@ static NSString * sElementNames[kMusicElements] = {
 	@"sixteenth-flag",
 	@"thirtysecondth-flag",
 	@"notecursor",
-	@"restcursor"
+	@"flatcursor",
+	@"sharpcursor",
+	@"naturalcursor",
+	@"restcursor",
+	@"killcursor"
 };
 
 static float sSharpPos[] = {
@@ -115,47 +119,65 @@ static float sFlatPos[] = {
 	return kSystemY+b.origin.y+b.size.height-(system+1)*kSystemH;
 }
 
-- (float) noteYWithPitch:(int)pitch
+int8_t sSemi2Pitch[2][12] = {{
+ // C  Db D  Eb E  F  Gb G  Ab A  Bb B 
+	0, 1, 1, 2, 2, 3, 4, 4, 5, 5, 6, 6,
+},{
+ // C  C# D  D# E  F  F# G  G# A  A# B 
+	0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6,
+}};
+
+#define S	kMusicSharp,
+#define F	kMusicFlat,
+#define N	kMusicNatural,
+#define _	kMusicNothing,
+
+VLMusicElement sSemi2Accidental[12][12] = {
+ //  C DbD EbE F GbG AbA BbB 
+	{N _ N _ N _ _ N _ N _ N}, // Gb major - 6 flats
+	{_ _ N _ N _ _ N _ N _ N}, // Db major - 5 flats
+	{_ _ N _ N _ F _ _ N _ N}, // Ab major - 4 flats
+	{_ F _ _ N _ F _ _ N _ N}, // Eb major - 3 flats
+	{_ F _ _ N _ F _ F _ _ N}, // Bb major - 2 flats
+	{_ F _ F _ _ F _ F _ _ N}, // F major  - 1 flat
+ //  C C#D D#E F F#G G#A A#B 	
+	{_ S _ S _ _ S _ S _ S _}, // C major
+	{_ S _ S _ N _ _ S _ S _}, // G major - 1 sharp
+	{N _ _ S _ N _ _ S _ S _}, // D major - 2 sharps
+	{N _ _ S _ N _ N _ _ S _}, // A major - 3 sharps
+	{N _ N _ _ N _ N _ _ S _}, // E major - 4 sharps
+	{N _ N _ _ N _ N _ N _ _}, // B major - 5 sharps
+};
+
+#undef S
+#undef F
+#undef N
+#undef _
+
+- (int) stepWithPitch:(int)pitch
+{
+	int 	semi 		= pitch % 12;
+	int		key			= [self song]->fProperties.front().fKey;
+	bool 	useSharps	= key >= 0;
+	
+	return	sSemi2Pitch[useSharps][semi];
+}
+
+- (float) noteYWithPitch:(int)pitch accidental:(VLMusicElement*)accidental
 {
 	int 	semi 		= pitch % 12;
 	int		octave  	= (pitch / 12) - 5;
-	bool 	useSharps	= [self song]->fProperties.front().fKey >= 0;
+	int		key			= [self song]->fProperties.front().fKey;
 
-	float y 	= octave*3.5f*kLineH;
-	float sharp = useSharps ? 0.0f : 0.5f*kLineH;
+	*accidental = sSemi2Accidental[key+6][semi];
 
-	switch (semi) {
-	case 0: // C
-		return y-1.0f*kLineH;
-	case 1: // C# / Db
-		return y-1.0f*kLineH+sharp;
-	case 2: // D
-		return y-0.5f*kLineH;
-	case 3: // D# / Eb
-		return y-0.5f*kLineH+sharp;
-	case 4: // E
-		return y;
-	case 5: // F
-		return y+0.5f*kLineH;
-	case 6: // F# / Gb
-		return y+0.5f*kLineH+sharp;
-	case 7: // G
-		return y+1.0f*kLineH;
-	case 8: // G# / Ab
-		return y+1.0f*kLineH+sharp;
-	case 9: // A
-		return y+1.5f*kLineH;
-	case 10: // A# / Bb
-		return y+1.5f*kLineH+sharp;
-	case 11: // B
-	default:
-		return y+2.0f*kLineH;
-	}
+	return (octave*3.5f+[self stepWithPitch:pitch]*0.5f-1.0f)*kLineH;
 }
 
-- (float) noteYInMeasure:(int)measure withPitch:(int)pitch
+- (float) noteYInMeasure:(int)measure withPitch:(int)pitch accidental:(VLMusicElement*)accidental
 {
-	return [self systemY:measure/fMeasPerSystem]+[self noteYWithPitch:pitch];
+	return [self systemY:measure/fMeasPerSystem]
+		+ [self noteYWithPitch:pitch accidental:accidental];
 }
 
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at
@@ -420,7 +442,7 @@ static float sFlatPos[] = {
 }
 
 const float kSemiFloor = -3.0f*kLineH;
-static int sSemiToPitch[] = {
+static int8_t sSemiToPitch[] = {
 	53, // F
 	55,	57, // A
 	59, 60, // Middle C
@@ -433,6 +455,97 @@ static int sSemiToPitch[] = {
 	83, 84, // C
 	86, 88  // E
 };
+
+static int8_t sFlatAcc[] = {
+	6,	// Cb
+   11,	
+	4,	// Db
+	9,
+	2,	// Eb
+	7,	// Fb
+   12,
+	5, 	// Gb
+   10,
+	3,	// Ab
+	8,	
+	1,	// Bb
+};
+
+static int8_t sSharpAcc[] = {
+	2,	// C# is the 2nd sharp
+	9,
+	4,	// D#
+   11,
+	6,	// E#
+	1,	// F#
+	8,
+	3,	// G#
+   10,
+	5,	// A#
+   12,
+	7,	// B#
+};
+
+- (void) accidentalFromEvent:(NSEvent *)event
+{
+	const VLProperties & 	prop = [self song]->fProperties.front();
+
+	fCursorAccidental	= (VLMusicElement)0;
+	if (prop.fKey >= 0) {
+		if (prop.fKey >= sSharpAcc[fCursorPitch % 12]) { // Sharp in Key
+			switch ([event modifierFlags] & (NSAlternateKeyMask|NSCommandKeyMask)) {
+			case NSAlternateKeyMask:
+				fCursorAccidental	= kMusicFlatCursor; // G# -> Gb
+				fCursorActualPitch  = fCursorPitch-1;
+				break;
+			default:
+			case NSCommandKeyMask:
+				fCursorActualPitch  = fCursorPitch+1;
+				break;				  // G# -> G#
+			case NSAlternateKeyMask|NSCommandKeyMask:
+				fCursorAccidental	= kMusicNaturalCursor; // G# -> G
+				fCursorActualPitch	= fCursorPitch;
+				break;
+			}
+			return;
+		}
+	} else {
+		if (prop.fKey <= -sFlatAcc[fCursorPitch % 12]) { // Flat in Key
+			switch ([event modifierFlags] & (NSAlternateKeyMask|NSCommandKeyMask)) {
+			default:
+			case NSAlternateKeyMask:
+				fCursorActualPitch  = fCursorPitch-1;
+				break;				  // Gb -> Gb
+			case NSCommandKeyMask:
+				fCursorAccidental	= kMusicSharpCursor; // Gb -> G#
+				fCursorActualPitch  = fCursorPitch+1;
+				break;				  
+			case NSAlternateKeyMask|NSCommandKeyMask:
+				fCursorAccidental	= kMusicNaturalCursor; // Gb -> G
+				fCursorActualPitch	= fCursorPitch;
+				break;
+			}
+			return;
+		}
+	}
+	//
+	// Natural
+	//
+	switch ([event modifierFlags] & (NSAlternateKeyMask|NSCommandKeyMask)) {
+	case NSAlternateKeyMask:
+		fCursorAccidental	= kMusicFlatCursor; // G -> Gb
+		fCursorActualPitch	= fCursorPitch-1;
+		break;
+	case NSCommandKeyMask:
+		fCursorAccidental	= kMusicSharpCursor; // G -> G#
+		fCursorActualPitch	= fCursorPitch+1;
+		break;
+	default:
+	case NSAlternateKeyMask|NSCommandKeyMask:
+		fCursorActualPitch	= fCursorPitch;
+		break;				  					 // G -> G
+	}
+}
 
 - (VLRegion) findRegionForEvent:(NSEvent *) event
 {
@@ -475,9 +588,11 @@ static int sSemiToPitch[] = {
 		return fCursorRegion = kRegionLyrics;
 	}
 
-	loc.y		   -= kSystemY+kSemiFloor;
-	int semi		= static_cast<int>(roundf(loc.y / (0.5f*kLineH)));
-	fCursorPitch	= sSemiToPitch[semi];
+	loc.y		   	   -= kSystemY+kSemiFloor;
+	int semi			= static_cast<int>(roundf(loc.y / (0.5f*kLineH)));
+	fCursorPitch		= sSemiToPitch[semi];
+
+	[self accidentalFromEvent:event];
 
 	return fCursorRegion = kRegionNote;
 }
@@ -492,6 +607,14 @@ static int sSemiToPitch[] = {
 	bool hasCursor = fCursorPitch != VLNote::kNoPitch;
 
 	[self setNeedsDisplay:(hadCursor || hasCursor)];
+}
+
+- (void)flagsChanged:(NSEvent *)event
+{
+	if (fCursorPitch != VLNote::kNoPitch) {
+		[self accidentalFromEvent:event];
+		[self setNeedsDisplay:YES];
+	}
 }
 
 - (void) mouseEntered:(NSEvent *)event
