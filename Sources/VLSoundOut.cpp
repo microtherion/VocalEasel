@@ -55,13 +55,6 @@ VLSoundOut * VLSoundOut::Instance()
 		if (!sSoundScheduler.get())
 			sSoundScheduler.reset(new VLSoundScheduler);
 	}
-}
-
-VLSoundOut * VLSoundOut::Instance()
-{
-	if (!sSoundOut.get()) 
-		sSoundOut.reset(new VLAUSoundOut);
-
 	return sSoundOut.get();
 }
 
