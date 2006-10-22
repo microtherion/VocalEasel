@@ -21,6 +21,7 @@
 		952CBBB5095FD34F00434E43 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB3095FD34F00434E43 /* AudioUnit.framework */; };
 		952CBBB6095FD37300434E43 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		952DCD78096BBB11001C2316 /* VLSheetViewChords.mm in Sources */ = {isa = PBXBuildFile; fileRef = 952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */; };
+		953722670AE9F0E100B6E483 /* VLLilypondDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */; };
 		95498DBD0AE3812F006B5F81 /* VLSoundSched.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */; };
 		955E58E5095658AB0045FDA5 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		955E59610957C1400045FDA5 /* TVLChord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E59600957C1400045FDA5 /* TVLChord.cpp */; };
@@ -34,6 +35,13 @@
 		95B3E1A70960E58B000E9C0D /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 95B3E1980960E58B000E9C0D /* Music */; };
 		95B66658096BCA1F00FE18C9 /* VLSheetViewNotes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */; };
 		95BDA15909540BF1009F9D65 /* VLSheetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */; };
+		95E04DA70AEB486E006F30A0 /* TVLLilypond.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */; };
+		95E04DA80AEB4878006F30A0 /* VLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* VLDocument.mm */; };
+		95E04DA90AEB487A006F30A0 /* VLLilypondDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */; };
+		95E04DAA0AEB487E006F30A0 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
+		95E04DAB0AEB4886006F30A0 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
+		95E04DC70AEB4B57006F30A0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		95E04DCE0AEB4D9B006F30A0 /* Templates in Resources */ = {isa = PBXBuildFile; fileRef = 95E04DCA0AEB4D9B006F30A0 /* Templates */; };
 		95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
 		95F5F5340ADCCFBB003980B2 /* DTD in Resources */ = {isa = PBXBuildFile; fileRef = 95F5F51E0ADCCFBB003980B2 /* DTD */; };
 /* End PBXBuildFile section */
@@ -61,6 +69,8 @@
 		952CBBB3095FD34F00434E43 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = /System/Library/Frameworks/AudioUnit.framework; sourceTree = "<absolute>"; };
 		952DCD76096BBB11001C2316 /* VLSheetViewChords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSheetViewChords.h; path = Sources/VLSheetViewChords.h; sourceTree = "<group>"; };
 		952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetViewChords.mm; path = Sources/VLSheetViewChords.mm; sourceTree = "<group>"; };
+		953722650AE9F0E100B6E483 /* VLLilypondDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLLilypondDocument.h; path = Sources/VLLilypondDocument.h; sourceTree = "<group>"; };
+		953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLLilypondDocument.mm; path = Sources/VLLilypondDocument.mm; sourceTree = "<group>"; };
 		95498DBB0AE3812F006B5F81 /* VLSoundSched.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSoundSched.h; path = Sources/VLSoundSched.h; sourceTree = "<group>"; };
 		95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSoundSched.mm; path = Sources/VLSoundSched.mm; sourceTree = "<group>"; };
 		955E58E3095658AB0045FDA5 /* VLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLModel.h; path = Sources/VLModel.h; sourceTree = "<group>"; };
@@ -77,6 +87,9 @@
 		95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetViewNotes.mm; path = Sources/VLSheetViewNotes.mm; sourceTree = "<group>"; };
 		95BDA15709540BF1009F9D65 /* VLSheetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSheetView.h; path = Sources/VLSheetView.h; sourceTree = "<group>"; };
 		95BDA15809540BF1009F9D65 /* VLSheetView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetView.mm; path = Sources/VLSheetView.mm; sourceTree = "<group>"; };
+		95E04DA00AEB4837006F30A0 /* TVLLilypond */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLLilypond; sourceTree = BUILT_PRODUCTS_DIR; };
+		95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = TVLLilypond.mm; path = Tests/TVLLilypond.mm; sourceTree = "<group>"; };
+		95E04DCA0AEB4D9B006F30A0 /* Templates */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Templates; path = Resources/Templates; sourceTree = "<group>"; };
 		95F5F50D0ADCC433003980B2 /* VLXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLXMLDocument.h; path = Sources/VLXMLDocument.h; sourceTree = "<group>"; };
 		95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLXMLDocument.mm; path = Sources/VLXMLDocument.mm; sourceTree = "<group>"; };
 		95F5F51E0ADCCFBB003980B2 /* DTD */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DTD; path = Resources/DTD; sourceTree = "<group>"; };
@@ -116,6 +129,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		95E04D9E0AEB4837006F30A0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95E04DC70AEB4B57006F30A0 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -146,6 +167,7 @@
 				955E595C0957C0FC0045FDA5 /* TVLChord */,
 				952CBB98095FD19D00434E43 /* TVLSoundOut */,
 				959408A0096922CA007CCCF8 /* TVLEdit */,
+				95E04DA00AEB4837006F30A0 /* TVLLilypond */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -183,6 +205,8 @@
 				95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */,
 				95F5F50D0ADCC433003980B2 /* VLXMLDocument.h */,
 				95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */,
+				953722650AE9F0E100B6E483 /* VLLilypondDocument.h */,
+				953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -199,6 +223,7 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				95E04DCA0AEB4D9B006F30A0 /* Templates */,
 				9593E4E60AE0ED1F00035816 /* vlsong.icns */,
 				9593E4E70AE0ED1F00035816 /* vocalese.icns */,
 				95F5F51E0ADCCFBB003980B2 /* DTD */,
@@ -224,6 +249,7 @@
 		955E59560957C0C50045FDA5 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */,
 				959408AC096922EA007CCCF8 /* TVLEdit.cpp */,
 				952CBB9E095FD1D900434E43 /* TVLSoundOut.cpp */,
 				955E59600957C1400045FDA5 /* TVLChord.cpp */,
@@ -300,6 +326,22 @@
 			productReference = 959408A0096922CA007CCCF8 /* TVLEdit */;
 			productType = "com.apple.product-type.tool";
 		};
+		95E04D9F0AEB4837006F30A0 /* TVLLilypond */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 95E04DA20AEB485A006F30A0 /* Build configuration list for PBXNativeTarget "TVLLilypond" */;
+			buildPhases = (
+				95E04D9D0AEB4837006F30A0 /* Sources */,
+				95E04D9E0AEB4837006F30A0 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TVLLilypond;
+			productName = TVLLilypond;
+			productReference = 95E04DA00AEB4837006F30A0 /* TVLLilypond */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -317,6 +359,7 @@
 				955E595B0957C0FC0045FDA5 /* TVLChord */,
 				952CBB97095FD19D00434E43 /* TVLSoundOut */,
 				9594089F096922CA007CCCF8 /* TVLEdit */,
+				95E04D9F0AEB4837006F30A0 /* TVLLilypond */,
 			);
 		};
 /* End PBXProject section */
@@ -334,6 +377,7 @@
 				95F5F5340ADCCFBB003980B2 /* DTD in Resources */,
 				9593E4E80AE0ED1F00035816 /* vlsong.icns in Resources */,
 				9593E4E90AE0ED1F00035816 /* vocalese.icns in Resources */,
+				95E04DCE0AEB4D9B006F30A0 /* Templates in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,6 +397,7 @@
 				95B66658096BCA1F00FE18C9 /* VLSheetViewNotes.mm in Sources */,
 				95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */,
 				95498DBD0AE3812F006B5F81 /* VLSoundSched.mm in Sources */,
+				953722670AE9F0E100B6E483 /* VLLilypondDocument.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,6 +426,18 @@
 			files = (
 				959408AD096922EA007CCCF8 /* TVLEdit.cpp in Sources */,
 				959408AE096922F7007CCCF8 /* VLModel.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95E04D9D0AEB4837006F30A0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95E04DA70AEB486E006F30A0 /* TVLLilypond.mm in Sources */,
+				95E04DA80AEB4878006F30A0 /* VLDocument.mm in Sources */,
+				95E04DA90AEB487A006F30A0 /* VLLilypondDocument.mm in Sources */,
+				95E04DAA0AEB487E006F30A0 /* VLModel.cpp in Sources */,
+				95E04DAB0AEB4886006F30A0 /* VLXMLDocument.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,6 +756,73 @@
 			};
 			name = Default;
 		};
+		95E04DA30AEB485A006F30A0 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				INSTALL_PATH = "$(HOME)/bin";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = TVLLilypond;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		95E04DA40AEB485A006F30A0 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Sources/Vocalese_Prefix.pch;
+				INSTALL_PATH = "$(HOME)/bin";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = TVLLilypond;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		95E04DA50AEB485A006F30A0 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Sources/Vocalese_Prefix.pch;
+				INSTALL_PATH = "$(HOME)/bin";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = TVLLilypond;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -748,6 +872,16 @@
 				95D7BF850AA699C600D5E02C /* Development */,
 				95D7BF860AA699C600D5E02C /* Deployment */,
 				95D7BF870AA699C600D5E02C /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		95E04DA20AEB485A006F30A0 /* Build configuration list for PBXNativeTarget "TVLLilypond" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95E04DA30AEB485A006F30A0 /* Development */,
+				95E04DA40AEB485A006F30A0 /* Deployment */,
+				95E04DA50AEB485A006F30A0 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Default;

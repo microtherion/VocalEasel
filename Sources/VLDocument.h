@@ -26,6 +26,7 @@
 {
 	VLSong *	song;
 	VLEditable *editTarget;
+	NSString *	lilypondTemplate;
 }
 
 - (VLSong *)	song;

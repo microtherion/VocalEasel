@@ -7,6 +7,8 @@
 //
 
 #import "VLDocument.h"
+#import "VLXMLDocument.h"
+#import "VLLilypondDocument.h"
 
 @implementation VLEditable
 
@@ -48,8 +50,9 @@
         // Add your subclass-specific initialization here.
         // If an error occurs here, send a [self release] message and return nil.
     
-		song 		= new VLSong;
-		editTarget	= nil;
+		song 				= new VLSong;
+		editTarget			= nil;
+		lilypondTemplate	= @"default";
     }
     return self;
 }
@@ -126,6 +129,24 @@
 {
     [super windowControllerDidLoadNib:controller];
 	[controller setShouldCloseDocument:YES];
+}
+
+- (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
+{
+	if ([typeName isEqual:@"Song"])
+		return [self XMLDataWithError:outError];
+	else if ([typeName isEqual:@"Lilypond"])
+		return [self lilypondDataWithError:outError];
+	else
+		return nil;
+}
+
+- (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
+{
+	if ([typeName isEqual:@"Song"])
+		return [self readFromXMLData:data error:outError];
+	else
+		return NO;
 }
 
 @end

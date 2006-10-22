@@ -1,0 +1,33 @@
+\version "1.8.0"
+
+\header {
+	title		= "<{TITLE}>"
+	poet 	= "<{POET}>"
+	composer= "<{COMPOSER}>"
+	arranger  = "<{ARRANGER}>"
+	tagline	= #(string-append "Vocalese <{VLVERSION}> / Lilypond" (lilypond-version))
+}
+
+\paper {
+       #(set-paper-size "<{PAPERSIZE}>")
+       indent = 0.0\cm
+       pagenumber = no
+       page-top-space = #.1
+       <{FORMATTING}>
+}
+
+#(set-global-staff-size <{STAFFSIZE}>)
+
+\score {
+  <<
+    \context ChordNames \chords { \override ChordName #'font-size = #6
+        <{CHORDS}>
+    }
+    \context Voice = "mel" {
+      \time <{TIME}>
+      \key <{KEY}> 
+      <{NOTES}>	
+    }	
+    \lyricsto "mel" \new Lyrics { <{LYRICS}> }
+  >>
+}

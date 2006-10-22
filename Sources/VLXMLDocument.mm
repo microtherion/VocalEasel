@@ -194,7 +194,7 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 	}			 
 }
 
-- (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
+- (NSData *)XMLDataWithError:(NSError **)outError
 {
 	NSXMLElement  * partList = [NSXMLNode elementWithName:@"part-list"];
 	[partList addChild: [self scorePartWithID:@"HARM" name:@"Chords"]];
@@ -359,7 +359,7 @@ int8_t sStepToPitch[] = {
 	}
 }
 
-- (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
+- (BOOL)readFromXMLData:(NSData *)data error:(NSError **)outError
 {
 	NSXMLDocument * doc 	= [[NSXMLDocument alloc] initWithData:data
 													 options:0

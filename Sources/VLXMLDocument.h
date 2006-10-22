@@ -11,7 +11,7 @@
 
 @interface VLDocument (XML) 
 
-- (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError;
-- (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError;
+- (NSData *)XMLDataWithError:(NSError **)outError;
+- (BOOL)readFromXMLData:(NSData *)data error:(NSError **)outError;
 
 @end
