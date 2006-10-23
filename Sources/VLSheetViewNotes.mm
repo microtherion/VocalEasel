@@ -270,28 +270,11 @@
 			int			pitch	= note->fPitch;
 			while (dur > 0) {
 				VLFraction partialDur; // Actual value of note drawn
+				VLFraction noteDur; 	// Visual value of note
+				bool triplet;
 				measure.fProperties->PartialNote(at, dur, &partialDur);
+				measure.fProperties->VisualNote(at, partialDur, &noteDur, &triplet);
 				
-				BOOL triplet = !(partialDur.fDenom % 3);
-				VLFraction noteDur(1); // Visual value of note
-				
-				if (triplet) {
-					if (swing) {	// Swing 8ths / 16ths are written as straight 8ths	
-						if (partialDur == 4*swung/3 && (at % swingGrid) == 0) {	
-							noteDur	= swung;
-							triplet	= NO;
-						} else if (partialDur == 2*swung/3 && ((at+partialDur) % swingGrid) == 0) {
-							noteDur	= swung;
-							triplet	= NO;
-						} else {
-							noteDur = 4*partialDur/3;
-						}
-					} else {
-						noteDur = 4*partialDur/3;
-					}
-				} else {
-					noteDur = partialDur;
-				}
 				if (pitch != VLNote::kNoPitch) {
 					VLMusicElement		accidental;
 					NSPoint pos = 

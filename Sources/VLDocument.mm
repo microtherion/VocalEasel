@@ -53,6 +53,10 @@
 		song 				= new VLSong;
 		editTarget			= nil;
 		lilypondTemplate	= @"default";
+		songTitle			= @"";
+		songLyricist		= @"";
+		songComposer		= @"";
+		songArranger		= @"";
     }
     return self;
 }
@@ -133,20 +137,30 @@
 
 - (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
 {
-	if ([typeName isEqual:@"Song"])
+	if ([typeName isEqual:@"VLNativeType"]) {
 		return [self XMLDataWithError:outError];
-	else if ([typeName isEqual:@"Lilypond"])
+	} else if ([typeName isEqual:@"VLLilypondType"]) {
 		return [self lilypondDataWithError:outError];
-	else
+	} else {
+		if (outError)
+			*outError = [NSError errorWithDomain:NSCocoaErrorDomain
+								 code:NSPersistentStoreInvalidTypeError
+								 userInfo:nil];
 		return nil;
+	}
 }
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
 {
-	if ([typeName isEqual:@"Song"])
+	if ([typeName isEqual:@"VLNativeType"]) {
 		return [self readFromXMLData:data error:outError];
-	else
+	} else {
+		if (outError)
+			*outError = [NSError errorWithDomain:NSCocoaErrorDomain
+								 code:NSPersistentStoreInvalidTypeError
+								 userInfo:nil];
 		return NO;
+	}
 }
 
 @end

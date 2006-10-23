@@ -16,11 +16,11 @@ int main(int, char *const argv[])
 	VLDocument * 		doc 	= [[VLDocument alloc] init];
 	NSString *			file	= [NSString stringWithUTF8String:argv[1]];
 	NSError *			err;
-	[doc readFromURL:[NSURL fileURLWithPath:file] ofType:@"Song" error:&err];
+	[doc readFromURL:[NSURL fileURLWithPath:file] ofType:@"VLNativeType" error:&err];
 	[doc writeToURL:[NSURL fileURLWithPath:	
 							   [[file stringByDeletingPathExtension]
 								   stringByAppendingPathExtension:@"ly"]]
-		 ofType:@"Lilypond" error:&err];
+		 ofType:@"VLLilypondType" error:&err];
 	[pool release];
 
 	exit(0);

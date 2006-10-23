@@ -19,6 +19,8 @@
 
 - (void) substituteMacro:(NSString *)m withValue:(NSString *)value
 {
+	if ([value isEqual:@""])
+		return;
 	NSString * 	macro = [NSString stringWithFormat:@"<{%@}>", m];
 	NSRange		range = 
 		[value rangeOfCharacterFromSet:
@@ -82,19 +84,49 @@
 
 @implementation VLDocument (Lilypond)
 
+const int kMajorOffset 	= 6;
+const int kMinorOffset  = 9;
+
+const char * sKeyNames[] = {
+	"ges", "des", "as", "es", "bes", "f",
+	"c", "g", "d", "a", "e", "b", "fis", "cis", "gis"
+};
+
 - (NSData *)lilypondDataWithError:(NSError **)outError
 {
-	NSBundle *	 		bndl = [NSBundle mainBundle];
-	NSString * 			tmpl = 
+	const VLProperties & 	prop = song->fProperties.front();
+	NSBundle *	 			bndl = [NSBundle mainBundle];
+	NSString * 				tmpl = 
 		[bndl pathForResource:lilypondTemplate
 			  ofType:@"lyt" inDirectory:@"Templates"];
-	NSStringEncoding	enc = NSUTF8StringEncoding;
-	NSError *			err;
-	NSMutableString * 	ly = 
-		[[NSString stringWithContentsOfFile:tmpl encoding:enc error:&err]
-			mutableCopy];
+	NSStringEncoding		enc = NSUTF8StringEncoding;
+	NSMutableString * 		ly = 
+		[NSMutableString stringWithContentsOfFile:tmpl encoding:enc error:outError];
+	[ly substituteMacro:@"TITLE" withValue:songTitle];
+	[ly substituteMacro:@"POET" withValue:songLyricist];
+	[ly substituteMacro:@"COMPOSER" withValue:songComposer];
+	[ly substituteMacro:@"ARRANGER" withValue:songArranger];
 	[ly substituteMacro:@"VLVERSION" withValue:
 			[bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
+	[ly substituteMacro:@"PAPERSIZE" withValue:@"letter"];
+	[ly substituteMacro:@"FORMATTING" withValue:@"ragged-last-bottom = ##f"];
+	std::string			lys;
+	song->LilypondChords(lys);
+	[ly substituteMacro:@"VLVERSION" withValue:
+			[bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
+	[ly substituteMacro:@"CHORDS" withValue: 
+			[NSString stringWithUTF8String:lys.c_str()]];
+	[ly substituteMacro:@"TIME" withValue:
+			[NSString stringWithFormat:@"%d/%d",
+					  prop.fTime.fNum, prop.fTime.fDenom]];
+	[ly substituteMacro:@"KEY" withValue: prop.fMode > 0 
+		? [NSString stringWithFormat:@"%s \\major",
+					sKeyNames[prop.fKey+kMajorOffset]]
+		: [NSString stringWithFormat:@"%s \\minor", 
+					sKeyNames[prop.fKey+kMinorOffset]]];
+	song->LilypondNotes(lys);
+	[ly substituteMacro:@"NOTES" withValue: 
+			[NSString stringWithUTF8String:lys.c_str()]];
 	[ly purgeMacros];
 	return [ly dataUsingEncoding:enc];
 }

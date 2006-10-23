@@ -1,11 +1,11 @@
-\version "1.8.0"
+\version "2.8.0"
 
 \header {
 	title		= "<{TITLE}>"
 	poet 	= "<{POET}>"
 	composer= "<{COMPOSER}>"
 	arranger  = "<{ARRANGER}>"
-	tagline	= #(string-append "Vocalese <{VLVERSION}> / Lilypond" (lilypond-version))
+	tagline	= #(string-append "Created with VocalEasel <{VLVERSION}> / Lilypond " (lilypond-version))
 }
 
 \paper {

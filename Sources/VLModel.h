@@ -91,12 +91,15 @@ inline bool operator>=(VLFraction one, VLFraction other)
 	return one.fNum*other.fDenom >= other.fNum*one.fDenom;
 }
 
+class VLProperties;
+
 struct VLNote {
 	VLFraction 	fDuration;
 	int8_t		fPitch;		// Semitones
 	enum {
 	    kNoPitch = -128,
-	    kMiddleC = 60
+	    kMiddleC = 60,
+		kOctave	 = 12
 	};
 	//
 	// We only allow ties BETWEEN measures. Within measures, we just store
@@ -115,7 +118,7 @@ struct VLNote {
 	VLNote(std::string name);
 
 	void Name(std::string & name, bool useSharps = false) const;
-	void LilypondName(std::string & name, bool useSharps = false) const;
+	void LilypondName(std::string & name, VLFraction at, const VLProperties & prop) const;
 };
 
 struct VLRest : VLNote {
@@ -189,6 +192,10 @@ struct VLProperties {
 	// Subdivide a note and adjust for swing
 	//
 	void PartialNote(VLFraction at, VLFraction totalDuration, VLFraction * noteDuration) const;  
+	//
+	// Determine visual representation of note head
+	//
+	void VisualNote(VLFraction at, VLFraction actualDur, VLFraction *visualDur, bool * triplet) const;
 };
 
 struct VLSyllable {
@@ -222,6 +229,8 @@ struct VLSong {
 	void Transpose(int semitones);
 
 	size_t	CountMeasures() const { return fMeasures.size(); }
+	void	LilypondNotes(std::string & notes) const;
+	void	LilypondChords(std::string & chords) const;
 };
 
 // Local Variables:

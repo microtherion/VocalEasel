@@ -27,6 +27,10 @@
 	VLSong *	song;
 	VLEditable *editTarget;
 	NSString *	lilypondTemplate;
+	NSString * 	songTitle;
+	NSString *	songLyricist;
+	NSString *	songComposer;
+	NSString *	songArranger;
 }
 
 - (VLSong *)	song;
