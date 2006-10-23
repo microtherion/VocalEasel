@@ -14,7 +14,7 @@
 			<key>CFBundleTypeIconFile</key>
 			<string>vlsong.icns</string>
 			<key>CFBundleTypeName</key>
-			<string>Song</string>
+			<string>VLNativeType</string>
 			<key>CFBundleTypeOSTypes</key>
 			<array>
 				<string>????</string>
@@ -25,6 +25,10 @@
 			<false/>
 			<key>NSDocumentClass</key>
 			<string>VLDocument</string>
+			<key>NSExportableAs</key>
+			<array>
+				<string>VLLilypondType</string>
+			</array>
 			<key>NSPersistentStoreTypeKey</key>
 			<string>XML</string>
 		</dict>
@@ -34,29 +38,33 @@
 				<string>ly</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>Lilypond</string>
+			<string>VLLilypondType</string>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>TEXT</string>
+			</array>
 			<key>CFBundleTypeRole</key>
 			<string>None</string>
 			<key>LSTypeIsPackage</key>
 			<false/>
 			<key>NSPersistentStoreTypeKey</key>
-			<string>XML</string>
+			<string>Binary</string>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
-	<string>Vocalese</string>
+	<string>VocalEasel</string>
 	<key>CFBundleIconFile</key>
 	<string>vocalese</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.aereperennius.Vocalese</string>
+	<string>org.aereperennius.VocalEasel</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
-	<string>????</string>
+	<string>VçEz</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1.0a1</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
