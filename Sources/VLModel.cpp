@@ -84,9 +84,11 @@ static std::string	PitchName(int8_t pitch, bool useSharps)
 	if (kScale[pitch] != ' ')
 		return static_cast<char>(std::toupper(kScale[pitch])) + std::string();
 	else if (useSharps)
-		return static_cast<char>(std::toupper(kScale[pitch-1])) + std::string("♯");
+		return static_cast<char>(std::toupper(kScale[pitch-1])) 
+			+ std::string(kVLSharpStr);
 	else
-		return static_cast<char>(std::toupper(kScale[pitch+1])) + std::string("♭");
+		return static_cast<char>(std::toupper(kScale[pitch+1])) 
+			+ std::string(kVLFlatStr);
 }
 
 static std::string	LilypondPitchName(int8_t pitch, bool useSharps)

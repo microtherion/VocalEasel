@@ -23,6 +23,8 @@
 		952DCD78096BBB11001C2316 /* VLSheetViewChords.mm in Sources */ = {isa = PBXBuildFile; fileRef = 952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */; };
 		953722670AE9F0E100B6E483 /* VLLilypondDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */; };
 		95498DBD0AE3812F006B5F81 /* VLSoundSched.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */; };
+		954BBD860AEDDE5300BBFD5F /* VLAppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954BBD850AEDDE5300BBFD5F /* VLAppController.mm */; };
+		954BBD9A0AEDE81500BBFD5F /* VLPitchTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954BBD990AEDE81500BBFD5F /* VLPitchTransformer.mm */; };
 		955E58E5095658AB0045FDA5 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		955E59610957C1400045FDA5 /* TVLChord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E59600957C1400045FDA5 /* TVLChord.cpp */; };
 		955E59640957C15A0045FDA5 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
@@ -73,6 +75,10 @@
 		953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLLilypondDocument.mm; path = Sources/VLLilypondDocument.mm; sourceTree = "<group>"; };
 		95498DBB0AE3812F006B5F81 /* VLSoundSched.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSoundSched.h; path = Sources/VLSoundSched.h; sourceTree = "<group>"; };
 		95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSoundSched.mm; path = Sources/VLSoundSched.mm; sourceTree = "<group>"; };
+		954BBD840AEDDE5300BBFD5F /* VLAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLAppController.h; path = Sources/VLAppController.h; sourceTree = "<group>"; };
+		954BBD850AEDDE5300BBFD5F /* VLAppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLAppController.mm; path = Sources/VLAppController.mm; sourceTree = "<group>"; };
+		954BBD980AEDE81500BBFD5F /* VLPitchTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLPitchTransformer.h; path = Sources/VLPitchTransformer.h; sourceTree = "<group>"; };
+		954BBD990AEDE81500BBFD5F /* VLPitchTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPitchTransformer.mm; path = Sources/VLPitchTransformer.mm; sourceTree = "<group>"; };
 		955E58E3095658AB0045FDA5 /* VLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLModel.h; path = Sources/VLModel.h; sourceTree = "<group>"; };
 		955E58E4095658AB0045FDA5 /* VLModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VLModel.cpp; path = Sources/VLModel.cpp; sourceTree = "<group>"; };
 		955E595C0957C0FC0045FDA5 /* TVLChord */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLChord; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -207,6 +213,10 @@
 				95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */,
 				953722650AE9F0E100B6E483 /* VLLilypondDocument.h */,
 				953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */,
+				954BBD840AEDDE5300BBFD5F /* VLAppController.h */,
+				954BBD850AEDDE5300BBFD5F /* VLAppController.mm */,
+				954BBD980AEDE81500BBFD5F /* VLPitchTransformer.h */,
+				954BBD990AEDE81500BBFD5F /* VLPitchTransformer.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -398,6 +408,8 @@
 				95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */,
 				95498DBD0AE3812F006B5F81 /* VLSoundSched.mm in Sources */,
 				953722670AE9F0E100B6E483 /* VLLilypondDocument.mm in Sources */,
+				954BBD860AEDDE5300BBFD5F /* VLAppController.mm in Sources */,
+				954BBD9A0AEDE81500BBFD5F /* VLPitchTransformer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

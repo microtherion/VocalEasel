@@ -12,6 +12,11 @@
 #include <string>
 #include <inttypes.h>
 
+const int 	kVLSharpChar	= 0x266F;
+const int 	kVLFlatChar		= 0x266D;
+const char *kVLSharpStr		= "\xE2\x99\xAF";
+const char *kVLFlatStr		= "\xE2\x99\xAD";
+
 struct VLFract {
 	uint16_t	fNum;	// Numerator
 	uint16_t	fDenom;	// Denominator
