@@ -46,6 +46,18 @@
 		95E04DCE0AEB4D9B006F30A0 /* Templates in Resources */ = {isa = PBXBuildFile; fileRef = 95E04DCA0AEB4D9B006F30A0 /* Templates */; };
 		95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
 		95F5F5340ADCCFBB003980B2 /* DTD in Resources */ = {isa = PBXBuildFile; fileRef = 95F5F51E0ADCCFBB003980B2 /* DTD */; };
+		95FC668F0AF0A08C003D9C11 /* VLLogWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95FC668E0AF0A08C003D9C11 /* VLLogWindow.mm */; };
+		95FC66960AF0A112003D9C11 /* VLLogWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66950AF0A112003D9C11 /* VLLogWindow.nib */; };
+		95FC66A60AF0A24C003D9C11 /* VLPDFWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95FC66A50AF0A24C003D9C11 /* VLPDFWindow.mm */; };
+		95FC66BA0AF0A3AD003D9C11 /* VLPDFWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66B90AF0A3AD003D9C11 /* VLPDFWindow.nib */; };
+		95FC66C30AF0A4D4003D9C11 /* console.icns in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66BC0AF0A4D4003D9C11 /* console.icns */; };
+		95FC66C40AF0A4D4003D9C11 /* music.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66BD0AF0A4D4003D9C11 /* music.tiff */; };
+		95FC66C50AF0A4D5003D9C11 /* nextpage.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66BE0AF0A4D4003D9C11 /* nextpage.tiff */; };
+		95FC66C60AF0A4D5003D9C11 /* prevpage.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66BF0AF0A4D4003D9C11 /* prevpage.tiff */; };
+		95FC66C70AF0A4D5003D9C11 /* run.icns in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66C00AF0A4D4003D9C11 /* run.icns */; };
+		95FC66C80AF0A4D5003D9C11 /* zoomin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66C10AF0A4D4003D9C11 /* zoomin.tiff */; };
+		95FC66C90AF0A4D5003D9C11 /* zoomout.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66C20AF0A4D4003D9C11 /* zoomout.tiff */; };
+		95FC66CE0AF0A591003D9C11 /* VLPDFView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95FC66CC0AF0A591003D9C11 /* VLPDFView.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -99,6 +111,21 @@
 		95F5F50D0ADCC433003980B2 /* VLXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLXMLDocument.h; path = Sources/VLXMLDocument.h; sourceTree = "<group>"; };
 		95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLXMLDocument.mm; path = Sources/VLXMLDocument.mm; sourceTree = "<group>"; };
 		95F5F51E0ADCCFBB003980B2 /* DTD */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DTD; path = Resources/DTD; sourceTree = "<group>"; };
+		95FC668D0AF0A08C003D9C11 /* VLLogWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLLogWindow.h; path = Sources/VLLogWindow.h; sourceTree = "<group>"; };
+		95FC668E0AF0A08C003D9C11 /* VLLogWindow.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLLogWindow.mm; path = Sources/VLLogWindow.mm; sourceTree = "<group>"; };
+		95FC66950AF0A112003D9C11 /* VLLogWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = VLLogWindow.nib; path = Resources/VLLogWindow.nib; sourceTree = "<group>"; };
+		95FC66A40AF0A24C003D9C11 /* VLPDFWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLPDFWindow.h; path = Sources/VLPDFWindow.h; sourceTree = "<group>"; };
+		95FC66A50AF0A24C003D9C11 /* VLPDFWindow.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPDFWindow.mm; path = Sources/VLPDFWindow.mm; sourceTree = "<group>"; };
+		95FC66B90AF0A3AD003D9C11 /* VLPDFWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = VLPDFWindow.nib; path = Resources/VLPDFWindow.nib; sourceTree = "<group>"; };
+		95FC66BC0AF0A4D4003D9C11 /* console.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = console.icns; path = Resources/console.icns; sourceTree = "<group>"; };
+		95FC66BD0AF0A4D4003D9C11 /* music.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = music.tiff; path = Resources/music.tiff; sourceTree = "<group>"; };
+		95FC66BE0AF0A4D4003D9C11 /* nextpage.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = nextpage.tiff; path = Resources/nextpage.tiff; sourceTree = "<group>"; };
+		95FC66BF0AF0A4D4003D9C11 /* prevpage.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = prevpage.tiff; path = Resources/prevpage.tiff; sourceTree = "<group>"; };
+		95FC66C00AF0A4D4003D9C11 /* run.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = run.icns; path = Resources/run.icns; sourceTree = "<group>"; };
+		95FC66C10AF0A4D4003D9C11 /* zoomin.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = zoomin.tiff; path = Resources/zoomin.tiff; sourceTree = "<group>"; };
+		95FC66C20AF0A4D4003D9C11 /* zoomout.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = zoomout.tiff; path = Resources/zoomout.tiff; sourceTree = "<group>"; };
+		95FC66CC0AF0A591003D9C11 /* VLPDFView.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPDFView.mm; path = Sources/VLPDFView.mm; sourceTree = "<group>"; };
+		95FC66CD0AF0A591003D9C11 /* VLPDFView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLPDFView.h; path = Sources/VLPDFView.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +221,12 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				95FC66CC0AF0A591003D9C11 /* VLPDFView.mm */,
+				95FC66CD0AF0A591003D9C11 /* VLPDFView.h */,
+				95FC66A40AF0A24C003D9C11 /* VLPDFWindow.h */,
+				95FC66A50AF0A24C003D9C11 /* VLPDFWindow.mm */,
+				95FC668D0AF0A08C003D9C11 /* VLLogWindow.h */,
+				95FC668E0AF0A08C003D9C11 /* VLLogWindow.mm */,
 				95498DBB0AE3812F006B5F81 /* VLSoundSched.h */,
 				95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */,
 				952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */,
@@ -233,6 +266,15 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				95FC66BC0AF0A4D4003D9C11 /* console.icns */,
+				95FC66BD0AF0A4D4003D9C11 /* music.tiff */,
+				95FC66BE0AF0A4D4003D9C11 /* nextpage.tiff */,
+				95FC66BF0AF0A4D4003D9C11 /* prevpage.tiff */,
+				95FC66C00AF0A4D4003D9C11 /* run.icns */,
+				95FC66C10AF0A4D4003D9C11 /* zoomin.tiff */,
+				95FC66C20AF0A4D4003D9C11 /* zoomout.tiff */,
+				95FC66B90AF0A3AD003D9C11 /* VLPDFWindow.nib */,
+				95FC66950AF0A112003D9C11 /* VLLogWindow.nib */,
 				95E04DCA0AEB4D9B006F30A0 /* Templates */,
 				9593E4E60AE0ED1F00035816 /* vlsong.icns */,
 				9593E4E70AE0ED1F00035816 /* vocalese.icns */,
@@ -388,6 +430,15 @@
 				9593E4E80AE0ED1F00035816 /* vlsong.icns in Resources */,
 				9593E4E90AE0ED1F00035816 /* vocalese.icns in Resources */,
 				95E04DCE0AEB4D9B006F30A0 /* Templates in Resources */,
+				95FC66960AF0A112003D9C11 /* VLLogWindow.nib in Resources */,
+				95FC66BA0AF0A3AD003D9C11 /* VLPDFWindow.nib in Resources */,
+				95FC66C30AF0A4D4003D9C11 /* console.icns in Resources */,
+				95FC66C40AF0A4D4003D9C11 /* music.tiff in Resources */,
+				95FC66C50AF0A4D5003D9C11 /* nextpage.tiff in Resources */,
+				95FC66C60AF0A4D5003D9C11 /* prevpage.tiff in Resources */,
+				95FC66C70AF0A4D5003D9C11 /* run.icns in Resources */,
+				95FC66C80AF0A4D5003D9C11 /* zoomin.tiff in Resources */,
+				95FC66C90AF0A4D5003D9C11 /* zoomout.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +461,9 @@
 				953722670AE9F0E100B6E483 /* VLLilypondDocument.mm in Sources */,
 				954BBD860AEDDE5300BBFD5F /* VLAppController.mm in Sources */,
 				954BBD9A0AEDE81500BBFD5F /* VLPitchTransformer.mm in Sources */,
+				95FC668F0AF0A08C003D9C11 /* VLLogWindow.mm in Sources */,
+				95FC66A60AF0A24C003D9C11 /* VLPDFWindow.mm in Sources */,
+				95FC66CE0AF0A591003D9C11 /* VLPDFView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

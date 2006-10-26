@@ -1,0 +1,36 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {"" = id; }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = LilypondOutputWin; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                fNextPageItem = id; 
+                fPDFView = id; 
+                fPrevPageItem = id; 
+                fZoomInItem = id; 
+                fZoomOutItem = id; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = LilypondPDFView; LANGUAGE = ObjC; SUPERCLASS = PDFView; }, 
+        {
+            CLASS = VLPDFWindow; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                PDFView = id; 
+                nextPageItem = id; 
+                prevPageItem = id; 
+                zoomInItem = id; 
+                zoomOutItem = id; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}

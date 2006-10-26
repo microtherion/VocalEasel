@@ -1,0 +1,18 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = LilypondLogWin; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {fLog = id; }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {
+            CLASS = VLLogWindow; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {log = id; }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}
