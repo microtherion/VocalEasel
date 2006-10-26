@@ -4,6 +4,8 @@
 <dict>
 	<key>VLHighPitch</key>
 	<integer>75</integer>
+	<key>VLLilypondPath</key>
+	<string>/sw/bin/lilypond</string>
 	<key>VLLowPitch</key>
 	<integer>57</integer>
 </dict>

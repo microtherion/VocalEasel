@@ -2,9 +2,10 @@
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
-            ACTIONS = {playNewPitch = id; }; 
+            ACTIONS = {playNewPitch = id; selectLilypondPath = id; }; 
             CLASS = VLAppController; 
             LANGUAGE = ObjC; 
+            OUTLETS = {lilypondPath = id; }; 
             SUPERCLASS = NSObject; 
         }
     ); 

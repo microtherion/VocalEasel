@@ -53,11 +53,131 @@
 	[self setupTransformers];
 }
 
+- (id)init
+{
+	if (self = [super init]) {
+		toolPath	= nil;
+		appPath		= nil;
+	}
+}
+
+- (NSString*)getLineFromCommand:(NSString*)command
+{
+	char line[1000];
+	FILE * output = popen([command UTF8String], "r");
+	if (fgets(line, 1000, output)) {
+		fprintf(stderr, "Line %s", line);
+		size_t len = strlen(line);
+		if (len && line[len-1]=='\n') {
+			line[len-1] = 0;
+			return [NSString stringWithUTF8String:line];
+		}
+	} else
+		NSLog(@"Failed command: %@ (%d)\n", command, errno);
+	pclose(output);
+	return nil;
+}
+
+- (NSString *)lilypondVersion:(NSString *)path
+{
+	NSString * cmd 	= 
+		[NSString stringWithFormat:
+						  @"%@ --version | awk '{ print $3 }'",
+					  path];
+	return [self getLineFromCommand:cmd];
+}
+
+- (void)awakeFromNib
+{
+	[lilypondPath setAutoenablesItems:NO];
+
+	NSUserDefaults*	defaults	= [NSUserDefaults standardUserDefaults];
+	NSFileManager * fileManager	= [NSFileManager defaultManager];
+	NSString * 		lilyPath 	= [defaults stringForKey:@"VLLilypondPath"];
+	NSRange 		app 		= [lilyPath rangeOfString:@".app"];
+	bool			wantTool	= app.location == NSNotFound;
+	
+	if ([fileManager isExecutableFileAtPath:lilyPath]) {
+		//
+		// Path still valid, figure out what it is
+		//
+		if (wantTool)
+			toolPath	= lilyPath;
+		else
+			appPath		= lilyPath;
+	}
+	if (!appPath) 
+		appPath = 	
+			[[[NSWorkspace sharedWorkspace]
+				absolutePathForAppBundleWithIdentifier:@"org.lilypond.lilypond"]
+				stringByAppendingPathComponent:@"Contents/Resources/bin/lilypond"];
+	if (!toolPath) 
+		toolPath = [self getLineFromCommand:@"bash -l which lilypond"];
+
+	NSString * appVersion  = nil;
+	NSString * toolVersion = nil;
+
+	if (appPath) {
+		appVersion		= [self lilypondVersion:appPath];
+		if (!appVersion)
+			appPath	= nil;
+	}
+	if (toolPath) {
+		toolVersion		= [self lilypondVersion:toolPath];
+		if (!toolVersion)
+			toolPath	= nil;		
+	}	
+		
+	NSMenuItem	*	toolItem	= [lilypondPath itemAtIndex:0];
+	NSMenuItem	*	appItem		= [lilypondPath itemAtIndex:1];
+	
+	if (toolPath) {
+		[toolItem setTitle:
+					  [NSString stringWithFormat:@"%@ (%@)", toolPath, toolVersion]];
+	} else {
+		[toolItem setTitle:@"lilypond tool not installed"];
+		[toolItem setEnabled:NO];
+	}
+	if (appPath) {
+		NSRange r = [appPath rangeOfString:@"/Contents/Resources"];
+		[appItem setTitle:
+					 [NSString stringWithFormat:@"%@ (%@)", 
+							   [appPath substringToIndex:r.location], appVersion]];
+	} else {
+		[appItem setTitle:@"Lilypond.app not installed"];
+		[appItem setEnabled:NO];
+	}
+	if (!toolPath && appPath) {
+		wantTool = false;
+		[defaults setObject:appPath forKey:@"VLLilypondPath"];
+	} else if (toolPath && !appPath) {
+		wantTool = true;
+		[defaults setObject:toolPath forKey:@"VLLilypondPath"];
+	}
+	[lilypondPath selectItemWithTag:wantTool ? 0 : 1];
+}
+
 - (IBAction) playNewPitch:(id)sender
 {
 	VLNote note(VLFraction(1,4), [sender intValue]);
 	
 	VLSoundOut::Instance()->PlayNote(note);
+}
+
+- (IBAction) selectLilypondPath:(id)sender
+{
+	NSUserDefaults*	defaults	= [NSUserDefaults standardUserDefaults];
+
+	switch ([sender tag]) {
+	case 0:
+		[defaults setObject:toolPath forKey:@"VLLilypondPath"];
+		break;
+	case 1:
+		[defaults setObject:toolPath forKey:@"VLLilypondPath"];
+		break;
+	default:
+		break;
+	}
 }
 
 @end
