@@ -19,12 +19,13 @@
             SUPERCLASS = NSWindowController; 
         }, 
         {CLASS = LilypondPDFView; LANGUAGE = ObjC; SUPERCLASS = PDFView; }, 
+        {CLASS = VLPDFView; LANGUAGE = ObjC; SUPERCLASS = PDFView; }, 
         {
             CLASS = VLPDFWindow; 
             LANGUAGE = ObjC; 
             OUTLETS = {
-                PDFView = id; 
                 nextPageItem = id; 
+                pdfView = id; 
                 prevPageItem = id; 
                 zoomInItem = id; 
                 zoomOutItem = id; 

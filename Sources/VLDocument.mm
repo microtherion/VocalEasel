@@ -1,5 +1,5 @@
 //
-//  MyDocument.m
+//  VLDocument.mm
 //  Vocalese
 //
 //  Created by Matthias Neeracher on 12/17/05.
@@ -9,36 +9,9 @@
 #import "VLDocument.h"
 #import "VLXMLDocument.h"
 #import "VLLilypondDocument.h"
-
-@implementation VLEditable
-
-- (NSString *) stringValue
-{
-	return @"";
-}
-
-- (void) setStringValue:(NSString*)val
-{
-}
-
-- (BOOL) validValue:(NSString*)val
-{
-	return YES;
-}
-
-- (void) moveToNext
-{
-}
-
-- (void) moveToPrev
-{
-}
-
-- (void) highlightCursor
-{
-}
-
-@end
+#import "VLPDFWindow.h"
+#import "VLLogWindow.h"
+#import "VLSheetWindow.h"
 
 @implementation VLDocument
 
@@ -46,25 +19,69 @@
 {
     self = [super init];
     if (self) {
-    
-        // Add your subclass-specific initialization here.
-        // If an error occurs here, send a [self release] message and return nil.
-    
 		song 				= new VLSong;
-		editTarget			= nil;
 		lilypondTemplate	= @"default";
 		songTitle			= @"";
 		songLyricist		= @"";
 		songComposer		= @"";
 		songArranger		= @"";
+		sheetWin			= nil;
+		pdfWin				= nil;	
+		logWin				= nil;
     }
     return self;
+}
+
+- (void) close
+{
+	[logWin close];
+	[pdfWin close];
+
+	[super close];
 }
 
 - (void) dealloc
 {
 	delete song;
+
 	[super dealloc];
+}
+
+- (VLLogWindow *)logWin
+{
+	if (!logWin) {
+		logWin = [[VLLogWindow alloc] initWithWindowNibName: @"VLLogWindow"];
+		[self addWindowController: logWin];
+		[logWin release];
+	}
+	return logWin;
+}
+
+- (VLPDFWindow *)pdfWin
+{
+	if (!pdfWin) {
+		pdfWin = [[VLPDFWindow alloc] initWithWindowNibName: @"VLPDFWindow"];
+		[self addWindowController: pdfWin];
+		[pdfWin release];
+	}
+	return pdfWin;
+}
+
+- (void)makeWindowControllers
+{
+	sheetWin = [[VLSheetWindow alloc] initWithWindowNibName: @"VLDocument"];
+	[self addWindowController: sheetWin];
+	[sheetWin setShouldCloseDocument:YES];
+	[sheetWin release];
+}
+
+- (void)showWindows
+{
+	[sheetWin showWindow: self];
+	if ([pdfWin isWindowLoaded])
+		[pdfWin showWindow: self];
+	if ([logWin isWindowLoaded])
+		[logWin showWindow: self];
 }
 
 - (VLSong *) song
@@ -124,17 +141,6 @@
 	[self updateChangeCount:NSChangeDone];
 }
 
-- (NSString *)windowNibName
-{
-    return @"VLDocument";
-}
-
-- (void)windowControllerDidLoadNib:(NSWindowController *) controller
-{
-    [super windowControllerDidLoadNib:controller];
-	[controller setShouldCloseDocument:YES];
-}
-
 - (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
 {
 	if ([typeName isEqual:@"VLNativeType"]) {
@@ -161,6 +167,83 @@
 								 userInfo:nil];
 		return NO;
 	}
+}
+
+
+- (IBAction) engrave:(id)sender
+{
+	NSTask *	lilypondTask	= [[NSTask alloc] init];
+	NSString *	path			= [[self fileURL] path];
+	NSString *  root			= 
+		[[path lastPathComponent] stringByDeletingPathExtension];
+    NSString *  tmpDir			= @"/var/tmp";
+	NSBundle *	mainBundle		= [NSBundle mainBundle];
+
+	//
+	// Convert to Lilypond format
+	//
+	NSError *			err;
+	[self writeToURL:
+		[NSURL fileURLWithPath:
+			[[tmpDir stringByAppendingPathComponent:root]
+				stringByAppendingPathExtension:@"ly"]]
+		  ofType:@"VLLilypondType" error:&err];
+	NSPipe *	pipe			= [NSPipe pipe];
+	NSString *	tool			= 
+		[[NSUserDefaults standardUserDefaults] 
+			stringForKey:@"VLLilypondPath"];
+	NSArray *	arguments		= [NSArray arrayWithObjects:tool, root, nil];
+
+	[[NSNotificationCenter defaultCenter] 
+		addObserver:self selector:@selector(engraveDone:)
+		name:NSTaskDidTerminateNotification object:lilypondTask];
+	
+	[lilypondTask setCurrentDirectoryPath:tmpDir];
+	[lilypondTask setStandardOutput: pipe];
+	[lilypondTask setStandardError: pipe];
+	[lilypondTask setArguments: arguments];
+	[lilypondTask setLaunchPath: 
+					  [mainBundle pathForResource:@"lilyWrapper" ofType:@""]];
+	[lilypondTask launch];
+
+	[[self logWin] showWindow: self];
+	
+	[NSThread detachNewThreadSelector:@selector(logFromFileHandle:) toTarget:logWin 
+		withObject:[pipe fileHandleForReading]];
+}
+
+- (void)engraveDone:(NSNotification *)notification {
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+    int status = [[notification object] terminationStatus];
+    if (!status) {
+		NSFileManager * fileManager = [NSFileManager defaultManager];
+		NSString *	path			= [[self fileURL] path];
+		NSString *  root			= 
+			[[path lastPathComponent] stringByDeletingPathExtension];
+		NSString *  tmpDir			= @"/var/tmp";
+		NSString * 	dstDir			= [path stringByDeletingLastPathComponent];
+		NSString * 	pdf				= 
+			[root stringByAppendingPathExtension:@"pdf"];
+		[fileManager
+			removeFileAtPath:[dstDir stringByAppendingPathComponent:pdf]
+			handler:nil];
+		[fileManager 
+			movePath:[tmpDir stringByAppendingPathComponent:pdf]
+			toPath:[dstDir stringByAppendingPathComponent:pdf]
+			handler:nil];
+		[[self pdfWin] showWindow: self];
+		[pdfWin reloadPDF];
+	} 
+}
+
+- (IBAction) showOutput:(id)sender
+{
+	[[self pdfWin] showWindow:sender];
+}
+
+- (IBAction) showLog:(id)sender
+{
+	[[self logWin] showWindow:sender];
 }
 
 @end

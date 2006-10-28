@@ -194,8 +194,45 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 	}			 
 }
 
+- (NSXMLElement *) identificationElement
+{
+	NSXMLElement *	identification = [NSXMLNode elementWithName:@"identification"];
+	NSXMLElement * 	composer = [NSXMLNode elementWithName:@"creator"
+										  stringValue:songComposer];
+	[composer addAttribute: [NSXMLNode attributeWithName:@"type"
+									   stringValue:@"composer"]];
+	[identification addChild:composer];
+	NSXMLElement * 	poet = [NSXMLNode elementWithName:@"creator"
+									  stringValue:songLyricist];
+	[poet addAttribute: [NSXMLNode attributeWithName:@"type"
+									   stringValue:@"poet"]];
+	[identification addChild:poet];
+
+	NSXMLElement * encoding = [NSXMLNode elementWithName:@"encoding"];
+	[encoding addChild: 
+		[NSXMLNode elementWithName:@"encoding-date"
+				   stringValue:
+					   [[NSDate date] 
+						   descriptionWithCalendarFormat:@"%Y-%m-%d"
+						   timeZone:nil locale:nil]]];
+	[encoding addChild:
+		[NSXMLNode elementWithName:@"software"
+				   stringValue: [NSString stringWithFormat:@"VocalEasel %@",
+					  [[NSBundle mainBundle] 
+						  objectForInfoDictionaryKey:@"CFBundleVersion"]]]];
+	[identification addChild:encoding];
+
+	return identification;
+}
+
 - (NSData *)XMLDataWithError:(NSError **)outError
 {
+	NSXMLElement  * work = [NSXMLNode elementWithName:@"work"];
+	[work addChild: [NSXMLNode elementWithName:@"work-title"
+							   stringValue:songTitle]];
+	
+	NSXMLElement *	identification = [self identificationElement];
+
 	NSXMLElement  * partList = [NSXMLNode elementWithName:@"part-list"];
 	[partList addChild: [self scorePartWithID:@"HARM" name:@"Chords"]];
 	[partList addChild: [self scorePartWithID:@"MELO" name:@"Melody"]];
@@ -230,8 +267,8 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 	NSXMLElement  * score = 
 		[NSXMLNode 
 			elementWithName:@"score-partwise" 
-			children:[NSArray arrayWithObjects: 
-								  partList, chords, melody, nil]
+			children:[NSArray arrayWithObjects: work, identification, 
+							  partList, chords, melody, nil]
 			attributes:[NSArray arrayWithObject:
 									[NSXMLNode attributeWithName:@"version"
 											   stringValue:@"1.1"]]];
@@ -368,6 +405,12 @@ int8_t sStepToPitch[] = {
 	// For now, in gross violation of MusicXML spirit, we're only reading 
 	// our own input.
 	//
+	songTitle	= [[doc stringForXPath:@".//work-title" error:outError] retain];
+	songComposer= [[doc stringForXPath:@".//creator[@type=\"composer\"]" 
+						error: outError] retain];
+	songLyricist= [[doc stringForXPath:@".//creator[@type=\"poet\"]" 
+					   error: outError] retain];
+
 	NSXMLElement * chords	= [doc nodeForXPath:@".//part[@id=\"HARM\"]" 
 								   error:outError];
 	NSXMLElement * melody	= [doc nodeForXPath:@".//part[@id=\"MELO\"]" 

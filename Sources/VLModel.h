@@ -14,8 +14,8 @@
 
 const int 	kVLSharpChar	= 0x266F;
 const int 	kVLFlatChar		= 0x266D;
-const char *kVLSharpStr		= "\xE2\x99\xAF";
-const char *kVLFlatStr		= "\xE2\x99\xAD";
+#define		kVLSharpStr		"\xE2\x99\xAF"
+#define		kVLFlatStr		"\xE2\x99\xAD"
 
 struct VLFract {
 	uint16_t	fNum;	// Numerator

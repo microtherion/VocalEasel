@@ -1,0 +1,8 @@
+#!/bin/bash -l
+
+export PATH=`dirname $1`:$PATH
+echo PATH=$PATH
+$*
+
+
+

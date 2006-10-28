@@ -59,6 +59,7 @@
 		toolPath	= nil;
 		appPath		= nil;
 	}
+	return self;
 }
 
 - (NSString*)getLineFromCommand:(NSString*)command
@@ -82,7 +83,7 @@
 {
 	NSString * cmd 	= 
 		[NSString stringWithFormat:
-						  @"%@ --version | awk '{ print $3 }'",
+						  @"%@ --version | head -1 | awk '{ print $3 }'",
 					  path];
 	return [self getLineFromCommand:cmd];
 }

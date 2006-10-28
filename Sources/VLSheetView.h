@@ -52,6 +52,8 @@ enum VLRecalc {
 	kFirstRecalc
 };
 
+@class VLEditable;
+
 @interface VLSheetView : NSView {
 	VLRecalc			fNeedsRecalc;
 	char				fClickMode;
@@ -98,6 +100,9 @@ enum VLRecalc {
 - (void) mouseExited:(NSEvent *)event;
 
 - (BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor;
+
+- (VLEditable *) editTarget;
+- (void) setEditTarget:(VLEditable *)editable;
 
 @end
 

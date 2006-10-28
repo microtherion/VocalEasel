@@ -28,6 +28,11 @@ static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identif
 	[self reloadPDF];
 }
 
+- (IBAction)showWindow:(id)sender
+{
+	[super showWindow:sender];
+}
+
 - (void)reloadPDF
 {
 	if (pdfView) {
@@ -37,6 +42,7 @@ static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identif
 		NSURL *			pdfURL		= [NSURL fileURLWithPath: outString];
 		PDFDocument *	pdfDoc		= [[[PDFDocument alloc] initWithURL: pdfURL] autorelease];
 		[(PDFView *)pdfView setDocument: pdfDoc]; 
+		[pdfView setNeedsDisplay:YES];
 	}
 }
 

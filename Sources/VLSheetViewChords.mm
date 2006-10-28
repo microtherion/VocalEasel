@@ -242,14 +242,13 @@ std::string NormalizeName(NSString* rawName)
 
 - (void) editChord
 {
-	VLDocument * doc= [self document];
 	VLEditable * e	= 
 		[[VLChordEditable alloc]
 			initWithView:self
 			song:[self song]
 			measure:fCursorMeasure
 			at:fCursorAt];
-	[doc setValue:e forKey:@"editTarget"];
+	[self setEditTarget:e];
 	[fFieldEditor selectText:self];
 }
 

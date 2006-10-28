@@ -6,8 +6,7 @@
 //  Copyright 2006 __MyCompanyName__. All rights reserved.
 //
 
-#import "VLDocument.h"
-
+#import "VLSheetWindow.h"
 
 @interface VLChordEditable : VLEditable {
 	VLSheetView *	fView;

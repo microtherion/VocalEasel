@@ -247,9 +247,6 @@
 {
 	const VLSong 		*	song = [self song];
 	const VLProperties & 	prop = song->fProperties.front();
-	BOOL 					swing= !(prop.fDivisions % 3);		// In swing mode?
-	VLFraction				swung(3, prop.fDivisions*8, true);	// Which notes to swing
-	VLFraction				swingGrid(2*swung);					// Alignment of swing notes
 
 	float kSystemY = [self systemY:system];
 	for (int m = 0; m<fMeasPerSystem; ++m) {

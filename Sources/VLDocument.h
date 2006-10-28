@@ -9,28 +9,22 @@
 #import "VLModel.h"
 #import <Cocoa/Cocoa.h>
 
-@interface VLEditable : NSObject 
-{
-}
-
-- (NSString *) stringValue;
-- (void) setStringValue:(NSString*)val;
-- (BOOL) validValue:(NSString*)val;
-- (void) moveToNext;
-- (void) moveToPrev;
-- (void) highlightCursor;
-
-@end
+@class VLSheetWindow;
+@class VLPDFWindow;
+@class VLLogWindow;
 
 @interface VLDocument : NSDocument
 {
-	VLSong *	song;
-	VLEditable *editTarget;
-	NSString *	lilypondTemplate;
-	NSString * 	songTitle;
-	NSString *	songLyricist;
-	NSString *	songComposer;
-	NSString *	songArranger;
+	VLSong *		song;
+	NSString *		lilypondTemplate;
+	NSString * 		songTitle;
+	NSString *		songLyricist;
+	NSString *		songComposer;
+	NSString *		songArranger;
+
+	VLSheetWindow *	sheetWin;
+	VLLogWindow *	logWin;
+	VLPDFWindow *	pdfWin;
 }
 
 - (VLSong *)	song;
@@ -41,5 +35,9 @@
 - (void)		setKey:(int)key transpose:(BOOL)transpose;
 - (void)		setTimeNum:(int)num denom:(int)denom;
 - (void)		setDivisions:(int)divisions;
+
+- (IBAction) engrave:(id)sender;
+- (IBAction) showOutput:(id)sender;
+- (IBAction) showLog:(id)sender;
 
 @end

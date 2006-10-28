@@ -102,6 +102,16 @@ static float sFlatPos[] = {
 	return [[[self window] windowController] document];
 }
 
+- (VLEditable *) editTarget
+{
+	return [[[self window] windowController] editTarget];
+}
+
+- (void) setEditTarget:(VLEditable *)editable
+{
+	[[[self window] windowController] setEditTarget:editable];
+}
+
 - (VLSong *) song
 {
 	return [[self document] song];
@@ -210,7 +220,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	fCursorTracking = [self addTrackingRect:r owner:self
 							userData:nil assumeInside:within];
 	[[self window] setAcceptsMouseMovedEvents:within];
-	if (within && ![[self document] valueForKey: @"editTarget"])
+	if (within && ![self editTarget])
 		[[self window] makeFirstResponder:self];
 }
 
@@ -390,8 +400,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 		[self drawNotesForSystem:system];
 		[self drawChordsForSystem:system];
 	}	
-	VLEditable * editable = [[self document] valueForKey: @"editTarget"];
-	[editable highlightCursor];
+	[[self editTarget] highlightCursor];
 }
 
 - (IBAction) setKey:(id)sender
@@ -675,13 +684,12 @@ static int8_t sSharpAcc[] = {
 
 - (BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor
 {
-	VLEditable * editable = [[self document] valueForKey: @"editTarget"];
-	return [editable validValue:[fFieldEditor stringValue]];
+	return [[self editTarget] validValue:[fFieldEditor stringValue]];
 }
 
 - (void)controlTextDidEndEditing:(NSNotification *)note
 {
-	VLEditable * editable = [[self document] valueForKey: @"editTarget"];
+	VLEditable * editable = [self editTarget];
 	switch ([[[note userInfo] objectForKey:@"NSTextMovement"] intValue]) {
 	case NSTabTextMovement:
 		[editable moveToNext];
@@ -693,7 +701,7 @@ static int8_t sSharpAcc[] = {
 		[editable autorelease];
 		editable = nil;
 	}
-	[[self document] setValue:editable forKey: @"editTarget"];
+	[self setEditTarget:editable];
 	if (editable) 
 		[fFieldEditor selectText:self];
     [[self window] performSelectorOnMainThread:@selector(makeFirstResponder:)

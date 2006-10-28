@@ -1,14 +1,37 @@
 {
     IBClasses = (
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {engrave = id; showLog = id; showOutput = id; }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
         {CLASS = VLDocument; LANGUAGE = ObjC; SUPERCLASS = NSDocument; }, 
         {CLASS = VLEditable; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = VLPDFWindow; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                nextPageItem = id; 
+                pdfView = id; 
+                prevPageItem = id; 
+                zoomInItem = id; 
+                zoomOutItem = id; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
         {
             ACTIONS = {hideFieldEditor = id; setDivisions = id; setKey = id; setTime = id; }; 
             CLASS = VLSheetView; 
             LANGUAGE = ObjC; 
             OUTLETS = {fFieldEditor = id; }; 
             SUPERCLASS = NSView; 
+        }, 
+        {
+            CLASS = VLSheetWindow; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {logToolItem = id; outputToolItem = id; runToolItem = id; }; 
+            SUPERCLASS = NSWindowController; 
         }
     ); 
     IBVersion = 1; 
