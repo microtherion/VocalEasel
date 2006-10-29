@@ -22,12 +22,13 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSTypeIsPackage</key>
-			<false/>
+			<true/>
 			<key>NSDocumentClass</key>
 			<string>VLDocument</string>
 			<key>NSExportableAs</key>
 			<array>
 				<string>VLLilypondType</string>
+				<string>VLMusicXMLType</string>
 			</array>
 			<key>NSPersistentStoreTypeKey</key>
 			<string>XML</string>
@@ -43,6 +44,20 @@
 			<array>
 				<string>TEXT</string>
 			</array>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+			<key>LSTypeIsPackage</key>
+			<false/>
+			<key>NSPersistentStoreTypeKey</key>
+			<string>Binary</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>xml</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>VLMusicXMLType</string>
 			<key>CFBundleTypeRole</key>
 			<string>None</string>
 			<key>LSTypeIsPackage</key>

@@ -32,19 +32,27 @@
     return self;
 }
 
-- (void) close
-{
-	[logWin close];
-	[pdfWin close];
-
-	[super close];
-}
-
 - (void) dealloc
 {
 	delete song;
 
+	[lilypondTemplate release];
+	[songTitle release];
+	[songLyricist release];
+	[songComposer release];
+	[songArranger release];
+	
 	[super dealloc];
+}
+
+- (void)removeWindowController:(NSWindowController *)win
+{
+	if (win == logWin)
+		logWin = nil;	
+	else if (win == pdfWin)
+		pdfWin = nil;
+
+	[super removeWindowController:win];
 }
 
 - (VLLogWindow *)logWin
@@ -141,12 +149,14 @@
 	[self updateChangeCount:NSChangeDone];
 }
 
-- (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
+- (NSFileWrapper *)fileWrapperOfType:(NSString *)typeName error:(NSError **)outError
 {
 	if ([typeName isEqual:@"VLNativeType"]) {
-		return [self XMLDataWithError:outError];
+		return [self XMLFileWrapperWithError:outError flat:NO];
+	} else if ([typeName isEqual:@"VLMusicXMLType"]) {
+		return [self XMLFileWrapperWithError:outError flat:YES];
 	} else if ([typeName isEqual:@"VLLilypondType"]) {
-		return [self lilypondDataWithError:outError];
+		return [self lilypondFileWrapperWithError:outError];
 	} else {
 		if (outError)
 			*outError = [NSError errorWithDomain:NSCocoaErrorDomain
@@ -156,10 +166,10 @@
 	}
 }
 
-- (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
+- (BOOL)readFromFileWrapper:(NSFileWrapper *)wrapper ofType:(NSString *)typeName error:(NSError **)outError
 {
 	if ([typeName isEqual:@"VLNativeType"]) {
-		return [self readFromXMLData:data error:outError];
+		return [self readFromXMLFileWrapper:wrapper error:outError];
 	} else {
 		if (outError)
 			*outError = [NSError errorWithDomain:NSCocoaErrorDomain
@@ -169,14 +179,12 @@
 	}
 }
 
-
-- (IBAction) engrave:(id)sender
+- (IBAction) performEngrave:(id)sender
 {
 	NSTask *	lilypondTask	= [[NSTask alloc] init];
 	NSString *	path			= [[self fileURL] path];
-	NSString *  root			= 
-		[[path lastPathComponent] stringByDeletingPathExtension];
-    NSString *  tmpDir			= @"/var/tmp";
+	NSString *  base			= [[path lastPathComponent]
+									  stringByDeletingPathExtension];
 	NSBundle *	mainBundle		= [NSBundle mainBundle];
 
 	//
@@ -184,21 +192,20 @@
 	//
 	NSError *			err;
 	[self writeToURL:
-		[NSURL fileURLWithPath:
-			[[tmpDir stringByAppendingPathComponent:root]
-				stringByAppendingPathExtension:@"ly"]]
+		[NSURL fileURLWithPath:[[path stringByAppendingPathComponent:base]
+								   stringByAppendingPathExtension:@"ly"]]
 		  ofType:@"VLLilypondType" error:&err];
 	NSPipe *	pipe			= [NSPipe pipe];
 	NSString *	tool			= 
 		[[NSUserDefaults standardUserDefaults] 
 			stringForKey:@"VLLilypondPath"];
-	NSArray *	arguments		= [NSArray arrayWithObjects:tool, root, nil];
+	NSArray *	arguments		= [NSArray arrayWithObjects:tool, base, nil];
 
 	[[NSNotificationCenter defaultCenter] 
 		addObserver:self selector:@selector(engraveDone:)
 		name:NSTaskDidTerminateNotification object:lilypondTask];
 	
-	[lilypondTask setCurrentDirectoryPath:tmpDir];
+	[lilypondTask setCurrentDirectoryPath:path];
 	[lilypondTask setStandardOutput: pipe];
 	[lilypondTask setStandardError: pipe];
 	[lilypondTask setArguments: arguments];
@@ -216,24 +223,43 @@
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
     int status = [[notification object] terminationStatus];
     if (!status) {
-		NSFileManager * fileManager = [NSFileManager defaultManager];
-		NSString *	path			= [[self fileURL] path];
-		NSString *  root			= 
-			[[path lastPathComponent] stringByDeletingPathExtension];
-		NSString *  tmpDir			= @"/var/tmp";
-		NSString * 	dstDir			= [path stringByDeletingLastPathComponent];
-		NSString * 	pdf				= 
-			[root stringByAppendingPathExtension:@"pdf"];
-		[fileManager
-			removeFileAtPath:[dstDir stringByAppendingPathComponent:pdf]
-			handler:nil];
-		[fileManager 
-			movePath:[tmpDir stringByAppendingPathComponent:pdf]
-			toPath:[dstDir stringByAppendingPathComponent:pdf]
-			handler:nil];
 		[[self pdfWin] showWindow: self];
 		[pdfWin reloadPDF];
-	} 
+	} else {
+		NSBeep();
+	}
+}
+
+- (void) engrave:(NSDocument *)doc didSave:(BOOL)didSave contextInfo:(void  *)contextInfo
+{
+	if (didSave)
+		[self performEngrave:(id)contextInfo];
+}
+
+- (void)engrave:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(id)sender
+{
+	if (returnCode == NSAlertDefaultReturn) {
+		[[alert window] orderOut:self];
+		[self saveDocumentWithDelegate:self
+			  didSaveSelector:@selector(engrave:didSave:contextInfo:) 
+			  contextInfo:sender];
+	}
+}
+
+- (IBAction) engrave:(id)sender
+{
+	if ([self isDocumentEdited]) {
+		NSAlert * alert = 
+			[NSAlert alertWithMessageText:@"Do you want to save your changes?"
+					 defaultButton:[self fileURL] ? @"Save" : @"Save..."
+					 alternateButton:@"Cancel" otherButton:nil 
+					 informativeTextWithFormat:@"You need to save your document before typesetting."];
+		[alert beginSheetModalForWindow:[sheetWin window]
+			   modalDelegate:self 
+			   didEndSelector:@selector(engrave:returnCode:contextInfo:)
+			   contextInfo:sender];
+	} else
+		[self performEngrave:sender];
 }
 
 - (IBAction) showOutput:(id)sender

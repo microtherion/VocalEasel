@@ -67,14 +67,13 @@
 	char line[1000];
 	FILE * output = popen([command UTF8String], "r");
 	if (fgets(line, 1000, output)) {
-		fprintf(stderr, "Line %s", line);
 		size_t len = strlen(line);
 		if (len && line[len-1]=='\n') {
 			line[len-1] = 0;
 			return [NSString stringWithUTF8String:line];
 		}
 	} else
-		NSLog(@"Failed command: %@ (%d)\n", command, errno);
+		NSLog(@"Failed command: %@ %s (%d)\n", command, feof(output) ? "EOF" : "Error", errno);
 	pclose(output);
 	return nil;
 }
@@ -179,11 +178,6 @@
 	default:
 		break;
 	}
-}
-
-- (BOOL)applicationShouldOpenUntitledFile:(NSApplication *)sender
-{
-	return NO;
 }
 
 @end

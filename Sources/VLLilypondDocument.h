@@ -11,6 +11,6 @@
 
 @interface VLDocument (Lilypond)
 
-- (NSData *)lilypondDataWithError:(NSError **)outError;
+- (NSFileWrapper *)lilypondFileWrapperWithError:(NSError **)outError;
 
 @end

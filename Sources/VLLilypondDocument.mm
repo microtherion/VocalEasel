@@ -131,4 +131,16 @@ const char * sKeyNames[] = {
 	return [ly dataUsingEncoding:enc];
 }
 
+- (NSFileWrapper *)lilypondFileWrapperWithError:(NSError **)outError
+{
+	NSData * data = [self lilypondDataWithError:outError];
+	
+	if (!data)
+		return nil;
+	else
+		return [[[NSFileWrapper alloc] 
+					initRegularFileWithContents:data]
+				   autorelease];
+}
+
 @end

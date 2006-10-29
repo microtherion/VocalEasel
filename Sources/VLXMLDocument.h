@@ -11,7 +11,7 @@
 
 @interface VLDocument (XML) 
 
-- (NSData *)XMLDataWithError:(NSError **)outError;
-- (BOOL)readFromXMLData:(NSData *)data error:(NSError **)outError;
+- (NSFileWrapper *)XMLFileWrapperWithError:(NSError **)outError flat:(BOOL)flat;
+- (BOOL)readFromXMLFileWrapper:(NSFileWrapper *)wrapper error:(NSError **)outError;
 
 @end

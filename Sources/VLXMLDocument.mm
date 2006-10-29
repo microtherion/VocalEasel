@@ -283,6 +283,28 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 	return [doc XMLDataWithOptions:NSXMLNodePrettyPrint|NSXMLNodeCompactEmptyElement];
 }
 
+- (NSFileWrapper *)XMLFileWrapperWithError:(NSError **)outError flat:(BOOL)flat;
+{
+	NSData * contents = [self XMLDataWithError:outError];
+	
+	if (!contents) {
+		return nil;
+	} else if (flat) {
+		return [[[NSFileWrapper alloc] 
+					initRegularFileWithContents:contents]
+				   autorelease];
+	} else {
+		NSFileWrapper * wrap 	= [[[NSFileWrapper alloc]
+									  initDirectoryWithFileWrappers:
+										  [NSDictionary dictionary]]
+									  autorelease];
+		[wrap addRegularFileWithContents:contents
+			  preferredFilename:@"Song"];
+
+		return wrap;
+	}
+}
+
 - (BOOL)readPropsFromAttributes:(NSXMLElement*)attr error:(NSError **)outError
 {
 	VLProperties & prop = song->fProperties.front();
@@ -430,6 +452,13 @@ int8_t sStepToPitch[] = {
 		  error:outError];
 
 	return YES;
+}
+
+- (BOOL)readFromXMLFileWrapper:(NSFileWrapper *)wrapper error:(NSError **)outError
+{
+	return [self readFromXMLData: [[[wrapper fileWrappers] objectForKey:@"Song"]
+									  regularFileContents]	
+				 error:outError];
 }
 
 @end

@@ -36,13 +36,36 @@ static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identif
 - (void)reloadPDF
 {
 	if (pdfView) {
-		NSString *		inString	= [[[self document] fileURL] path];
-		NSString *		baseString  = [inString stringByDeletingPathExtension];
-		NSString *		outString	= [baseString stringByAppendingPathExtension: @"pdf"]; 
-		NSURL *			pdfURL		= [NSURL fileURLWithPath: outString];
-		PDFDocument *	pdfDoc		= [[[PDFDocument alloc] initWithURL: pdfURL] autorelease];
-		[(PDFView *)pdfView setDocument: pdfDoc]; 
-		[pdfView setNeedsDisplay:YES];
+		NSString *		path		= [[[self document] fileURL] path];
+		if (!path)
+			return;
+		NSFileWrapper * wrapper		= 
+			[[[NSFileWrapper alloc] initWithPath:path] autorelease];
+		//
+		// Find newest pdf file
+		//
+		NSEnumerator * 	w			= [[wrapper fileWrappers] objectEnumerator];
+		NSString	 *  pdfPath		= nil;
+		NSDate 		 * 	pdfDate		= nil;
+		while (wrapper = [w nextObject]) {
+			NSString * path = [wrapper filename];
+			if (![[path pathExtension] isEqual:@"pdf"])
+				continue;
+			NSDate *   date = [[wrapper fileAttributes] 
+								  objectForKey:NSFileModificationDate];
+			if (!pdfPath || [date compare:pdfDate]==NSOrderedAscending) {
+				pdfPath	= path;
+				pdfDate	= date;
+			}
+		}
+		if (pdfPath) {
+			NSURL *			pdfURL	= 
+				[NSURL fileURLWithPath:[path stringByAppendingPathComponent:pdfPath]];
+			PDFDocument *	pdfDoc 	= 
+				[[[PDFDocument alloc] initWithURL:pdfURL] autorelease];
+			[(PDFView *)pdfView setDocument: pdfDoc]; 
+			[pdfView setNeedsDisplay:YES];
+		}
 	}
 }
 
