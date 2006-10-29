@@ -121,11 +121,15 @@
 		appVersion		= [self lilypondVersion:appPath];
 		if (!appVersion)
 			appPath	= nil;
+		else
+			[appPath retain];
 	}
 	if (toolPath) {
 		toolVersion		= [self lilypondVersion:toolPath];
 		if (!toolVersion)
 			toolPath	= nil;		
+		else
+			[toolPath retain];
 	}	
 		
 	NSMenuItem	*	toolItem	= [lilypondPath itemAtIndex:0];
@@ -168,12 +172,12 @@
 {
 	NSUserDefaults*	defaults	= [NSUserDefaults standardUserDefaults];
 
-	switch ([sender tag]) {
+	switch ([[sender selectedItem] tag]) {
 	case 0:
 		[defaults setObject:toolPath forKey:@"VLLilypondPath"];
 		break;
 	case 1:
-		[defaults setObject:toolPath forKey:@"VLLilypondPath"];
+		[defaults setObject:appPath forKey:@"VLLilypondPath"];
 		break;
 	default:
 		break;
