@@ -120,10 +120,10 @@
 		95F5F51E0ADCCFBB003980B2 /* DTD */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DTD; path = Resources/DTD; sourceTree = "<group>"; };
 		95FC668D0AF0A08C003D9C11 /* VLLogWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLLogWindow.h; path = Sources/VLLogWindow.h; sourceTree = "<group>"; };
 		95FC668E0AF0A08C003D9C11 /* VLLogWindow.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLLogWindow.mm; path = Sources/VLLogWindow.mm; sourceTree = "<group>"; };
-		95FC66950AF0A112003D9C11 /* VLLogWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = VLLogWindow.nib; path = Resources/VLLogWindow.nib; sourceTree = "<group>"; };
+		95FC66950AF0A112003D9C11 /* VLLogWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = VLLogWindow.nib; path = English.lproj/VLLogWindow.nib; sourceTree = "<group>"; };
 		95FC66A40AF0A24C003D9C11 /* VLPDFWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLPDFWindow.h; path = Sources/VLPDFWindow.h; sourceTree = "<group>"; };
 		95FC66A50AF0A24C003D9C11 /* VLPDFWindow.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPDFWindow.mm; path = Sources/VLPDFWindow.mm; sourceTree = "<group>"; };
-		95FC66B90AF0A3AD003D9C11 /* VLPDFWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = VLPDFWindow.nib; path = Resources/VLPDFWindow.nib; sourceTree = "<group>"; };
+		95FC66B90AF0A3AD003D9C11 /* VLPDFWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = VLPDFWindow.nib; path = English.lproj/VLPDFWindow.nib; sourceTree = "<group>"; };
 		95FC66BC0AF0A4D4003D9C11 /* console.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = console.icns; path = Resources/console.icns; sourceTree = "<group>"; };
 		95FC66BD0AF0A4D4003D9C11 /* music.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = music.tiff; path = Resources/music.tiff; sourceTree = "<group>"; };
 		95FC66BE0AF0A4D4003D9C11 /* nextpage.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = nextpage.tiff; path = Resources/nextpage.tiff; sourceTree = "<group>"; };
