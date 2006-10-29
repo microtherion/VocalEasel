@@ -283,8 +283,9 @@ failed:
 }
 
 static const char * kStepNames[] = {
-	"", "", "sus2", "", "", "sus", "♭5", "", "+", "6", "7", "♯7", "",
-	"♭9", "9", "♯9", "", "11", "♯11", "", "♭13", "13"
+	"", "", "sus2", "", "", "sus", kVLFlatStr "5", "", "+", "6", 
+	"7", kVLSharpStr "7", "", kVLFlatStr "9", "9", kVLSharpStr "9", "", 
+	"11", kVLSharpStr "11", "", kVLFlatStr "13", "13"
 };
 
 void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bool useSharps) const

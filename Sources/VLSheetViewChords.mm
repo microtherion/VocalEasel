@@ -23,12 +23,12 @@ std::string NormalizeName(NSString* rawName)
 	for (;;) {
 		size_t found;
 
-		found = chordName.find("\xE2\x99\xAF", 0, 3);
+		found = chordName.find(kVLSharpStr, 0, 3);
 		if (found != std::string::npos) {
 			chordName.replace(found, 3, 1, '#');
 			continue;
 		}
-		found = chordName.find("\xE2\x99\xAD", 0, 3);
+		found = chordName.find(kVLFlatStr, 0, 3);
 		if (found != std::string::npos) {
 			chordName.replace(found, 3, 1, 'b');
 			continue;
@@ -95,13 +95,18 @@ std::string NormalizeName(NSString* rawName)
 			//
 			// Found it!
 			//
+			VLSoundOut::Instance()->PlayChord(*chord);
+
 			const VLProperties & 	prop	= fSong->fProperties.front();
 			std::string name, ext, root;
 			chord->Name(name, ext, root, prop.fKey > 0);
 			
-			return [NSString stringWithFormat:@"%s%s%s",
-							 name.c_str(), ext.c_str(),
-							 root.size() ? ("/"+root).c_str() : ""];
+			NSString * ns = [NSString stringWithUTF8String:name.c_str()];
+			NSString * es = [NSString stringWithUTF8String:ext.c_str()];
+			NSString * rs = [NSString stringWithUTF8String:root.c_str()];
+
+			return [NSString stringWithFormat:@"%@%@%s%@", ns, es, 
+							 [rs length] ? "/" : "", rs];
 		}
 		at += chord->fDuration;
 	}
