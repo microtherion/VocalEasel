@@ -29,6 +29,7 @@
 			<array>
 				<string>VLLilypondType</string>
 				<string>VLMusicXMLType</string>
+				<string>VLMMAType</string>
 			</array>
 			<key>NSPersistentStoreTypeKey</key>
 			<string>XML</string>
@@ -58,6 +59,20 @@
 			</array>
 			<key>CFBundleTypeName</key>
 			<string>VLMusicXMLType</string>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+			<key>LSTypeIsPackage</key>
+			<false/>
+			<key>NSPersistentStoreTypeKey</key>
+			<string>Binary</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>mma</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>VLMMAType</string>
 			<key>CFBundleTypeRole</key>
 			<string>None</string>
 			<key>LSTypeIsPackage</key>

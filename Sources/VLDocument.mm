@@ -9,6 +9,7 @@
 #import "VLDocument.h"
 #import "VLXMLDocument.h"
 #import "VLLilypondDocument.h"
+#import "VLMMADocument.h"
 #import "VLPDFWindow.h"
 #import "VLLogWindow.h"
 #import "VLSheetWindow.h"
@@ -25,6 +26,8 @@
 		songLyricist		= @"";
 		songComposer		= @"";
 		songArranger		= @"";
+		songGroove			= @"Swing";
+		songTempo			= [[NSNumber numberWithInt:120] retain];
 		sheetWin			= nil;
 		pdfWin				= nil;	
 		logWin				= nil;
@@ -157,6 +160,8 @@
 		return [self XMLFileWrapperWithError:outError flat:YES];
 	} else if ([typeName isEqual:@"VLLilypondType"]) {
 		return [self lilypondFileWrapperWithError:outError];
+	} else if ([typeName isEqual:@"VLMMAType"]) {
+		return [self mmaFileWrapperWithError:outError];
 	} else {
 		if (outError)
 			*outError = [NSError errorWithDomain:NSCocoaErrorDomain

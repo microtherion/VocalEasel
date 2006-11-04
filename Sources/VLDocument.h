@@ -21,6 +21,8 @@
 	NSString *		songLyricist;
 	NSString *		songComposer;
 	NSString *		songArranger;
+	NSString *		songGroove;
+	NSNumber *		songTempo;
 
 	VLSheetWindow *	sheetWin;
 	VLLogWindow *	logWin;

@@ -104,6 +104,27 @@ static std::string	LilypondPitchName(int8_t pitch, bool useSharps)
 		return kScale[pitch+1] + std::string("es");
 }
 
+static std::string MMAPitchName(int8_t pitch, bool useSharps)
+{
+	if (pitch == VLNote::kNoPitch)
+		return "r";
+	char name[3];
+	name[2] = 0;
+	name[1] = 'n';
+	pitch %= 12;
+	if (kScale[pitch] != ' ') {
+		name[0] = kScale[pitch];
+	} else if (useSharps) {
+		name[0] = kScale[pitch-1];
+		name[1] = '#';
+	} else {
+		name[0] = kScale[pitch+1];
+		name[1] = '&';
+	}
+
+	return name;
+}
+
 VLNote::VLNote(std::string name)
 {
 	//
@@ -172,6 +193,50 @@ void VLNote::LilypondName(std::string & name, VLFraction at, const VLProperties 
 		if (i)
 			name += " ~ ";
 		name += durations[i];
+	}
+}
+
+static struct {
+  VLFract      fVal;
+  const char * fName;
+} sMMADur [] = {
+  {{1,1},  "1"},
+  {{1,2},  "2"},
+  {{1,3},  "23"},
+  {{1,4},  "4"},
+  {{1,6},  "81"},
+  {{1,8},  "8"},
+  {{1,12}, "82"},
+  {{1,16}, "16"},
+  {{1,24}, "6"},
+  {{1,32}, "32"},
+  {{1,64}, "64"},
+  {{0,0}, 0}
+};
+
+void VLNote::MMAName(std::string & name, VLFraction at, const VLProperties & prop) const
+{
+	bool useSharps = prop.fKey >= 0;
+
+	name.clear();
+	for (VLFraction dur = fDuration; dur.fNum; ) {
+		VLFraction part;
+		prop.PartialNote(at, dur, &part);
+		for (int d=0; sMMADur[d].fName; ++d)
+			if (part == sMMADur[d].fVal) {
+				if (name.size())
+					name += '+';
+				name += sMMADur[d].fName;
+			}
+		dur	-= part;
+		at  += part;
+	}
+	name += MMAPitchName(fPitch, useSharps);
+	if (fPitch != kNoPitch) {
+		for (int raise = (fPitch-kMiddleC)/kOctave; raise>0; --raise)
+			name += '+';
+		for (int lower = (kMiddleC-fPitch)/kOctave; lower>0; --lower)
+			name += '-';
 	}
 }
 
@@ -315,6 +380,7 @@ void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bo
 	if (steps & kmMaj7th) {
 		ext += "Maj";
 		steps&= ~kmMaj7th;
+		steps|= kmMin7th; // Write out the 7 for clarification
 	}
 	//
 	// 6/9
@@ -431,12 +497,42 @@ void VLChord::LilypondName(std::string & name, bool useSharps) const
 		name += "/+" + LilypondPitchName(fRootPitch, useSharps);
 }
 
+void VLChord::MMAName(std::string & name, bool useSharps) const
+{
+	VLFraction dur = fDuration;
+	int   quarters = static_cast<int>(dur*4.0f+0.5f);
+	name = "";
+	if (!quarters--)
+		return;
+	if (fPitch == kNoPitch) {
+		name = '/';
+	} else {
+		std::string base, ext, root;
+		Name(base, ext, root, useSharps);
+
+		name = base+ext;
+		if (root.size()) 
+			name += '/'+root;
+		std::toupper(base[0]);
+		size_t mod;
+		while ((mod = name.find("Maj")) != std::string::npos)
+			name.erase(mod+1, 2);
+		while ((mod = name.find(kVLSharpStr, 3)) != std::string::npos)
+			name.replace(mod, 3, '#', 1);
+		while ((mod = name.find(kVLFlatStr, 3)) != std::string::npos)
+			name.replace(mod, 3, '&', 1);
+	}
+	while (quarters--) 
+		name += " /";
+}
+
 static VLFraction MaxNote(VLFraction d)
 {
 	if (d >= 1)
 		return 1;
 	if (d.fNum == 1 && !(d.fDenom & (d.fDenom-1))) // Power of 2
 		return d;
+
 		
 	VLFraction  note(1,2);
 	VLFraction  triplet(1,3);
@@ -510,6 +606,38 @@ void VLProperties::VisualNote(VLFraction at, VLFraction actualDur,
 VLMeasure::VLMeasure()
 	: fProperties(0)
 {
+}
+
+void VLMeasure::MMANotes(std::string & notes) const
+{
+	VLFraction					at(0);
+	VLNoteList::const_iterator 	i 	= fMelody.begin();
+	VLNoteList::const_iterator 	e 	= fMelody.end();
+
+	notes.clear();
+	for (; i!=e; ++i) {
+		std::string note;
+		i->MMAName(note, at, *fProperties);
+		if (notes.size())
+			notes += ' ';
+		notes += note;
+		at    += i->fDuration;
+	}
+}
+
+void VLMeasure::MMAChords(std::string & chords) const
+{
+  VLChordList::const_iterator i	= fChords.begin();
+  VLChordList::const_iterator e	= fChords.end();
+
+  chords.clear();
+  for (; i!=e; ++i) {
+    std::string chord;
+    i->MMAName(chord, fProperties->fKey >= 0);
+    if (chords.size())
+      chords += ' ';
+    chords += chord;
+  }
 }
 
 VLSong::VLSong()

@@ -49,6 +49,7 @@
 		95ECE6590AF3324300FE3E98 /* lilyWrapper in Resources */ = {isa = PBXBuildFile; fileRef = 95ECE6580AF3324300FE3E98 /* lilyWrapper */; };
 		95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
 		95F5F5340ADCCFBB003980B2 /* DTD in Resources */ = {isa = PBXBuildFile; fileRef = 95F5F51E0ADCCFBB003980B2 /* DTD */; };
+		95F820AB0AF884A30010963D /* VLMMADocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F820AA0AF884A30010963D /* VLMMADocument.mm */; };
 		95FC668F0AF0A08C003D9C11 /* VLLogWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95FC668E0AF0A08C003D9C11 /* VLLogWindow.mm */; };
 		95FC66960AF0A112003D9C11 /* VLLogWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66950AF0A112003D9C11 /* VLLogWindow.nib */; };
 		95FC66A60AF0A24C003D9C11 /* VLPDFWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95FC66A50AF0A24C003D9C11 /* VLPDFWindow.mm */; };
@@ -118,6 +119,8 @@
 		95F5F50D0ADCC433003980B2 /* VLXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLXMLDocument.h; path = Sources/VLXMLDocument.h; sourceTree = "<group>"; };
 		95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLXMLDocument.mm; path = Sources/VLXMLDocument.mm; sourceTree = "<group>"; };
 		95F5F51E0ADCCFBB003980B2 /* DTD */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DTD; path = Resources/DTD; sourceTree = "<group>"; };
+		95F820A90AF884A30010963D /* VLMMADocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLMMADocument.h; path = Sources/VLMMADocument.h; sourceTree = "<group>"; };
+		95F820AA0AF884A30010963D /* VLMMADocument.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLMMADocument.mm; path = Sources/VLMMADocument.mm; sourceTree = "<group>"; };
 		95FC668D0AF0A08C003D9C11 /* VLLogWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLLogWindow.h; path = Sources/VLLogWindow.h; sourceTree = "<group>"; };
 		95FC668E0AF0A08C003D9C11 /* VLLogWindow.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLLogWindow.mm; path = Sources/VLLogWindow.mm; sourceTree = "<group>"; };
 		95FC66950AF0A112003D9C11 /* VLLogWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = VLLogWindow.nib; path = English.lproj/VLLogWindow.nib; sourceTree = "<group>"; };
@@ -230,6 +233,8 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				95F820A90AF884A30010963D /* VLMMADocument.h */,
+				95F820AA0AF884A30010963D /* VLMMADocument.mm */,
 				95A1C3840AF2ACE20076597D /* VLSheetWindow.h */,
 				95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */,
 				95FC66CC0AF0A591003D9C11 /* VLPDFView.mm */,
@@ -478,6 +483,7 @@
 				95FC66A60AF0A24C003D9C11 /* VLPDFWindow.mm in Sources */,
 				95FC66CE0AF0A591003D9C11 /* VLPDFView.mm in Sources */,
 				95A1C3860AF2ACE20076597D /* VLSheetWindow.mm in Sources */,
+				95F820AB0AF884A30010963D /* VLMMADocument.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
