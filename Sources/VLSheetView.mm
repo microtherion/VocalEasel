@@ -254,8 +254,8 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	NSScrollView * scroll = [self enclosingScrollView];
 
 	NSSize sz 	=  [scroll contentSize];
-	sz.width   /=	fDisplayScale;
-	sz.height  /= 	fDisplayScale;
+	sz.width   *=	fDisplayScale;
+	sz.height  *= 	fDisplayScale;
 
 	const VLSong * 			song = [self song];
 	const VLProperties & 	prop = song->fProperties.front();
@@ -269,10 +269,10 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	fNumSystems 	= (song->CountMeasures()+fMeasPerSystem-1)/fMeasPerSystem;
 	sz.height		= fNumSystems*kSystemH;
 
-	NSSize frameSz	= {sz.width * fDisplayScale, sz.height * fDisplayScale};
+	NSSize boundsSz	= {sz.width / fDisplayScale, sz.height / fDisplayScale};
 
-	[self setFrameSize:frameSz];
-	[self setBoundsSize:sz];
+	[self setFrameSize:sz];
+	[self setBoundsSize:boundsSz];
 	[self setNeedsDisplay:YES];
 
 	if (fNeedsRecalc == kFirstRecalc) {
@@ -709,5 +709,24 @@ static int8_t sSharpAcc[] = {
 				   waitUntilDone:NO];
 	[self setNeedsDisplay: YES];
 }
+
+- (void) setScaleFactor:(float)scale
+{
+	fDisplayScale= scale;
+	fNeedsRecalc = kRecalc;
+	[self setNeedsDisplay: YES];	
+}
+
+#if 0
+- (IBAction) zoomIn: (id) sender
+{
+	[self setScaleFactor: fDisplayScale * sqrt(2.0)];
+}
+
+- (IBAction) zoomOut: (id) sender
+{
+	[self setScaleFactor: fDisplayScale / sqrt(2.0)];
+}
+#endif
 
 @end

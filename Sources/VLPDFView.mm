@@ -8,6 +8,8 @@
 
 #import "VLPDFView.h"
 
+#include <algorithm>
+
 @implementation VLPDFView
 
 - (BOOL)tryOpenURL:(NSURL *)url
@@ -33,6 +35,43 @@
 - (BOOL) canBecomeKeyView
 {
 	return YES;
+}
+
+- (IBAction) displaySinglePage: (id) sender
+{
+	// Display single page mode.
+	if ([self displayMode] > kPDFDisplaySinglePageContinuous)
+		[self setDisplayMode: [self displayMode] - 2];
+}
+
+- (IBAction) displayTwoUp: (id) sender
+{
+	// Display two-up.
+	if ([self displayMode] < kPDFDisplayTwoUp)
+		[self setDisplayMode: [self displayMode] + 2];
+}
+
+- (IBAction) zoomToFit: (id) sender
+{
+	NSSize sz 	=  [self frame].size;
+	NSSize frame=  [[self documentView] frame].size;
+	
+	float scale =  std::min(sz.width / frame.width, sz.height / frame.height);
+	
+	[self setScaleFactor: scale];
+}
+
+- (IBAction) zoomToFitWidth: (id) sender
+{
+	NSSize sz 	=  [self frame].size;
+	NSSize frame=  [[self documentView] frame].size;
+	
+	[self setScaleFactor: sz.width / frame.width];
+}
+
+- (IBAction) zoomToActualSize: (id) sender
+{
+	[self setScaleFactor: 1.0];
 }
 
 @end

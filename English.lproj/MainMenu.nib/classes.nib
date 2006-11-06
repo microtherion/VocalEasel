@@ -1,6 +1,17 @@
 {
     IBClasses = (
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                zoomIn = id; 
+                zoomOut = id; 
+                zoomToActualSize = id; 
+                zoomToFit = id; 
+                zoomToFitWidth = id; 
+            }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
         {
             ACTIONS = {playNewPitch = id; selectLilypondPath = id; }; 
             CLASS = VLAppController; 
