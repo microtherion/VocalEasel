@@ -64,18 +64,28 @@
 
 - (NSString*)getLineFromCommand:(NSString*)command
 {
-	char line[1000];
-	FILE * output = popen([command UTF8String], "r");
-	if (fgets(line, 1000, output)) {
-		size_t len = strlen(line);
-		if (len && line[len-1]=='\n') {
-			line[len-1] = 0;
-			return [NSString stringWithUTF8String:line];
-		}
-	} else
-		NSLog(@"Failed command: %@ %s (%d)\n", command, feof(output) ? "EOF" : "Error", errno);
+	char 		line[1000];
+	FILE * 		output 	= popen([command UTF8String], "r");
+	NSString *	outLine	= nil;
+	for (int attempts=0; attempts<5; ++attempts) 
+		if (fgets(line, 1000, output)) {
+			size_t len = strlen(line);
+			if (len && line[len-1]=='\n') {
+				line[len-1] = 0;
+				outLine = [NSString stringWithUTF8String:line];
+			}
+		} else if (feof(output))
+			break;
+		else	
+			clearerr(output);
+
+	if (!outLine)
+		NSLog(@"Failed command: %@ %s (%d)\n", command, 
+			  feof(output) ? "EOF" : "Error", errno);
+
 	pclose(output);
-	return nil;
+
+	return outLine;
 }
 
 - (NSString *)lilypondVersion:(NSString *)path
