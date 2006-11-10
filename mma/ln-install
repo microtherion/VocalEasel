@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo Creating symbolic links for MMA.
+
+ln -s `pwd` /usr/local/share/mma
+ln -s `pwd`/mma.py /usr/local/bin/mma
+
+echo Done.

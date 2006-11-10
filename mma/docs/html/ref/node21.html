@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Begin/End Blocks</TITLE>
+<META NAME="description" CONTENT="Begin/End Blocks">
+<META NAME="keywords" CONTENT="mma">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mma.css">
+
+<LINK REL="next" HREF="node22.html">
+<LINK REL="previous" HREF="node20.html">
+<LINK REL="up" HREF="mma.html">
+<LINK REL="next" HREF="node22.html">
+</HEAD>
+
+<BODY  bgcolor="#ffffff">
+<!--Navigation Panel-->
+<A NAME="tex2html660"
+  HREF="node22.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html658"
+  HREF="mma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html652"
+  HREF="node20.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html661"
+  HREF="node22.html">Documentation Strings</A>
+<B> Up:</B> <A NAME="tex2html659"
+  HREF="mma.html">Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html653"
+  HREF="node20.html">Other Commands and Directives</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html662"
+  HREF="node21.html#SECTION002110000000000000000">Begin</A>
+<LI><A NAME="tex2html663"
+  HREF="node21.html#SECTION002120000000000000000">End</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION002100000000000000000"></A>
+<A NAME="sec-blocks"></A>
+<BR>
+Begin/End Blocks
+</H1>
+
+<P>
+Entering a series of directives for a specific track can get quite
+tedious.  To make the creation of library files a bit easier, you can
+create a block. For example, the following:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Drum Define X 0 2 100; 50 2  90  
+<BR>
+Drum Define Y 0 2 100  
+<BR>
+Drum Sequence X Y  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+Can be replaced with:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Drum Begin 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;Define X 0 2 100; 50 2 90  
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;Define Y 0 2 100
+  End 
+<BR>
+Drum Sequence X Y  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+Or, even more simply, with:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Drum Begin Define
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;X 0 2 100; 50 2 90  
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;Y 0 2 100 
+<BR>
+End  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+If you examine some of the library files you will see that  this
+shortcut is used a lot.
+
+<P>
+
+<H1><A NAME="SECTION002110000000000000000">
+Begin</A>
+</H1>
+
+<P>
+The B<SMALL>EGIN</SMALL> command requires any number of arguments. Valid
+examples include:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Begin Drum 
+<BR>
+Begin Chord2 
+<BR>
+Begin Walk Define  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+Once a B<SMALL>EGIN</SMALL> block has been entered, all subsequent lines have
+the words from the B<SMALL>EGIN</SMALL> command prepended to each line of
+data. There is not much magic here--B<SMALL>EGIN</SMALL>/E<SMALL>ND</SMALL> is really
+just some syntactic sugar.
+
+<P>
+
+<H1><A NAME="SECTION002120000000000000000">
+End</A>
+</H1>
+
+<P>
+To finish off a B<SMALL>EGIN</SMALL> block, use a single E<SMALL>ND</SMALL> on a line
+by itself.
+
+<P>
+Defining musical data, repeats, or other B<SMALL>EGIN</SMALL>s inside a block
+(other than COMMENT blocks) will not work.
+
+<P>
+Nesting is permitted. Eg:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Scale Begin  
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;Begin Define 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</B></BLOCKQUOTE><I>stuff</I><BLOCKQUOTE><B>  
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;End  
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;Sequence </B></BLOCKQUOTE><I>stuff</I><BLOCKQUOTE><B> 
+<BR>
+End </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+A B<SMALL>EGIN</SMALL> must be competed with a E<SMALL>ND</SMALL> before the end of a
+file, otherwise an error will be generated. The U<SMALL>SE</SMALL> and
+I<SMALL>NCLUDE</SMALL> commands are not permitted inside a block.
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html660"
+  HREF="node22.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html658"
+  HREF="mma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html652"
+  HREF="node20.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html661"
+  HREF="node22.html">Documentation Strings</A>
+<B> Up:</B> <A NAME="tex2html659"
+  HREF="mma.html">Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html653"
+  HREF="node20.html">Other Commands and Directives</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Bob
+2006-10-15
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,283 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Repeats</TITLE>
+<META NAME="description" CONTENT="Repeats">
+<META NAME="keywords" CONTENT="mma">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mma.css">
+
+<LINK REL="next" HREF="node17.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="mma.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+
+<BODY  bgcolor="#ffffff">
+<!--Navigation Panel-->
+<A NAME="tex2html553"
+  HREF="node17.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html551"
+  HREF="mma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html545"
+  HREF="node15.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html554"
+  HREF="node17.html">Variables, Conditionals and Jumps</A>
+<B> Up:</B> <A NAME="tex2html552"
+  HREF="mma.html">Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html546"
+  HREF="node15.html">Volume and Dynamics</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION001600000000000000000"></A> <A NAME="sec-repeat"></A>
+<BR>
+Repeats
+</H1>
+
+<P>
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  attempts to be as comfortable to use as standard sheet music.
+This includes <B>repeats</B> and <B>endings</B>.
+
+<P>
+More complex structures like <B>D.S.</B>, <B>Coda</B>, etc. are
+<B>not</B> directly supported. But, they are easily simulated with by
+using some simple variables, conditionals and G<SMALL>OTO</SMALL>s. See
+<A HREF="node17.html#sec-variables">Variables</A> for details.
+Often as not, it may be easier to use your editor to cut, paste and
+duplicate. Another, alternate, method of handling complicated repeats
+is to set sections of code in M<SMALL>SET</SMALL> (<A HREF="node17.html#sec-mset">more
+  here</A>) variables and simply expand those.
+
+<P>
+A section of music to be repeated is indicated with a R<SMALL>EPEAT</SMALL>
+and R<SMALL>EPEATEND</SMALL> or E<SMALL>ND</SMALL>R<SMALL>EPEAT</SMALL><A NAME="tex2html57"
+  HREF="#foot7344"><SUP>16.1</SUP></A> In addition, you can have R<SMALL>EPEAT</SMALL>E<SMALL>NDINGS</SMALL>.
+
+<P>
+
+		<BR>
+		<TABLE CELLSPACING=0 Align="Center" CELLPADDING=10 BGCOLOR="#efefef" BORDER=3>
+		<TR> <TD ALIGN="CENTER" BGCOLOR="White">
+	    	<B><FONT SIZE="+2">Repeats</FONT></B>    <A NAME="eg-repeat"></A>	
+	 	</TR></TD> <TR><TD Align="Center">
+
+<P>
+  <IMG WIDTH="95%"  SRC="mupex/repeat.png" ALT="Lost Image">
+ <BR>
+<BR>
+<BR>
+<BR>
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Repeat 
+<BR>
+1    Am  
+<BR>
+2    C  
+<BR>
+RepeatEnding 2
+<BR>
+3   D7 
+<BR>
+RepeatEnding 
+<BR>
+4    D7 / Dm 
+<BR>
+RepeatEnd 
+<BR>
+5    G7 
+<BR>
+6 A  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+ 
+	
+		</TD></TR></TABLE>
+
+<P>
+
+<P>
+In <A HREF="#eg-repeat">this example</A> 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  produces
+music with bars:
+
+<P>
+<BLOCKQUOTE>
+1, 2, 3, 
+<BR>
+1, 2, 3, 
+<BR>
+1, 2, 4, 
+<BR>
+1, 2, 5, 6
+
+</BLOCKQUOTE>
+
+<P>
+This works just like standard sheet music. Note that both
+R<SMALL>EPEAT</SMALL>E<SMALL>NDING</SMALL> and R<SMALL>EPEAT</SMALL>E<SMALL>ND</SMALL> can take an optional argument
+indicating the number of times to use the ending or to repeat the
+block. The effect of an optional count for R<SMALL>EPEAT</SMALL>E<SMALL>NDING</SMALL> is
+illustrated in the example, above. The following simple example:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Repeat 
+<BR>
+1&nbsp; Am 
+<BR>
+2&nbsp; Cm 
+<BR>
+RepeatEnd 3  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+Will expand to:
+<BLOCKQUOTE>
+1, 2, 
+<BR>
+1, 2, 
+<BR>
+1, 2
+
+</BLOCKQUOTE>
+
+<P>
+Note that the optional argument ``3'' produces a total of three
+copies. The default argument for R<SMALL>EPEAT</SMALL> is ``2''. Using ``1''
+cancels the R<SMALL>EPEAT</SMALL> and ``0'' deletes the entire section. Using
+``1'' and ``0'' are useful in setting up Coda sections where you want
+a different count the second time the section is played. Note that the
+count argument can be a macro. Have a look at the sample file
+<TT><B>repeats.mma</B></TT> for lots of examples.
+
+<P>
+Combining optional counts with both R<SMALL>EPEAT</SMALL>E<SMALL>NDING</SMALL> and
+R<SMALL>EPEAT</SMALL>E<SMALL>ND</SMALL> is permitted. Another example:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Repeat 
+<BR>
+1      Am  
+<BR>
+2      C  
+<BR>
+RepeatEnding 2
+<BR>
+3     D7 
+<BR>
+RepeatEnd 2  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+Produces:
+<BLOCKQUOTE>
+1, 2, 3, 
+<BR>
+1, 2, 3,
+<BR>
+1, 2, 
+<BR>
+1, 2
+
+</BLOCKQUOTE>
+
+<P>
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  processes repeats by reading the input file and creating
+duplicates of the repeated material. This means that a directive in
+the repeated material would be processed multiple times. Unless you
+know what you are doing, directives should not be inserted in repeat
+sections. Be especially careful if you define a pattern inside a
+repeat. Using T<SMALL>EMPO</SMALL> with a ``+'' or ``-'' will be problematic
+as well.
+
+<P>
+Repeats can be nested to any level.
+
+<P>
+Some count values for R<SMALL>EPEAT</SMALL>E<SMALL>ND</SMALL> or E<SMALL>ND</SMALL>R<SMALL>EPEAT</SMALL> and
+R<SMALL>EPEAT</SMALL>E<SMALL>NDING</SMALL> will generate a warning message. Using the
+optional text <B>NoWarn</B> as the first argument will supress the
+message:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Repeat 
+<BR>... 
+<BR>
+RepeatEnd Nowarn 1  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+There must be one R<SMALL>EPEAT</SMALL>E<SMALL>ND</SMALL> or E<SMALL>ND</SMALL>R<SMALL>EPEAT</SMALL> for every
+R<SMALL>EPEAT</SMALL>. Any number of R<SMALL>EPEAT</SMALL>E<SMALL>NDING</SMALL>s can be included
+before the R<SMALL>EPEAT</SMALL>E<SMALL>ND</SMALL>.
+<BR><HR><H4>Footnotes</H4>
+<DL>
+<DT><A NAME="foot7344">...E<SMALL>ND</SMALL>R<SMALL>EPEAT</SMALL></A><A
+ HREF="node16.html#tex2html57"><SUP>16.1</SUP></A></DT>
+<DD>The reason for both
+  E<SMALL>ND</SMALL>R<SMALL>EPEAT</SMALL> and R<SMALL>EPEAT</SMALL>E<SMALL>ND</SMALL> is to match I<SMALL>F</SMALL>E<SMALL>ND</SMALL> and
+  E<SMALL>ND</SMALL>I<SMALL>F</SMALL>.
+
+</DD>
+</DL><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html553"
+  HREF="node17.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html551"
+  HREF="mma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html545"
+  HREF="node15.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html554"
+  HREF="node17.html">Variables, Conditionals and Jumps</A>
+<B> Up:</B> <A NAME="tex2html552"
+  HREF="mma.html">Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html546"
+  HREF="node15.html">Volume and Dynamics</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Bob
+2006-10-15
+</ADDRESS>
+</BODY>
+</HTML>

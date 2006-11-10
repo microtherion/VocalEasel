@@ -1,0 +1,115 @@
+#!/usr/bin/env python
+
+import shutil, os, sys
+
+def okay(msg):
+	print msg
+	a=raw_input("   Press <ENTER> to continue (anything else will terminate): ")
+
+	if a:
+		sys.exit(1)
+
+	return
+
+
+# Simple python script to install mma from tarball
+# This should be fixed to be more versatile. Volunteers?
+
+###########################################
+#######  Banner, get destination
+
+print """
+This script will install mma, the standard library and the
+python modules.
+
+YOU WILL NEED TO BE LOGGED IN AS ROOT TO CONTINUE!
+
+We recommend that you install the package with this script
+in the default locations. This script will create a
+directory 'mma' in /usr/local/share. If this isn't
+what you want, then stop this script and edit this
+script's directory locations. But, please note that ONLY
+/usr/local/share and /usr/share are supported as default
+locations.
+
+The main executable script will be installed in /usr/local/bin.
+
+If you ever decide to get rid of MMA, just delete the executable
+in /usr/local/mma and the directory tree in /usr/local/share/mma.
+
+"""
+
+okay("")
+
+###########################################
+######## Copy the executable.
+
+bin='/usr/local/bin/mma'
+
+if os.path.exists(bin):
+	okay("Existing mma executable '%s' is being overwritten." % bin)
+
+print "Copying mma to", bin
+
+shutil.copy( 'mma.py', bin)
+
+###########################################
+######## Copy the library
+
+dest = '/usr/local/share/mma'
+
+if os.path.exists(dest):
+   bu=dest.rsplit('/', 1)[0] + '/mma-old'
+   if os.path.exists(bu):
+      print "This script was going to move the existing MMA tree to"
+      print "a backup directory called '%s'. But that already exists." % bu
+      print "So, please delete the backup (and current) directories by hand."
+      print "Yes, the script could do this, but it's probably safer for you to do it!"
+      sys.exit(1)
+
+   okay("Existing mma tree '%s' is being moved to '%s'." % (dest, bu))
+   os.rename( dest, bu )
+
+print "Copying library to", dest
+os.makedirs(dest)
+shutil.copytree( "lib", dest+"/lib")
+
+
+###########################################
+######## Copy the includes
+
+print "Copying includes to", dest
+shutil.copytree( "includes", dest+"/includes")
+
+###########################################
+######## Copy the modules
+
+print "Copying python modules to", dest
+
+shutil.copytree( "MMA", dest+"/MMA")
+
+###########################################
+######## Copy the html docs
+
+print "Copying HTML documentation to", dest
+
+shutil.copytree( "docs", dest+"/docs")
+
+###########################################
+######## Set permissions/udate database
+
+print
+print "Updating database file. This uses mma with the -G option."
+print "If this fails, something was not installed properly"
+print "and you should contact Bob and we'll figure it out."
+
+okay("")
+
+os.system("%s -G" % bin)
+
+print "Setting permissions on MMADIR database file for user update."
+os.system("chmod a+w " + dest+"/lib/stdlib/.mmaDB")
+
+
+
+

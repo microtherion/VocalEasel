@@ -1,0 +1,573 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Grooves</TITLE>
+<META NAME="description" CONTENT="Grooves">
+<META NAME="keywords" CONTENT="mma">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mma.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="mma.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY  bgcolor="#ffffff">
+<!--Navigation Panel-->
+<A NAME="tex2html396"
+  HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html394"
+  HREF="mma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html388"
+  HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html397"
+  HREF="node7.html">Riffs</A>
+<B> Up:</B> <A NAME="tex2html395"
+  HREF="mma.html">Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html389"
+  HREF="node5.html">Sequences</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html398"
+  HREF="node6.html#SECTION00610000000000000000">Creating A Groove</A>
+<LI><A NAME="tex2html399"
+  HREF="node6.html#SECTION00620000000000000000">Using A Groove</A>
+<UL>
+<LI><A NAME="tex2html400"
+  HREF="node6.html#SECTION00621000000000000000">Overlay Grooves</A>
+<LI><A NAME="tex2html401"
+  HREF="node6.html#SECTION00622000000000000000">Library Issues</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION00600000000000000000"></A>
+<A NAME="sec-grooves"></A>
+<BR>
+Grooves
+</H1>
+
+<P>
+Grooves, in some ways, are 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> 's answer to macros...but
+they are cooler, easier to use, and have a more musical name.
+
+<P>
+Really, though, a groove is just a simple mechanism for saving and
+restoring a set of patterns and sequences. Using grooves it is easy to
+create sequence libraries which can be incorporated into your songs
+with a single command.
+
+<P>
+
+<H1><A NAME="SECTION00610000000000000000">
+Creating A Groove</A>
+</H1>
+
+<P>
+A groove can be created at anytime in an input file with the command:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>DefGroove SlowRhumba </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+Optionally, you can include a documentation string to the end of this
+command:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>DefGroove SlowRumba A descriptive comment! </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+A groove name can include any character, including digits and
+punctuation. However, it cannot include a space character (used as a
+delimiter) or a '/'<A NAME="tex2html32"
+  HREF="#foot2739"><SUP>6.1</SUP></A>, nor can consist solely of digits<A NAME="tex2html33"
+  HREF="#foot2813"><SUP>6.2</SUP></A>
+<P>
+In normal operation the documentation strings are ignored. However,
+when 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  is run with the -Dx command line option these strings are
+printed to the terminal screen in L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X format. The standard library
+document is generated from this data. The comments <B>must</B> be
+suitable for L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X: this means that special symbols like ``#'',
+``&amp;'', etc. must be ``quoted'' with a preceding `` &#92;''.
+
+<P>
+At this point the following information is saved:
+
+<P>
+
+<UL>
+<LI>Current Sequence size,
+</LI>
+<LI>The current sequence for each track,
+</LI>
+<LI>Time setting (quarter notes per bar),
+</LI>
+<LI>``Accent'',
+</LI>
+<LI>``Articulation'' settings for each track,
+</LI>
+<LI>``Compress'',
+</LI>
+<LI>``Direction'',
+</LI>
+<LI>``DupRoot'',
+</LI>
+<LI>``Harmony'',
+</LI>
+<LI>``HarmonyOnly'',
+</LI>
+<LI>``HarmonyVolume'',
+</LI>
+<LI>``Invert'',
+</LI>
+<LI>``Limit'',
+</LI>
+<LI>``Mallet'' (rate and decay),
+</LI>
+<LI>``MidiSeq'',
+</LI>
+<LI>``MidiVoice'',
+</LI>
+<LI>``MidiClear''
+</LI>
+<LI>``NoteSpan'',
+</LI>
+<LI>``Octave'',
+</LI>
+<LI>``Range'',
+</LI>
+<LI>``RSkip'',
+</LI>
+<LI>``Rtime'',
+</LI>
+<LI>``Rvolume'',
+</LI>
+<LI>``Scale'',
+</LI>
+<LI>``SeqRnd'', globally and  for each track,
+</LI>
+<LI>``SeqRndWeight'', globally and  for each track,
+</LI>
+<LI>``Strum'',
+</LI>
+<LI>``SwingMode'' Status and Skew,
+</LI>
+<LI>``Time Signature'',
+</LI>
+<LI>``Tone'' for drum tracks,
+</LI>
+<LI>``Unify'',
+</LI>
+<LI>``Voice'',
+</LI>
+<LI>``VoicingCenter'',
+</LI>
+<LI>``VoicingMode'',
+</LI>
+<LI>``VoicingMove'',
+</LI>
+<LI>``VoicingRange'',
+</LI>
+<LI>``Volume'' for tracks and master,
+</LI>
+<LI>``VolumeRatio''.
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<H1><A NAME="SECTION00620000000000000000">
+Using A Groove</A>
+</H1>
+
+<P>
+You can restore a previously defined groove at anytime in your song
+with:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Groove Name </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+At this point all of the previously saved information is restored.
+
+<P>
+A few cautions:
+
+<P>
+
+<UL>
+<LI>Pattern definitions are <B>not</B> saved in grooves. Redefining
+  a pattern results in a new pattern definition. Sequences use the
+  pattern definition in effect when the sequence is declared.
+
+<P>
+</LI>
+<LI>The ``SeqSize'' setting is restored with a groove. The sequence
+  point is also reset to bar 1. If you have multi-bar sequences,
+  restoring a groove may upset your idea of the sequence pattern.
+
+<P>
+</LI>
+</UL>
+
+<P>
+To make life (infinitely) more interesting, you can specify more than
+one previously defined groove. In this case the next groove is
+selected after each bar. For example:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Groove Tango LightTango LightTangoSus LightTango </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+would create the following bars:
+
+<P>
+
+<OL>
+<LI>Tango
+</LI>
+<LI>LightTango
+</LI>
+<LI>LightTangoSus
+</LI>
+<LI>LightTango
+</LI>
+<LI>Tango
+</LI>
+</OL>
+
+<P>
+Note how the groove pattern wraps around to the first one when the
+list is exhausted. There is no way to select an item from the list,
+except by going though it.
+
+<P>
+You might find this handy if you have a piece with an alternating time
+signature. For example, you might have a <B>3/4</B> <B>4/4</B>
+song. Rather than creating a 2 bar groove, you could do something
+like:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Groove Groove34 Groove44 </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+For long lists you can use the ``/'' to repeat the last groove in the
+list. The example above could be written:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Groove Tango LightTango LightTangoSus /  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+When you use the ``list'' feature of G<SMALL>ROOVE</SMALL>s you should be
+aware of what happens with the bar sequence number. Normally the
+sequence number is incremented after each bar is processed; and, when
+a new groove is selected the sequence number is reset (see S<SMALL>EQ</SMALL>,
+<A HREF="node20.html#seqnumber">discussed here)</A>. When
+you use a list which changes the G<SMALL>ROOVE</SMALL> after each bar the
+sequence number is reset after each bar ...with one exeption: if
+the same G<SMALL>ROOVE</SMALL> is being used for two or more bars the sequence
+will not be reset.<A NAME="tex2html34"
+  HREF="#foot2814"><SUP>6.3</SUP></A>
+<P>
+Another way to select G<SMALL>ROOVE</SMALL>s is to use a list of grooves with a leading value. This lets you select the G<SMALL>ROOVE</SMALL> to use based on the value of a variable ...handy if you want different sounds for repeated sections. Again, an example:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Set loop 1  // create counter with value of 1 
+<BR>
+Repeat
+<BR>&nbsp;&nbsp;Groove $loop BossaNovaSus BossaNova1Sus BossaNovaFill
+<BR>&nbsp;&nbsp;print This is loop $Loop ... Groove is $_Groove
+<BR>&nbsp;&nbsp;1 A / Am
+<BR>&nbsp;&nbsp;Inc Loop  // Bump the counter value
+<BR>
+RepeatEnd 4
+ </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+If you use this option, make sure the value of the counter is greater than 0. Also, note that the values larger than the list count are ``looped'' to be valid. The use of ``/''s for repeated names is also permitted. For an example have a look at the file <TT><B>grooves.mma</B></TT>, included in this distribution. You could get the same results with various ``if'' statements, but this is easier.
+
+<P>
+
+<H2><A NAME="SECTION00621000000000000000">
+Overlay Grooves</A>
+</H2>
+
+<P>
+To make the creation of variations easier, you can use G<SMALL>ROOVE</SMALL>
+in a track setting:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Scale Groove Funny </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+In this case only the information saved in the corresponding
+D<SMALL>EF</SMALL>G<SMALL>ROOVE </SMALL>F<SMALL>UNNY</SMALL> for the S<SMALL>CALE</SMALL> track will be restored.
+You might think of this as a ``groove overlay''. Have a look at the
+sample song ``Yellow Bird'' for an example.
+
+<P>
+When restoring track grooves, as in the above example, the
+S<SMALL>EQ</SMALL>S<SMALL>IZE</SMALL> is not reset. The sequence size of the restored track
+is adjusted to fit the current sequence size setting.
+
+<P>
+One caution with these ``overlays'' is that no check is done to see if
+the track you're using exists. Yes, the G<SMALL>ROOVE</SMALL> must have been
+defined, but not the track. Huh? Well, you need to know a bit about
+how 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  parses files and how it handles new tracks. When 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  reads
+a line in a file it first checks to see if the first word on the line
+is a simple command like P<SMALL>RINT</SMALL>, MIDI or any other
+command which doesn't require a leading trackname. If it is, the
+appropriate function is called and file parsing continues. If it is
+not a simple command 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  tests to see if it is a track specific
+command. But to do that, it first has to test the first word to see if
+it is a valid track name like <B>Bass</B> or <B>Chord-Major</B>. And,
+if it is a valid track name and that track doesn't exist, the track is
+created...this is done <B>before</B> the rest of the command is
+processed. So, if you have a command like:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Bass-Foo Groove Something </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+and you really meant to type:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Bass-Foe Groove Something </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+you'll have a number of things happening:
+
+<P>
+
+<OL>
+<LI>The track <B>Bass-Foo</B> will be created. This is not an issue
+  to be concerned over since no data will be created for this new
+  track unless you set a S<SMALL>EQUENCE</SMALL> for it.
+
+<P>
+</LI>
+<LI>As part of the creation, all the existing G<SMALL>ROOVE</SMALL>s will
+  have the <B>Bass-Foo</B> track (with its default/empty settings)
+  added to them.
+
+<P>
+</LI>
+<LI>And the current setting you think you're modifying with the
+  <B>Bass-Foe</B> settings will be created with the <B>Bass-Foo</B>
+  settings (which are nothing).
+
+<P>
+</LI>
+<LI>Eventually you'll wonder why 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  isn't working.
+
+<P>
+</LI>
+</OL>
+
+<P>
+So, be very careful using this command option. Check your spelling.
+And use the P<SMALL>RINT</SMALL>A<SMALL>CTIVE</SMALL> command to verify your G<SMALL>ROOVE</SMALL>
+creations. A basic test is done by 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  when you use a G<SMALL>ROOVE</SMALL>
+in this manner and if the sequence for the named track is not defined
+you will get a warning.
+
+<P>
+
+<H2><A NAME="SECTION00622000000000000000">
+Library Issues</A>
+</H2>
+
+<P>
+If you are using a groove from a library file, you just need to do
+something like:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Groove Rhumba2 </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+at the appropriate position in your input file.
+
+<P>
+One minor problem which <B>may</B> arise is that more than one library
+file has defined the same groove name. This might happen if you have a
+third-party library file. For the proposes of this example, lets
+assume that the standard library file ``rhumba.mma'' and a second file
+``xyz-rhumba.mma'' both define the groove ``Rhumba2''. The
+<A HREF="node23.html#lib-use">auto-load</A> routines
+which search the library database will load the first ``Rhumba2'' it
+finds, and the search order cannot be determined. To overcome this
+possible problem, do a explicit loading of the correct file. In this
+case, simply do:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Use xyz-rhumba </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+near the top of your file. And if you wish to switch to the groove
+defined in the standard file, you can always do:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Use rhumba </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+just before the groove call. The U<SMALL>SE</SMALL> will read the specified
+file and overwrite the old definition of ``Rhumba2'' with its own.
+
+<P>
+This issue in covered in more detail on page <A HREF="node23.html#library-maint"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
+of this manual.
+<BR><HR><H4>Footnotes</H4>
+<DL>
+<DT><A NAME="foot2739">... '/'</A><A
+ HREF="node6.html#tex2html32"><SUP>6.1</SUP></A></DT>
+<DD>The '/' is reserved for future
+  enhancements.
+
+</DD>
+<DT><A NAME="foot2813">... digits</A><A
+ HREF="node6.html#tex2html33"><SUP>6.2</SUP></A></DT>
+<DD><B>12345</B> and <B>2</B> are invalid; <B>11foo11</B> and <B>a2-2</B> are permitted.
+
+</DD>
+<DT><A NAME="foot2814">... reset.</A><A
+ HREF="node6.html#tex2html34"><SUP>6.3</SUP></A></DT>
+<DD>Actually, 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  checks to see the next
+  G<SMALL>ROOVE</SMALL> in the list is the same as the current one, and if it
+  is then no change is done.
+
+</DD>
+</DL><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html396"
+  HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html394"
+  HREF="mma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html388"
+  HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html397"
+  HREF="node7.html">Riffs</A>
+<B> Up:</B> <A NAME="tex2html395"
+  HREF="mma.html">Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html389"
+  HREF="node5.html">Sequences</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Bob
+2006-10-15
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,164 @@
+
+// frenchwaltz
+
+Doc  These try to do the "French Cafe" sound.
+
+Author Bob van der Poel
+
+SeqClear
+Time 3
+Timesig 3 4
+Include stdpats34
+
+//////////////////////////////////////////////
+/////   FrenchWaltz	Cheezy 3/4 with accordion
+
+
+SeqSize 8
+
+// For the left hand chord (the basic accomp. on an 
+// accordion, we use a combination of a chord and
+// bass pattern. The BASS track is a single note on
+// beat 1, the CHORD track has full chords on 2, 3.
+// Accordion basses are quite limited ... in most cases
+// a single octave. So, to duplicate this sound we use
+// the SPAN directive for Chord and Bass to limit
+// the notes used from C3.
+
+
+Begin Chord
+	Begin Define
+		A1 2 3 70 ; 3 3 70          // chords on 2,3
+  		A2 2 8. 70 ; 3 3 60         // same, but with 2 a bit draggy
+		A3 2 8. 50 ; 3 8. 50        // same, but a bit softer to use with bass walk
+	End
+	Sequence     A1   /   /   A2   A1   /   /    A3
+	Voice        Accordion
+	Octave       4  
+	Articulate   70
+	NoteSpan     48  59
+	Volume       mp
+End
+
+Begin Bass
+	Voice        $_Chord_Voice
+	Sequence     B1   B1/5  B1  B1/5  B1  B1/5  B1/5  B123
+	Articulate   60
+	Octave       $_Chord_Octave
+	Volume       mp
+	NoteSpan     $_Chord_Span
+End
+
+// Chunck/chunck/chunck guitar on 1/2/3
+
+Begin Chord-Guitar
+	Sequence    C123
+	Voicing     Mode=Optimal
+	Strum       5
+	Voice       NylonGuitar
+	Accent      1 10
+	Octave      5
+	Volume      pp
+	Articulate  90
+End
+
+Begin Drum-Tam
+	Sequence	D23
+	Tone        Tambourine
+	Volume      pp
+	Rvolume     10
+	Rskip       5
+	Rtime       10
+End
+
+Begin Drum-Tri
+	Sequence    D1
+	Tone        OpenTriangle
+	Volume      pp
+	Rskip       50
+	Rvolume     30
+	Rtime       10
+End
+
+DefGroove FrenchWaltz        Accordion umm-paa. Ya either love it or hate it!
+
+
+//////// Sustained strings in the background. 
+
+Begin Chord-Sus
+	Voice      Strings
+	Sequence   { 1 2. 90 0 80 0 * 3}  // Root and fifth notes only.
+	Voicing    Mode=Optimal
+	Volume     p
+	Octave     5
+	Articulate 100
+	Unify      On
+End
+
+DefGroove FrenchWaltzSus   Add sustained strings to basic pattern.
+
+
+////////////////////////////////////////////////////
+// Alternate adds a light 1/8th and 1/4 note aprs 
+
+Groove FrenchWaltz
+
+Chord-Guitar  Sequence -
+
+Begin Arpeggio
+	Sequence   A6   /   /   A3
+	SeqRnd     On
+	Accent     1 10
+	Range      3
+	Articulate 80
+	Voice      Accordion
+	Octave     5
+	Volume     pp
+	Rvolume    10
+	Rskip      10   10   50    10
+	Rtime      2
+End
+
+DefGroove FrenchWaltz1           FrenchWaltz with with accordion apreggios.
+
+Chord-Sus Groove FrenchWaltzSus
+DefGroove FrenchWaltz1Sus        Arpeggios and sustained strings.
+
+/////////////////////////////////
+//// Ending
+
+Groove FrenchWaltz
+Seqsize 4
+
+Chord-Guitar  Sequence   -
+Chord         Sequence   A1    /    /    {1 2 40}
+Bass          Sequence   B1    B1/5   B1  {1 2 1 40}
+Drum-Tam      Sequence   D23   /     /    D1
+
+Begin Scale
+	SeqClear
+	Sequence   S6   S3  S3 {1 2 80}
+	Direction  Up
+	Voice      Strings
+	Octave     5
+	Articulate 80 80 80 100
+End
+
+DefGroove FrenchWaltzEnd         A scale with the strings to end \
+                                 the FrenchWaltz. The scales run from \
+                                 16, 8, 4 and whole notes.
+
+
+// Variation
+
+Begin Scale
+	Voice     Accordion
+	Direction Down
+	Range     4
+	Octave    3
+End
+
+DefGroove FrenchWaltz1End    Same ending as FrenchWaltzEnd but with \
+                             an accordion instead of strings.
+
+

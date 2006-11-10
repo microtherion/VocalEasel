@@ -1,0 +1,156 @@
+
+<HTML>
+<Center> <h1> The MMA Library </h1> </Center>
+
+<P>
+This document is provided as a supplement to the <em>MMA Reference
+Manual</em> which lists all of the commands in the program and helpful
+information which can be used to create your own "style" files. If you are a
+newcomer to MMA, you
+should also have a look at the <em>MMA Tutorial</em> for some "getting
+started" information.
+
+<P>
+The information on these HTML pages has been generated directly
+from the library files in your MMA library. Each
+entry uses the filename as a header and then lists the various
+defined grooves.
+
+<P>
+You should be able to use any of the grooves listed in the "STDLIB"
+section in your files without
+using other directives. However, if you have files in other
+locations you will need to need to
+explicitly load the library file(s) with a <em>Use</em> directive.
+
+<P>
+The filenames are in all lowercase. These are the actual filenames
+used in the library. If you are loading files with the <em>Use</em>
+directive you must use the same case (please note that
+typographic case applies only to the filename---this is operating system
+dependant). <em>Groove</em> commands are case-insensitive.
+
+<P>
+Following each groove description is a boxed number in the form
+<B>(4)</B>. This indicates the sequence size of the groove. Next, is
+a list of tracks and instrument names. This shows the first voice or
+drum note defined for each track---it is quite possible that the track
+uses other voices. This data is included so that you can see what
+tracks are active.
+
+<P>
+The library files supplied with MMA contain embedded documentation.
+The <em>-Dxh</em> and <em>-Dxl</em> MMA command line options extract the following
+information from the each library file:
+
+<UL>
+<LI> The filename from the "Doc File" directive.
+
+<LI> The file description from the "Doc Note" directive.
+
+<LI> Each groove description: This is the optional text following a
+  <em>DefGroove</em> directive.
+
+	<UL>
+	<LI> The sequence size. This is extracted from the current groove
+  information and was set with the <em>SeqSize</em> directive. It is
+  displayed in a small box after the groove description.
+
+	<LI>  A "summary" of the voices used in the groove. Note that a
+  different voice or MIDI note is possible for each bar in the
+  sequence size; however, this listing only lists the selection for
+  the first bar.
+
+   </UL>
+</UL>
+
+<P>If you find that you don't have some of the grooves listed below in your distribution
+	you need to run the program mklibdoc.py to update these docs. Not all style files are
+	distributed in the default MMA distribution.
+
+<HR Size=3pt>
+<CENTER> <H2> Index </H2> </CENTER>
+
+<ul><li> <A Href=#stdlib> <h2> Stdlib </h2> </a> </li>
+<li> <A Href=#kara> <h2> Kara </h2> </a> </li></ul><HR Size=3pt><P><h3>These grooves can be used from a program just by using their name.</h3>
+<A Name =stdlib></a>
+<h2> Stdlib </h2>
+<ul>
+<li> <A Href = stdlib/folk.html> stdlib/folk.mma </a> </li>
+<li> <A Href = stdlib/rhumba.html> stdlib/rhumba.mma </a> </li>
+<li> <A Href = stdlib/tango.html> stdlib/tango.mma </a> </li>
+<li> <A Href = stdlib/waltz.html> stdlib/waltz.mma </a> </li>
+<li> <A Href = stdlib/8beat.html> stdlib/8beat.mma </a> </li>
+<li> <A Href = stdlib/blues.html> stdlib/blues.mma </a> </li>
+<li> <A Href = stdlib/foxtrot.html> stdlib/foxtrot.mma </a> </li>
+<li> <A Href = stdlib/jazz-54.html> stdlib/jazz-54.mma </a> </li>
+<li> <A Href = stdlib/swing.html> stdlib/swing.mma </a> </li>
+<li> <A Href = stdlib/march.html> stdlib/march.mma </a> </li>
+<li> <A Href = stdlib/beguine.html> stdlib/beguine.mma </a> </li>
+<li> <A Href = stdlib/dixie.html> stdlib/dixie.mma </a> </li>
+<li> <A Href = stdlib/calypso.html> stdlib/calypso.mma </a> </li>
+<li> <A Href = stdlib/bigband.html> stdlib/bigband.mma </a> </li>
+<li> <A Href = stdlib/jazzwaltz.html> stdlib/jazzwaltz.mma </a> </li>
+<li> <A Href = stdlib/softrock.html> stdlib/softrock.mma </a> </li>
+<li> <A Href = stdlib/countryswing.html> stdlib/countryswing.mma </a> </li>
+<li> <A Href = stdlib/bluegrass.html> stdlib/bluegrass.mma </a> </li>
+<li> <A Href = stdlib/polka.html> stdlib/polka.mma </a> </li>
+<li> <A Href = stdlib/bossanova.html> stdlib/bossanova.mma </a> </li>
+<li> <A Href = stdlib/easyswing.html> stdlib/easyswing.mma </a> </li>
+<li> <A Href = stdlib/fastblues.html> stdlib/fastblues.mma </a> </li>
+<li> <A Href = stdlib/metronome.html> stdlib/metronome.mma </a> </li>
+<li> <A Href = stdlib/rockballad.html> stdlib/rockballad.mma </a> </li>
+<li> <A Href = stdlib/ballad.html> stdlib/ballad.mma </a> </li>
+<li> <A Href = stdlib/popballad.html> stdlib/popballad.mma </a> </li>
+<li> <A Href = stdlib/ska.html> stdlib/ska.mma </a> </li>
+<li> <A Href = stdlib/slowblues.html> stdlib/slowblues.mma </a> </li>
+<li> <A Href = stdlib/countrywaltz.html> stdlib/countrywaltz.mma </a> </li>
+<li> <A Href = stdlib/frenchwaltz.html> stdlib/frenchwaltz.mma </a> </li>
+<li> <A Href = stdlib/vienesewaltz.html> stdlib/vienesewaltz.mma </a> </li>
+<li> <A Href = stdlib/50srock.html> stdlib/50srock.mma </a> </li>
+<li> <A Href = stdlib/metronome3.html> stdlib/metronome3.mma </a> </li>
+<li> <A Href = stdlib/rock-128.html> stdlib/rock-128.mma </a> </li>
+<li> <A Href = stdlib/slowjazz.html> stdlib/slowjazz.mma </a> </li>
+<li> <A Href = stdlib/jive.html> stdlib/jive.mma </a> </li>
+<li> <A Href = stdlib/modernjazz.html> stdlib/modernjazz.mma </a> </li>
+<li> <A Href = stdlib/lfusion.html> stdlib/lfusion.mma </a> </li>
+<li> <A Href = stdlib/zydeco.html> stdlib/zydeco.mma </a> </li>
+<li> <A Href = stdlib/60srock.html> stdlib/60srock.mma </a> </li>
+<li> <A Href = stdlib/countryblues.html> stdlib/countryblues.mma </a> </li>
+<li> <A Href = stdlib/rb.html> stdlib/rb.mma </a> </li>
+<li> <A Href = stdlib/bolero.html> stdlib/bolero.mma </a> </li>
+<li> <A Href = stdlib/basicrock.html> stdlib/basicrock.mma </a> </li>
+<li> <A Href = stdlib/boggiewoggie.html> stdlib/boggiewoggie.mma </a> </li>
+<li> <A Href = stdlib/lighttango.html> stdlib/lighttango.mma </a> </li>
+<li> <A Href = stdlib/desert.html> stdlib/desert.mma </a> </li>
+<li> <A Href = stdlib/dixiemarch.html> stdlib/dixiemarch.mma </a> </li>
+<li> <A Href = stdlib/slowcountry.html> stdlib/slowcountry.mma </a> </li>
+<li> <A Href = stdlib/hillcountry.html> stdlib/hillcountry.mma </a> </li>
+<li> <A Href = stdlib/samba.html> stdlib/samba.mma </a> </li>
+<li> <A Href = stdlib/quickstep.html> stdlib/quickstep.mma </a> </li>
+<li> <A Href = stdlib/broadway.html> stdlib/broadway.mma </a> </li>
+<li> <A Href = stdlib/softshoe.html> stdlib/softshoe.mma </a> </li>
+<li> <A Href = stdlib/pianoballad.html> stdlib/pianoballad.mma </a> </li>
+<li> <A Href = stdlib/guitarballad.html> stdlib/guitarballad.mma </a> </li>
+<li> <A Href = stdlib/son.html> stdlib/son.mma </a> </li>
+<li> <A Href = stdlib/mambo.html> stdlib/mambo.mma </a> </li>
+<li> <A Href = stdlib/chacha.html> stdlib/chacha.mma </a> </li>
+<li> <A Href = stdlib/merengue.html> stdlib/merengue.mma </a> </li>
+<li> <A Href = stdlib/slowbolero.html> stdlib/slowbolero.mma </a> </li>
+</ul>
+<P><h3>Use the following grooves with a "use" directive.</h3>
+<A Name =kara></a>
+<h2> Kara </h2>
+<ul>
+<li> <A Href = kara/K50s_rock.html> kara/K50s_rock.mma </a> </li>
+<li> <A Href = kara/twi.html> kara/twi.mma </a> </li>
+<li> <A Href = kara/Kfunk1.html> kara/Kfunk1.mma </a> </li>
+</ul>
+<BR>
+<HR  Size=3pt>
+<P> This document and the files linked were created by <em>mkdoclib.py</em>.
+
+<P>It is a part of the MMA distribution
+and is protected by the same copyrights as MMA (the GNU General Public License).
+
+<P> Created: Sun Oct 15 11:26:36 2006<HTML>

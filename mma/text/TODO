@@ -1,0 +1,8 @@
+
+In anticipation of a real-soon-now 1.0 release more eg files need to be
+written to test more features.
+
+Fix -Dk to show option keywords.
+
+Move all text file to 'text' for distribution. Ensure no duplicate filenames since MAC is
+case-INsensitive.

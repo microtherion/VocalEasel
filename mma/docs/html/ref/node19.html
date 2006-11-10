@@ -1,0 +1,539 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Fine Tuning (Translations)</TITLE>
+<META NAME="description" CONTENT="Fine Tuning (Translations)">
+<META NAME="keywords" CONTENT="mma">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mma.css">
+
+<LINK REL="next" HREF="node20.html">
+<LINK REL="previous" HREF="node18.html">
+<LINK REL="up" HREF="mma.html">
+<LINK REL="next" HREF="node20.html">
+</HEAD>
+
+<BODY  bgcolor="#ffffff">
+<!--Navigation Panel-->
+<A NAME="tex2html612"
+  HREF="node20.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html610"
+  HREF="mma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html604"
+  HREF="node18.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html613"
+  HREF="node20.html">Other Commands and Directives</A>
+<B> Up:</B> <A NAME="tex2html611"
+  HREF="mma.html">Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html605"
+  HREF="node18.html">Low Level MIDI Commands</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html614"
+  HREF="node19.html#SECTION001910000000000000000">VoiceTr</A>
+<LI><A NAME="tex2html615"
+  HREF="node19.html#SECTION001920000000000000000">DrumTr</A>
+<LI><A NAME="tex2html616"
+  HREF="node19.html#SECTION001930000000000000000">VoiceVolTr</A>
+<LI><A NAME="tex2html617"
+  HREF="node19.html#SECTION001940000000000000000">DrumVolTr</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION001900000000000000000"></A>
+<A NAME="finetuning"></A>
+<BR>
+Fine Tuning (Translations)
+</H1>
+
+<P>
+A program such as 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  which is intended to be run of various
+computers and synthesizers (both hardware keyboards and software
+versions) suffers from a minor deficency of the MIDI standards: mainly
+that the standard says nothing about what a certain instrument should
+sound like, or the relative volumes between instruments. The GM
+extension helps a bit, but only a bit, by saying that certain
+instruments should be assigned certain program change values. This
+means that all GM synths will play a "Piano" if instrument 000 is
+selected.
+
+<P>
+But, if one plays a GM file on a Casio keyboard, then on PC
+soft-synth, and then on a Yahama keyboard you will get three quite
+different sounds. The files supplied in this distribution have been
+created to sound good on the author's setup: A Casio WK-3000 keyboard.
+
+<P>
+But, what if your hardware is different? Well, there are solutions!
+Later in this chapter  commands are shown which will change the
+preselected voice and tone commands and the default volumes. At this
+time there are no example files supplied with 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> , but your
+contributions are welcome.
+
+<P>
+The general suggestion is that:
+
+<P>
+
+<OL>
+<LI>You create a file with the various translations you need. For
+  example, the file might be called <TT><B>yamaha.mma</B></TT> and contain
+  lines like:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>VoiceTR Piano1=Piano2 
+<BR>
+ToneTr SnareDrum2=SnareDrum1 
+<BR>
+VoiceVolTr Piano2=120 BottleBlow=80 
+<BR>
+DrumVolTr  RideBell=90 Tambourine=120  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+Place this file in the directory <TT><B>/usr/local/share/mma/includes</B></TT>.
+
+<P>
+</LI>
+<LI>Include this file in your <TT><B>~/.mmarc</B></TT> file. Following the
+  above example, you would have a line:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Include yamaha </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+</LI>
+</OL>
+
+<P>
+That's it! Now, whenever you compile a 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  file the translations
+will be done.
+
+<P>
+All of the following translation settings follow a similar logic as to ``when''
+they take effect, and that is at the time the V<SMALL>OICE</SMALL>,
+V<SMALL>OLUME</SMALL>, etc. command is issued. This may confuse the unwary if
+G<SMALL>ROOVES</SMALL> are being used. But, the following sequence:
+
+<P>
+<TABLE  WIDTH="60%">
+<TR><TD>
+
+<OL>
+<LI>You set a voice with the V<SMALL>OICE</SMALL> command,
+</LI>
+<LI>You save that voice into a G<SMALL>ROOVE</SMALL> with D<SMALL>EF</SMALL>G<SMALL>ROOVE</SMALL>,
+</LI>
+<LI>You create a voice translation with V<SMALL>OICE</SMALL>TR,
+</LI>
+<LI>You activate the previously defined G<SMALL>ROOVE</SMALL>.
+</LI>
+</OL></TD></TR>
+</TABLE>
+
+<TABLE  WIDTH="30%">
+<TR><TD><FONT SIZE="+4">Wrong!</FONT></TD></TR>
+</TABLE>
+
+<P>
+<I>does not have the desired effect</I>. In the above sequence the
+V<SMALL>OICE</SMALL>TR will have <I>no</I> effect. For the desired
+translations to work the V<SMALL>OICE</SMALL> (or whatever) command must come
+<I>after</I> the translation command.
+
+<P>
+
+<H1><A NAME="SECTION001910000000000000000"></A>  <A NAME="set-voicetr"></A>
+<BR>
+VoiceTr
+</H1>
+
+<P>
+In previous section you saw how to set a voice for a track by using its
+standard MIDI name. The V<SMALL>OICE</SMALL>T<SMALL>R</SMALL> command sets up a translation
+table that can be used in two different situations:
+
+<P>
+
+<UL>
+<LI>It permits creation of your own names for voices (perhaps for a
+  foreign language),
+
+<P>
+</LI>
+<LI>It lets you override or change voices used in standard library
+  files.
+
+<P>
+</LI>
+</UL>
+
+<P>
+V<SMALL>OICE</SMALL>T<SMALL>R</SMALL> works by setting up a simple translation table of
+``name'' and ``alias'' pairs. Whenever 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  encounters a voice name
+in a track command it first attempts to translate this name though the
+alias table.
+
+<P>
+To set a translation (or series of translations):
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>VoiceTr Piano1=Clavinet Hmmm=18  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+Note that you additional V<SMALL>OICE</SMALL>T<SMALL>R</SMALL> commands will add entries to
+the existing table. To clear the table use the command with no
+arguments:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>VoiceTr // Empty table </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+Assuming the first command, the following will occur:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Chord-Main Voice Hmmm </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+The V<SMALL>OICE</SMALL> for the <I>Chord-Main</I> track will be set to ``18''
+or ``Organ3''.
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Chord-2 Voice Piano1 </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+The V<SMALL>OICE</SMALL> for the <I>Chord-2</I> track will be set to
+``Clavinet''.
+
+<P>
+If your synth does not follow standard GM-MIDI voice naming
+conventions you can create a translation table which can be included
+in all your 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  song files via an RC file. But, do note that the
+resulting files will not play properly on a synth conforming to the
+GM-MIDI specification.
+
+<P>
+Following is an abbreviated and untested example for using an obsolete and unnamed synth:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>VoiceTr  Piano1=3   &#92;
+<BR>
+Piano2=4  &#92;
+<BR>
+Piano3=5  &#92;
+<BR>    ...  &#92;
+<BR>
+Strings=55  &#92;
+<BR>    ...  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+Notes: the translation is only done one time and no verification is
+done when the table is created. 
+
+<P>
+For translating drum tone values, see 
+<A HREF="#set-drumtr">D<SMALL>RUM</SMALL>TR</A>.
+
+<P>
+
+<H1><A NAME="SECTION001920000000000000000"></A> <A NAME="set-drumtr"></A>
+<BR>
+DrumTr
+</H1>
+
+<P>
+It is possible to create a translation table which will substitute one
+Drum Tone for another. This can be useful in a variety of
+situations, but consider:
+
+<P>
+
+<UL>
+<LI>Your syth lacks certain drum tones--in this case you may want
+    to set certain D<SMALL>RUM</SMALL>TR commands in a <SMALL>MMA</SMALL>RC file.
+
+<P>
+</LI>
+<LI>You are using an existing G<SMALL>ROOVE</SMALL> in a song, but don't
+    like one or more of the Drum Tones selected. Rather than
+    editing the library file you can set a translation right in the
+    song. Note, do this <I>before any</I> G<SMALL>ROOVE</SMALL> commands.
+</LI>
+</UL>
+
+<P>
+To set a translation (or set of translations) just use a list of
+drumtone values or symbolic names with each pair separated by
+white space. For example:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>ToneTR SnareDrum2=SnareDrum1 HandClap=44  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+will use a ``SnareDrum1'' instead of a ``SnareDrum2'' and the value
+``44'' (actually a ``PedalHiHat'') instead of a ``HandClap''.
+
+<P>
+You can turn off all drum tone translations with an empty line:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>ToneTR </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+The syntax and usage of D<SMALL>RUM</SMALL>TR is quite similar to
+<A HREF="#set-voicetr">V<SMALL>OICE</SMALL>TR</A>.
+
+<P>
+
+<H1><A NAME="SECTION001930000000000000000"></A>  <A NAME="set-voicevoltr"></A>
+<BR>
+VoiceVolTr
+</H1>
+
+<P>
+If you find that a particular voice, i.e., Piano2, is too loud or soft
+you can create an entry in the ``Voice Volume Translation Table''. The
+concept is quite simple: 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  checks the table whenever a
+track-specific V<SMALL>OLUME</SMALL> command is processed. The table is
+created in a similar manner to the V<SMALL>OICE</SMALL>T<SMALL>R</SMALL> command:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>VoiceVolTr Piano2=120  105=75 </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+Each voice pair must contain a valid MIDI voice (or numeric value),
+an ``='' and a volume adjustment factor. The factor is a percentage
+value which is applied to the normal volume. In the above example two
+adjustments are created:
+
+<P>
+
+<OL>
+<LI>Piano2 will be played at %120 of the normal value,
+
+<P>
+</LI>
+<LI>Banjo (voice 105) will be played at %75 of the normal value.
+</LI>
+</OL>
+
+<P>
+The adjustments are made when a track V<SMALL>OLUME</SMALL> command is
+encountered. For example, if the above translation has be set and
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  encounters the following commands:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Begin Chord
+<BR>&nbsp;&nbsp;&nbsp;Voice Piano2
+<BR>&nbsp;&nbsp;&nbsp;Volume mp
+<BR>&nbsp;&nbsp;&nbsp;Sequence 1 4 90
+<BR>
+End  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+the following adjustments are made:
+
+<P>
+
+<OL>
+<LI>A lookup is done in the global volume table. The volume ``mf''
+  is determined to be %85 for the set MIDI velocity,
+
+<P>
+</LI>
+<LI>the adjusment of %120 is applied to the %85, changing that to %102.
+
+<P>
+</LI>
+<LI>Assuming that no other volume adjustments are being made
+  (probably there will be a global volume and, perhaps, a
+  R<SMALL>VOLUME</SMALL>) the MIDI velocity in the sequence will be changed
+  from 90 to 91. Without the translation the 90 would have been changed to 76.
+
+<P>
+</LI>
+</OL>
+
+<P>
+To disable all volume translations:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>VoiceVolTr  // Empty table </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+
+<H1><A NAME="SECTION001940000000000000000"></A> <A NAME="set-drumvoltr"></A>
+<BR>
+DrumVolTr
+</H1>
+
+<P>
+You can change the volumes of indvidual drum tones with the
+D<SMALL>RUM</SMALL>V<SMALL>OL</SMALL>T<SMALL>R</SMALL> translation. This command works just like the
+V<SMALL>OICE</SMALL>V<SMALL>OL</SMALL>T<SMALL>R</SMALL> command desribed above. It just uses drum tones
+instead of instrument voices.
+
+<P>
+For example, if you wish to make the drum tones ``SnareDrum1'' and
+``HandClap'' a bit louder:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>DrumVolTr SnareDrum1=120 HandClap=110 </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+The drum tone names can be symbolic constants, or MIDI values as in
+the next example:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>DrumVolTr 44=90 31=55 </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+All drum tone translations can be disabled with:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>DrumVolTr  // Empty table </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html612"
+  HREF="node20.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html610"
+  HREF="mma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html604"
+  HREF="node18.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html613"
+  HREF="node20.html">Other Commands and Directives</A>
+<B> Up:</B> <A NAME="tex2html611"
+  HREF="mma.html">Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html605"
+  HREF="node18.html">Low Level MIDI Commands</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Bob
+2006-10-15
+</ADDRESS>
+</BODY>
+</HTML>

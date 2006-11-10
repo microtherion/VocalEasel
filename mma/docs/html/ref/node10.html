@@ -1,0 +1,816 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Solo and Melody Tracks</TITLE>
+<META NAME="description" CONTENT="Solo and Melody Tracks">
+<META NAME="keywords" CONTENT="mma">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mma.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="mma.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY  bgcolor="#ffffff">
+<!--Navigation Panel-->
+<A NAME="tex2html452"
+  HREF="node11.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html450"
+  HREF="mma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html444"
+  HREF="node9.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html453"
+  HREF="node11.html">Chord Voicing</A>
+<B> Up:</B> <A NAME="tex2html451"
+  HREF="mma.html">Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html445"
+  HREF="node9.html">Lyrics</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html454"
+  HREF="node10.html#SECTION001010000000000000000">Note Data Format</A>
+<UL>
+<LI><A NAME="tex2html455"
+  HREF="node10.html#SECTION001011000000000000000">Long Notes</A>
+<LI><A NAME="tex2html456"
+  HREF="node10.html#SECTION001012000000000000000">Using Defaults</A>
+<LI><A NAME="tex2html457"
+  HREF="node10.html#SECTION001013000000000000000">Other Commands</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html458"
+  HREF="node10.html#SECTION001020000000000000000">KeySig</A>
+<LI><A NAME="tex2html459"
+  HREF="node10.html#SECTION001030000000000000000">AutoSoloTracks</A>
+<LI><A NAME="tex2html460"
+  HREF="node10.html#SECTION001040000000000000000">Drum Solo Tracks</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION001000000000000000000"></A>
+<A NAME="chap-solo"></A>
+<BR>
+Solo and Melody Tracks
+</H1>
+
+<P>
+So far the creation of accompaniment tracks using drum and chord
+patterns has been discussed. However, there are times when chording
+(and chord variations such as arpeggios) are not sufficient.
+Sometimes you might want a real melody line!
+
+<P>
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  has two internal track types reserved for melodic lines. They
+are the S<SMALL>OLO</SMALL> and M<SMALL>ELODY</SMALL> tracks. These two track types
+are identical with two major exceptions:
+
+<P>
+
+<UL>
+<LI>S<SMALL>OLO</SMALL> tracks are only initialized once, at start up.
+  Commands like S<SMALL>EQ</SMALL>C<SMALL>LEAR</SMALL> are ignored by S<SMALL>OLO</SMALL> tracks.
+
+<P>
+</LI>
+<LI>No settings in S<SMALL>OLO</SMALL> tracks are saved or restored with
+  G<SMALL>ROOVE</SMALL> commands.
+
+<P>
+</LI>
+</UL>
+
+<P>
+These differences mean that you can set parameters for a S<SMALL>OLO</SMALL>
+track in a preamble in your music file and have those settings valid
+for the entire song. For example, you may want to set an instrument at
+the top of a song:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Solo Voice TenorSax </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+On the other hand, M<SMALL>ELODY</SMALL> tracks save and restore grooves just
+like all the other available tracks. If you have the following sequence
+in a song file:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Melody Voice TenorSax
+<BR>
+Groove Blues
+<BR>  ... musical data </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+no one will be surprised to find that the M<SMALL>ELODY</SMALL> track
+playing with the default voice (Piano).
+
+<P>
+As a general rule,  M<SMALL>ELODY</SMALL> tracks have been designed as a
+``voice'' to accompany a predefined form defined in a
+G<SMALL>ROOVE</SMALL>--it is a good idea to define M<SMALL>ELODY</SMALL> parameters
+as part of a G<SMALL>ROOVE</SMALL>. S<SMALL>OLO</SMALL> tracks are thought to be
+specific to a certain song file, with their parameters defined in the
+song file.
+
+<P>
+Apart from the exceptions noted above, S<SMALL>OLO</SMALL> and M<SMALL>ELODY</SMALL>
+tracks are identical.
+
+<P>
+Unlike the other available tracks, you do not define a sequence or
+pattern for a S<SMALL>OLO</SMALL> or M<SMALL>ELODY</SMALL> track. Instead, you specify
+a series of notes as a R<SMALL>IFF</SMALL> pattern. For example, consider the
+first two bars of ``Bill Bailey'' (the details of melody notation will
+be covered later in this chapter):
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Solo Riff 4c;2d;4f; 
+<BR>
+F  
+<BR>
+Solo Riff 4.a;8g#;4a;4c+;  
+<BR>
+F </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+In this example the melody has been added to the song file.
+
+<P>
+Specifying a R<SMALL>IFF</SMALL> for each bar of your song can get tedious, so
+there is a shortcut ...any data surrounded by curly brackets ``{
+}'' is interpreted as a R<SMALL>IFF</SMALL> for a S<SMALL>OLO</SMALL> or
+M<SMALL>ELODY</SMALL> track. This means that the above example could be
+rewritten as:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>F {4c;2d;4f;} 
+<BR>
+F {4.a;8g#;4a;4c+;}  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+By default the note data is inserted into the S<SMALL>OLO</SMALL> track. If
+more than one set of note data is present, it will be inserted into
+the next track set by the A<SMALL>UTO</SMALL>S<SMALL>OLO</SMALL>T<SMALL>RACKS</SMALL> command
+(<A HREF="#autosolotracks">here</A>).
+
+<P>
+
+<H1><A NAME="SECTION001010000000000000000">
+Note Data Format</A>
+</H1>
+
+<P>
+The notes in a S<SMALL>OLO</SMALL> or M<SMALL>ELODY</SMALL> track are specified as a
+series of ``chords''. Each chord can be a single note, or several
+notes (all with the same duration). Each chord in the bar is delimited
+with a single semicolon.<A NAME="tex2html42"
+  HREF="#foot4276"><SUP>10.1</SUP></A>
+<P>
+Each chord can have several parts. All missing parts will default to
+the value in the previous chord. The various parts of a chord must be
+specified in the order given in the following table.
+
+<P>
+<DL>
+<DT><STRONG>Duration</STRONG></DT>
+<DD>The duration of the note. This is specified in the
+  same manner as chord patterns; see
+  <A HREF="node4.html#notelength">here</A> for details on how to
+  specify a note duration. 
+
+<P>
+</DD>
+<DT><STRONG>Pitch</STRONG></DT>
+<DD>The note in standard musical notation. The lowercase
+  letters ``a'' to ``g'' are recognized as well as ``r'' to specify a
+  rest (please note the exception for <B>Drum Solo Tracks</B>,
+  <A HREF="#drumtype">here</A>).
+
+<P>
+</DD>
+<DT><STRONG>Accidental</STRONG></DT>
+<DD>A pitch modifier consisting of a single ``#''
+  (sharp), ``&amp;'' (flat) or ``n'' (natural). Please note that an
+  accidental will override the current K<SMALL>EYSIG</SMALL> for the current
+  bar (just like in real musical notation). Unlike standard musical
+  notation the accidental <B>will</B> apply to similarly named notes
+  in different octaves.
+
+<P>
+Please note that when you specify a chord in 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  you can use
+  either a ``b'' or a ``&amp;'' to represent a flat sign; however, when
+  specifying notes for a S<SMALL>OLO</SMALL> you can only use the ``&amp;''
+  character.
+
+<P>
+</DD>
+<DT><STRONG>Octave</STRONG></DT>
+<DD>Without an octave modifier, the current octave specified
+  by the O<SMALL>CTAVE</SMALL> directive is used for the pitch(es). Any number
+  of ``-'' or ``+'' signs can be appended to a note. Each ``-'' drops
+  the note by an octave and each ``+'' will increase it. The base
+  octave begins with ``c'' below the treble clef staff.
+
+<P>
+</DD>
+<DT><STRONG>Volume</STRONG></DT>
+<DD>A volume can be specified. The volume is a string like
+  ``ff'' surrounded by ``<IMG
+ WIDTH="33" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&lt; &gt;$">'' brackets. For example, to set the
+  volume of a chord to ``very loud'', you could use the string
+  <IMG
+ WIDTH="19" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&lt;$">ffff<IMG
+ WIDTH="19" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&gt;$"> in the chord specification
+  (<A HREF="node15.html#sec-volume">here</A>) Of course, it is
+  probably easier to set accented beats with the A<SMALL>CCENT</SMALL>
+  directive (<A HREF="node15.html#accent">here</A>).
+
+<P>
+</DD>
+<DT><STRONG>Tilde</STRONG></DT>
+<DD>The tilde character, ~, can appear as the
+  first or last item in a note sequence. As the last character it
+  signals that the final note duration extend past the end of the bar;
+  as the first character it signals to use the duration extending past
+  the end of the previous bar as an initial offset. For details, see
+  below.
+
+<P>
+</DD>
+<DT><STRONG>Null</STRONG></DT>
+<DD>You can set a ``ignore'' or ``do nothing'' chord with the
+  simple notation ``<IMG
+ WIDTH="33" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&lt; &gt;$">''. If this is the only item in the chord
+  then that chord will be ignored This means that no tones will be
+  generated, and the offset into the bar will not be changed. The use
+  of the notation is mainly for tilde notation with notes held over
+  multiple bars.
+
+<P>
+</DD>
+</DL>
+
+<P>
+To make your note data more readable, you can include any number of
+space and tab characters (which are ignored by 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> ).
+
+<P>
+
+		<BR>
+		<TABLE CELLSPACING=0 Align="Center" CELLPADDING=10 BGCOLOR="#efefef" BORDER=3>
+		<TR> <TD ALIGN="CENTER" BGCOLOR="White">
+	    	<B><FONT SIZE="+2">Solo Notation</FONT></B>    <A NAME="eg:solo"></A>	
+	 	</TR></TD> <TR><TD Align="Center">
+		
+    <IMG WIDTH="90%"  SRC="mupex/soloeg.png" ALT="Lost Image">
+
+<P>
+<BR>
+<BR>
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>KeySig 1b 
+<BR>
+F { 4ca-; 2da-; 4fd; } 
+<BR>
+F { 4.af; 8g#f; 4af; c+f; }
+<BR>
+F { 4ca-; 2da-; 4fc; } 
+<BR>
+F { 1af; }  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+
+	
+		</TD></TR></TABLE>
+
+<P>
+
+<P>
+<A HREF="#eg:solo">This example</A> shows a few bars of
+``Bill Bailey'' with the 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  equivalent.
+
+<P>
+
+<H2><A NAME="SECTION001011000000000000000">
+Long Notes</A>
+</H2>
+
+<P>
+Notes tied across bar lines can be easily handled in 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  scores.
+Consider the following:
+
+<P>
+<DIV ALIGN="CENTER">
+  <IMG WIDTH="90%"  SRC="mupex/tilde.png" ALT="Lost Image">
+
+</DIV>
+
+<P>
+It can be handled in three different ways in your score:
+
+<P>
+
+<UL>
+<LI>
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>F {4c;d;e;4+2f;}
+<BR>
+F {2r;2c;} </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+In this case you 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will generate a warning message since the
+  last note of the first bar ends past the end of that bar. The rest
+  in the second bar is used to position the half note correctly.
+
+<P>
+</LI>
+<LI>
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>F {4c;d;e;4+2f~};
+<BR>
+F {2r;2c;} </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+This time  a ~ character has been added to the end of
+  the first line. In this case it just signals that you ``know'' that
+  the note is too long, so no warning is printed.
+
+<P>
+</LI>
+<LI>
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>F {4c;d;e;4+2f~;}
+<BR>
+F {~2c;} </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+The cleanest method is shown here. The ~forces the
+  insertion of the extra 2 beats from the previous bar into the start
+  of the bar.
+
+<P>
+</LI>
+</UL>
+
+<P>
+If you have a very long note, as in this example:
+
+<P>
+<DIV ALIGN="CENTER">
+  <IMG WIDTH="80%"  SRC="mupex/tilde2.png" ALT="Lost Image">
+
+</DIV>
+
+<P>
+you can have both leading and ending tildes in the same chord;
+however, to force 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  to ignore the chord you need to include an
+empty chord marker:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>C {4c;d;e;4+2f~;}
+<BR>
+C {~&lt;&gt;~;} 
+<BR>
+C {~2c;} </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  has some built-in error detection which will signal problems if
+you use a tilde at the end of a line which doesn't have a note held
+past the end of the current bar or if you use a tilde to start a bar
+which doesn't have one at the end of the previous bar.
+
+<P>
+
+<H2><A NAME="SECTION001012000000000000000">
+Using Defaults</A>
+</H2>
+The use of default values can be a great time-saver, and lead to
+confusion! For example, the following all generate four quarter note
+``f''s:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Solo Riff 4f; 4f; 4f; 4f; 
+<BR>
+Solo Riff 4f; f; f; f; 
+<BR>
+Solo Riff 4f; 4; 4; 4; 
+<BR>
+Solo Riff 4f; ; ; ;  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+
+<H2><A NAME="SECTION001013000000000000000">
+Other Commands</A>
+</H2>
+
+<P>
+Most of the timing and volume commands available in other tracks also
+apply to S<SMALL>OLO</SMALL> and M<SMALL>ELODY</SMALL> tracks. Important commands to
+consider include A<SMALL>RTICULATE</SMALL>, V<SMALL>OICE</SMALL> and O<SMALL>CTAVE</SMALL>.
+Also note that T<SMALL>RANSPOSE</SMALL> is applied to your note data.
+
+<P>
+
+<H1><A NAME="SECTION001020000000000000000"></A>  <A NAME="keysig"></A>
+<BR>
+KeySig
+</H1>
+
+<P>
+If you are including S<SMALL>OLO</SMALL> or M<SMALL>ELODY</SMALL> tracks you should
+set the key signature for the song:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>KeySig 2b  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+The argument consists of a single digit ``0'' to ``7'' followed by a
+``b'' or ``&amp;'' for flat keys or a ``#'' for sharp keys.
+
+<P>
+As an alternate, you can use a musical name like ``F'' or ``G#''.
+
+<P>
+The optional keywords ``Major'' or ``Minor'' (these can be abreviated
+to ``Maj'' or ``Min'' ... and case doesn't count) can be added to this
+command. This will accomplish two things:
+
+<P>
+
+<OL>
+<LI>The MIDI track Key Signature event will be set to reflect minor
+  or major.
+
+<P>
+</LI>
+<LI>If you are using a musical name the proper key will be used. 
+
+<P>
+</LI>
+</OL>
+
+<P>
+Setting the key signature effects the notes used in S<SMALL>OLO</SMALL> or
+M<SMALL>ELODY</SMALL> tracks and sets a MIDI Key Signature event.<A NAME="tex2html44"
+  HREF="#foot4281"><SUP>10.2</SUP></A>
+<P>
+To summarize, the following are all valid K<SMALL>EY</SMALL>S<SMALL>IG</SMALL> directives:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>KeySig 2# Major 
+<BR>
+KeySig 1b 
+<BR>
+KeySig 0b Min 
+<BR>
+KeySig F Min 
+<BR>
+KeySig A Major  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+
+<H1><A NAME="SECTION001030000000000000000"></A>  <A NAME="autosolotracks"></A>
+<BR>
+AutoSoloTracks
+</H1>
+
+<P>
+When a ``{ }'' expression is found in a chord line, it is assumed to
+be note data and is treated as a R<SMALL>IFF</SMALL>. You can have any number
+of ``{ }'' expressions in a chord line. They will be assigned to the
+tracks specified in the A<SMALL>UTO</SMALL>S<SMALL>OLO</SMALL>T<SMALL>RACKS</SMALL> directive.
+
+<P>
+By default, four tracks are assigned: <B>Solo</B>, <B>Solo-1</B>,
+<B>Solo-2</B>, and <B>Solo-3</B>. This order can be changed:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>AutoSoloTracks Melody-Oboe Melody-Trumpet Melody-Horn </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+Any number of tracks can be specified in this command, but they must
+all be S<SMALL>OLO</SMALL> or M<SMALL>ELODY</SMALL> tracks. You can reissue this
+command at any time to change the assignments.
+
+<P>
+The list set in this command is also used to ``fill out'' melody lines
+for tracks set as H<SMALL>ARMONY</SMALL>O<SMALL>NLY</SMALL>. Again, an example:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>AutoSoloTracks  Solo-1 Solo-2 Solo-3 Solo-4 
+<BR>
+Solo-2 HarmonyOnly 3Above 
+<BR>
+Solo-3 HarmonyOnly 8Above  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+Of course, some voicing is also set ...and a chord line:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>C {4a;b;c;d;}  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+The note data <B>{4a;b;c;d;} </B> will be set to the <B>Solo-1</B>
+track.  But, if you've not set any other note data by way of
+R<SMALL>IFF</SMALL> commands to <B>Solo-2</B> and <B>Solo-3</B>, the note data
+will also be copied to these two tracks. Note that the track
+<B>Solo-4</B> is unaffected since it is <B>not</B> a
+H<SMALL>ARMONY</SMALL>O<SMALL>NLY</SMALL> track. This feature can be very useful in creating
+harmony lines with the harmonies going to different instruments. The
+supplied file <TT><B>egs/harmony.mma</B></TT> shows an example.
+
+<P>
+
+<H1><A NAME="SECTION001040000000000000000"></A>  <A NAME="drumtype"></A>
+<BR>
+Drum Solo Tracks
+</H1>
+
+<P>
+A solo or melody track can also be used to create drum solos. The
+first thing to do is to set a track as a drum solo type:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Solo-MyDrums DrumType </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+This will create a new S<SMALL>OLO</SMALL> track with the name
+<B>Solo-MyDrums</B> and set its ``Drum'' flag. If the track already
+exists and has data in it, the command will fail. The MIDI channel 10
+is automatically assigned to all tracks created in this manner. You
+cannot change a ``drum'' track back to a normal track.
+
+<P>
+These is no limit to the number of S<SMALL>OLO</SMALL> or M<SMALL>ELODY</SMALL> tracks
+you can create ...and it probably makes sense to have several
+different tracks if you are creating anything beyond a simple drum
+pattern.
+
+<P>
+Tracks with the ``drum'' setting ignore T<SMALL>RANSPOSE</SMALL> and
+H<SMALL>ARMONY</SMALL> settings.
+
+<P>
+The specification for pitches is different in these tracks. Instead of
+standard notation pitches, you must specify a series of drum tone
+names or MIDI values. If you want more than one tone to be sounded
+simultaneously, create a list of tones separated by commas.
+
+<P>
+Some examples:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Solo-MyDrums Riff 4 SnareDrum1; ; r ; SnareDrum1;  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+would create a snare hit on beats 1, 2 and 4 of a bar. Note how the
+second hit uses the default tone set in the first beat.
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Solo-MyDrums Riff 8,38;;;;  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+creates 4 hits, starting on beat 1. Instead of ``names'' 
+MIDI values have been used (``38'' and ``SnareDrum1'' are identical). Note
+how ``,'' is used to separate the initial length from the first tone.
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Solo-MyDrums Riff 4 SnareDrum1,53,81; r; 4 SideKick ;  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+creates a ``chord'' of 3 tones on beat 1, a rest on beat 2, and a
+``SideKick'' on beat 3.
+
+<P>
+Using MIDI values instead of names lets you use the full range of note
+values from 0 to 127. Not all will produce valid tones on all synths.
+
+<P>
+To make the use of solo drum tracks a bit easier, you can use the the
+T<SMALL>ONE</SMALL> command to set the default drum tone to use (by default
+this is a SnareDrum. If you do not specify a tone to use in a solo the
+default will be used.
+
+<P>
+You can access the default tone by using the special Tone ``*''. In
+the following example:
+
+<P>
+
+      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
+        <TR> <TD>
+   
+<BLOCKQUOTE><B>Begin Solo-Block 
+<BR>&nbsp;&nbsp;DrumType 
+<BR>&nbsp;&nbsp;Tone LowWoodBlock 
+<BR>
+End 
+<BR>&nbsp;&nbsp; ... 
+<BR>
+Solo-Block Riff 4r; SnareDrum; * ; ; 
+<BR>&nbsp;&nbsp; ... 
+<BR>
+Solo-Block Riff 4;;;;  </B></BLOCKQUOTE>
+   
+	</TD></TR></TABLE>
+
+<P>
+The first solo created will have a rest on beat 1, a SnareDrum on beat
+2 and LowWoodBlock on beats 3 and 4. The second will have LowWoodBlock
+on each beat.
+
+<P>
+
+<P>
+<BR><HR><H4>Footnotes</H4>
+<DL>
+<DT><A NAME="foot4276">... semicolon.</A><A
+ HREF="node10.html#tex2html42"><SUP>10.1</SUP></A></DT>
+<DD>I have borrowed heavily from the
+  notation program MUP for the syntax used here. For notation I highly
+  recommend MUP and use it for most of my notation tasks, including
+  the creation of the score snippets in this manual. MUP is available
+  from Arkkra Enterprises, <TT><A NAME="tex2html43"
+  HREF="http://www.Arkkra.com/">http://www.Arkkra.com/</A></TT>.
+
+</DD>
+<DT><A NAME="foot4281">... event.</A><A
+ HREF="node10.html#tex2html44"><SUP>10.2</SUP></A></DT>
+<DD>For
+  the most part, MIDI Key Signature events are ignored by playback
+  programs. However, they <B>may</B> be used in other MIDI programs
+  which handle notation.
+
+</DD>
+</DL><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html452"
+  HREF="node11.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html450"
+  HREF="mma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html444"
+  HREF="node9.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html453"
+  HREF="node11.html">Chord Voicing</A>
+<B> Up:</B> <A NAME="tex2html451"
+  HREF="mma.html">Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html445"
+  HREF="node9.html">Lyrics</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Bob
+2006-10-15
+</ADDRESS>
+</BODY>
+</HTML>

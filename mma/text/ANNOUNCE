@@ -1,0 +1,29 @@
+
+Version 1.0-RC2 of MMA - Musical MIDI Accompaniment - is now
+available for downloading. Included in this release:
+
+	Improved support for windows path names.
+
+	A number of packaging issues resolved.
+
+	Inclusion of mklibdoc.py for updating of lib docs from user contributed files.
+
+	Fractional RANGE settings for arpeggio and scale tracks.
+
+This is our second version 1 release candidate. Please let me know
+if anything is broken before we release the real 1.0!
+
+Please note the new web and email addresses. The old ones still work,
+but not for long. Update your records.
+
+MMA is a accompaniment generator -- it creates midi tracks
+for a soloist to perform with. User supplied files contain
+pattern selections, chords, and MMA directives. For full details
+please visit:
+
+   http://www.mellowood.ca/mma/
+
+If you have any questions or comments, please send them
+to: bob@mellowood.ca
+
+

@@ -1,0 +1,64 @@
+
+Short usage file for mklibdoc.py.
+
+This is a program I use to automatically update the HTML documentation
+of the MMA library. It can be used by anyone who adds 3rd party
+files to the lib tree.
+
+If you have already downloaded and installed the HTML documentation package
+from the MMA website you will have a root directory which looks something like:
+
+    $ ls
+    lib/  logo.png  mma.html  README  ref/  tut/
+
+The lib directory contains the library documentation. A listing of this is:
+
+    $ ls/lib
+    index.html    stdlib/
+
+If you add or modify the library files you can simply run this program and
+update your library documentation with the same tool I used when creating
+the distribution. The advantage is that any new libraries you have installed
+will now be in the documentation tree.
+
+NOTE: You will probably have to be 'root' to run this program. This
+      depends on your installation and operating system.
+
+To do the update simply run the program. It will check your installation
+and install or update the docs in the root tree where MMA is installed.
+If you have a default installation this will be /usr/local/share/mma/docs/html.
+
+Three minor caveats:
+
+	Old/unused HTML files are NOT deleted. So, if you move files around or
+    delete .mma files you can end up with a number of unused files. Just
+    delete the whole bunch every once in awhile if it becomes a problem.
+
+	The program really assumes that you already have the html documentation
+    installed. So, it doesn't do a very good job of creating the complete
+    directory tree. If you find that you get an error right off the top of
+    program you will need to create the directories by hand. Assuming you
+    have installed in /usr/local/share/mma:
+
+            cd /usr/local/share/mma
+            mkdir docs
+            cd docs
+            mkdir html
+            cd html
+            mkdir lib
+
+       or (on Linux)
+
+            mkdir -p /usr/local/share/mma/docs/html/lib
+
+     Depending on how your system is set up you will most likely need to be
+     be the root user for any of this to work. If you get "permission" or
+     "access denied" errors, run as root or fix the permissions.
+
+Problems? Drop me a note or visit the official MMA users forum:
+
+	http://www.kara-moon.com/forum
+
+
+bvdp, October 2006.
+
