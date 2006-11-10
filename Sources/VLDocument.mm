@@ -31,6 +31,7 @@
 		sheetWin			= nil;
 		pdfWin				= nil;	
 		logWin				= nil;
+		tmpPath				= nil;
     }
     return self;
 }
@@ -45,6 +46,11 @@
 	[songComposer release];
 	[songArranger release];
 	
+	if (tmpPath) {
+		[[NSFileManager defaultManager] removeFileAtPath:tmpPath handler:nil];
+		[tmpPath release];
+	}
+
 	[super dealloc];
 }
 
@@ -152,6 +158,36 @@
 	[self updateChangeCount:NSChangeDone];
 }
 
+- (NSString *) tmpPath
+{
+	if (!tmpPath) {
+		tmpPath = [[NSString alloc] initWithFormat:@"/var/tmp/VocalEasel.%08x",
+									self];
+		[[NSFileManager defaultManager] createDirectoryAtPath:tmpPath attributes:nil];
+	}
+	return tmpPath;
+}
+
+- (NSString *) workPath
+{
+	if ([self fileURL]) // Prefer our wrapper directory
+		return [[self fileURL] path];
+	else
+		return [self tmpPath];
+}
+
+- (NSString *) baseName
+{
+	return [[[self workPath] lastPathComponent] stringByDeletingPathExtension];
+}
+
+- (NSURL *) fileURLWithExtension:(NSString*)extension
+{
+	return [NSURL fileURLWithPath:
+			  [[[self workPath] stringByAppendingPathComponent:[self baseName]]
+				  stringByAppendingPathExtension:extension]];
+}
+
 - (NSFileWrapper *)fileWrapperOfType:(NSString *)typeName error:(NSError **)outError
 {
 	if ([typeName isEqual:@"VLNativeType"]) {
@@ -184,21 +220,18 @@
 	}
 }
 
-- (IBAction) performEngrave:(id)sender
+- (IBAction) engrave:(id)sender
 {
 	NSTask *	lilypondTask	= [[NSTask alloc] init];
-	NSString *	path			= [[self fileURL] path];
-	NSString *  base			= [[path lastPathComponent]
-									  stringByDeletingPathExtension];
+	NSString *	path			= [self workPath];
+	NSString *  base			= [self baseName];
 	NSBundle *	mainBundle		= [NSBundle mainBundle];
 
 	//
 	// Convert to Lilypond format
 	//
 	NSError *			err;
-	[self writeToURL:
-		[NSURL fileURLWithPath:[[path stringByAppendingPathComponent:base]
-								   stringByAppendingPathExtension:@"ly"]]
+	[self writeToURL:[self fileURLWithExtension:@"ly"]
 		  ofType:@"VLLilypondType" error:&err];
 	NSPipe *	pipe			= [NSPipe pipe];
 	NSString *	tool			= 
@@ -210,12 +243,13 @@
 		addObserver:self selector:@selector(engraveDone:)
 		name:NSTaskDidTerminateNotification object:lilypondTask];
 	
-	[lilypondTask setCurrentDirectoryPath:path];
+	[lilypondTask setCurrentDirectoryPath: path];
 	[lilypondTask setStandardOutput: pipe];
 	[lilypondTask setStandardError: pipe];
 	[lilypondTask setArguments: arguments];
 	[lilypondTask setLaunchPath: 
-					  [mainBundle pathForResource:@"lilyWrapper" ofType:@""]];
+			 [mainBundle pathForResource:@"lilyWrapper" ofType:@""
+						 inDirectory:@"bin"]];
 	[lilypondTask launch];
 
 	[[self logWin] showWindow: self];
@@ -233,38 +267,6 @@
 	} else {
 		NSBeep();
 	}
-}
-
-- (void) engrave:(NSDocument *)doc didSave:(BOOL)didSave contextInfo:(void  *)contextInfo
-{
-	if (didSave)
-		[self performEngrave:(id)contextInfo];
-}
-
-- (void)engrave:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(id)sender
-{
-	if (returnCode == NSAlertDefaultReturn) {
-		[[alert window] orderOut:self];
-		[self saveDocumentWithDelegate:self
-			  didSaveSelector:@selector(engrave:didSave:contextInfo:) 
-			  contextInfo:sender];
-	}
-}
-
-- (IBAction) engrave:(id)sender
-{
-	if ([self isDocumentEdited]) {
-		NSAlert * alert = 
-			[NSAlert alertWithMessageText:@"Do you want to save your changes?"
-					 defaultButton:[self fileURL] ? @"Save" : @"Save..."
-					 alternateButton:@"Cancel" otherButton:nil 
-					 informativeTextWithFormat:@"You need to save your document before typesetting."];
-		[alert beginSheetModalForWindow:[sheetWin window]
-			   modalDelegate:self 
-			   didEndSelector:@selector(engrave:returnCode:contextInfo:)
-			   contextInfo:sender];
-	} else
-		[self performEngrave:sender];
 }
 
 - (IBAction) showOutput:(id)sender

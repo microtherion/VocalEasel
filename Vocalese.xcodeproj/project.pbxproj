@@ -39,6 +39,12 @@
 		95B3E1A70960E58B000E9C0D /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 95B3E1980960E58B000E9C0D /* Music */; };
 		95B66658096BCA1F00FE18C9 /* VLSheetViewNotes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */; };
 		95BDA15909540BF1009F9D65 /* VLSheetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */; };
+		95C461C40B043E8900649F92 /* includes in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95C461660B043E4D00649F92 /* includes */; };
+		95C461C50B043E8900649F92 /* lib in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95C4616E0B043E4D00649F92 /* lib */; };
+		95C461D80B0440A300649F92 /* mma.py in Copy Tools */ = {isa = PBXBuildFile; fileRef = 95C461D50B04406300649F92 /* mma.py */; };
+		95C461FE0B04432700649F92 /* MMA in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95C461DD0B04430F00649F92 /* MMA */; };
+		95C462000B04472E00649F92 /* mmaWrapper in Copy Tools */ = {isa = PBXBuildFile; fileRef = 95C461FF0B04472900649F92 /* mmaWrapper */; };
+		95C462830B045CB700649F92 /* lilyWrapper in Copy Tools */ = {isa = PBXBuildFile; fileRef = 95C4627A0B045C8E00649F92 /* lilyWrapper */; };
 		95E04DA70AEB486E006F30A0 /* TVLLilypond.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */; };
 		95E04DA80AEB4878006F30A0 /* VLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* VLDocument.mm */; };
 		95E04DA90AEB487A006F30A0 /* VLLilypondDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */; };
@@ -46,7 +52,6 @@
 		95E04DAB0AEB4886006F30A0 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
 		95E04DC70AEB4B57006F30A0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		95E04DCE0AEB4D9B006F30A0 /* Templates in Resources */ = {isa = PBXBuildFile; fileRef = 95E04DCA0AEB4D9B006F30A0 /* Templates */; };
-		95ECE6590AF3324300FE3E98 /* lilyWrapper in Resources */ = {isa = PBXBuildFile; fileRef = 95ECE6580AF3324300FE3E98 /* lilyWrapper */; };
 		95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
 		95F5F5340ADCCFBB003980B2 /* DTD in Resources */ = {isa = PBXBuildFile; fileRef = 95F5F51E0ADCCFBB003980B2 /* DTD */; };
 		95F820AB0AF884A30010963D /* VLMMADocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F820AA0AF884A30010963D /* VLMMADocument.mm */; };
@@ -63,6 +68,35 @@
 		95FC66C90AF0A4D5003D9C11 /* zoomout.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66C20AF0A4D4003D9C11 /* zoomout.tiff */; };
 		95FC66CE0AF0A591003D9C11 /* VLPDFView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95FC66CC0AF0A591003D9C11 /* VLPDFView.mm */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		95C461630B043DCA00649F92 /* Copy MMA Library */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = share/mma;
+			dstSubfolderSpec = 7;
+			files = (
+				95C461FE0B04432700649F92 /* MMA in Copy MMA Library */,
+				95C461C40B043E8900649F92 /* includes in Copy MMA Library */,
+				95C461C50B043E8900649F92 /* lib in Copy MMA Library */,
+			);
+			name = "Copy MMA Library";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95C461D70B04409F00649F92 /* Copy Tools */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = bin;
+			dstSubfolderSpec = 7;
+			files = (
+				95C462830B045CB700649F92 /* lilyWrapper in Copy Tools */,
+				95C462000B04472E00649F92 /* mmaWrapper in Copy Tools */,
+				95C461D80B0440A300649F92 /* mma.py in Copy Tools */,
+			);
+			name = "Copy Tools";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C1660FE840EACC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -112,10 +146,15 @@
 		95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetViewNotes.mm; path = Sources/VLSheetViewNotes.mm; sourceTree = "<group>"; };
 		95BDA15709540BF1009F9D65 /* VLSheetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSheetView.h; path = Sources/VLSheetView.h; sourceTree = "<group>"; };
 		95BDA15809540BF1009F9D65 /* VLSheetView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetView.mm; path = Sources/VLSheetView.mm; sourceTree = "<group>"; };
+		95C461660B043E4D00649F92 /* includes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = includes; path = mma/includes; sourceTree = "<group>"; };
+		95C4616E0B043E4D00649F92 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = mma/lib; sourceTree = "<group>"; };
+		95C461D50B04406300649F92 /* mma.py */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.python; name = mma.py; path = mma/mma.py; sourceTree = "<group>"; };
+		95C461DD0B04430F00649F92 /* MMA */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MMA; path = mma/MMA; sourceTree = "<group>"; };
+		95C461FF0B04472900649F92 /* mmaWrapper */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; name = mmaWrapper; path = Tools/mmaWrapper; sourceTree = "<group>"; };
+		95C4627A0B045C8E00649F92 /* lilyWrapper */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; name = lilyWrapper; path = Tools/lilyWrapper; sourceTree = "<group>"; };
 		95E04DA00AEB4837006F30A0 /* TVLLilypond */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLLilypond; sourceTree = BUILT_PRODUCTS_DIR; };
 		95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = TVLLilypond.mm; path = Tests/TVLLilypond.mm; sourceTree = "<group>"; };
 		95E04DCA0AEB4D9B006F30A0 /* Templates */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Templates; path = Resources/Templates; sourceTree = "<group>"; };
-		95ECE6580AF3324300FE3E98 /* lilyWrapper */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; name = lilyWrapper; path = Resources/lilyWrapper; sourceTree = "<group>"; };
 		95F5F50D0ADCC433003980B2 /* VLXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLXMLDocument.h; path = Sources/VLXMLDocument.h; sourceTree = "<group>"; };
 		95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLXMLDocument.mm; path = Sources/VLXMLDocument.mm; sourceTree = "<group>"; };
 		95F5F51E0ADCCFBB003980B2 /* DTD */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DTD; path = Resources/DTD; sourceTree = "<group>"; };
@@ -220,6 +259,8 @@
 		2A37F4AAFDCFA73011CA2CEA /* Vocalese */ = {
 			isa = PBXGroup;
 			children = (
+				95C461DC0B0442EB00649F92 /* MMA */,
+				95C461D40B04403600649F92 /* Tools */,
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
 				955E59560957C0C50045FDA5 /* Tests */,
@@ -282,7 +323,6 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				95ECE6580AF3324300FE3E98 /* lilyWrapper */,
 				95FC66BC0AF0A4D4003D9C11 /* console.icns */,
 				95FC66BD0AF0A4D4003D9C11 /* music.tiff */,
 				95FC66BE0AF0A4D4003D9C11 /* nextpage.tiff */,
@@ -326,6 +366,26 @@
 			name = Tests;
 			sourceTree = "<group>";
 		};
+		95C461D40B04403600649F92 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				95C4627A0B045C8E00649F92 /* lilyWrapper */,
+				95C461FF0B04472900649F92 /* mmaWrapper */,
+				95C461D50B04406300649F92 /* mma.py */,
+			);
+			name = Tools;
+			sourceTree = "<group>";
+		};
+		95C461DC0B0442EB00649F92 /* MMA */ = {
+			isa = PBXGroup;
+			children = (
+				95C461DD0B04430F00649F92 /* MMA */,
+				95C461660B043E4D00649F92 /* includes */,
+				95C4616E0B043E4D00649F92 /* lib */,
+			);
+			name = MMA;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -336,6 +396,9 @@
 				8D15AC2B0486D014006FF6A4 /* Resources */,
 				8D15AC300486D014006FF6A4 /* Sources */,
 				8D15AC330486D014006FF6A4 /* Frameworks */,
+				95C461630B043DCA00649F92 /* Copy MMA Library */,
+				95C461D70B04409F00649F92 /* Copy Tools */,
+				95C462020B04475300649F92 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -456,11 +519,26 @@
 				95FC66C70AF0A4D5003D9C11 /* run.icns in Resources */,
 				95FC66C80AF0A4D5003D9C11 /* zoomin.tiff in Resources */,
 				95FC66C90AF0A4D5003D9C11 /* zoomout.tiff in Resources */,
-				95ECE6590AF3324300FE3E98 /* lilyWrapper in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		95C462020B04475300649F92 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$BUILT_PRODUCTS_DIR/VocalEasel.app/Contents/Resources/bin/mma -g\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D15AC300486D014006FF6A4 /* Sources */ = {

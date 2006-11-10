@@ -23,6 +23,7 @@
 	NSString *		songArranger;
 	NSString *		songGroove;
 	NSNumber *		songTempo;
+	NSString *		tmpPath;
 
 	VLSheetWindow *	sheetWin;
 	VLLogWindow *	logWin;
@@ -42,4 +43,13 @@
 - (IBAction) showOutput:(id)sender;
 - (IBAction) showLog:(id)sender;
 
+- (NSString *) tmpPath;
+- (NSString *) workPath;
+- (NSString *) baseName;
+- (NSURL *) fileURLWithExtension:(NSString*)extension;
+
 @end
+
+// Local Variables:
+// mode:ObjC
+// End:

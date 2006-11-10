@@ -180,7 +180,7 @@ void VLNote::LilypondName(std::string & name, VLFraction at, const VLProperties 
 			durations.pop_back();
 			sprintf(duration, "%s%d.", n.c_str(), visual.fDenom/2);
 		} else if (triplet) {
-			sprintf(duration, "\times 2/3 { %s%d }", n.c_str(), visual.fDenom);
+			sprintf(duration, "\\times 2/3 { %s%d }", n.c_str(), visual.fDenom);
 		} else {
 			sprintf(duration, "%s%d", n.c_str(), visual.fDenom);
 		}

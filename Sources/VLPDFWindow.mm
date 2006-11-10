@@ -8,6 +8,7 @@
 
 #import "VLPDFWindow.h"
 #import "VLPDFView.h"
+#import "VLDocument.h"
 
 @implementation VLPDFWindow
 
@@ -36,31 +37,35 @@ static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identif
 - (void)reloadPDF
 {
 	if (pdfView) {
-		NSString *		path		= [[[self document] fileURL] path];
-		if (!path)
-			return;
-		NSFileWrapper * wrapper		= 
-			[[[NSFileWrapper alloc] initWithPath:path] autorelease];
-		//
-		// Find newest pdf file
-		//
-		NSEnumerator * 	w			= [[wrapper fileWrappers] objectEnumerator];
-		NSString	 *  pdfPath		= nil;
-		NSDate 		 * 	pdfDate		= nil;
-		while (wrapper = [w nextObject]) {
-			NSString * path = [wrapper filename];
-			if (![[path pathExtension] isEqual:@"pdf"])
-				continue;
-			NSDate *   date = [[wrapper fileAttributes] 
-								  objectForKey:NSFileModificationDate];
-			if (!pdfPath || [date compare:pdfDate]==NSOrderedAscending) {
-				pdfPath	= path;
-				pdfDate	= date;
+		VLDocument *doc	   = [self document];
+		NSURL * 	pdfURL = [doc fileURLWithExtension:@"pdf"];
+		if (!pdfURL) {
+			NSString *		path		= [doc workPath];
+			NSFileWrapper * wrapper		= 
+				[[[NSFileWrapper alloc] initWithPath:path] autorelease];
+			//
+			// Find newest pdf file
+			//
+			NSEnumerator * 	w			= [[wrapper fileWrappers] objectEnumerator];
+			NSString	 *  pdfPath		= nil;
+			NSDate 		 * 	pdfDate		= nil;
+			while (wrapper = [w nextObject]) {
+				NSString * path = [wrapper filename];
+				if (![[path pathExtension] isEqual:@"pdf"])
+					continue;
+				NSDate *   date = [[wrapper fileAttributes] 
+									  objectForKey:NSFileModificationDate];
+				if (!pdfPath || [date compare:pdfDate]==NSOrderedAscending) {
+					pdfPath	= path;
+					pdfDate	= date;
+				}
 			}
+			if (pdfPath) 
+				pdfURL	= 
+					[NSURL fileURLWithPath:
+							   [path stringByAppendingPathComponent:pdfPath]];
 		}
-		if (pdfPath) {
-			NSURL *			pdfURL	= 
-				[NSURL fileURLWithPath:[path stringByAppendingPathComponent:pdfPath]];
+		if (pdfURL) {
 			PDFDocument *	pdfDoc 	= 
 				[[[PDFDocument alloc] initWithURL:pdfURL] autorelease];
 			[(PDFView *)pdfView setDocument: pdfDoc]; 
