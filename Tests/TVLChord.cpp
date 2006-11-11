@@ -27,9 +27,16 @@ int main(int, char *const [])
 
 		std::cout << baseS << "[" << extS << "]" << rootS << " "
 				  << baseF << "[" << extF << "]" << rootF << " "
-				  << lilyS << " " << lilyF
-				  << std::endl;
+				  << lilyS << " " << lilyF << "   (";
 
+		for (int i=0; i<32; ++i)
+			if (chord.fSteps & (1<<i)) {
+				VLNote n(1, chord.fPitch+i);
+				std::string nn;
+				n.Name(nn);
+				std::cout << " " << nn;
+			}
+		std::cout << " )" << std::endl;
 	}
 	exit(0);
 }

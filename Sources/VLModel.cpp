@@ -247,21 +247,28 @@ struct VLChordModifier {
 };
 
 static const VLChordModifier kModifiers[] = {
-	{"b13", VLChord::kmMin7th | VLChord::kmMaj9th | VLChord::km11th | VLChord::kmMin13th, 0},
+	{"b13", VLChord::kmMin13th, 0},
+	{"add13", VLChord::kmMaj13th, 0},
 	{"13", VLChord::kmMin7th | VLChord::kmMaj9th | VLChord::km11th | VLChord::kmMaj13th, 0},
-	{"#11", VLChord::kmMin7th | VLChord::kmMaj9th | VLChord::kmAug11th, VLChord::km11th},
+	{"#11", VLChord::kmAug11th, VLChord::km11th},
+	{"add11", VLChord::km11th, 0},
 	{"11", VLChord::kmMin7th | VLChord::kmMaj9th | VLChord::km11th, 0},
-	{"#9", VLChord::kmMin7th | VLChord::kmAug9th, VLChord::kmMaj9th},
-	{"b9", VLChord::kmMin7th | VLChord::kmMin9th, VLChord::kmMaj9th},
+	{"#9", VLChord::kmAug9th, VLChord::kmMaj9th},
+	{"+9", VLChord::kmAug9th, VLChord::kmMaj9th},
+	{"b9", VLChord::kmMin9th, VLChord::kmMaj9th},
+	{"-9", VLChord::kmMin9th, VLChord::kmMaj9th},
 	{"69", VLChord::kmDim7th | VLChord::kmMaj9th, 0},
+	{"add9", VLChord::kmMaj9th, 0},
 	{"9", VLChord::kmMin7th | VLChord::kmMaj9th, 0},
 	{"7", VLChord::kmMin7th, 0},
 	{"maj", VLChord::kmMaj7th, VLChord::kmMin7th},
 	{"6", VLChord::kmDim7th, 0},
 	{"#5", VLChord::kmAug5th, VLChord::km5th},
+	{"+5", VLChord::kmAug5th, VLChord::km5th},
 	{"aug", VLChord::kmAug5th, VLChord::km5th},
 	{"+", VLChord::kmAug5th, VLChord::km5th},
 	{"b5", VLChord::kmDim5th, VLChord::km5th},
+	{"-5", VLChord::kmDim5th, VLChord::km5th},
 	{"sus4", VLChord::km4th, VLChord::kmMaj3rd},
 	{"sus2", VLChord::kmMaj2nd, VLChord::kmMaj3rd},
 	{"sus", VLChord::km4th, VLChord::kmMaj3rd},
@@ -348,7 +355,7 @@ failed:
 }
 
 static const char * kStepNames[] = {
-	"", "", "sus2", "", "", "sus", kVLFlatStr "5", "", "+", "6", 
+	"", "", "sus2", "", "", "sus", kVLFlatStr "5", "", kVLSharpStr "5", "6", 
 	"7", kVLSharpStr "7", "", kVLFlatStr "9", "9", kVLSharpStr "9", "", 
 	"11", kVLSharpStr "11", "", kVLFlatStr "13", "13"
 };
@@ -359,7 +366,7 @@ void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bo
 	ext  = "";
 	root = "";
 	
-	uint32_t steps = fSteps & ~(kmUnison | km5th);
+	uint32_t steps = fSteps;
 	//
 	// m / dim
 	//
@@ -374,6 +381,14 @@ void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bo
 			base += "m";
 			steps&= ~kmMin3rd;
 		}
+	//	
+	// +
+	//
+	steps &= ~(kmUnison | kmMaj3rd | km5th);
+	if (steps == kmAug5th) {
+		ext += "+";
+		steps= 0;
+	}
 	//
 	// Maj
 	//
@@ -392,17 +407,26 @@ void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bo
 	//
 	// Other extensions. Only the highest unaltered extension is listed.
 	//
-	if (uint32_t unaltered = steps & (kmMin7th | kmMaj9th | km11th | kmMaj13th)) {
-		steps			  &= ~unaltered;
-	
-		for (int step = kMaj13th; step > kDim7th; --step)
-			if (unaltered & (1 << step)) {
-				ext += kStepNames[step];
-				break;
-			}
+	bool has7th = steps & (kmMin7th|kmMaj7th);
+	bool has9th	= steps & (kmMin9th|kmMaj9th|kmAug9th);
+	if ((steps & kmMaj13th) && has7th && has9th ) {	
+		ext 	+= kStepNames[kMaj13th];
+		steps	&= ~(kmMin7th | kmMaj9th | km11th | kmMaj13th);
+	} else if ((steps & km11th) && has7th && has9th) {
+		ext 	+= kStepNames[k11th];
+		steps	&= ~(kmMin7th | kmMaj9th | km11th);
+	} else if ((steps & kmMaj9th) && has7th) {
+		ext 	+= kStepNames[kMaj9th];
+		steps	&= ~(kmMin7th | kmMaj9th);
+	} else if (steps & kmMin7th) {
+		ext		+= kStepNames[kMin7th];
+		steps   &= ~(kmMin7th);
 	}
+		
 	for (int step = kMin2nd; steps; ++step) 
 		if (steps & (1 << step)) {
+			if ((1 << step) & (kmMaj9th|km11th|kmMaj13th))
+				ext += "add";
 			ext += kStepNames[step];
 			steps &= ~(1 << step);
 		}
@@ -431,7 +455,7 @@ void VLChord::LilypondName(std::string & name, bool useSharps) const
 		return;
 
 	std::string ext;
-	uint32_t steps = fSteps & ~(kmUnison | km5th);
+	uint32_t steps = fSteps;
 	//
 	// m / dim
 	//
@@ -446,14 +470,33 @@ void VLChord::LilypondName(std::string & name, bool useSharps) const
 			ext = "m";
 			steps&= ~kmMin3rd;
 		}
+	steps &= ~(kmUnison | km5th);
 	//
 	// Maj
 	//
 	if (steps & kmMaj7th) {
 		if (ext.size())
 			ext += '.';
-		ext += "maj";
+		ext += "maj"; 
+		if (steps & kmMaj9th) {
+			ext += "9";	
+			steps &= ~kmMaj9th;
+		} else
+			ext += "7";
 		steps&= ~kmMaj7th;
+	}
+	//
+	// Sus
+	//
+	if (steps & (kmMaj2nd|km4th)) {
+		if (ext.size())
+			ext += '.';
+		ext += "sus";
+		if (steps & kmMaj2nd)
+			ext += "2";
+		else
+			ext += "4";
+		steps&= ~(kmMaj2nd|km4th);
 	}
 	//
 	// 6/9
@@ -482,7 +525,7 @@ void VLChord::LilypondName(std::string & name, bool useSharps) const
 	for (int step = kMin2nd; steps; ++step) 
 		if (steps & (1 << step)) {
 			std::string sn = kLilypondStepNames[step];
-			if (ext.size() && sn.size())
+			if (ext.size() && !isalpha(ext[ext.size()-1]) && sn.size())
 				ext += '.';
 			ext   += sn;
 			steps &= ~(1 << step);
