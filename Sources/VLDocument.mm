@@ -10,6 +10,7 @@
 #import "VLXMLDocument.h"
 #import "VLLilypondDocument.h"
 #import "VLMMADocument.h"
+#import "VLMIDIDocument.h"
 #import "VLPDFWindow.h"
 #import "VLLogWindow.h"
 #import "VLSheetWindow.h"
@@ -198,6 +199,8 @@
 		return [self lilypondFileWrapperWithError:outError];
 	} else if ([typeName isEqual:@"VLMMAType"]) {
 		return [self mmaFileWrapperWithError:outError];
+	} else if ([typeName isEqual:@"VLMIDIType"]) {
+		return [self midiFileWrapperWithError:outError];
 	} else {
 		if (outError)
 			*outError = [NSError errorWithDomain:NSCocoaErrorDomain
@@ -220,10 +223,28 @@
 	}
 }
 
+- (NSTask *) taskWithLaunchPath:(NSString *)launch arguments:(NSArray *)args;
+{
+	NSTask *	task	= [[NSTask alloc] init];
+	NSString *	path 	= [self workPath];
+	NSPipe *	pipe	= [NSPipe pipe];
+	
+	[task setCurrentDirectoryPath: path];
+	[task setStandardOutput: pipe];
+	[task setStandardError: pipe];
+	[task setArguments: args];
+	[task setLaunchPath: launch]; 
+
+	[[self logWin] showWindow: self];
+	
+	[NSThread detachNewThreadSelector:@selector(logFromFileHandle:) toTarget:logWin 
+		withObject:[pipe fileHandleForReading]];
+		
+	return task;
+}
+
 - (IBAction) engrave:(id)sender
 {
-	NSTask *	lilypondTask	= [[NSTask alloc] init];
-	NSString *	path			= [self workPath];
 	NSString *  base			= [self baseName];
 	NSBundle *	mainBundle		= [NSBundle mainBundle];
 
@@ -233,29 +254,20 @@
 	NSError *			err;
 	[self writeToURL:[self fileURLWithExtension:@"ly"]
 		  ofType:@"VLLilypondType" error:&err];
-	NSPipe *	pipe			= [NSPipe pipe];
-	NSString *	tool			= 
+	NSString *	launch	=
+		[mainBundle pathForResource:@"lilyWrapper" ofType:@""
+					inDirectory:@"bin"];
+	NSString *	tool	= 
 		[[NSUserDefaults standardUserDefaults] 
 			stringForKey:@"VLLilypondPath"];
-	NSArray *	arguments		= [NSArray arrayWithObjects:tool, base, nil];
+	NSArray *	args	= [NSArray arrayWithObjects:tool, base, nil];
+	NSTask *	task	= [self taskWithLaunchPath:launch arguments:args];
 
 	[[NSNotificationCenter defaultCenter] 
 		addObserver:self selector:@selector(engraveDone:)
-		name:NSTaskDidTerminateNotification object:lilypondTask];
+		name:NSTaskDidTerminateNotification object:task];
 	
-	[lilypondTask setCurrentDirectoryPath: path];
-	[lilypondTask setStandardOutput: pipe];
-	[lilypondTask setStandardError: pipe];
-	[lilypondTask setArguments: arguments];
-	[lilypondTask setLaunchPath: 
-			 [mainBundle pathForResource:@"lilyWrapper" ofType:@""
-						 inDirectory:@"bin"]];
-	[lilypondTask launch];
-
-	[[self logWin] showWindow: self];
-	
-	[NSThread detachNewThreadSelector:@selector(logFromFileHandle:) toTarget:logWin 
-		withObject:[pipe fileHandleForReading]];
+	[task launch];
 }
 
 - (void)engraveDone:(NSNotification *)notification {

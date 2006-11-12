@@ -45,7 +45,6 @@ const char * sKeyNames[] = {
 		song->fMeasures[m].MMANotes(mmas);
 		mmaFile += "\t{ " + mmas + " }\n";
 	}
-	mmaFile	+= mmas;
 
 	return [[NSString stringWithUTF8String:mmaFile.c_str()] 
 			   dataUsingEncoding:NSUTF8StringEncoding];

@@ -246,34 +246,36 @@ struct VLChordModifier {
 	uint32_t		fDelSteps;
 };
 
+#define _ VLChord::
+
 static const VLChordModifier kModifiers[] = {
-	{"b13", VLChord::kmMin13th, 0},
-	{"add13", VLChord::kmMaj13th, 0},
-	{"13", VLChord::kmMin7th | VLChord::kmMaj9th | VLChord::km11th | VLChord::kmMaj13th, 0},
-	{"#11", VLChord::kmAug11th, VLChord::km11th},
-	{"add11", VLChord::km11th, 0},
-	{"11", VLChord::kmMin7th | VLChord::kmMaj9th | VLChord::km11th, 0},
-	{"#9", VLChord::kmAug9th, VLChord::kmMaj9th},
-	{"+9", VLChord::kmAug9th, VLChord::kmMaj9th},
-	{"b9", VLChord::kmMin9th, VLChord::kmMaj9th},
-	{"-9", VLChord::kmMin9th, VLChord::kmMaj9th},
-	{"69", VLChord::kmDim7th | VLChord::kmMaj9th, 0},
-	{"add9", VLChord::kmMaj9th, 0},
-	{"9", VLChord::kmMin7th | VLChord::kmMaj9th, 0},
-	{"7", VLChord::kmMin7th, 0},
-	{"maj", VLChord::kmMaj7th, VLChord::kmMin7th},
-	{"6", VLChord::kmDim7th, 0},
-	{"#5", VLChord::kmAug5th, VLChord::km5th},
-	{"+5", VLChord::kmAug5th, VLChord::km5th},
-	{"aug", VLChord::kmAug5th, VLChord::km5th},
-	{"+", VLChord::kmAug5th, VLChord::km5th},
-	{"b5", VLChord::kmDim5th, VLChord::km5th},
-	{"-5", VLChord::kmDim5th, VLChord::km5th},
-	{"sus4", VLChord::km4th, VLChord::kmMaj3rd},
-	{"sus2", VLChord::kmMaj2nd, VLChord::kmMaj3rd},
-	{"sus", VLChord::km4th, VLChord::kmMaj3rd},
-	{"4", VLChord::km4th, VLChord::kmMaj3rd},
-	{"2", VLChord::kmMaj2nd, VLChord::kmMaj3rd},
+	{"b13", _ kmMin13th, 0},
+	{"add13", _ kmMaj13th, 0},
+	{"13", _ kmMin7th | _ kmMaj9th | _ km11th | _ kmMaj13th, 0},
+	{"#11", _ kmAug11th, 0},
+	{"add11", _ km11th, 0},
+	{"11", _ kmMin7th | _ kmMaj9th | _ km11th, 0},
+	{"#9", _ kmAug9th, _ kmMaj9th},
+	{"+9", _ kmAug9th, _ kmMaj9th},
+	{"b9", _ kmMin9th, _ kmMaj9th},
+	{"-9", _ kmMin9th, _ kmMaj9th},
+	{"69", _ kmDim7th | _ kmMaj9th, 0},
+	{"add9", _ kmMaj9th, 0},
+	{"9", _ kmMin7th | _ kmMaj9th, 0},
+	{"7", _ kmMin7th, 0},
+	{"maj", _ kmMaj7th, _ kmMin7th},
+	{"6", _ kmDim7th, 0},
+	{"#5", _ kmAug5th, _ km5th},
+	{"+5", _ kmAug5th, _ km5th},
+	{"aug", _ kmAug5th, _ km5th},
+	{"+", _ kmAug5th, _ km5th},
+	{"b5", _ kmDim5th, _ km5th},
+	{"-5", _ kmDim5th, _ km5th},
+	{"sus4", _ km4th, _ kmMaj3rd},
+	{"sus2", _ kmMaj2nd, _ kmMaj3rd},
+	{"sus", _ km4th, _ kmMaj3rd},
+	{"4", _ km4th, _ kmMaj3rd},
+	{"2", _ kmMaj2nd, _ kmMaj3rd},
 	{NULL, 0, 0}
 };
 
@@ -540,6 +542,65 @@ void VLChord::LilypondName(std::string & name, bool useSharps) const
 		name += "/+" + LilypondPitchName(fRootPitch, useSharps);
 }
 
+//
+// MMA supports a large but finite list of chords
+//
+static const VLChordModifier kMMAModifiers[] = {
+	{"", 0, 0},
+	{"+", _ kmAug5th, _ km5th},
+	{"11", _ kmMin7th | _ kmMaj9th | _ km11th, 0},
+	{"11b9", _ kmMin7th | _ kmMin9th | _ km11th, 0},
+	{"13", _ kmMin7th | _ kmMaj9th | _ km11th | _ kmMaj13th, 0},
+	{"5", 0, _ kmMaj3rd},
+	{"6", _ kmDim7th, 0},
+	{"69", _ kmDim7th | _ kmMaj9th, 0},
+	{"7", _ kmMin7th, 0},
+	{"7#11", _ kmMin7th | _ kmAug11th, 0},
+	{"7#5", _ kmMin7th | _ kmAug5th, _ km5th},
+	{"7#5#9", _ kmMin7th | _ kmAug5th | _ kmAug9th, _ km5th},
+	{"7#5b9", _ kmMin7th | _ kmAug5th | _ kmMin9th, _ km5th},
+	{"7#9", _ kmMin7th | _ kmAug9th, 0},
+	{"7#9#11", _ kmMin7th | _ kmAug9th | _ kmAug11th, 0},
+	{"7b5", _ kmMin7th | _ kmDim5th, _ km5th},
+	{"7b5#9", _ kmMin7th | _ kmDim5th | _ kmAug9th, _ km5th},
+	{"7b5b9", _ kmMin7th | _ kmDim5th | _ kmMin9th, _ km5th},
+	{"7b9", _ kmMin7th | _ kmMin9th, 0},
+	{"7sus", _ kmMin7th | _ km4th, _ kmMaj3rd},
+	{"7sus2", _ kmMin7th | _ kmMaj2nd, _ kmMaj3rd},
+	{"9", _ kmMin7th | _ kmMaj9th, 0},
+	{"9#11", _ kmMin7th | _ kmMaj9th | _ kmAug11th, 0},
+	{"9#5", _ kmMin7th | _ kmMaj9th | _ kmAug5th, _ km5th},
+	{"9b5", _ kmMin7th | _ kmMaj9th | _ kmDim5th, _ km5th},
+	{"9sus", _ kmMaj9th, 0},
+	{"M13", _ kmMaj7th | _ kmMaj13th, 0},
+	{"M7", _ kmMaj7th, 0},
+	{"M7#11", _ kmMaj7th | _ kmMaj9th | _ kmAug11th, 0},
+	{"M7#5", _ kmMaj7th | _ kmAug5th, _ km5th},
+	{"M7b5", _ kmMaj7th | _ kmDim5th, _ km5th},
+	{"M9", _ kmMaj7th | _ kmMaj9th, 0},
+	{"aug9", _ kmMin7th | _ kmMaj9th | _ kmAug5th, _ km5th},
+	{"dim3", _ kmMin3rd | _ kmDim5th, _ kmMaj3rd | _ km5th},
+	{"dim7", _ kmMin3rd | _ kmDim5th | _ kmDim7th, _ kmMaj3rd | _ km5th},
+	{"m", _ kmMin3rd, _ kmMaj3rd},
+	{"m#5", _ kmMin3rd | _ kmAug5th, _ kmMaj3rd | _ km5th},
+	{"m(maj7)", _ kmMin3rd | _ kmMaj7th, _ kmMaj3rd},
+	{"m(sus9)", _ kmMin3rd | _ kmMaj9th, _ kmMaj3rd},	
+	{"m11", _ kmMin3rd | _ kmMin7th | _ kmMaj9th | _ km11th, _ kmMaj3rd},
+	{"m6", _ kmMin3rd | _ kmDim7th, _ kmMaj3rd},
+	{"m69", _ kmMin3rd | _ kmDim7th | _ kmMaj9th, _ kmMaj3rd},
+	{"m7", _ kmMin3rd | _ kmMin7th, _ kmMaj3rd},
+	{"m7b5", _ kmMin3rd | _ kmMin7th | _ kmDim5th, _ kmMaj3rd | _ km5th},
+	{"m7b9", _ kmMin3rd | _ kmMin7th | _ kmMin9th, _ kmMaj3rd},
+	{"m9", _ kmMin3rd | _ kmMin7th | _ kmMaj9th, _ kmMaj3rd},
+	{"m9b5", _ kmMin3rd | _ kmMin7th | _ kmMaj9th | _ kmDim5th, _ kmMaj3rd | _ km5th},
+	{"mM7", _ kmMin3rd | _ kmMaj7th, _ kmMaj3rd},
+	{"mb5", _ kmMin3rd | _ kmDim5th, _ kmMaj3rd | _ km5th},
+	{"sus", _ km4th, _ kmMaj3rd},
+	{"sus2", _ kmMaj2nd, _ kmMaj3rd},
+	{"sus9", _ kmMaj9th, 0},
+	{NULL, 0, 0}
+};
+
 void VLChord::MMAName(std::string & name, bool useSharps) const
 {
 	VLFraction dur = fDuration;
@@ -550,20 +611,49 @@ void VLChord::MMAName(std::string & name, bool useSharps) const
 	if (fPitch == kNoPitch) {
 		name = '/';
 	} else {
-		std::string base, ext, root;
-		Name(base, ext, root, useSharps);
+		std::string base, ext;
+		VLNote::Name(base, useSharps);
 
+		size_t best 	= 0;
+		size_t bestBits	= 32;
+		size_t bestScore= 0;
+		for (size_t i=0; kMMAModifiers[i].fName; ++i) {
+			uint32_t steps = (kmUnison | kmMaj3rd | km5th)
+				| kMMAModifiers[i].fAddSteps
+				&~kMMAModifiers[i].fDelSteps;
+			if (fSteps == steps) {
+				//
+				// Exact match
+				//
+				best = i;
+				break;
+			}
+			steps ^= fSteps;
+			size_t bits=0;
+			size_t score=0;
+			for (uint32_t b=steps; b; b &= (b-1))
+				++bits;
+			for (size_t b=0; b<32; ++b)
+				if (steps & (1<<b))
+					score += 32-b;
+			if (bits < bestBits || (bits==bestBits && score < bestScore)) {
+				best		= i;
+				bestBits	= bits;
+				bestScore	= score;
+			}
+		}
+		ext = kMMAModifiers[best].fName;
 		name = base+ext;
-		if (root.size()) 
-			name += '/'+root;
+		if (fRootPitch != kNoPitch)
+			name += '/' + PitchName(fRootPitch, useSharps);
 		std::toupper(base[0]);
 		size_t mod;
 		while ((mod = name.find("Maj")) != std::string::npos)
 			name.erase(mod+1, 2);
-		while ((mod = name.find(kVLSharpStr, 3)) != std::string::npos)
-			name.replace(mod, 3, '#', 1);
-		while ((mod = name.find(kVLFlatStr, 3)) != std::string::npos)
-			name.replace(mod, 3, '&', 1);
+		while ((mod = name.find(kVLSharpStr)) != std::string::npos)
+			name.replace(mod, 3, "#", 1);
+		while ((mod = name.find(kVLFlatStr)) != std::string::npos)
+			name.replace(mod, 3, "&", 1);
 	}
 	while (quarters--) 
 		name += " /";
@@ -663,7 +753,7 @@ void VLMeasure::MMANotes(std::string & notes) const
 		i->MMAName(note, at, *fProperties);
 		if (notes.size())
 			notes += ' ';
-		notes += note;
+		notes += note+';';
 		at    += i->fDuration;
 	}
 }

@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd ${0%/*/*}/share/mma
-exec $0.py $*
+exec ${0%/*}/mma.py $*

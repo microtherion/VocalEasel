@@ -52,6 +52,8 @@
 		95E04DAB0AEB4886006F30A0 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
 		95E04DC70AEB4B57006F30A0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		95E04DCE0AEB4D9B006F30A0 /* Templates in Resources */ = {isa = PBXBuildFile; fileRef = 95E04DCA0AEB4D9B006F30A0 /* Templates */; };
+		95EDA5AA0B06DE46004D8D6E /* VLMIDIDocument.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95EDA5A80B06DE46004D8D6E /* VLMIDIDocument.h */; };
+		95EDA5AB0B06DE47004D8D6E /* VLMIDIDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95EDA5A90B06DE46004D8D6E /* VLMIDIDocument.mm */; };
 		95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
 		95F5F5340ADCCFBB003980B2 /* DTD in Resources */ = {isa = PBXBuildFile; fileRef = 95F5F51E0ADCCFBB003980B2 /* DTD */; };
 		95F820AB0AF884A30010963D /* VLMMADocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F820AA0AF884A30010963D /* VLMMADocument.mm */; };
@@ -79,6 +81,7 @@
 				95C461FE0B04432700649F92 /* MMA in Copy MMA Library */,
 				95C461C40B043E8900649F92 /* includes in Copy MMA Library */,
 				95C461C50B043E8900649F92 /* lib in Copy MMA Library */,
+				95EDA5AA0B06DE46004D8D6E /* VLMIDIDocument.h in Copy MMA Library */,
 			);
 			name = "Copy MMA Library";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -155,6 +158,8 @@
 		95E04DA00AEB4837006F30A0 /* TVLLilypond */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLLilypond; sourceTree = BUILT_PRODUCTS_DIR; };
 		95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = TVLLilypond.mm; path = Tests/TVLLilypond.mm; sourceTree = "<group>"; };
 		95E04DCA0AEB4D9B006F30A0 /* Templates */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Templates; path = Resources/Templates; sourceTree = "<group>"; };
+		95EDA5A80B06DE46004D8D6E /* VLMIDIDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLMIDIDocument.h; path = Sources/VLMIDIDocument.h; sourceTree = "<group>"; };
+		95EDA5A90B06DE46004D8D6E /* VLMIDIDocument.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLMIDIDocument.mm; path = Sources/VLMIDIDocument.mm; sourceTree = "<group>"; };
 		95F5F50D0ADCC433003980B2 /* VLXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLXMLDocument.h; path = Sources/VLXMLDocument.h; sourceTree = "<group>"; };
 		95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLXMLDocument.mm; path = Sources/VLXMLDocument.mm; sourceTree = "<group>"; };
 		95F5F51E0ADCCFBB003980B2 /* DTD */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DTD; path = Resources/DTD; sourceTree = "<group>"; };
@@ -259,12 +264,12 @@
 		2A37F4AAFDCFA73011CA2CEA /* Vocalese */ = {
 			isa = PBXGroup;
 			children = (
-				95C461DC0B0442EB00649F92 /* MMA */,
-				95C461D40B04403600649F92 /* Tools */,
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
-				955E59560957C0C50045FDA5 /* Tests */,
+				95C461D40B04403600649F92 /* Tools */,
+				95C461DC0B0442EB00649F92 /* MMA */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
+				955E59560957C0C50045FDA5 /* Tests */,
 				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
 				19C28FB0FE9D524F11CA2CBB /* Products */,
 			);
@@ -274,6 +279,8 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				95EDA5A80B06DE46004D8D6E /* VLMIDIDocument.h */,
+				95EDA5A90B06DE46004D8D6E /* VLMIDIDocument.mm */,
 				95F820A90AF884A30010963D /* VLMMADocument.h */,
 				95F820AA0AF884A30010963D /* VLMMADocument.mm */,
 				95A1C3840AF2ACE20076597D /* VLSheetWindow.h */,
@@ -562,6 +569,7 @@
 				95FC66CE0AF0A591003D9C11 /* VLPDFView.mm in Sources */,
 				95A1C3860AF2ACE20076597D /* VLSheetWindow.mm in Sources */,
 				95F820AB0AF884A30010963D /* VLMMADocument.mm in Sources */,
+				95EDA5AB0B06DE47004D8D6E /* VLMIDIDocument.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

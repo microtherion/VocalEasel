@@ -30,6 +30,7 @@
 				<string>VLLilypondType</string>
 				<string>VLMusicXMLType</string>
 				<string>VLMMAType</string>
+				<string>VLMIDIType</string>
 			</array>
 			<key>NSPersistentStoreTypeKey</key>
 			<string>XML</string>
@@ -79,6 +80,28 @@
 			<false/>
 			<key>NSPersistentStoreTypeKey</key>
 			<string>Binary</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>mid</string>
+			</array>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>audio/midi</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>VLMIDIType</string>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>Midi</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSTypeIsPackage</key>
+			<false/>
+			<key>NSPersistentStoreTypeKey</key>
+			<string>XML</string>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
