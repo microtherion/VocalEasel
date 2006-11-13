@@ -30,7 +30,7 @@
         {
             CLASS = VLSheetWindow; 
             LANGUAGE = ObjC; 
-            OUTLETS = {logToolItem = id; outputToolItem = id; runToolItem = id; }; 
+            OUTLETS = {logToolItem = id; outputToolItem = id; playToolItem = id; runToolItem = id; }; 
             SUPERCLASS = NSWindowController; 
         }
     ); 

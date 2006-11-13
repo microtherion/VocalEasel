@@ -46,6 +46,7 @@ static NSString* 	sInputToolbarIdentifier 		= @"Vocalese Sheet Window Toolbar Id
 static NSString*	sOutputToolbarItemIdentifier 	= @"Output Toolbar Item Identifier";
 static NSString*	sLogToolbarItemIdentifier		= @"Log Toolbar Item Identifier";
 static NSString*	sRunToolbarItemIdentifier		= @"Run Toolbar Item Identifier";
+static NSString*	sPlayToolbarItemIdentifier		= @"Play Toolbar Item Identifier";
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -87,6 +88,8 @@ static NSString*	sRunToolbarItemIdentifier		= @"Run Toolbar Item Identifier";
 		prototype = logToolItem;
     else if ([itemIdent isEqual: sRunToolbarItemIdentifier]) 
 		prototype = runToolItem;
+    else if ([itemIdent isEqual: sPlayToolbarItemIdentifier]) 
+		prototype = playToolItem;
 	
 	if (prototype) {
         toolbarItem = [[[NSToolbarItem alloc] initWithItemIdentifier: itemIdent] autorelease];
@@ -106,6 +109,7 @@ static NSString*	sRunToolbarItemIdentifier		= @"Run Toolbar Item Identifier";
 - (NSArray *) toolbarDefaultItemIdentifiers: (NSToolbar *) toolbar {
     return [NSArray arrayWithObjects:	
 						sRunToolbarItemIdentifier, 
+					sPlayToolbarItemIdentifier,
 					NSToolbarFlexibleSpaceItemIdentifier, 
 					sOutputToolbarItemIdentifier, 
 					sLogToolbarItemIdentifier, nil];
@@ -114,6 +118,7 @@ static NSString*	sRunToolbarItemIdentifier		= @"Run Toolbar Item Identifier";
 - (NSArray *) toolbarAllowedItemIdentifiers: (NSToolbar *) toolbar {
     return [NSArray arrayWithObjects: 	
 						sRunToolbarItemIdentifier, 
+					sPlayToolbarItemIdentifier,
 					sOutputToolbarItemIdentifier, 
 					sLogToolbarItemIdentifier, 
 					NSToolbarCustomizeToolbarItemIdentifier, 

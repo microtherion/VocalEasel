@@ -14,6 +14,7 @@
 #import "VLPDFWindow.h"
 #import "VLLogWindow.h"
 #import "VLSheetWindow.h"
+#import "VLSoundOut.h"
 
 @implementation VLDocument
 
@@ -279,6 +280,16 @@
 	} else {
 		NSBeep();
 	}
+}
+
+- (IBAction) play:(id)sender
+{
+	NSError * err;
+	[self writeToURL:[self fileURLWithExtension:@"mid"]
+		  ofType:@"VLMIDIType" error:&err];
+	VLSoundOut::Instance()->PlayFile(
+	  CFDataRef([NSData dataWithContentsOfURL: 
+							[self fileURLWithExtension:@"mid"]]));
 }
 
 - (IBAction) showOutput:(id)sender

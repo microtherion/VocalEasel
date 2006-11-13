@@ -21,6 +21,7 @@ public:
 
 	virtual void PlayNote(const VLNote & note);
 	virtual void PlayChord(const VLChord & chord); 
+	virtual void PlayFile(CFDataRef file);
 	
 	virtual ~VLAUSoundOut();
 
@@ -169,3 +170,16 @@ void VLAUSoundOut::Play(const int8_t * note, size_t numNotes)
 		
 	PlaySequence(music);
 }
+
+void VLAUSoundOut::PlayFile(CFDataRef file)
+{
+	MusicSequence	music;
+	MusicTrack		track;
+	
+	NewMusicSequence(&music);
+	MusicSequenceNewTrack(music, &track);
+	MusicSequenceLoadSMFDataWithFlags(music, file,
+									  kMusicSequenceLoadSMF_ChannelsToTracks);
+	PlaySequence(music);
+}
+

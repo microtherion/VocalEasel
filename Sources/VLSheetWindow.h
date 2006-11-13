@@ -27,6 +27,7 @@
 	IBOutlet id 	runToolItem;
 	IBOutlet id 	outputToolItem;
 	IBOutlet id 	logToolItem;
+	IBOutlet id		playToolItem;
 }
 
 - (VLEditable *) editTarget;

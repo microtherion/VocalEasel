@@ -8,6 +8,7 @@
  */
 
 #include "VLModel.h"
+#import <CoreFoundation/CoreFoundation.h>
 
 class VLSoundEvent {
 protected:
@@ -32,6 +33,7 @@ public:
 
 	virtual void PlayNote(const VLNote & note) = 0;
 	virtual void PlayChord(const VLChord & chord) = 0; 
+	virtual void PlayFile(CFDataRef file) = 0;
 
 	virtual ~VLSoundOut();
 };
