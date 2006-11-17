@@ -265,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
+				9546A1090B08B47A0028503B /* CoreAudio SDK Sources */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
 				95C461D40B04403600649F92 /* Tools */,
 				95C461DC0B0442EB00649F92 /* MMA */,
@@ -360,6 +361,13 @@
 				1058C7A8FEA54F5311CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9546A1090B08B47A0028503B /* CoreAudio SDK Sources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CoreAudio SDK Sources";
 			sourceTree = "<group>";
 		};
 		955E59560957C0C50045FDA5 /* Tests */ = {

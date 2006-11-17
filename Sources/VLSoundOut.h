@@ -29,6 +29,8 @@ public:
 class VLSoundOut {
 public:
 	static VLSoundOut * Instance();
+	static VLSoundOut * FileWriter(CFURLRef file);
+
 	static void SetScheduler(VLSoundScheduler * scheduler);
 
 	virtual void PlayNote(const VLNote & note) = 0;
