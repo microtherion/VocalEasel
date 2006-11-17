@@ -24,6 +24,7 @@
 	NSString *		songGroove;
 	NSNumber *		songTempo;
 	NSString *		tmpPath;
+	NSFileWrapper *	vcsWrapper;
 
 	VLSheetWindow *	sheetWin;
 	VLLogWindow *	logWin;

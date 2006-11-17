@@ -34,6 +34,7 @@
 		pdfWin				= nil;	
 		logWin				= nil;
 		tmpPath				= nil;
+		vcsWrapper			= nil;
     }
     return self;
 }
@@ -47,6 +48,7 @@
 	[songLyricist release];
 	[songComposer release];
 	[songArranger release];
+	[vcsWrapper release];
 	
 	if (tmpPath) {
 		[[NSFileManager defaultManager] removeFileAtPath:tmpPath handler:nil];
@@ -188,6 +190,30 @@
 	return [NSURL fileURLWithPath:
 			  [[[self workPath] stringByAppendingPathComponent:[self baseName]]
 				  stringByAppendingPathExtension:extension]];
+}
+
+- (BOOL)saveToURL:(NSURL *)absoluteURL ofType:(NSString *)typeName forSaveOperation:(NSSaveOperationType)saveOperation error:(NSError **)outError
+{
+	NSFileWrapper * preservedVCSWrapper = nil;
+	switch (saveOperation) {
+	case NSSaveToOperation:
+	case NSAutosaveOperation:
+		preservedVCSWrapper = vcsWrapper;
+		[preservedVCSWrapper retain];
+		// Fall through
+	case NSSaveAsOperation:
+		[vcsWrapper release];
+		vcsWrapper = nil;
+		// Fall through
+	case NSSaveOperation:
+		break;
+	}
+	BOOL res = [super saveToURL:absoluteURL ofType:typeName
+					  forSaveOperation:saveOperation error:outError];
+	if (!vcsWrapper)
+		vcsWrapper = preservedVCSWrapper;
+	
+	return res;
 }
 
 - (NSFileWrapper *)fileWrapperOfType:(NSString *)typeName error:(NSError **)outError

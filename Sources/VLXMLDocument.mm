@@ -300,6 +300,8 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 									  autorelease];
 		[wrap addRegularFileWithContents:contents
 			  preferredFilename:@"Song"];
+		if (vcsWrapper)
+			[wrap addFileWrapper:vcsWrapper];
 
 		return wrap;
 	}
@@ -456,8 +458,13 @@ int8_t sStepToPitch[] = {
 
 - (BOOL)readFromXMLFileWrapper:(NSFileWrapper *)wrapper error:(NSError **)outError
 {
-	return [self readFromXMLData: [[[wrapper fileWrappers] objectForKey:@"Song"]
-									  regularFileContents]	
+	NSDictionary * wrappers = [wrapper fileWrappers];
+	if ((vcsWrapper = [wrappers objectForKey:@"CVS"])
+     || (vcsWrapper = [wrappers objectForKey:@".svn"])
+	)
+		[vcsWrapper retain];
+	return [self readFromXMLData:
+					 [[wrappers objectForKey:@"Song"] regularFileContents]	
 				 error:outError];
 }
 
