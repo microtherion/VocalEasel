@@ -10,14 +10,6 @@
 
 @implementation VLDocument (MMA)
 
-const int kMajorOffset 	= 6;
-const int kMinorOffset  = 9;
-
-const char * sKeyNames[] = {
-	"ges", "des", "as", "es", "bes", "f",
-	"c", "g", "d", "a", "e", "b", "fis", "cis", "gis"
-};
-
 - (NSData *)mmaDataWithError:(NSError **)outError
 {
 	char	buf[32];
