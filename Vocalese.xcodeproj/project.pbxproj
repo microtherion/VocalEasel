@@ -14,6 +14,21 @@
 		8D15AC310486D014006FF6A4 /* VLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* VLDocument.mm */; settings = {ATTRIBUTES = (); }; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		95009B280B0ECF9000EB33A4 /* AUOutputBL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B220B0ECF9000EB33A4 /* AUOutputBL.cpp */; };
+		95009B290B0ECF9000EB33A4 /* AUOutputBL.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95009B230B0ECF9000EB33A4 /* AUOutputBL.h */; };
+		95009B2A0B0ECF9000EB33A4 /* CAAudioFileFormats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B240B0ECF9000EB33A4 /* CAAudioFileFormats.cpp */; };
+		95009B2B0B0ECF9000EB33A4 /* CAAudioFileFormats.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95009B250B0ECF9000EB33A4 /* CAAudioFileFormats.h */; };
+		95009B2C0B0ECF9000EB33A4 /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B260B0ECF9000EB33A4 /* CAStreamBasicDescription.cpp */; };
+		95009B2D0B0ECF9000EB33A4 /* CAStreamBasicDescription.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95009B270B0ECF9000EB33A4 /* CAStreamBasicDescription.h */; };
+		95009B500B0ED0BB00EB33A4 /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B4E0B0ED0BB00EB33A4 /* CADebugMacros.cpp */; };
+		95009B510B0ED0BB00EB33A4 /* CADebugMacros.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95009B4F0B0ED0BB00EB33A4 /* CADebugMacros.h */; };
+		95009B640B0ED18700EB33A4 /* CAConditionalMacros.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95009B620B0ED18700EB33A4 /* CAConditionalMacros.h */; };
+		95009B650B0ED18700EB33A4 /* CAMath.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95009B630B0ED18700EB33A4 /* CAMath.h */; };
+		95009B7E0B0EDC7400EB33A4 /* AUOutputBL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B220B0ECF9000EB33A4 /* AUOutputBL.cpp */; };
+		95009B7F0B0EDC7900EB33A4 /* CAAudioFileFormats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B240B0ECF9000EB33A4 /* CAAudioFileFormats.cpp */; };
+		95009B800B0EDC7B00EB33A4 /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B4E0B0ED0BB00EB33A4 /* CADebugMacros.cpp */; };
+		95009B810B0EDC7D00EB33A4 /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B260B0ECF9000EB33A4 /* CAStreamBasicDescription.cpp */; };
+		95009B830B0EDCD800EB33A4 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95009B820B0EDCD800EB33A4 /* CoreFoundation.framework */; };
 		952CBB9C095FD1CA00434E43 /* VLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */; };
 		952CBB9D095FD1CA00434E43 /* VLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */; };
 		952CBB9F095FD1D900434E43 /* TVLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9E095FD1D900434E43 /* TVLSoundOut.cpp */; };
@@ -82,6 +97,12 @@
 				95C461C40B043E8900649F92 /* includes in Copy MMA Library */,
 				95C461C50B043E8900649F92 /* lib in Copy MMA Library */,
 				95EDA5AA0B06DE46004D8D6E /* VLMIDIDocument.h in Copy MMA Library */,
+				95009B290B0ECF9000EB33A4 /* AUOutputBL.h in Copy MMA Library */,
+				95009B2B0B0ECF9000EB33A4 /* CAAudioFileFormats.h in Copy MMA Library */,
+				95009B2D0B0ECF9000EB33A4 /* CAStreamBasicDescription.h in Copy MMA Library */,
+				95009B510B0ED0BB00EB33A4 /* CADebugMacros.h in Copy MMA Library */,
+				95009B640B0ED18700EB33A4 /* CAConditionalMacros.h in Copy MMA Library */,
+				95009B650B0ED18700EB33A4 /* CAMath.h in Copy MMA Library */,
 			);
 			name = "Copy MMA Library";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -116,6 +137,17 @@
 		32DBCF750370BD2300C91783 /* Vocalese_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vocalese_Prefix.pch; path = Sources/Vocalese_Prefix.pch; sourceTree = "<group>"; };
 		8D15AC360486D014006FF6A4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* VocalEasel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VocalEasel.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		95009B220B0ECF9000EB33A4 /* AUOutputBL.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = AUOutputBL.cpp; path = Sources/CoreAudioSDK/AUOutputBL.cpp; sourceTree = "<group>"; };
+		95009B230B0ECF9000EB33A4 /* AUOutputBL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = AUOutputBL.h; path = Sources/CoreAudioSDK/AUOutputBL.h; sourceTree = "<group>"; };
+		95009B240B0ECF9000EB33A4 /* CAAudioFileFormats.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CAAudioFileFormats.cpp; path = Sources/CoreAudioSDK/CAAudioFileFormats.cpp; sourceTree = "<group>"; };
+		95009B250B0ECF9000EB33A4 /* CAAudioFileFormats.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CAAudioFileFormats.h; path = Sources/CoreAudioSDK/CAAudioFileFormats.h; sourceTree = "<group>"; };
+		95009B260B0ECF9000EB33A4 /* CAStreamBasicDescription.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CAStreamBasicDescription.cpp; path = Sources/CoreAudioSDK/CAStreamBasicDescription.cpp; sourceTree = "<group>"; };
+		95009B270B0ECF9000EB33A4 /* CAStreamBasicDescription.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CAStreamBasicDescription.h; path = Sources/CoreAudioSDK/CAStreamBasicDescription.h; sourceTree = "<group>"; };
+		95009B4E0B0ED0BB00EB33A4 /* CADebugMacros.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CADebugMacros.cpp; path = Sources/CoreAudioSDK/CADebugMacros.cpp; sourceTree = "<group>"; };
+		95009B4F0B0ED0BB00EB33A4 /* CADebugMacros.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CADebugMacros.h; path = Sources/CoreAudioSDK/CADebugMacros.h; sourceTree = "<group>"; };
+		95009B620B0ED18700EB33A4 /* CAConditionalMacros.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CAConditionalMacros.h; path = Sources/CoreAudioSDK/CAConditionalMacros.h; sourceTree = "<group>"; };
+		95009B630B0ED18700EB33A4 /* CAMath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CAMath.h; path = Sources/CoreAudioSDK/CAMath.h; sourceTree = "<group>"; };
+		95009B820B0EDCD800EB33A4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		952CBB98095FD19D00434E43 /* TVLSoundOut */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLSoundOut; sourceTree = BUILT_PRODUCTS_DIR; };
 		952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = VLSoundOut.cpp; path = Sources/VLSoundOut.cpp; sourceTree = "<group>"; };
 		952CBB9B095FD1CA00434E43 /* VLSoundOut.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSoundOut.h; path = Sources/VLSoundOut.h; sourceTree = "<group>"; };
@@ -200,6 +232,7 @@
 			files = (
 				952CBBB4095FD34F00434E43 /* AudioToolbox.framework in Frameworks */,
 				952CBBB5095FD34F00434E43 /* AudioUnit.framework in Frameworks */,
+				95009B830B0EDCD800EB33A4 /* CoreFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,6 +264,7 @@
 		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				95009B820B0EDCD800EB33A4 /* CoreFoundation.framework */,
 				95A1C37B0AF1D4370076597D /* Quartz.framework */,
 				1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */,
 				952CBBB2095FD34F00434E43 /* AudioToolbox.framework */,
@@ -366,6 +400,16 @@
 		9546A1090B08B47A0028503B /* CoreAudio SDK Sources */ = {
 			isa = PBXGroup;
 			children = (
+				95009B620B0ED18700EB33A4 /* CAConditionalMacros.h */,
+				95009B630B0ED18700EB33A4 /* CAMath.h */,
+				95009B4E0B0ED0BB00EB33A4 /* CADebugMacros.cpp */,
+				95009B4F0B0ED0BB00EB33A4 /* CADebugMacros.h */,
+				95009B220B0ECF9000EB33A4 /* AUOutputBL.cpp */,
+				95009B230B0ECF9000EB33A4 /* AUOutputBL.h */,
+				95009B240B0ECF9000EB33A4 /* CAAudioFileFormats.cpp */,
+				95009B250B0ECF9000EB33A4 /* CAAudioFileFormats.h */,
+				95009B260B0ECF9000EB33A4 /* CAStreamBasicDescription.cpp */,
+				95009B270B0ECF9000EB33A4 /* CAStreamBasicDescription.h */,
 			);
 			name = "CoreAudio SDK Sources";
 			sourceTree = "<group>";
@@ -551,7 +595,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "$BUILT_PRODUCTS_DIR/VocalEasel.app/Contents/Resources/bin/mma -g\n";
+			shellScript = "$BUILT_PRODUCTS_DIR/VocalEasel.app/Contents/Resources/bin/mmaWrapper -g\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -578,6 +622,10 @@
 				95A1C3860AF2ACE20076597D /* VLSheetWindow.mm in Sources */,
 				95F820AB0AF884A30010963D /* VLMMADocument.mm in Sources */,
 				95EDA5AB0B06DE47004D8D6E /* VLMIDIDocument.mm in Sources */,
+				95009B280B0ECF9000EB33A4 /* AUOutputBL.cpp in Sources */,
+				95009B2A0B0ECF9000EB33A4 /* CAAudioFileFormats.cpp in Sources */,
+				95009B2C0B0ECF9000EB33A4 /* CAStreamBasicDescription.cpp in Sources */,
+				95009B500B0ED0BB00EB33A4 /* CADebugMacros.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,6 +636,10 @@
 				952CBB9C095FD1CA00434E43 /* VLSoundOut.cpp in Sources */,
 				952CBB9F095FD1D900434E43 /* TVLSoundOut.cpp in Sources */,
 				952CBBB6095FD37300434E43 /* VLModel.cpp in Sources */,
+				95009B7E0B0EDC7400EB33A4 /* AUOutputBL.cpp in Sources */,
+				95009B7F0B0EDC7900EB33A4 /* CAAudioFileFormats.cpp in Sources */,
+				95009B800B0EDC7B00EB33A4 /* CADebugMacros.cpp in Sources */,
+				95009B810B0EDC7D00EB33A4 /* CAStreamBasicDescription.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -662,6 +714,7 @@
 		95D7BF750AA699C600D5E02C /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				USER_HEADER_SEARCH_PATHS = "Sources/**";
 			};
 			name = Development;
 		};

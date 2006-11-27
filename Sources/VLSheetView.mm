@@ -647,6 +647,8 @@ static int8_t sSharpAcc[] = {
 	case kRegionChord:
 		[self editChord];
 		break;
+	case kRegionLyrics:
+		[self editLyrics];
 	default:
 		break;
 	}
