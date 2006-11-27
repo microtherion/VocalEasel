@@ -29,7 +29,7 @@ public:
 class VLSoundOut {
 public:
 	static VLSoundOut * Instance();
-	static VLSoundOut * FileWriter(CFURLRef file);
+	static VLSoundOut * FileWriter(CFURLRef file, OSType dataFormat);
 
 	static void SetScheduler(VLSoundScheduler * scheduler);
 
