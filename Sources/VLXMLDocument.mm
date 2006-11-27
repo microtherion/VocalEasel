@@ -146,6 +146,38 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 	return note;
 }
 
+- (NSXMLElement *)syllable:(const VLSyllable *)syllable inStanza:(int)stanza
+{
+	NSString * syll;
+	switch (syllable->fKind) {
+	default:
+	case VLSyllable::kSingle:
+		syll	= @"single";
+		break;
+	case VLSyllable::kBegin:
+		syll	= @"begin";
+		break;
+	case VLSyllable::kEnd:
+		syll	= @"end";
+		break;
+	case VLSyllable::kMiddle:
+		syll	= @"middle";
+		break;
+	}
+	
+	NSString * text = [NSString stringWithUTF8String:syllable->fText.c_str()];
+	NSXMLNode* num	= [NSXMLNode attributeWithName:@"number"
+								 stringValue:[NSString stringWithFormat:@"%d",
+													   stanza]];
+	return [NSXMLNode 
+			   elementWithName:@"lyric" 
+			   children: [NSArray arrayWithObjects:
+				  [NSXMLNode elementWithName:@"syllabic" stringValue:syll],
+				  [NSXMLNode elementWithName:@"text" stringValue:text],
+				  nil]
+			   attributes: [NSArray arrayWithObject:num]];
+}
+
 - (void)addNotes:(VLNoteList *)notes toMeasure:(NSXMLElement *)meas
 {
 	VLFraction	resolution(1, song->fProperties.front().fDivisions*4);
@@ -156,7 +188,13 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 	) {
 		VLFraction 	u 		= note->fDuration / resolution;
 		int			units	= (u.fNum+u.fDenom/2)/u.fDenom;
-		[meas addChild:[self noteWithPitch:note->fPitch duration:units useSharps:useSharps]];
+		NSXMLElement*n		= 
+			[self noteWithPitch:note->fPitch duration:units useSharps:useSharps];
+		for (size_t i=0; i<note->fLyrics.size(); ++i)
+			if (note->fLyrics[i])
+				[n addChild:[self syllable:&note->fLyrics[i] inStanza:i+1]];
+
+		[meas addChild:n];
 	}			 
 }
 
@@ -325,10 +363,10 @@ int8_t sStepToPitch[] = {
 	9, 11, 0, 2, 4, 5, 7
 };
 
-- (VLNote) readNote:(NSXMLElement*)note withUnit:(VLFraction)unit
+- (VLLyricsNote) readNote:(NSXMLElement*)note withUnit:(VLFraction)unit
 {
-	NSError *	outError;
-	VLNote		n;
+	NSError *		outError;
+	VLLyricsNote 	n;
 	
 	n.fTied = 0;
 
@@ -343,6 +381,25 @@ int8_t sStepToPitch[] = {
 			n.fPitch += [[alter stringValue] intValue];
 	}
 	n.fDuration = VLFraction([note intForXPath:@"./duration" error:&outError])*unit;
+	NSEnumerator * e = [[note elementsForName:@"lyric"] objectEnumerator];
+	for (NSXMLElement * lyric; lyric = [e nextObject]; ) {
+		int stanza = [[[lyric attributeForName:@"number"]
+						  stringValue] intValue];
+		if (stanza > n.fLyrics.size())
+			n.fLyrics.resize(stanza);
+		--stanza;
+		NSString * kind = [lyric stringForXPath:@"./syllabic" error:&outError];
+		if ([kind isEqual:@"begin"])
+			n.fLyrics[stanza].fKind	= VLSyllable::kBegin;
+		else if ([kind isEqual:@"end"])
+			n.fLyrics[stanza].fKind	= VLSyllable::kEnd;
+		else if ([kind isEqual:@"middle"])
+			n.fLyrics[stanza].fKind	= VLSyllable::kMiddle;
+		else 
+			n.fLyrics[stanza].fKind	= VLSyllable::kSingle;
+		n.fLyrics[stanza].fText = 
+			[[lyric stringForXPath:@"./text" error:&outError] UTF8String];
+	}
 
 	return n;
 }
@@ -364,7 +421,7 @@ int8_t sStepToPitch[] = {
 		NSEnumerator * n = [[measure elementsForName:@"note"] objectEnumerator];
 
 		for (NSXMLElement * note; note = [n nextObject]; ) {
-			VLNote n = [self readNote:note withUnit:unit];
+			VLLyricsNote n = [self readNote:note withUnit:unit];
 			if (n.fPitch != VLNote::kNoPitch)
 				song->AddNote(n, m, at);
 			at += n.fDuration;

@@ -23,7 +23,7 @@
 		if (fClickMode == 'k')
 			[self song]->DelNote(fCursorMeasure, fCursorAt);
 		else	
-			[self song]->AddNote(newNote, fCursorMeasure, fCursorAt);
+			[self song]->AddNote(VLLyricsNote(newNote), fCursorMeasure, fCursorAt);
 
 		[self setNeedsDisplay:YES];
 		[[self document] updateChangeCount:NSChangeDone];

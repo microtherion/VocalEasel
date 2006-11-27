@@ -17,7 +17,7 @@
 
 @implementation NSMutableString (VLLilypond)
 
-- (void) substituteMacro:(NSString *)m withValue:(NSString *)value
+- (void) substituteMacro:(NSString *)m withValue:(NSString *)value repeat:(BOOL)repeat
 {
 	if ([value isEqual:@""])
 		return;
@@ -26,10 +26,12 @@
 		[value rangeOfCharacterFromSet:
 				   [NSCharacterSet characterSetWithCharactersInString:@"\n"]];
 	BOOL 		hasEOL= range.location != NSNotFound;
+	unsigned	from  = 0;
 
 	for (range = [self rangeOfString:macro];
 		 range.location != NSNotFound;
-		 range = [self rangeOfString:macro]
+		 range = [self rangeOfString:macro options:0 
+					   range:NSMakeRange(from, [self length]-from)]
 	) {
 		if (hasEOL) {
 			//
@@ -49,25 +51,41 @@
 				[[self substringWithRange:suffix]
 					stringByTrimmingCharactersInSet:
 						[NSCharacterSet whitespaceCharacterSet]];
+			NSString * nl;
 			if ([nonBlank length]) {
 				NSRange nb 		= [pfxStr rangeOfString:nonBlank];
-				prefix.length	= nb.location - prefix.location;
+				prefix.length	= nb.location;
 				pfxStr			= 
 					[[self substringWithRange:prefix]
 						stringByAppendingString:@"  "];
 				sfxStr			= [NSString stringWithFormat:@"\n%@", pfxStr];
+				nl				= @"\n";
 			} else {
 				range 			= line;
+				nl				= @"";
 			}
 			NSArray * lines 	= [value componentsSeparatedByString:@"\n"];
 			value	= 
-				[NSString stringWithFormat:@"%@%@%@", pfxStr,
+				[NSString stringWithFormat:@"%@%@%@%@", nl, pfxStr,
 						  [lines componentsJoinedByString:
 									 [@"\n" stringByAppendingString:pfxStr]],
 						  sfxStr];
 		}
+		from = range.location + [value length];
+		if (repeat) {
+			NSRange line = [self lineRangeForRange:range];
+			[self insertString:[self substringWithRange:line]
+				  atIndex:line.location+line.length];
+			from 	= line.location+2*line.length+[value length]-range.length;
+		}
 		[self replaceCharactersInRange:range withString:value];
 	}
+}
+
+
+- (void)substituteMacro:(NSString*)macro withValue:(NSString*)value
+{
+	[self substituteMacro:macro withValue:value repeat:NO];
 }
 
 - (void) purgeMacros
@@ -87,7 +105,7 @@
 const int kMajorOffset 	= 6;
 const int kMinorOffset  = 9;
 
-const char * sKeyNames[] = {
+static const char * sKeyNames[] = {
 	"ges", "des", "as", "es", "bes", "f",
 	"c", "g", "d", "a", "e", "b", "fis", "cis", "gis"
 };
@@ -127,6 +145,13 @@ const char * sKeyNames[] = {
 	song->LilypondNotes(lys);
 	[ly substituteMacro:@"NOTES" withValue: 
 			[NSString stringWithUTF8String:lys.c_str()]];
+	if (size_t stanzas = song->CountStanzas())
+		for (size_t s=0; s++<stanzas; ) {
+			song->LilypondStanza(lys, s);
+			[ly substituteMacro:@"LYRICS" withValue:
+					[NSString stringWithUTF8String:lys.c_str()]
+				repeat: s<stanzas];
+		}
 	[ly purgeMacros];
 	return [ly dataUsingEncoding:enc];
 }

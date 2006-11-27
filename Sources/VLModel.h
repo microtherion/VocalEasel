@@ -98,6 +98,21 @@ inline bool operator>=(VLFraction one, VLFraction other)
 
 class VLProperties;
 
+struct VLSyllable {
+	std::string	fText;	   // Syllable text
+	uint8_t		fKind;     // Adjacency information
+	enum {
+		kSingle			= 0,
+		kBegin			= 1,
+		kEnd			= 2,
+		kMiddle			= 3,
+		kHasNext		= 1,
+		kHasPrev		= 2
+	};
+
+	operator bool() const { return fText.size() > 0; }
+};
+	
 struct VLNote {
 	VLFraction 	fDuration;
 	int8_t		fPitch;		// Semitones
@@ -116,6 +131,7 @@ struct VLNote {
 		kTiedWithNext	= 1,
 		kTiedWithPrev	= 2
 	};
+
 	VLNote() : fPitch(kNoPitch) {}
 	VLNote(VLFraction dur, int8_t pitch) 
 		: fDuration(dur), fPitch(pitch), fTied(kNotTied)
@@ -205,20 +221,21 @@ struct VLProperties {
 	void VisualNote(VLFraction at, VLFraction actualDur, VLFraction *visualDur, bool * triplet) const;
 };
 
-struct VLSyllable {
-	std::string	fText;
-	bool		fHyphen;	// Followed by hyphen
+struct VLLyricsNote : VLNote {
+	VLLyricsNote() {}
+	explicit VLLyricsNote(const VLNote & note) 
+     	       { *static_cast<VLNote *>(this) = note; }
+
+	std::vector<VLSyllable>	fLyrics;
 };
 
 typedef std::list<VLChord>		VLChordList;
-typedef std::list<VLNote> 		VLNoteList;
-typedef std::list<VLSyllable> 	VLSyllList;
+typedef std::list<VLLyricsNote> VLNoteList;
 
 struct VLMeasure {
 	VLProperties *	fProperties;
 	VLChordList		fChords;
 	VLNoteList		fMelody;
-	VLSyllList		fLyrics;
 
 	VLMeasure();
 
@@ -233,14 +250,20 @@ struct VLSong {
 	std::vector<VLMeasure>	fMeasures;
 
 	void AddChord(VLChord chord, size_t measure, VLFraction at);
-	void AddNote(VLNote note, size_t measure, VLFraction at);
+	void AddNote(VLLyricsNote note, size_t measure, VLFraction at);
 	void DelChord(size_t measure, VLFraction at);
 	void DelNote(size_t measure, VLFraction at);
 	void Transpose(int semitones);
 
+	bool FindWord(size_t & measure, VLFraction & at);
+	bool PrevWord(size_t & measure, VLFraction & at);
+	bool NextWord(size_t & measure, VLFraction & at);
+
 	size_t	CountMeasures() const { return fMeasures.size(); }
+	size_t  CountStanzas() const;
 	void	LilypondNotes(std::string & notes) const;
 	void	LilypondChords(std::string & chords) const;
+	void 	LilypondStanza(std::string & lyrics, size_t stanza) const;
 };
 
 // Local Variables:

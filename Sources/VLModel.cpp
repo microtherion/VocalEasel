@@ -781,8 +781,8 @@ VLSong::VLSong()
 	fProperties.push_back(defaultProperties);
 	fMeasures.resize(32); // Leadin, AABA
 	
-	VLNote 	rest = VLRest(1);
-	VLChord rchord;
+	VLLyricsNote 	rest = VLLyricsNote(VLRest(1));
+	VLChord 		rchord;
 	rchord.fDuration = 1;
 	
 	for (int i=0; i<32; ++i) {
@@ -874,7 +874,7 @@ uint8_t & LastTie(VLMeasure & measure)
 //
 // Dealing with notes is similar, but we also have to handle ties
 //
-void VLSong::AddNote(VLNote note, size_t measure, VLFraction at)
+void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
 {
 	VLNoteList::iterator	i = fMeasures[measure].fMelody.begin();
 	VLFraction			  	t(0);
@@ -1017,6 +1017,25 @@ void VLSong::Transpose(int semi)
 	}
 }
 
+size_t  VLSong::CountStanzas() const
+{
+	size_t stanzas = 0;
+
+	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
+		VLNoteList::const_iterator i 	= fMeasures[measure].fMelody.begin();
+		VLNoteList::const_iterator e 	= fMeasures[measure].fMelody.end();
+
+		for (; i!=e; ++i) 
+			if (i->fLyrics.size() > stanzas)
+				for (size_t s = stanzas; s < i->fLyrics.size(); ++s)
+					if (i->fLyrics[s])
+						stanzas = s+1;
+	}
+
+	return stanzas;
+}
+
+
 void VLSong::LilypondNotes(std::string & notes) const
 {
 	notes = "";
@@ -1063,4 +1082,114 @@ void VLSong::LilypondChords(std::string & chords) const
 		if (measure < fMeasures.size()-1)
 			chords += '\n';
 	}
+}
+
+void VLSong::LilypondStanza(std::string & lyrics, size_t stanza) const
+{
+	lyrics = "";
+	std::string sep;
+	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
+		VLNoteList::const_iterator i 	= fMeasures[measure].fMelody.begin();
+		VLNoteList::const_iterator e 	= fMeasures[measure].fMelody.end();
+		VLFraction 				   at(0);
+
+		for (; i!=e; ++i) {
+			if (i->fPitch == VLNote::kNoPitch 
+			 || (i->fTied & VLNote::kTiedWithPrev)
+			) {
+				continue; // Rest or continuation note, skip
+			} else if (i->fLyrics.size() < stanza || !i->fLyrics[stanza-1]) {
+				lyrics += sep + "\\skip1";
+			} else {
+				lyrics += sep + i->fLyrics[stanza-1].fText;
+				if (i->fLyrics[stanza-1].fKind & VLSyllable::kHasNext)
+					lyrics += " --";
+			}
+			sep = " ";
+		}
+		if ((measure % 4) == 3) {
+			sep		= "\n";
+		}
+	}	
+}
+
+bool VLSong::FindWord(size_t & measure, VLFraction & at)
+{
+	at += VLFraction(1,64);
+
+	return PrevWord(measure, at);
+}
+
+bool VLSong::PrevWord(size_t & measure, VLFraction & at)
+{
+#if 0
+	do {
+		VLMeasure & 			meas	= fMeasures[measure];
+		VLNoteList::iterator 	note 	= fMeasures[measure].fMelody.begin();
+		VLNoteList::iterator 	end  	= fMeasures[measure].fMelody.end();
+		bool					hasWord	= false;
+		VLFraction				word(0);
+		VLFraction				now(0);
+
+		for (VLNoteList::iterator note = meas.fMelody.begin();
+			 note != meas.fMelody.end() && now < at;
+			 ++note
+		) {
+			if (!(note->fTied & VLNote::kTiedWithPrev)
+			 && !(note->fHyphen & VLNote::kHyphenToPrev)
+			) {
+				word	= now;
+				hasWord	= true;
+			}
+			now += note->fDuration;
+		}
+		if (hasWord) {
+			at	= word;
+			
+			return true;
+		} else {
+			at 	= meas.fProperties->fTime;
+		}
+	} while (measure-- > 0);
+#endif
+
+	return false;
+}
+
+bool VLSong::NextWord(size_t & measure, VLFraction & at)
+{  
+#if 0
+	bool firstMeasure = true;
+	do {
+		VLMeasure & 			meas	= fMeasures[measure];
+		VLNoteList::iterator 	note 	= fMeasures[measure].fMelody.begin();
+		VLNoteList::iterator 	end  	= fMeasures[measure].fMelody.end();
+		bool					hasWord	= false;
+		VLFraction				word(0);
+		VLFraction				now(0);
+
+		for (VLNoteList::iterator note = meas.fMelody.begin();
+			 note != meas.fMelody.end();
+			 ++note
+		) {
+			if (!(note->fTied & VLNote::kTiedWithPrev)
+			 && !(note->fHyphen & VLNote::kHyphenToPrev)
+			 && (!firstMeasure || now > at)
+			) {
+				word	= now;
+				hasWord	= true;
+			}
+			now += note->fDuration;
+		}
+		if (hasWord) {
+			at	= word;
+			
+			return true;
+		} else {
+			firstMeasure = false;
+		}
+	} while (++measure < fMeasures.size());
+#endif
+
+	return false;
 }
