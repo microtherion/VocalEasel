@@ -10,6 +10,7 @@
 #import "VLSheetViewInternal.h"
 #import "VLSheetViewChords.h"
 #import "VLSheetViewNotes.h"
+#import "VLSheetViewLyrics.h"
 #import "VLSoundOut.h"
 
 #import "VLDocument.h"
@@ -597,6 +598,8 @@ static int8_t sSharpAcc[] = {
 		fCursorAt = VLFraction(fCursorAt.fNum / scale, 4);
 		return fCursorRegion = kRegionChord;
 	} else if (loc.y < kSystemY+kLyricsY) {
+		fCursorStanza = static_cast<size_t>((kSystemY+kLyricsY-loc.y) / kLyricsH)
+			+ 1;
 		return fCursorRegion = kRegionLyrics;
 	}
 

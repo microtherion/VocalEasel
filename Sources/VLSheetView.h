@@ -73,6 +73,7 @@ enum VLRecalc {
 	int					fCursorPitch;
 	int					fCursorActualPitch;
 	VLMusicElement 		fCursorAccidental;
+	size_t				fCursorStanza;
 
 	IBOutlet id			fFieldEditor;
 }

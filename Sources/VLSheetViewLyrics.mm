@@ -17,15 +17,19 @@
 
 - (VLLyricsEditable *)initWithView:(VLSheetView *)view
 							 song:(VLSong *)song 
+							stanza:(int)stanza
 						  measure:(int)measure
 							   at:(VLFract)at
 {
 	self 	= [super init];
 	fView	= view;
 	fSong	= song;
+	fStanza	= stanza;
 	fMeasure= measure;
 	fAt		= at;
 	
+	fSong->FindWord(fStanza, fMeasure, fAt);
+
 	[fView setNeedsDisplay: YES];
 	
 	return self;
@@ -33,10 +37,13 @@
 
 - (NSString *) stringValue
 {
+	std::string word = fSong->GetWord(fStanza, fMeasure, fAt);
+	return [NSString stringWithUTF8String:word.c_str()];
 }
 
 - (void) setStringValue:(NSString *)val
 {
+	fSong->SetWord(fStanza, fMeasure, fAt, [val UTF8String]);
 }
 
 - (BOOL) validValue:(NSString *)val
@@ -45,16 +52,26 @@
 }
 
 - (void) moveToNext
-{	
+{
+	if (!fSong->NextWord(fStanza, fMeasure, fAt)) {
+		fMeasure	= 0;
+		fAt			= 0;
+		fSong->FindWord(fStanza, fMeasure, fAt);
+	}
 }
 
 - (void) moveToPrev
 {
+	if (!fSong->PrevWord(fStanza, fMeasure, fAt)) {
+		fMeasure = fSong->CountMeasures()-1;
+		fAt		 = fSong->fMeasures[fMeasure].fProperties->fTime;
+		fSong->PrevWord(fStanza, fMeasure, fAt);
+	}
 }
 
 - (void) highlightCursor
 {
-	[fView highlightLyricsInMeasure:fMeasure at:fAt];
+	[fView highlightLyricsInStanza:fStanza measure:fMeasure at:fAt];
 }
 
 @end
@@ -117,21 +134,15 @@
 		[[VLLyricsEditable alloc]
 			initWithView:self
 			song:[self song]
+			stanza:fCursorStanza
 			measure:fCursorMeasure
 			at:fCursorAt];
 	[self setEditTarget:e];
 	[fFieldEditor selectText:self];
 }
 
-- (void) highlightLyricsInMeasure:(int)measure at:(VLFraction)at stanza:(size_t)stanza
+- (void) highlightLyricsInStanza:(size_t)stanza measure:(int)measure at:(VLFraction)at
 {
-	const VLProperties & 	prop = [self song]->fProperties.front();
-	const float 	   	kSystemY = [self systemY:measure / fMeasPerSystem];
-	NSRect 				r 	   	 =
-		NSMakeRect([self noteXInMeasure:measure at:at]-kNoteW*0.5f,
-				   kSystemY+kChordY, prop.fDivisions*kNoteW, kChordH);
-	[[NSColor colorWithCalibratedWhite:0.8f alpha:1.0f] setFill];
-	NSRectFillUsingOperation(r, NSCompositePlusDarker);
 }
 
 @end

@@ -1160,7 +1160,6 @@ bool VLSong::NextWord(size_t stanza, size_t & measure, VLFraction & at)
 		VLNoteList::iterator 	note 	= fMeasures[measure].fMelody.begin();
 		VLNoteList::iterator 	end  	= fMeasures[measure].fMelody.end();
 		bool					hasWord	= false;
-		VLFraction				word(0);
 		VLFraction				now(0);
 
 		while (note != meas.fMelody.end()) {
@@ -1168,20 +1167,92 @@ bool VLSong::NextWord(size_t stanza, size_t & measure, VLFraction & at)
 				if (note->fLyrics.size() < stanza 
 			     || !(note->fLyrics[stanza-1].fKind & VLSyllable::kHasPrev)
 				) {
-					word	= now;
-					hasWord	= true;
+					at	= now;
+					
+					return true;
 				}
 			now += note->fDuration;
 			++note;
 		}
-		if (hasWord) {
-			at	= word;
-			
-			return true;
-		} else {
-			firstMeasure = false;
-		}
+		firstMeasure = false;
 	} while (++measure < fMeasures.size());
 
 	return false;
 }
+
+std::string VLSong::GetWord(size_t stanza, size_t measure, VLFraction at)
+{
+	std::string word;
+
+	do {
+		VLMeasure & 			meas	= fMeasures[measure];
+		VLNoteList::iterator 	note 	= fMeasures[measure].fMelody.begin();
+		VLNoteList::iterator 	end  	= fMeasures[measure].fMelody.end();
+		VLFraction				now(0);
+
+		while (note != meas.fMelody.end()) {
+			if (now >= at && note->fPitch != VLNote::kNoPitch) {
+				if (word.size()) 
+					word += '-';
+				if (stanza <= note->fLyrics.size()) {
+					word += note->fLyrics[stanza-1].fText;
+					if (!(note->fLyrics[stanza-1].fKind & VLSyllable::kHasNext))
+						return word;
+				}
+			}
+			now += note->fDuration;
+			++note;
+		}	
+		at = 0;
+	} while (++measure < fMeasures.size());
+	
+	return word;
+}
+
+void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string word)
+{
+	uint8_t	kind = 0;
+	bool	cleanup = false;
+
+	do {
+		VLMeasure & 			meas	= fMeasures[measure];
+		VLNoteList::iterator 	note 	= fMeasures[measure].fMelody.begin();
+		VLNoteList::iterator 	end  	= fMeasures[measure].fMelody.end();
+		VLFraction				now(0);
+
+		while (note != meas.fMelody.end()) {
+			if (now >= at && note->fPitch != VLNote::kNoPitch) {
+				if (cleanup) {
+					//
+					// Make sure that following syllable doesn't have
+					// kHasPrev set
+					//
+					if (note->fLyrics.size() >= stanza)
+						note->fLyrics[stanza-1].fKind &= ~VLSyllable::kHasPrev;
+					
+					return;
+				}
+				if (note->fLyrics.size()<stanza)
+					note->fLyrics.resize(stanza);
+				size_t root = word.find('-');
+				std::string syll;
+				if (root == std::string::npos) {
+					syll 	= word;
+					kind   &= ~VLSyllable::kHasNext;
+					cleanup = true;
+				} else {
+					syll 	= word.substr(0, root);
+					word.erase(0, root+1);
+					kind   |= VLSyllable::kHasNext;
+				}
+				note->fLyrics[stanza-1].fText = syll;
+				note->fLyrics[stanza-1].fKind = kind;
+				kind |= VLSyllable::kHasPrev;
+			}
+			now += note->fDuration;
+			++note;
+		}	
+		at = 0;
+	} while (++measure < fMeasures.size());	
+}
+
