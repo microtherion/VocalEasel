@@ -55,6 +55,7 @@ enum VLRecalc {
 @class VLEditable;
 
 @interface VLSheetView : NSView {
+	NSImage **			fMusic;
 	VLRecalc			fNeedsRecalc;
 	char				fClickMode;
 	float				fClefKeyW;

@@ -47,6 +47,8 @@ static NSString*	sOutputToolbarItemIdentifier 	= @"Output Toolbar Item Identifie
 static NSString*	sLogToolbarItemIdentifier		= @"Log Toolbar Item Identifier";
 static NSString*	sRunToolbarItemIdentifier		= @"Run Toolbar Item Identifier";
 static NSString*	sPlayToolbarItemIdentifier		= @"Play Toolbar Item Identifier";
+static NSString*	sZoomInToolbarItemIdentifier	= @"Zoom In Toolbar Item Identifier";
+static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identifier";
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -90,6 +92,10 @@ static NSString*	sPlayToolbarItemIdentifier		= @"Play Toolbar Item Identifier";
 		prototype = runToolItem;
     else if ([itemIdent isEqual: sPlayToolbarItemIdentifier]) 
 		prototype = playToolItem;
+    else if ([itemIdent isEqual: sZoomInToolbarItemIdentifier]) 
+		prototype = zoomInToolItem;
+    else if ([itemIdent isEqual: sZoomOutToolbarItemIdentifier]) 
+		prototype = zoomOutToolItem;
 	
 	if (prototype) {
         toolbarItem = [[[NSToolbarItem alloc] initWithItemIdentifier: itemIdent] autorelease];
@@ -110,6 +116,9 @@ static NSString*	sPlayToolbarItemIdentifier		= @"Play Toolbar Item Identifier";
     return [NSArray arrayWithObjects:	
 						sRunToolbarItemIdentifier, 
 					sPlayToolbarItemIdentifier,
+					NSToolbarSeparatorItemIdentifier,
+					sZoomInToolbarItemIdentifier, 
+					sZoomOutToolbarItemIdentifier, 
 					NSToolbarFlexibleSpaceItemIdentifier, 
 					sOutputToolbarItemIdentifier, 
 					sLogToolbarItemIdentifier, nil];
@@ -119,6 +128,8 @@ static NSString*	sPlayToolbarItemIdentifier		= @"Play Toolbar Item Identifier";
     return [NSArray arrayWithObjects: 	
 						sRunToolbarItemIdentifier, 
 					sPlayToolbarItemIdentifier,
+					sZoomInToolbarItemIdentifier, 
+					sZoomOutToolbarItemIdentifier, 
 					sOutputToolbarItemIdentifier, 
 					sLogToolbarItemIdentifier, 
 					NSToolbarCustomizeToolbarItemIdentifier, 

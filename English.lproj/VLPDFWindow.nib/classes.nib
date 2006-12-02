@@ -1,7 +1,13 @@
 {
     IBClasses = (
         {
-            ACTIONS = {"" = id; }; 
+            ACTIONS = {
+                "" = id; 
+                goToNextPage = id; 
+                goToPreviousPage = id; 
+                zoomIn = id; 
+                zoomOut = id; 
+            }; 
             CLASS = FirstResponder; 
             LANGUAGE = ObjC; 
             SUPERCLASS = NSObject; 

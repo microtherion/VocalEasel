@@ -1,7 +1,7 @@
 {
     IBClasses = (
         {
-            ACTIONS = {engrave = id; showLog = id; showOutput = id; }; 
+            ACTIONS = {engrave = id; showLog = id; showOutput = id; zoomIn = id; zoomOut = id; }; 
             CLASS = FirstResponder; 
             LANGUAGE = ObjC; 
             SUPERCLASS = NSObject; 
@@ -30,7 +30,14 @@
         {
             CLASS = VLSheetWindow; 
             LANGUAGE = ObjC; 
-            OUTLETS = {logToolItem = id; outputToolItem = id; playToolItem = id; runToolItem = id; }; 
+            OUTLETS = {
+                logToolItem = id; 
+                outputToolItem = id; 
+                playToolItem = id; 
+                runToolItem = id; 
+                zoomInToolItem = id; 
+                zoomOutToolItem = id; 
+            }; 
             SUPERCLASS = NSWindowController; 
         }
     ); 

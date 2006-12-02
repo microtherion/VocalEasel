@@ -19,8 +19,6 @@
 
 @implementation VLSheetView
 
-static NSImage **	sMusic;
-
 static NSString * sElementNames[kMusicElements] = {
 	@"g-clef",
 	@"flat",
@@ -70,20 +68,18 @@ static float sFlatPos[] = {
 {
     self = [super initWithFrame:frame];
     if (self) {
-		if (!sMusic) {
-			NSBundle * b = [NSBundle mainBundle];
-			sMusic	= new NSImage * [kMusicElements];
-			for (int i=0; i<kMusicElements; ++i) {
-				NSString * name =
-					[b pathForResource:sElementNames[i] ofType:@"eps"
-					   inDirectory:@"Music"];
-				sMusic[i] = [[NSImage alloc] initWithContentsOfFile: name];
-				NSSize sz = [sMusic[i] size];
-				sz.width *= kImgScale;
-				sz.height*= kImgScale;
-				[sMusic[i] setScalesWhenResized:YES];
-				[sMusic[i] setSize:sz];
-			}
+		NSBundle * b = [NSBundle mainBundle];
+		fMusic	= new NSImage * [kMusicElements];
+		for (int i=0; i<kMusicElements; ++i) {
+			NSString * name =
+				[b pathForResource:sElementNames[i] ofType:@"eps"
+				   inDirectory:@"Music"];
+			fMusic[i] = [[NSImage alloc] initByReferencingFile: name];
+			NSSize sz = [fMusic[i] size];
+			sz.width *= kImgScale;
+			sz.height*= kImgScale;
+			[fMusic[i] setScalesWhenResized:YES];
+			[fMusic[i] setSize:sz];
 		}
 		fNeedsRecalc		= kFirstRecalc;
 		fClickMode			= ' ';
@@ -120,7 +116,7 @@ static float sFlatPos[] = {
 
 - (NSImage *) musicElement:(VLMusicElement)elt
 {
-	return sMusic[elt];
+	return fMusic[elt];
 }
 
 - (float) systemY:(int)system
@@ -255,8 +251,10 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	NSScrollView * scroll = [self enclosingScrollView];
 
 	NSSize sz 	=  [scroll contentSize];
+#if 0
 	sz.width   *=	fDisplayScale;
 	sz.height  *= 	fDisplayScale;
+#endif
 
 	const VLSong * 			song = [self song];
 	const VLProperties & 	prop = song->fProperties.front();
@@ -266,7 +264,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	fDivPerGroup	= prop.fDivisions * (fQuarterBeats / fGroups);
 	fClefKeyW		= kClefX+kClefW+(std::labs(prop.fKey)+1)*kKeyW;
 	fMeasureW		= fGroups*(fDivPerGroup+1)*kNoteW;
-	fMeasPerSystem	= (int)std::floor((sz.width-fClefKeyW) / fMeasureW);
+	fMeasPerSystem	= std::max<int>(1, std::floor((sz.width-fClefKeyW) / fDisplayScale / fMeasureW));
 	fNumSystems 	= (song->CountMeasures()+fMeasPerSystem-1)/fMeasPerSystem;
 	sz.height		= fNumSystems*kSystemH;
 
@@ -720,21 +718,26 @@ static int8_t sSharpAcc[] = {
 
 - (void) setScaleFactor:(float)scale
 {
+	float ratio = scale/fDisplayScale;
+	for (int i=0; i<kMusicElements; ++i) {
+		NSSize sz = [fMusic[i] size];
+		sz.width *= ratio;
+		sz.height*= ratio;
+		[fMusic[i] setSize:sz];
+	}
 	fDisplayScale= scale;
 	fNeedsRecalc = kRecalc;
 	[self setNeedsDisplay: YES];	
 }
 
-#if 0
 - (IBAction) zoomIn: (id) sender
 {
-	[self setScaleFactor: fDisplayScale * sqrt(2.0)];
+	[self setScaleFactor: fDisplayScale * sqrt(sqrt(2.0))];
 }
 
 - (IBAction) zoomOut: (id) sender
 {
-	[self setScaleFactor: fDisplayScale / sqrt(2.0)];
+	[self setScaleFactor: fDisplayScale / sqrt(sqrt(2.0))];
 }
-#endif
 
 @end
