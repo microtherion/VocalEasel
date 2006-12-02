@@ -1113,16 +1113,14 @@ void VLSong::LilypondStanza(std::string & lyrics, size_t stanza) const
 	}	
 }
 
-bool VLSong::FindWord(size_t & measure, VLFraction & at)
+bool VLSong::FindWord(size_t stanza, size_t & measure, VLFraction & at)
 {
 	at += VLFraction(1,64);
-
-	return PrevWord(measure, at);
+	return PrevWord(stanza, measure, at);
 }
 
-bool VLSong::PrevWord(size_t & measure, VLFraction & at)
+bool VLSong::PrevWord(size_t stanza, size_t & measure, VLFraction & at)
 {
-#if 0
 	do {
 		VLMeasure & 			meas	= fMeasures[measure];
 		VLNoteList::iterator 	note 	= fMeasures[measure].fMelody.begin();
@@ -1131,17 +1129,16 @@ bool VLSong::PrevWord(size_t & measure, VLFraction & at)
 		VLFraction				word(0);
 		VLFraction				now(0);
 
-		for (VLNoteList::iterator note = meas.fMelody.begin();
-			 note != meas.fMelody.end() && now < at;
-			 ++note
-		) {
-			if (!(note->fTied & VLNote::kTiedWithPrev)
-			 && !(note->fHyphen & VLNote::kHyphenToPrev)
-			) {
-				word	= now;
-				hasWord	= true;
-			}
+		while (note != meas.fMelody.end() && now < at) {
+			if (note->fPitch != VLNote::kNoPitch)
+				if (note->fLyrics.size() < stanza 
+			     || !(note->fLyrics[stanza-1].fKind & VLSyllable::kHasPrev)
+				) {
+					word	= now;
+					hasWord	= true;
+				}
 			now += note->fDuration;
+			++note;
 		}
 		if (hasWord) {
 			at	= word;
@@ -1151,14 +1148,12 @@ bool VLSong::PrevWord(size_t & measure, VLFraction & at)
 			at 	= meas.fProperties->fTime;
 		}
 	} while (measure-- > 0);
-#endif
 
 	return false;
 }
 
-bool VLSong::NextWord(size_t & measure, VLFraction & at)
+bool VLSong::NextWord(size_t stanza, size_t & measure, VLFraction & at)
 {  
-#if 0
 	bool firstMeasure = true;
 	do {
 		VLMeasure & 			meas	= fMeasures[measure];
@@ -1168,18 +1163,16 @@ bool VLSong::NextWord(size_t & measure, VLFraction & at)
 		VLFraction				word(0);
 		VLFraction				now(0);
 
-		for (VLNoteList::iterator note = meas.fMelody.begin();
-			 note != meas.fMelody.end();
-			 ++note
-		) {
-			if (!(note->fTied & VLNote::kTiedWithPrev)
-			 && !(note->fHyphen & VLNote::kHyphenToPrev)
-			 && (!firstMeasure || now > at)
-			) {
-				word	= now;
-				hasWord	= true;
-			}
+		while (note != meas.fMelody.end()) {
+			if (note->fPitch != VLNote::kNoPitch && (!firstMeasure || now>at))
+				if (note->fLyrics.size() < stanza 
+			     || !(note->fLyrics[stanza-1].fKind & VLSyllable::kHasPrev)
+				) {
+					word	= now;
+					hasWord	= true;
+				}
 			now += note->fDuration;
+			++note;
 		}
 		if (hasWord) {
 			at	= word;
@@ -1189,7 +1182,6 @@ bool VLSong::NextWord(size_t & measure, VLFraction & at)
 			firstMeasure = false;
 		}
 	} while (++measure < fMeasures.size());
-#endif
 
 	return false;
 }

@@ -388,6 +388,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	if (fNeedsRecalc)
 		[self recalculateDimensions];
 
+	size_t stanzas = [self song]->CountStanzas();
 	const float kLineW = fClefKeyW + fMeasPerSystem*fMeasureW;
 	for (int system = 0; system<fNumSystems; ++system) {
 		const float kSystemY = [self systemY:system];
@@ -399,6 +400,8 @@ VLMusicElement sSemi2Accidental[12][12] = {
 		[self drawGridForSystem:system];
 		[self drawNotesForSystem:system];
 		[self drawChordsForSystem:system];
+		for (size_t stanza=0; stanza++<stanzas;)
+			[self drawLyricsForSystem:system stanza:stanza];
 	}	
 	[[self editTarget] highlightCursor];
 }

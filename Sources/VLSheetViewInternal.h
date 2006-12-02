@@ -9,7 +9,7 @@
 const float kLineX		=  5.0;
 const float kLineH  	= 10.0;
 const float kSystemH	= 15.0f*kLineH;
-const float kSystemY	=  3.0f*kLineH;
+const float kSystemY	=  5.0f*kLineH;
 const float kClefX		= 20.5f;
 const float kClefY		=-15.0f;
 const float kClefW		= 30.0f;
@@ -29,6 +29,7 @@ const float kChordY		=  7.0f*kLineH;
 const float kChordW		= 40.0f;
 const float kChordH		= 25.0f;
 const float kLyricsY	= -3.0*kLineH;
+const float kLyricsH	=  1.5*kLineH;
 const float kNoteX		=  7.0f;
 const float kNoteY		=  5.0f;
 const float kStemX		=  0.0f;

@@ -255,9 +255,9 @@ struct VLSong {
 	void DelNote(size_t measure, VLFraction at);
 	void Transpose(int semitones);
 
-	bool FindWord(size_t & measure, VLFraction & at);
-	bool PrevWord(size_t & measure, VLFraction & at);
-	bool NextWord(size_t & measure, VLFraction & at);
+	bool FindWord(size_t stanza, size_t & measure, VLFraction & at);
+	bool PrevWord(size_t stanza, size_t & measure, VLFraction & at);
+	bool NextWord(size_t stanza, size_t & measure, VLFraction & at);
 
 	size_t	CountMeasures() const { return fMeasures.size(); }
 	size_t  CountStanzas() const;
