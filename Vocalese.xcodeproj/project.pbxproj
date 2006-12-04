@@ -40,6 +40,8 @@
 		95498DBD0AE3812F006B5F81 /* VLSoundSched.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */; };
 		954BBD860AEDDE5300BBFD5F /* VLAppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954BBD850AEDDE5300BBFD5F /* VLAppController.mm */; };
 		954BBD9A0AEDE81500BBFD5F /* VLPitchTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954BBD990AEDE81500BBFD5F /* VLPitchTransformer.mm */; };
+		955CBA4E0B2366DD001CF4A1 /* VLKeyValueUndo.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 955CBA4C0B2366DD001CF4A1 /* VLKeyValueUndo.h */; };
+		955CBA4F0B2366DD001CF4A1 /* VLKeyValueUndo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 955CBA4D0B2366DD001CF4A1 /* VLKeyValueUndo.mm */; };
 		955E58E5095658AB0045FDA5 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		955E59610957C1400045FDA5 /* TVLChord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E59600957C1400045FDA5 /* TVLChord.cpp */; };
 		955E59640957C15A0045FDA5 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
@@ -106,6 +108,7 @@
 				95009B640B0ED18700EB33A4 /* CAConditionalMacros.h in Copy MMA Library */,
 				95009B650B0ED18700EB33A4 /* CAMath.h in Copy MMA Library */,
 				95E299BF0B2006F5001977D2 /* VLSheetViewLyrics.h in Copy MMA Library */,
+				955CBA4E0B2366DD001CF4A1 /* VLKeyValueUndo.h in Copy MMA Library */,
 			);
 			name = "Copy MMA Library";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -167,6 +170,8 @@
 		954BBD850AEDDE5300BBFD5F /* VLAppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLAppController.mm; path = Sources/VLAppController.mm; sourceTree = "<group>"; };
 		954BBD980AEDE81500BBFD5F /* VLPitchTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLPitchTransformer.h; path = Sources/VLPitchTransformer.h; sourceTree = "<group>"; };
 		954BBD990AEDE81500BBFD5F /* VLPitchTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPitchTransformer.mm; path = Sources/VLPitchTransformer.mm; sourceTree = "<group>"; };
+		955CBA4C0B2366DD001CF4A1 /* VLKeyValueUndo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLKeyValueUndo.h; path = Sources/VLKeyValueUndo.h; sourceTree = "<group>"; };
+		955CBA4D0B2366DD001CF4A1 /* VLKeyValueUndo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLKeyValueUndo.mm; path = Sources/VLKeyValueUndo.mm; sourceTree = "<group>"; };
 		955E58E3095658AB0045FDA5 /* VLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLModel.h; path = Sources/VLModel.h; sourceTree = "<group>"; };
 		955E58E4095658AB0045FDA5 /* VLModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VLModel.cpp; path = Sources/VLModel.cpp; sourceTree = "<group>"; };
 		955E595C0957C0FC0045FDA5 /* TVLChord */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLChord; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -356,6 +361,8 @@
 				954BBD850AEDDE5300BBFD5F /* VLAppController.mm */,
 				954BBD980AEDE81500BBFD5F /* VLPitchTransformer.h */,
 				954BBD990AEDE81500BBFD5F /* VLPitchTransformer.mm */,
+				955CBA4C0B2366DD001CF4A1 /* VLKeyValueUndo.h */,
+				955CBA4D0B2366DD001CF4A1 /* VLKeyValueUndo.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -634,6 +641,7 @@
 				95009B2C0B0ECF9000EB33A4 /* CAStreamBasicDescription.cpp in Sources */,
 				95009B500B0ED0BB00EB33A4 /* CADebugMacros.cpp in Sources */,
 				95E299C00B2006F5001977D2 /* VLSheetViewLyrics.mm in Sources */,
+				955CBA4F0B2366DD001CF4A1 /* VLKeyValueUndo.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

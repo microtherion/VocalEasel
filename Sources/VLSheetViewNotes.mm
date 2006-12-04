@@ -20,13 +20,12 @@
 	if (fCursorMeasure > -1) {
 		VLNote	newNote(1, fClickMode==' ' ? fCursorActualPitch : VLNote::kNoPitch);
 
+		[[self document] willChangeSong];
 		if (fClickMode == 'k')
 			[self song]->DelNote(fCursorMeasure, fCursorAt);
 		else	
 			[self song]->AddNote(VLLyricsNote(newNote), fCursorMeasure, fCursorAt);
-
-		[self setNeedsDisplay:YES];
-		[[self document] updateChangeCount:NSChangeDone];
+		[[self document] didChangeSong];
 
 		if (fClickMode == ' ')
 			VLSoundOut::Instance()->PlayNote(newNote);
@@ -269,8 +268,8 @@
 				VLFraction partialDur; // Actual value of note drawn
 				VLFraction noteDur; 	// Visual value of note
 				bool triplet;
-				measure.fProperties->PartialNote(at, dur, &partialDur);
-				measure.fProperties->VisualNote(at, partialDur, &noteDur, &triplet);
+				prop.PartialNote(at, dur, &partialDur);
+				prop.VisualNote(at, partialDur, &noteDur, &triplet);
 				
 				if (pitch != VLNote::kNoPitch) {
 					VLMusicElement		accidental;

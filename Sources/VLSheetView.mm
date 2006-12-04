@@ -740,4 +740,17 @@ static int8_t sSharpAcc[] = {
 	[self setScaleFactor: fDisplayScale / sqrt(sqrt(2.0))];
 }
 
+- (void)awakeFromNib
+{
+	[[self document] addObserver:self forKeyPath:@"song" options:0 context:nil];
+	[[self document] addObserver:self forKeyPath:@"songKey" options:0 context:nil];	
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)o change:(NSDictionary *)c context:(id)ctx
+{
+	if ([keyPath isEqual:@"songKey"])
+		fNeedsRecalc = kRecalc;
+	[self setNeedsDisplay: YES];			
+}
+
 @end

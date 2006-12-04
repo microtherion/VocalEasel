@@ -121,10 +121,11 @@ std::string NormalizeName(NSString* rawName)
 	} else {
 		VLChord 	chord(chordName);
 		VLSoundOut::Instance()->PlayChord(chord);
+		
+		[[fView document] willChangeSong];
 		fSong->AddChord(chord, fMeasure, fAt);
-		[fView setNeedsDisplay:YES];
+		[[fView document] didChangeSong];
 	}
-	[[fView document] updateChangeCount:NSChangeDone];
 }
 
 - (BOOL) validValue:(NSString *)val

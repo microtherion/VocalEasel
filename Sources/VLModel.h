@@ -233,21 +233,22 @@ typedef std::list<VLChord>		VLChordList;
 typedef std::list<VLLyricsNote> VLNoteList;
 
 struct VLMeasure {
-	VLProperties *	fProperties;
-	VLChordList		fChords;
-	VLNoteList		fMelody;
+	int8_t		fPropIdx;
+	VLChordList fChords;
+	VLNoteList 	fMelody;
 
 	VLMeasure();
 
-	void MMANotes(std::string & notes) const;
-	void MMAChords(std::string & chords) const;
+	void MMANotes(std::string & notes, const VLProperties & prop) const;
+	void MMAChords(std::string & chords, const VLProperties & prop) const;
 };
 
 struct VLSong {
 	VLSong();
+	void swap(VLSong & other);
 	
-	std::list<VLProperties>	fProperties;
-	std::vector<VLMeasure>	fMeasures;
+	std::vector<VLProperties>	fProperties;
+	std::vector<VLMeasure>		fMeasures;
 
 	void AddChord(VLChord chord, size_t measure, VLFraction at);
 	void AddNote(VLLyricsNote note, size_t measure, VLFraction at);

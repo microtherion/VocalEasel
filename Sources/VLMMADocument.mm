@@ -32,9 +32,9 @@
 	for (size_t m=0; m<song->CountMeasures(); ++m) {
 		sprintf(buf, "%-5d", m+1);
 		mmaFile += buf;
-		song->fMeasures[m].MMAChords(mmas);
+		song->fMeasures[m].MMAChords(mmas, prop);
 		mmaFile += mmas;
-		song->fMeasures[m].MMANotes(mmas);
+		song->fMeasures[m].MMANotes(mmas, prop);
 		mmaFile += "\t{ " + mmas + " }\n";
 	}
 

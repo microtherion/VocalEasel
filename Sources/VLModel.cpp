@@ -737,11 +737,11 @@ void VLProperties::VisualNote(VLFraction at, VLFraction actualDur,
 }
 
 VLMeasure::VLMeasure()
-	: fProperties(0)
+	: fPropIdx(0)
 {
 }
 
-void VLMeasure::MMANotes(std::string & notes) const
+void VLMeasure::MMANotes(std::string & notes, const VLProperties & prop) const
 {
 	VLFraction					at(0);
 	VLNoteList::const_iterator 	i 	= fMelody.begin();
@@ -750,7 +750,7 @@ void VLMeasure::MMANotes(std::string & notes) const
 	notes.clear();
 	for (; i!=e; ++i) {
 		std::string note;
-		i->MMAName(note, at, *fProperties);
+		i->MMAName(note, at, prop);
 		if (notes.size())
 			notes += ' ';
 		notes += note+';';
@@ -758,7 +758,7 @@ void VLMeasure::MMANotes(std::string & notes) const
 	}
 }
 
-void VLMeasure::MMAChords(std::string & chords) const
+void VLMeasure::MMAChords(std::string & chords, const VLProperties & prop) const
 {
   VLChordList::const_iterator i	= fChords.begin();
   VLChordList::const_iterator e	= fChords.end();
@@ -766,7 +766,7 @@ void VLMeasure::MMAChords(std::string & chords) const
   chords.clear();
   for (; i!=e; ++i) {
     std::string chord;
-    i->MMAName(chord, fProperties->fKey >= 0);
+    i->MMAName(chord, prop.fKey >= 0);
     if (chords.size())
       chords += ' ';
     chords += chord;
@@ -786,10 +786,15 @@ VLSong::VLSong()
 	rchord.fDuration = 1;
 	
 	for (int i=0; i<32; ++i) {
-		fMeasures[i].fProperties = &fProperties.front();
 		fMeasures[i].fChords.push_back(rchord);
 		fMeasures[i].fMelody.push_back(rest);
 	}
+}
+
+void VLSong::swap(VLSong & other)
+{
+	fProperties.swap(other.fProperties);
+	fMeasures.swap(other.fMeasures);
 }
 
 //
@@ -1046,7 +1051,7 @@ void VLSong::LilypondNotes(std::string & notes) const
 
 		for (; i!=e; ++i) {
 			std::string note;
-			i->LilypondName(note, at, *fMeasures[measure].fProperties);
+			i->LilypondName(note, at, fProperties[fMeasures[measure].fPropIdx]);
 			at += i->fDuration;
 			notes += note+" ";
 		}
@@ -1065,7 +1070,7 @@ void VLSong::LilypondChords(std::string & chords) const
 {
 	chords = "";
 	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
-		bool	            useSharps	= fMeasures[measure].fProperties->fKey>=0;
+		bool useSharps	= fProperties[fMeasures[measure].fPropIdx].fKey>=0;
 		VLChordList::const_iterator i	= fMeasures[measure].fChords.begin();
 		VLChordList::const_iterator e	= fMeasures[measure].fChords.end();
 
@@ -1145,7 +1150,7 @@ bool VLSong::PrevWord(size_t stanza, size_t & measure, VLFraction & at)
 			
 			return true;
 		} else {
-			at 	= meas.fProperties->fTime;
+			at 	= fProperties[meas.fPropIdx].fTime;
 		}
 	} while (measure-- > 0);
 

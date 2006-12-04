@@ -8,6 +8,7 @@
 
 #import "VLModel.h"
 #import <Cocoa/Cocoa.h>
+#import "VLKeyValueUndo.h"
 
 @class VLSheetWindow;
 @class VLPDFWindow;
@@ -29,6 +30,7 @@
 	VLSheetWindow *	sheetWin;
 	VLLogWindow *	logWin;
 	VLPDFWindow *	pdfWin;
+	VLKeyValueUndo*	undo;
 }
 
 - (VLSong *)	song;
@@ -49,6 +51,8 @@
 - (NSString *) baseName;
 - (NSURL *)    fileURLWithExtension:(NSString*)extension;
 - (NSTask *)   taskWithLaunchPath:(NSString *)path arguments:(NSArray *)args;
+- (void)	   willChangeSong;
+- (void)	   didChangeSong;
 
 @end
 

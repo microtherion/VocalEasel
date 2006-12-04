@@ -13,7 +13,7 @@
 	VLSong * 		fSong;
 	size_t 			fStanza;
 	size_t 			fMeasure;
-	VLFraction 		fAt;
+	VLFract 		fAt;
 }
 
 - (VLLyricsEditable *)initWithView:(VLSheetView *)view

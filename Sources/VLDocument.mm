@@ -16,6 +16,43 @@
 #import "VLSheetWindow.h"
 #import "VLSoundOut.h"
 
+@interface VLSongWrapper : NSObject {
+	VLSong * wrappedSong;
+}
+
++ (VLSongWrapper *)wrapperWithSong:(VLSong *)song;
+- (VLSong *)song;
+
+@end
+
+@implementation VLSongWrapper
+
+- (id)initWithSong:(VLSong *)song
+{
+	if (self = [super init])
+		wrappedSong = new VLSong(*song);
+	return self;
+}
+
+- (void) dealloc
+{
+	delete wrappedSong;
+	
+	[super dealloc];
+}
+
++ (VLSongWrapper *)wrapperWithSong:(VLSong *)song
+{
+	return [[[VLSongWrapper alloc] initWithSong:song] autorelease];
+}
+
+- (VLSong *)song
+{
+	return wrappedSong;
+}
+
+@end
+
 @implementation VLDocument
 
 - (id)init
@@ -35,6 +72,17 @@
 		logWin				= nil;
 		tmpPath				= nil;
 		vcsWrapper			= nil;
+		[self setHasUndoManager:YES];
+		undo				=
+			[[VLKeyValueUndo alloc] initWithOwner:self
+				keysAndNames: [NSDictionary dictionaryWithObjectsAndKeys:
+					@"", @"songTitle",
+					@"", @"songLyricist",
+					@"", @"songComposer",
+					@"", @"songArranger",
+					@"", @"songGroove",
+					@"", @"songTempo",
+					nil]];
     }
     return self;
 }
@@ -49,6 +97,7 @@
 	[songComposer release];
 	[songArranger release];
 	[vcsWrapper release];
+	[undo release];
 	
 	if (tmpPath) {
 		[[NSFileManager defaultManager] removeFileAtPath:tmpPath handler:nil];
@@ -119,9 +168,11 @@
 
 - (void) setKey:(int)key transpose:(BOOL)transpose
 {
+	[self willChangeSong];
+
 	VLProperties & prop = song->fProperties.front();
 
-	if (transpose)
+	if (transpose) 
 		song->Transpose((7*((key>>8)-prop.fKey) % 12));
 
 	prop.fKey = key >> 8;
@@ -139,6 +190,8 @@
 
 - (void) setTimeNum:(int)num denom:(int)denom
 {
+	[self willChangeSong];
+
 	VLProperties & prop = song->fProperties.front();
 
 	prop.fTime = VLFraction(num, denom);
@@ -155,6 +208,8 @@
 
 - (void) setDivisions:(int)divisions
 {
+	[self willChangeSong];
+
 	VLProperties & prop = song->fProperties.front();
 
 	prop.fDivisions	= divisions;
@@ -326,6 +381,33 @@
 - (IBAction) showLog:(id)sender
 {
 	[[self logWin] showWindow:sender];
+}
+
+- (void) willChangeSong
+{
+	[self willChangeValueForKey:@"song"];
+	[[self undoManager] registerUndoWithTarget:self 
+						selector:@selector(restoreSong:)
+						object:[VLSongWrapper wrapperWithSong:song]];
+}
+
+- (void) didChangeSong
+{
+	[self didChangeValueForKey:@"song"];
+	[self updateChangeCount:NSChangeDone];
+}
+
+- (void) restoreSong:(VLSongWrapper *)savedSong
+{
+	[self willChangeSong];
+	[self willChangeValueForKey:@"songKey"];
+	[self willChangeValueForKey:@"songTime"];
+	[self willChangeValueForKey:@"songDivisions"];
+	song->swap(*[savedSong song]);
+	[self didChangeValueForKey:@"songKey"];
+	[self didChangeValueForKey:@"songTime"];
+	[self didChangeValueForKey:@"songDivisions"];
+	[self didChangeSong];
 }
 
 @end

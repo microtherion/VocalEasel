@@ -28,7 +28,9 @@
 	fMeasure= measure;
 	fAt		= at;
 	
-	fSong->FindWord(fStanza, fMeasure, fAt);
+	VLFraction At = fAt;
+	fSong->FindWord(fStanza, fMeasure, At);
+	fAt = At;
 
 	[fView setNeedsDisplay: YES];
 	
@@ -43,7 +45,9 @@
 
 - (void) setStringValue:(NSString *)val
 {
+	[[fView document] willChangeSong];
 	fSong->SetWord(fStanza, fMeasure, fAt, [val UTF8String]);
+	[[fView document] didChangeSong];
 }
 
 - (BOOL) validValue:(NSString *)val
@@ -53,20 +57,24 @@
 
 - (void) moveToNext
 {
-	if (!fSong->NextWord(fStanza, fMeasure, fAt)) {
+	VLFraction at = fAt;
+	if (!fSong->NextWord(fStanza, fMeasure, at)) {
 		fMeasure	= 0;
-		fAt			= 0;
-		fSong->FindWord(fStanza, fMeasure, fAt);
+		at			= 0;
+		fSong->FindWord(fStanza, fMeasure, at);
 	}
+	fAt = at;
 }
 
 - (void) moveToPrev
 {
-	if (!fSong->PrevWord(fStanza, fMeasure, fAt)) {
+	VLFraction at = fAt;
+	if (!fSong->PrevWord(fStanza, fMeasure, at)) {
 		fMeasure = fSong->CountMeasures()-1;
-		fAt		 = fSong->fMeasures[fMeasure].fProperties->fTime;
-		fSong->PrevWord(fStanza, fMeasure, fAt);
+		at		 = fSong->fProperties.front().fTime;
+		fSong->PrevWord(fStanza, fMeasure, at);
 	}
+	fAt = at;
 }
 
 - (void) highlightCursor
