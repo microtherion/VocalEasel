@@ -85,6 +85,8 @@ static float sFlatPos[] = {
 		fClickMode			= ' ';
 		fDisplayScale		= 1.0f;
 		fCursorPitch		= VLNote::kNoPitch;
+		fSelStart			= 0;
+		fSelEnd				= -1;
 	}
     return self;
 }
@@ -382,6 +384,25 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	}
 }
 
+- (void)highlightSelectionForSystem:(int)system
+{
+	int startMeas = std::max(fSelStart-system*fMeasPerSystem, 0);
+	int endMeas	  = std::min(fSelEnd-system*fMeasPerSystem, fMeasPerSystem);
+	const float kRawSystemY = [self systemY:system]-kSystemY;
+
+	[NSGraphicsContext saveGraphicsState];
+	[[NSColor selectedTextBackgroundColor] setFill];
+	if (fSelStart == fSelEnd) 
+		[NSBezierPath fillRect:
+		   NSMakeRect(fClefKeyW+startMeas*fMeasureW-kMeasTol, kRawSystemY, 
+					  2.0f*kMeasTol, kSystemH)];  
+	else
+		[NSBezierPath fillRect:
+		   NSMakeRect(fClefKeyW+startMeas*fMeasureW, kRawSystemY, 
+					  (endMeas-startMeas)*fMeasureW, kSystemH)];  
+	[NSGraphicsContext restoreGraphicsState];
+}
+
 - (void)drawRect:(NSRect)rect
 {
 	if (fNeedsRecalc)
@@ -396,6 +417,15 @@ VLMusicElement sSemi2Accidental[12][12] = {
 										 kLineW, kSystemH-kClefY)
 		))
 			continue; // This system does not need to be drawn
+		//
+		// When highlighting, draw highlight FIRST and then draw our stuff
+		// on top.
+		//
+		if (fSelStart <= fSelEnd 
+			&& (system+1)*fMeasPerSystem > fSelStart 
+			&& system*fMeasPerSystem < fSelEnd+(fSelStart==fSelEnd)
+		)
+			[self highlightSelectionForSystem:system];
 		[self drawGridForSystem:system];
 		[self drawNotesForSystem:system];
 		[self drawChordsForSystem:system];
@@ -573,6 +603,21 @@ static int8_t sSharpAcc[] = {
 	loc.y      = fmodf(loc.y, kSystemH);
 
 	loc.x -= fClefKeyW;
+	if (loc.y > kSystemY && loc.y < kSystemY+4.0f*kLineH
+	 && fmodf(loc.x+kMeasTol, fMeasureW) < 2*kMeasTol
+	) {
+		int measure = static_cast<int>((loc.x+kMeasTol)/fMeasureW);
+
+		if (measure < 0 || measure > fMeasPerSystem)
+			return fCursorRegion = kRegionNowhere;
+
+		fCursorMeasure	= measure+system*fMeasPerSystem;
+			
+		if (fCursorMeasure > [self song]->fMeasures.size())
+			return fCursorRegion = kRegionNowhere;
+		else
+			return fCursorRegion = kRegionMeasure;
+	}
 	if (loc.x < 0.0f || loc.x >= fMeasPerSystem*fMeasureW)
 		return fCursorRegion = kRegionNowhere;
 	
@@ -644,6 +689,7 @@ static int8_t sSharpAcc[] = {
 
 - (void) mouseDown:(NSEvent *)event
 {
+	fSelEnd		= -1;
 	switch ([self findRegionForEvent:event]) {
 	case kRegionNote:
 		[self addNoteAtCursor];
@@ -653,9 +699,51 @@ static int8_t sSharpAcc[] = {
 		break;
 	case kRegionLyrics:
 		[self editLyrics];
+		break;
+	case kRegionMeasure:
+		fSelStart	= fSelEnd	= fCursorMeasure;
+		[self setNeedsDisplay:YES];
+		break;
 	default:
 		break;
 	}
+}
+
+- (void) mouseDragged:(NSEvent *)event
+{
+	if (fCursorRegion != kRegionMeasure)
+		[super mouseDragged:event];
+	[self autoscroll:event];
+	int prevMeasure = fCursorMeasure;
+	switch ([self findRegionForEvent:event]) {
+	case kRegionNote:
+	case kRegionChord:
+	case kRegionLyrics:
+		if (fCursorAt.fNum)
+			++fCursorMeasure;
+		//
+		// Fall through
+		//
+	case kRegionMeasure:
+		if (fCursorMeasure > fSelEnd) {
+			fSelEnd		= fCursorMeasure;
+			[self setNeedsDisplay:YES];
+		} else if (fCursorMeasure < fSelStart) {
+			fSelStart	= fCursorMeasure;
+			[self setNeedsDisplay:YES];
+		} else if (prevMeasure == fSelEnd && fCursorMeasure<prevMeasure) {
+			fSelEnd		= fCursorMeasure;
+			[self setNeedsDisplay:YES];
+		} else if (prevMeasure == fSelStart && fCursorMeasure>prevMeasure) {
+			fSelStart	= fCursorMeasure;
+			[self setNeedsDisplay:YES];
+		}
+		break;
+	default:
+		fCursorMeasure	= prevMeasure;
+		break;
+	}
+	fCursorRegion = kRegionMeasure;
 }
 
 - (void) keyDown:(NSEvent *)event

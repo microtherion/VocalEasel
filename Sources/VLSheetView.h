@@ -43,7 +43,8 @@ enum VLRegion {
 	kRegionNowhere,
 	kRegionNote,
 	kRegionChord,
-	kRegionLyrics
+	kRegionLyrics,
+	kRegionMeasure
 };
 
 enum VLRecalc {
@@ -75,6 +76,8 @@ enum VLRecalc {
 	int					fCursorActualPitch;
 	VLMusicElement 		fCursorAccidental;
 	size_t				fCursorStanza;
+	int					fSelStart;
+	int					fSelEnd;
 
 	IBOutlet id			fFieldEditor;
 }

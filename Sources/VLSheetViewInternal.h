@@ -13,6 +13,7 @@ const float kSystemY	=  5.0f*kLineH;
 const float kClefX		= 20.5f;
 const float kClefY		=-15.0f;
 const float kClefW		= 30.0f;
+const float kMeasTol	=  3.5f;
 const float kMeasNoX	= 10.0f;
 const float kMeasNoY	=  4.5f*kLineH;
 const float kNoteW		= 12.0f;
