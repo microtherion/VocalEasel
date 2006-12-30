@@ -349,6 +349,7 @@ void VLAUFileSoundOut::PlaySequence(MusicSequence music)
 	R(AudioUnitGetProperty(fOutput, kAudioUnitProperty_StreamFormat,
 						   kAudioUnitScope_Output, 0, &clientFormat, &size));
 	clientFormat.Print(stderr);
+	outputFormat.Print(stderr);
 	R(ExtAudioFileSetProperty(outfile, kExtAudioFileProperty_ClientDataFormat, 
 							  size, &clientFormat));
 
