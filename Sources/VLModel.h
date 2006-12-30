@@ -243,17 +243,43 @@ struct VLMeasure {
 	void MMAChords(std::string & chords, const VLProperties & prop) const;
 };
 
+struct VLRepeat {
+	int8_t				fTimes;
+	
+	struct Ending {
+		Ending(int8_t begin, int8_t end, uint16_t volta)
+			: fBegin(begin), fEnd(end), fVolta(volta) {}
+		int8_t		fBegin;
+		int8_t		fEnd;
+		uint16_t	fVolta;
+	};
+	std::vector<Ending>	fEndings;
+};
+
 struct VLSong {
 	VLSong();
 	void swap(VLSong & other);
 	
 	std::vector<VLProperties>	fProperties;
 	std::vector<VLMeasure>		fMeasures;
+	std::vector<VLRepeat>		fRepeats;
+
 
 	void AddChord(VLChord chord, size_t measure, VLFraction at);
 	void AddNote(VLLyricsNote note, size_t measure, VLFraction at);
 	void DelChord(size_t measure, VLFraction at);
 	void DelNote(size_t measure, VLFraction at);
+	void AddRepeat(size_t beginMeasure, size_t endMeasure, int times);
+	void DelRepeat(size_t beginMeasure, size_t endMeasure);
+	void AddEnding(size_t beginMeasure, size_t endMeasure, size_t volta);
+	void DelEnding(size_t beginMeasure, size_t endMeasure);
+	bool CanBeRepeat(size_t beginMeasure, size_t endMeasure, int * times = 0);
+	bool CanBeEnding(size_t beginMeasure, size_t endMeasure, 
+					 size_t * volta = 0, size_t * voltaOK = 0);
+	bool DoesBeginRepeat(size_t measure) const;
+	bool DoesEndRepeat(size_t measure, int * times) const;
+	bool DoesBeginEnding(size_t measure, size_t * volta) const;
+	bool DoesEndEnding(size_t measure, bool * repeat) const;
 	void Transpose(int semitones);
 
 	bool FindWord(size_t stanza, size_t & measure, VLFraction & at);

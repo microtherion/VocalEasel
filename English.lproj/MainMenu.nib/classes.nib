@@ -2,6 +2,8 @@
     IBClasses = (
         {
             ACTIONS = {
+                editRepeat = id; 
+                editRepeatEnding = id; 
                 zoomIn = id; 
                 zoomOut = id; 
                 zoomToActualSize = id; 

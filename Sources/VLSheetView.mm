@@ -11,6 +11,7 @@
 #import "VLSheetViewChords.h"
 #import "VLSheetViewNotes.h"
 #import "VLSheetViewLyrics.h"
+#import "VLSheetViewSelection.h"
 #import "VLSoundOut.h"
 
 #import "VLDocument.h"
@@ -320,14 +321,99 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	// Draw measure lines
 	//
 	[bz setLineWidth:2.0];
-	for (int measure = 0; measure<=fMeasPerSystem; ++measure) {
+	int m = system*fMeasPerSystem;
+	for (int measure = 0; measure<=fMeasPerSystem; ++measure, ++m) {
+		const float kDblLineOff = 1.5f;
+		const float kThick		= 2.5f;
+		const float kThin		= 1.0f;
+		const float kDotOff		= 4.5f;
+		const float kDotRadius	= 2.0f;
+		const float kVoltaTextOff = 7.0f;
 		const float x	= fClefKeyW+measure*fMeasureW;
 		const float yy	= kSystemY+4.0f*kLineH;
-		[bz moveToPoint: NSMakePoint(x, kSystemY)];
-		[bz lineToPoint: NSMakePoint(x, yy)];
+		bool repeat;
+		int times;
+		size_t volta;
+		bool dotsPrecede= measure != 0 && 
+			(song->DoesEndRepeat(m, &times) 
+			 || (song->DoesEndEnding(m, &repeat) && repeat));
+		bool dotsFollow = measure<fMeasPerSystem && song->DoesBeginRepeat(m);
+		if (!dotsPrecede && !dotsFollow) {
+			//
+			// Regular
+			//
+			[bz moveToPoint: NSMakePoint(x, kSystemY)];
+			[bz lineToPoint: NSMakePoint(x, yy)];
+			[bz stroke];
+			[bz removeAllPoints];
+		} else {
+			[bz stroke];
+			[bz removeAllPoints];
+			[bz setLineWidth: dotsFollow ? kThick : kThin];
+			[bz moveToPoint: NSMakePoint(x-kDblLineOff, kSystemY)];
+			[bz lineToPoint: NSMakePoint(x-kDblLineOff, yy)];
+			[bz stroke];
+			[bz removeAllPoints];
+			[bz setLineWidth: dotsPrecede ? kThick : kThin];
+			[bz moveToPoint: NSMakePoint(x+kDblLineOff, kSystemY)];
+			[bz lineToPoint: NSMakePoint(x+kDblLineOff, yy)];
+			[bz stroke];
+			[bz removeAllPoints];
+			[bz setLineWidth:2.0];
+			if (dotsPrecede) {
+				[bz appendBezierPathWithOvalInRect:
+						NSMakeRect(x-kDotOff-kDotRadius, 
+								   kSystemY+1.5*kLineH-kDotRadius,
+								   2.0f*kDotRadius, 2.0f*kDotRadius)];
+				[bz appendBezierPathWithOvalInRect:
+						NSMakeRect(x-kDotOff-kDotRadius, 
+								   kSystemY+2.5*kLineH-kDotRadius,
+								   2.0f*kDotRadius, 2.0f*kDotRadius)];
+			}
+			if (dotsFollow) {
+				[bz appendBezierPathWithOvalInRect:
+						NSMakeRect(x+kDotOff-kDotRadius, 
+								   kSystemY+1.5*kLineH-kDotRadius,
+								   2.0f*kDotRadius, 2.0f*kDotRadius)];
+				[bz appendBezierPathWithOvalInRect:
+						NSMakeRect(x+kDotOff-kDotRadius, 
+								   kSystemY+2.5*kLineH-kDotRadius,
+								   2.0f*kDotRadius, 2.0f*kDotRadius)];
+			}
+			[bz fill];
+			[bz removeAllPoints];
+		}
+		if (measure<fMeasPerSystem) {
+			if (song->DoesBeginEnding(m, &volta)) {
+				[bz setLineWidth:kThin];
+				[bz moveToPoint: NSMakePoint(x+kDblLineOff, yy+0.5f*kLineH)];
+				[bz lineToPoint: NSMakePoint(x+kDblLineOff, yy+2.0f*kLineH)];
+				[bz lineToPoint: NSMakePoint(x+0.5f*fMeasureW, yy+2.0f*kLineH)];
+				[bz stroke];
+				[bz removeAllPoints];			
+				[bz setLineWidth:2.0];
+				NSString * vs = nil;
+				for (size_t v=0; v<8; ++v)
+					if (volta & (1<<v))
+						if (vs)
+							vs = [NSString stringWithFormat:@"%@, %d", vs, v+1];
+						else
+							vs = [NSString stringWithFormat:@"%d", v+1];
+				[vs drawAtPoint: NSMakePoint(x+kVoltaTextOff, kSystemY+kMeasNoY)
+					withAttributes: sMeasNoFont];
+			}
+			if (song->DoesEndEnding(m+1, &repeat)) {
+				[bz setLineWidth:kThin];
+				[bz moveToPoint: NSMakePoint(x+0.5f*fMeasureW, yy+2.0f*kLineH)];
+				[bz lineToPoint: NSMakePoint(x+fMeasureW-kDblLineOff, yy+2.0f*kLineH)];
+				if (repeat)
+					[bz lineToPoint: NSMakePoint(x+fMeasureW-kDblLineOff, yy+0.5f*kLineH)];
+				[bz stroke];
+				[bz removeAllPoints];			
+				[bz setLineWidth:2.0];
+			}
+		}
 	}
-	[bz stroke];
-	[bz removeAllPoints];
 
 	//
 	// Draw division lines
@@ -701,8 +787,7 @@ static int8_t sSharpAcc[] = {
 		[self editLyrics];
 		break;
 	case kRegionMeasure:
-		fSelStart	= fSelEnd	= fCursorMeasure;
-		[self setNeedsDisplay:YES];
+		[self editSelection];
 		break;
 	default:
 		break;
@@ -714,36 +799,7 @@ static int8_t sSharpAcc[] = {
 	if (fCursorRegion != kRegionMeasure)
 		[super mouseDragged:event];
 	[self autoscroll:event];
-	int prevMeasure = fCursorMeasure;
-	switch ([self findRegionForEvent:event]) {
-	case kRegionNote:
-	case kRegionChord:
-	case kRegionLyrics:
-		if (fCursorAt.fNum)
-			++fCursorMeasure;
-		//
-		// Fall through
-		//
-	case kRegionMeasure:
-		if (fCursorMeasure > fSelEnd) {
-			fSelEnd		= fCursorMeasure;
-			[self setNeedsDisplay:YES];
-		} else if (fCursorMeasure < fSelStart) {
-			fSelStart	= fCursorMeasure;
-			[self setNeedsDisplay:YES];
-		} else if (prevMeasure == fSelEnd && fCursorMeasure<prevMeasure) {
-			fSelEnd		= fCursorMeasure;
-			[self setNeedsDisplay:YES];
-		} else if (prevMeasure == fSelStart && fCursorMeasure>prevMeasure) {
-			fSelStart	= fCursorMeasure;
-			[self setNeedsDisplay:YES];
-		}
-		break;
-	default:
-		fCursorMeasure	= prevMeasure;
-		break;
-	}
-	fCursorRegion = kRegionMeasure;
+	[self adjustSelection:event];
 }
 
 - (void) keyDown:(NSEvent *)event
@@ -839,6 +895,11 @@ static int8_t sSharpAcc[] = {
 	if ([keyPath isEqual:@"songKey"])
 		fNeedsRecalc = kRecalc;
 	[self setNeedsDisplay: YES];			
+}
+
+- (IBAction)endRepeatSheet:(id)sender
+{
+	[NSApp endSheet:[sender window] returnCode:[sender tag]];
 }
 
 @end

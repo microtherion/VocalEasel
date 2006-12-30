@@ -78,14 +78,21 @@ enum VLRecalc {
 	size_t				fCursorStanza;
 	int					fSelStart;
 	int					fSelEnd;
+	size_t				fVolta;
+	size_t				fVoltaOK;
 
 	IBOutlet id			fFieldEditor;
+	IBOutlet id			fRepeatSheet;
+	IBOutlet id			fEndingSheet;
+	IBOutlet id			fRepeatMsg;
+	IBOutlet id			fEndingMsg;
 }
 
 - (IBAction) setKey:(id)sender;
 - (IBAction) setTime:(id)sender;
 - (IBAction) setDivisions:(id)sender;
 - (IBAction) hideFieldEditor:(id)sender;
+- (IBAction) endRepeatSheet:(id)sender;
 
 - (VLDocument *) document;
 - (VLSong *) song;
@@ -108,6 +115,7 @@ enum VLRecalc {
 
 - (VLEditable *) editTarget;
 - (void) setEditTarget:(VLEditable *)editable;
+- (VLRegion) findRegionForEvent:(NSEvent *) event;
 
 @end
 

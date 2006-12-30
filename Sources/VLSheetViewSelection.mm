@@ -1,0 +1,188 @@
+//
+//  VLSheetViewSelection.mm
+//  Vocalese
+//
+//  Created by Matthias Neeracher on 12/28/06.
+//  Copyright 2006 __MyCompanyName__. All rights reserved.
+//
+
+#import "VLSheetView.h"
+#import "VLSheetViewSelection.h"
+#import "VLDocument.h"
+
+@implementation VLSheetView (Selection)
+
+- (void)editSelection
+{
+	fSelStart	= fSelEnd	= fCursorMeasure;
+	[self setNeedsDisplay:YES];	
+}
+
+- (void)adjustSelection:(NSEvent *)event
+{
+	int prevMeasure = fCursorMeasure;
+	switch ([self findRegionForEvent:event]) {
+	case kRegionNote:
+	case kRegionChord:
+	case kRegionLyrics:
+		if (fCursorAt.fNum)
+			++fCursorMeasure;
+		//
+		// Fall through
+		//
+	case kRegionMeasure:
+		if (fCursorMeasure > fSelEnd) {
+			fSelEnd		= fCursorMeasure;
+			[self setNeedsDisplay:YES];
+		} else if (fCursorMeasure < fSelStart) {
+			fSelStart	= fCursorMeasure;
+			[self setNeedsDisplay:YES];
+		} else if (prevMeasure == fSelEnd && fCursorMeasure<prevMeasure) {
+			fSelEnd		= fCursorMeasure;
+			[self setNeedsDisplay:YES];
+		} else if (prevMeasure == fSelStart && fCursorMeasure>prevMeasure) {
+			fSelStart	= fCursorMeasure;
+			[self setNeedsDisplay:YES];
+		}
+		break;
+	default:
+		fCursorMeasure	= prevMeasure;
+		break;
+	}
+	fCursorRegion = kRegionMeasure;
+}
+
+- (BOOL)validateUserInterfaceItem:(id) item
+{
+	SEL action = [item action];
+	if (action == @selector(cut:) 
+	 || action == @selector(copy:)
+	 || action == @selector(delete:)
+    )
+		return fSelStart < fSelEnd;
+	else if (action == @selector(editRepeat:))
+		return fSelEnd > fSelStart 
+			&& [self song]->CanBeRepeat(fSelStart, fSelEnd);
+	else if (action == @selector(editRepeatEnding:))
+		return fSelEnd > fSelStart
+			&& [self song]->CanBeEnding(fSelStart, fSelEnd);
+	else if (action == @selector(paste:))
+		return fSelStart <= fSelEnd;
+	else
+		return YES;
+}
+
+- (IBAction)cut:(id)sender
+{
+}
+
+- (IBAction)copy:(id)sender
+{
+}
+
+- (IBAction)paste:(id)sender
+{
+}
+
+- (IBAction)delete:(id)sender
+{
+}
+
+- (IBAction)editRepeat:(id)sender
+{
+	int volta;
+	[self song]->CanBeRepeat(fSelStart, fSelEnd, &volta);
+
+	[fRepeatMsg setStringValue:
+					[NSString stringWithFormat:@"Repeat measures %d through %d",
+							  fSelStart+1, fSelEnd]];
+	[NSApp beginSheet:fRepeatSheet modalForWindow:[self window]
+		   modalDelegate:self 
+		   didEndSelector:@selector(didEndRepeatSheet:returnCode:contextInfo:)
+		   contextInfo:nil];
+}
+
+- (void)didEndRepeatSheet:(NSWindow *)sheet returnCode:(int)returnCode 
+			  contextInfo:(void *)ctx
+{
+	switch (returnCode) {
+	case NSAlertFirstButtonReturn:
+		[[self document] willChangeSong];
+		[self song]->AddRepeat(fSelStart, fSelEnd, [[self document] repeatVolta]);
+		[self setNeedsDisplay:YES];
+		[[self document] didChangeSong];
+		break;
+	case NSAlertThirdButtonReturn:
+		[[self document] willChangeSong];
+		[self song]->DelRepeat(fSelStart, fSelEnd);
+		[[self document] didChangeSong];
+		[self setNeedsDisplay:YES];
+		break;
+	default:
+		break;
+	}	
+	[sheet orderOut:self];
+}
+
+- (IBAction)editRepeatEnding:(id)sender
+{
+	[self song]->CanBeEnding(fSelStart, fSelEnd, &fVolta, &fVoltaOK);
+
+	[fEndingMsg setStringValue:
+					[NSString stringWithFormat:@"Ending in measures %d through %d applies to repeats:",
+							  fSelStart+1, fSelEnd]];
+
+	[NSApp beginSheet:fEndingSheet modalForWindow:[self window]
+		   modalDelegate:self 
+		   didEndSelector:@selector(didEndEndingSheet:returnCode:contextInfo:)
+		   contextInfo:nil];
+}
+
+- (void)didEndEndingSheet:(NSWindow *)sheet returnCode:(int)returnCode 
+			  contextInfo:(void *)ctx
+{
+	switch (returnCode) {
+	case NSAlertFirstButtonReturn:
+		[[self document] willChangeSong];
+		[self song]->AddEnding(fSelStart, fSelEnd, fVolta);
+		[self setNeedsDisplay:YES];
+		[[self document] didChangeSong];
+		break;
+	case NSAlertThirdButtonReturn:
+		[[self document] willChangeSong];
+		[self song]->DelEnding(fSelStart, fSelEnd);
+		[[self document] didChangeSong];
+		[self setNeedsDisplay:YES];
+		break;
+	default:
+		break;
+	}	
+	[sheet orderOut:self];
+}
+
+//
+// Data source for endings
+//
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
+{
+	return 1;
+}
+
+- (id)tableView:(NSTableView*)tv objectValueForTableColumn:(NSTableColumn *)col
+			row:(NSInteger)rowIndex
+{
+	int mask = [[col identifier] intValue];
+	return (fVoltaOK & mask) ? [NSNumber numberWithBool:(fVolta & mask)] : nil;
+}
+
+- (void)tableView:(NSTableView *)tv setObjectValue:(id)val forTableColumn:(NSTableColumn *)col row:(NSInteger)rowIndex
+{
+	int mask = [[col identifier] intValue];
+
+	if ([val boolValue])
+		fVolta	|= mask;
+	else
+		fVolta  &= ~mask;
+}
+
+@end

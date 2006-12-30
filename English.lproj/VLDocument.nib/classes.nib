@@ -1,7 +1,14 @@
 {
     IBClasses = (
         {
-            ACTIONS = {engrave = id; showLog = id; showOutput = id; zoomIn = id; zoomOut = id; }; 
+            ACTIONS = {
+                endRepeatSheet = id; 
+                engrave = id; 
+                showLog = id; 
+                showOutput = id; 
+                zoomIn = id; 
+                zoomOut = id; 
+            }; 
             CLASS = FirstResponder; 
             LANGUAGE = ObjC; 
             SUPERCLASS = NSObject; 
@@ -21,10 +28,22 @@
             SUPERCLASS = NSWindowController; 
         }, 
         {
-            ACTIONS = {hideFieldEditor = id; setDivisions = id; setKey = id; setTime = id; }; 
+            ACTIONS = {
+                endRepeatSheet = id; 
+                hideFieldEditor = id; 
+                setDivisions = id; 
+                setKey = id; 
+                setTime = id; 
+            }; 
             CLASS = VLSheetView; 
             LANGUAGE = ObjC; 
-            OUTLETS = {fFieldEditor = id; }; 
+            OUTLETS = {
+                fEndingMsg = id; 
+                fEndingSheet = id; 
+                fFieldEditor = id; 
+                fRepeatMsg = id; 
+                fRepeatSheet = id; 
+            }; 
             SUPERCLASS = NSView; 
         }, 
         {

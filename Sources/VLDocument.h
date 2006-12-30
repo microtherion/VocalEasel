@@ -26,6 +26,7 @@
 	NSNumber *		songTempo;
 	NSString *		tmpPath;
 	NSFileWrapper *	vcsWrapper;
+	int				repeatVolta;
 
 	VLSheetWindow *	sheetWin;
 	VLLogWindow *	logWin;
@@ -37,10 +38,12 @@
 - (NSNumber *)	songKey;
 - (NSNumber *)  songTime;
 - (NSNumber *)  songDivisions;
+- (int)			repeatVolta;
 
 - (void)		setKey:(int)key transpose:(BOOL)transpose;
 - (void)		setTimeNum:(int)num denom:(int)denom;
 - (void)		setDivisions:(int)divisions;
+- (void) 		setRepeatVolta:(int)repeatVolta;
 
 - (IBAction) engrave:(id)sender;
 - (IBAction) showOutput:(id)sender;

@@ -9,6 +9,7 @@
 #import "VLSheetView.h"
 #import "VLSheetViewLyrics.h"
 #import "VLSheetViewInternal.h"
+#import "VLDocument.h"
 
 #import "VLModel.h"
 #import "VLSoundOut.h"

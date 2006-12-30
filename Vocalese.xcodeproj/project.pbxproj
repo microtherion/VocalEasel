@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
-		8D15AC2D0486D014006FF6A4 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */; };
-		8D15AC2E0486D014006FF6A4 /* VLDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B4FDCFA73011CA2CEA /* VLDocument.nib */; };
 		8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
 		8D15AC310486D014006FF6A4 /* VLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* VLDocument.mm */; settings = {ATTRIBUTES = (); }; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -40,6 +38,8 @@
 		95498DBD0AE3812F006B5F81 /* VLSoundSched.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */; };
 		954BBD860AEDDE5300BBFD5F /* VLAppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954BBD850AEDDE5300BBFD5F /* VLAppController.mm */; };
 		954BBD9A0AEDE81500BBFD5F /* VLPitchTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954BBD990AEDE81500BBFD5F /* VLPitchTransformer.mm */; };
+		954DD4B90B444B220056C504 /* VLSheetViewSelection.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 954DD4B70B444B220056C504 /* VLSheetViewSelection.h */; };
+		954DD4E60B44E67F0056C504 /* VLSheetViewSelection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954DD4E50B44E67F0056C504 /* VLSheetViewSelection.mm */; };
 		955CBA4E0B2366DD001CF4A1 /* VLKeyValueUndo.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 955CBA4C0B2366DD001CF4A1 /* VLKeyValueUndo.h */; };
 		955CBA4F0B2366DD001CF4A1 /* VLKeyValueUndo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 955CBA4D0B2366DD001CF4A1 /* VLKeyValueUndo.mm */; };
 		955E58E5095658AB0045FDA5 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
@@ -51,6 +51,8 @@
 		9593E4E90AE0ED1F00035816 /* vocalese.icns in Resources */ = {isa = PBXBuildFile; fileRef = 9593E4E70AE0ED1F00035816 /* vocalese.icns */; };
 		959408AD096922EA007CCCF8 /* TVLEdit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959408AC096922EA007CCCF8 /* TVLEdit.cpp */; };
 		959408AE096922F7007CCCF8 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
+		959420EB0B44E769006BC62C /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 954DD4DA0B44E6000056C504 /* MainMenu.nib */; };
+		959420EC0B44E77A006BC62C /* VLDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = 954DD4DF0B44E61E0056C504 /* VLDocument.nib */; };
 		95A1C37C0AF1D4370076597D /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A1C37B0AF1D4370076597D /* Quartz.framework */; };
 		95A1C3860AF2ACE20076597D /* VLSheetWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */; };
 		95B3E1A70960E58B000E9C0D /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 95B3E1980960E58B000E9C0D /* Music */; };
@@ -109,6 +111,7 @@
 				95009B650B0ED18700EB33A4 /* CAMath.h in Copy MMA Library */,
 				95E299BF0B2006F5001977D2 /* VLSheetViewLyrics.h in Copy MMA Library */,
 				955CBA4E0B2366DD001CF4A1 /* VLKeyValueUndo.h in Copy MMA Library */,
+				954DD4B90B444B220056C504 /* VLSheetViewSelection.h in Copy MMA Library */,
 			);
 			name = "Copy MMA Library";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,8 +138,6 @@
 		2A37F4ACFDCFA73011CA2CEA /* VLDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLDocument.mm; path = Sources/VLDocument.mm; sourceTree = "<group>"; };
 		2A37F4AEFDCFA73011CA2CEA /* VLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLDocument.h; path = Sources/VLDocument.h; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Sources/main.m; sourceTree = "<group>"; };
-		2A37F4B5FDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/VLDocument.nib; sourceTree = "<group>"; };
-		2A37F4B7FDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		2A37F4BAFDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -170,6 +171,10 @@
 		954BBD850AEDDE5300BBFD5F /* VLAppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLAppController.mm; path = Sources/VLAppController.mm; sourceTree = "<group>"; };
 		954BBD980AEDE81500BBFD5F /* VLPitchTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLPitchTransformer.h; path = Sources/VLPitchTransformer.h; sourceTree = "<group>"; };
 		954BBD990AEDE81500BBFD5F /* VLPitchTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPitchTransformer.mm; path = Sources/VLPitchTransformer.mm; sourceTree = "<group>"; };
+		954DD4B70B444B220056C504 /* VLSheetViewSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSheetViewSelection.h; path = Sources/VLSheetViewSelection.h; sourceTree = "<group>"; };
+		954DD4DA0B44E6000056C504 /* MainMenu.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = MainMenu.nib; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		954DD4DF0B44E61E0056C504 /* VLDocument.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = VLDocument.nib; path = English.lproj/VLDocument.nib; sourceTree = "<group>"; };
+		954DD4E50B44E67F0056C504 /* VLSheetViewSelection.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetViewSelection.mm; path = Sources/VLSheetViewSelection.mm; sourceTree = "<group>"; };
 		955CBA4C0B2366DD001CF4A1 /* VLKeyValueUndo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLKeyValueUndo.h; path = Sources/VLKeyValueUndo.h; sourceTree = "<group>"; };
 		955CBA4D0B2366DD001CF4A1 /* VLKeyValueUndo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLKeyValueUndo.mm; path = Sources/VLKeyValueUndo.mm; sourceTree = "<group>"; };
 		955E58E3095658AB0045FDA5 /* VLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLModel.h; path = Sources/VLModel.h; sourceTree = "<group>"; };
@@ -363,6 +368,8 @@
 				954BBD990AEDE81500BBFD5F /* VLPitchTransformer.mm */,
 				955CBA4C0B2366DD001CF4A1 /* VLKeyValueUndo.h */,
 				955CBA4D0B2366DD001CF4A1 /* VLKeyValueUndo.mm */,
+				954DD4B70B444B220056C504 /* VLSheetViewSelection.h */,
+				954DD4E50B44E67F0056C504 /* VLSheetViewSelection.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -379,6 +386,8 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				954DD4DF0B44E61E0056C504 /* VLDocument.nib */,
+				954DD4DA0B44E6000056C504 /* MainMenu.nib */,
 				95FC66BC0AF0A4D4003D9C11 /* console.icns */,
 				95FC66BD0AF0A4D4003D9C11 /* music.tiff */,
 				95FC66BE0AF0A4D4003D9C11 /* nextpage.tiff */,
@@ -394,8 +403,6 @@
 				95F5F51E0ADCCFBB003980B2 /* DTD */,
 				95B3E1980960E58B000E9C0D /* Music */,
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
-				2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */,
-				2A37F4B4FDCFA73011CA2CEA /* VLDocument.nib */,
 				8D15AC360486D014006FF6A4 /* Info.plist */,
 				089C165FFE840EACC02AAC07 /* InfoPlist.strings */,
 			);
@@ -575,8 +582,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */,
-				8D15AC2D0486D014006FF6A4 /* MainMenu.nib in Resources */,
-				8D15AC2E0486D014006FF6A4 /* VLDocument.nib in Resources */,
 				8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */,
 				95B3E1A70960E58B000E9C0D /* Music in Resources */,
 				95F5F5340ADCCFBB003980B2 /* DTD in Resources */,
@@ -592,6 +597,8 @@
 				95FC66C70AF0A4D5003D9C11 /* run.icns in Resources */,
 				95FC66C80AF0A4D5003D9C11 /* zoomin.tiff in Resources */,
 				95FC66C90AF0A4D5003D9C11 /* zoomout.tiff in Resources */,
+				959420EB0B44E769006BC62C /* MainMenu.nib in Resources */,
+				959420EC0B44E77A006BC62C /* VLDocument.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -642,6 +649,7 @@
 				95009B500B0ED0BB00EB33A4 /* CADebugMacros.cpp in Sources */,
 				95E299C00B2006F5001977D2 /* VLSheetViewLyrics.mm in Sources */,
 				955CBA4F0B2366DD001CF4A1 /* VLKeyValueUndo.mm in Sources */,
+				954DD4E60B44E67F0056C504 /* VLSheetViewSelection.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -698,22 +706,6 @@
 				089C1660FE840EACC02AAC07 /* English */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		2A37F4B4FDCFA73011CA2CEA /* VLDocument.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2A37F4B5FDCFA73011CA2CEA /* English */,
-			);
-			name = VLDocument.nib;
-			sourceTree = "<group>";
-		};
-		2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2A37F4B7FDCFA73011CA2CEA /* English */,
-			);
-			name = MainMenu.nib;
 			sourceTree = "<group>";
 		};
 		2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */ = {

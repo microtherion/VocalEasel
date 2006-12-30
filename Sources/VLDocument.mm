@@ -72,6 +72,7 @@
 		logWin				= nil;
 		tmpPath				= nil;
 		vcsWrapper			= nil;
+		repeatVolta			= 2;
 		[self setHasUndoManager:YES];
 		undo				=
 			[[VLKeyValueUndo alloc] initWithOwner:self
@@ -215,6 +216,16 @@
 	prop.fDivisions	= divisions;
 
 	[self updateChangeCount:NSChangeDone];
+}
+
+- (int) repeatVolta
+{	
+	return repeatVolta;
+}
+
+- (void) setRepeatVolta:(int)volta
+{
+	repeatVolta = volta;
 }
 
 - (NSString *) tmpPath
