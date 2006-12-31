@@ -264,6 +264,45 @@ struct VLSong {
 	std::vector<VLMeasure>		fMeasures;
 	std::vector<VLRepeat>		fRepeats;
 
+	//
+	// Iterate over measures in performance order
+	//
+	class iterator {
+	public:
+		size_t operator*() { return fMeasure; }
+		iterator & operator++();
+		bool operator==(const iterator & other) const { 
+			return fMeasure==other.fMeasure && fStatus == other.fStatus;
+		}
+		bool operator!=(const iterator & other) const { 
+			return fMeasure!=other.fMeasure || fStatus != other.fStatus;
+		}
+	protected:
+		friend class VLSong;
+		iterator(const VLSong & song, bool end);
+	private:
+		size_t					fMeasure;
+		const VLSong &			fSong;
+		struct Repeat {
+			Repeat(size_t begin, int times) 
+				: fBegin(begin), fTimes(times), fVolta(0) {}
+			size_t	fBegin;
+			int8_t	fTimes;
+			int8_t	fVolta;
+
+			bool operator==(const Repeat & other) const {
+				return fBegin==other.fBegin && fVolta == other.fVolta;
+			}
+			bool operator!=(const Repeat & other) const {
+				return fBegin!=other.fBegin || fVolta != other.fVolta;
+			}
+		};
+		std::vector<Repeat>		fStatus;
+
+		void AdjustStatus();
+	};
+	iterator 	begin() { return iterator(*this, false); }
+	iterator 	end() 	{ return iterator(*this, true);  }
 
 	void AddChord(VLChord chord, size_t measure, VLFraction at);
 	void AddNote(VLLyricsNote note, size_t measure, VLFraction at);
@@ -276,10 +315,10 @@ struct VLSong {
 	bool CanBeRepeat(size_t beginMeasure, size_t endMeasure, int * times = 0);
 	bool CanBeEnding(size_t beginMeasure, size_t endMeasure, 
 					 size_t * volta = 0, size_t * voltaOK = 0);
-	bool DoesBeginRepeat(size_t measure) const;
-	bool DoesEndRepeat(size_t measure, int * times) const;
-	bool DoesBeginEnding(size_t measure, size_t * volta) const;
-	bool DoesEndEnding(size_t measure, bool * repeat) const;
+	bool DoesBeginRepeat(size_t measure, int * times = 0) const;
+	bool DoesEndRepeat(size_t measure, int * times = 0) const;
+	bool DoesBeginEnding(size_t measure, bool * repeat = 0, size_t * volta = 0) const;
+	bool DoesEndEnding(size_t measure, bool * repeat = 0, size_t * volta = 0) const;
 	void Transpose(int semitones);
 
 	bool FindWord(size_t stanza, size_t & measure, VLFraction & at);

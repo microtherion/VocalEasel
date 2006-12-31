@@ -29,8 +29,11 @@
 	mmaFile += '\n';
 	
 	std::string			mmas;
-	for (size_t m=0; m<song->CountMeasures(); ++m) {
-		sprintf(buf, "%-5d", m+1);
+	size_t 				meas = 0;
+	VLSong::iterator	end = song->end();
+	for (VLSong::iterator i=song->begin(); i!=end; ++i) {
+		size_t m	= *i;
+		sprintf(buf, "%-5d", ++meas);
 		mmaFile += buf;
 		song->fMeasures[m].MMAChords(mmas, prop);
 		mmaFile += mmas;

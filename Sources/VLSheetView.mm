@@ -332,10 +332,9 @@ VLMusicElement sSemi2Accidental[12][12] = {
 		const float x	= fClefKeyW+measure*fMeasureW;
 		const float yy	= kSystemY+4.0f*kLineH;
 		bool repeat;
-		int times;
 		size_t volta;
 		bool dotsPrecede= measure != 0 && 
-			(song->DoesEndRepeat(m, &times) 
+			(song->DoesEndRepeat(m) 
 			 || (song->DoesEndEnding(m, &repeat) && repeat));
 		bool dotsFollow = measure<fMeasPerSystem && song->DoesBeginRepeat(m);
 		if (!dotsPrecede && !dotsFollow) {
@@ -384,7 +383,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 			[bz removeAllPoints];
 		}
 		if (measure<fMeasPerSystem) {
-			if (song->DoesBeginEnding(m, &volta)) {
+			if (song->DoesBeginEnding(m, 0, &volta)) {
 				[bz setLineWidth:kThin];
 				[bz moveToPoint: NSMakePoint(x+kDblLineOff, yy+0.5f*kLineH)];
 				[bz lineToPoint: NSMakePoint(x+kDblLineOff, yy+2.0f*kLineH)];

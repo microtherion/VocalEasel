@@ -1043,12 +1043,50 @@ size_t  VLSong::CountStanzas() const
 
 void VLSong::LilypondNotes(std::string & notes) const
 {
-	notes = "";
+	notes 					= "";
+	std::string indent 		= "";
+	size_t		seenEnding 	= 0;
+	int			numEndings	= 0;
 	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
 		VLNoteList::const_iterator i 	= fMeasures[measure].fMelody.begin();
 		VLNoteList::const_iterator e 	= fMeasures[measure].fMelody.end();
 		VLFraction 				   at(0);
 
+		int		times;
+		size_t	volta;
+		bool	repeat;
+		
+		if (DoesBeginRepeat(measure, &times)) {
+			char volta[8];
+			sprintf(volta, "%d", times);
+			notes 	    = notes + "\\repeat volta "+volta+" {\n";
+			indent 		= "    ";
+			seenEnding 	= 0;
+			numEndings	= 0;
+		}
+		if (DoesEndRepeat(measure)) {
+			notes += "}\n";
+			indent = "";
+		}
+		if (DoesBeginEnding(measure, &repeat, &volta)) {
+			notes += seenEnding ? "}{\n" : "} \\alternative {{\n";
+			notes += "    \\set Score.repeatCommands = #'((volta \"";
+			const char * comma = "";
+			for (int r=0; r<8; ++r)
+				if (volta & (1<<r)) {
+					char volta[8];
+					sprintf(volta, "%s%d.", comma, r+1);
+					comma	= ", ";
+					notes += volta;
+				}
+			notes = notes + "\")" + (repeat ? "" : " end-repeat") + ")\n";
+			seenEnding	|= volta;
+			++numEndings;
+		} else if (DoesEndEnding(measure)) {
+			notes += "}}\n";
+			indent = "";
+		}
+		notes += indent;
 		for (; i!=e; ++i) {
 			std::string note;
 			i->LilypondName(note, at, fProperties[fMeasures[measure].fPropIdx]);
@@ -1452,11 +1490,15 @@ bool VLSong::CanBeEnding(size_t beginMeasure, size_t endMeasure,
 	return false;
 }
 
-bool VLSong::DoesBeginRepeat(size_t measure) const
+bool VLSong::DoesBeginRepeat(size_t measure, int * times) const
 {
 	for (size_t r=0; r<fRepeats.size(); ++r)
-		if (fRepeats[r].fEndings[0].fBegin == measure)
+		if (fRepeats[r].fEndings[0].fBegin == measure) {
+			if (times)
+				*times = fRepeats[r].fTimes;
+
 			return true;
+		}
 	return false;
 }
 
@@ -1466,64 +1508,141 @@ bool VLSong::DoesEndRepeat(size_t measure, int * times) const
 		if (fRepeats[r].fEndings[0].fEnd == measure 
 		 && fRepeats[r].fEndings.size() == 1
 		) {
+			if (times)
 				*times = fRepeats[r].fTimes;
 
-				return true;
+			return true;
 		}
 	return false;	
 }
 
-bool VLSong::DoesBeginEnding(size_t measure, size_t * volta) const
+bool VLSong::DoesBeginEnding(size_t measure, bool * repeat, size_t * volta) const
 {
 	for (size_t r=0; r<fRepeats.size(); ++r)
 		if (fRepeats[r].fEndings[0].fEnd >= measure 
 		 && fRepeats[r].fEndings.size() > 1
 		) {
-			*volta = (1<<fRepeats[r].fTimes)-1;
+			size_t v = (1<<fRepeats[r].fTimes)-1;
 			for (size_t e=1; e<fRepeats[r].fEndings.size(); ++e)
 				if (fRepeats[r].fEndings[e].fBegin == measure) {
-					*volta = fRepeats[r].fEndings[e].fVolta;
+					if (repeat)
+						if (e == fRepeats[r].fEndings.size()-1 
+						 && fRepeats[r].fEndings[e].fVolta == v
+						)
+							*repeat = false; // Not after last alternative
+						else
+							*repeat = true;
+					if (volta)
+						*volta = fRepeats[r].fEndings[e].fVolta;
 
 					return true;
 				} else
-					*volta&= ~fRepeats[r].fEndings[e].fVolta;
-			if (*volta && fRepeats[r].fEndings[0].fEnd == measure) {
+					v &= ~fRepeats[r].fEndings[e].fVolta;
+			if (v && fRepeats[r].fEndings[0].fEnd == measure) {
 				//
 				// Implied ending for all not mentioned
-				//
+				//	
+				if (repeat)
+					*repeat = false;
+				if (volta)
+					*volta = v;
+
 				return true;
 			}
 		}
 	return false;	
 }
 
-bool VLSong::DoesEndEnding(size_t measure, bool * repeat) const
+bool VLSong::DoesEndEnding(size_t measure, bool * repeat, size_t * volta) const
 {
 	for (size_t r=0; r<fRepeats.size(); ++r)
 		if (fRepeats[r].fEndings[0].fEnd+1 >= measure 
 		 && fRepeats[r].fEndings.size() > 1
 		) {
-			size_t volta = (1<<fRepeats[r].fTimes)-1;
+			size_t v = (1<<fRepeats[r].fTimes)-1;
 			for (size_t e=1; e<fRepeats[r].fEndings.size(); ++e)
 				if (fRepeats[r].fEndings[e].fEnd == measure) {
-					if (e == fRepeats[r].fEndings.size()-1 
-                     && fRepeats[r].fEndings[e].fVolta == volta
-					)
-						*repeat = false; // Don't repeat after last alternative
-					else
-						*repeat = true;
-
+					if (repeat)
+						if (e == fRepeats[r].fEndings.size()-1 
+						 && fRepeats[r].fEndings[e].fVolta == v
+						)
+							*repeat = false; // Not after last alternative
+						else
+							*repeat = true;
+					if (volta)
+						*volta = fRepeats[r].fEndings[e].fVolta;
 					return true;
 				} else
-					volta &= ~fRepeats[r].fEndings[e].fVolta;
-			if (volta && fRepeats[r].fEndings[0].fEnd+1 == measure) {
+					v &= ~fRepeats[r].fEndings[e].fVolta;
+			if (v && fRepeats[r].fEndings[0].fEnd+1 == measure) {
 				//
 				// Implied ending for all not mentioned
 				//
-				*repeat = false;
+				if (repeat)
+					*repeat = false;
+				if (volta)
+					*volta  = v;
 
 				return true;
 			}
 		}
 	return false;	
+}
+
+VLSong::iterator::iterator(const VLSong & song, bool end)
+	: fSong(song)
+{
+	fMeasure	= end ? fSong.CountMeasures() : 0;
+	AdjustStatus();
+}
+
+VLSong::iterator & VLSong::iterator::operator++()
+{
+	++fMeasure;
+	AdjustStatus();
+	
+	return *this;
+}
+
+void VLSong::iterator::AdjustStatus()
+{
+	int 	times;
+	size_t	volta;
+	bool 	repeat;
+	if (fSong.DoesEndRepeat(fMeasure)
+	 || (fSong.DoesEndEnding(fMeasure, &repeat) && repeat)
+	) {
+		if (++fStatus.back().fVolta < fStatus.back().fTimes) {
+			//
+			// Repeat again
+			//
+			fMeasure = fStatus.back().fBegin;
+			
+			return;
+		} 
+	}
+	if (fMeasure == fSong.CountMeasures())
+		while (fStatus.size())
+			if (++fStatus.back().fVolta < fStatus.back().fTimes) {
+				fMeasure = fStatus.back().fBegin;
+				
+				return;
+			} else
+				fStatus.pop_back();
+	while (fSong.DoesBeginEnding(fMeasure, 0, &volta)) {
+		if (!(volta & (1<<fStatus.back().fVolta))) {
+			//
+			// Skip this ending this time around
+			//
+			do {
+				++fMeasure;
+			} while (!fSong.DoesEndEnding(fMeasure));
+		} else
+			break;
+	}
+	if (fSong.DoesBeginRepeat(fMeasure, &times)) {
+		if (fStatus.size() && fStatus.back().fVolta == fStatus.back().fTimes)
+			fStatus.pop_back();
+		fStatus.push_back(Repeat(fMeasure, times));
+	}
 }

@@ -295,6 +295,98 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 
 		NSXMLElement * harMeas = [melMeas copy];
 		
+		size_t	volta;
+		bool	repeat;
+		int		times;
+		if (song->DoesBeginRepeat(measure)) {
+			NSXMLElement * barline = [NSXMLNode elementWithName:@"barline"];
+			[barline addAttribute: [NSXMLNode attributeWithName:@"location"
+											  stringValue:@"left"]];
+			NSString * style = @"heavy-light";
+			if (song->DoesEndRepeat(measure) 
+			 || (song->DoesEndEnding(measure, &repeat) && repeat)
+			)
+				style = @"heavy-heavy";
+			[barline addChild: [NSXMLNode elementWithName:@"bar-style"
+										  stringValue:style]];
+		    NSXMLElement * repeat = [NSXMLNode elementWithName:@"repeat"];
+			[repeat addAttribute: [NSXMLNode attributeWithName:@"direction"
+											 stringValue:@"forward"]];
+			[barline addChild:repeat];
+			[melMeas addChild:barline];
+		} 
+		if (song->DoesBeginEnding(measure, 0, &volta)) {
+			NSXMLElement * barline = [NSXMLNode elementWithName:@"barline"];
+			[barline addAttribute: [NSXMLNode attributeWithName:@"location"
+											  stringValue:@"left"]];
+		    NSXMLElement * ending = [NSXMLNode elementWithName:@"ending"];
+			[ending addAttribute: [NSXMLNode attributeWithName:@"type"
+											 stringValue:@"start"]];
+			NSString * number = nil;
+			for (size_t i = 0; i<8; ++i)
+				if (volta & (1<<i))
+					if (number)
+						number = [NSString stringWithFormat:@"%@,%d", 
+										   number, i+1];
+					else
+						number = [NSString stringWithFormat:@"%d", i+1];
+			[ending addAttribute: [NSXMLNode attributeWithName:@"number"
+											 stringValue:number]];
+			[barline addChild:ending];
+			[melMeas addChild:barline];
+		}
+		if (song->DoesEndRepeat(measure+1, &times)) {
+			NSXMLElement * barline = [NSXMLNode elementWithName:@"barline"];
+			[barline addAttribute: [NSXMLNode attributeWithName:@"location"
+											  stringValue:@"right"]];
+			NSString * style = @"light-heavy";
+			if (song->DoesBeginRepeat(measure+1))
+				style = @"heavy-heavy";
+			[barline addChild: [NSXMLNode elementWithName:@"bar-style"
+										  stringValue:style]];
+		    NSXMLElement * repeat = [NSXMLNode elementWithName:@"repeat"];
+			[repeat addAttribute: [NSXMLNode attributeWithName:@"direction"
+											 stringValue:@"backward"]];
+			[repeat addAttribute:
+			  	[NSXMLNode attributeWithName:@"times"
+						   stringValue:[NSString stringWithFormat:@"%d", times]]];
+			[barline addChild:repeat];
+			[melMeas addChild:barline];
+		} 
+		if (song->DoesEndEnding(measure+1, &repeat, &volta)) {
+			NSXMLElement * barline = [NSXMLNode elementWithName:@"barline"];
+			[barline addAttribute: [NSXMLNode attributeWithName:@"location"
+											  stringValue:@"right"]];
+			if (repeat) {
+				NSString * style = @"light-heavy";
+				if (song->DoesBeginRepeat(measure+1))
+					style = @"heavy-heavy";
+				[barline addChild: [NSXMLNode elementWithName:@"bar-style"
+											  stringValue:style]];
+				NSXMLElement * repeat = [NSXMLNode elementWithName:@"repeat"];
+				[repeat addAttribute: [NSXMLNode attributeWithName:@"direction"
+												 stringValue:@"backward"]];
+				[barline addChild:repeat];
+			}
+		    NSXMLElement * ending = [NSXMLNode elementWithName:@"ending"];
+			[ending addAttribute: 
+				[NSXMLNode attributeWithName:@"type"
+						   stringValue:repeat ? @"stop" : @"discontinue"]];
+			NSString * number = nil;
+			for (size_t i = 0; i<8; ++i)
+				if (volta & (1<<i))
+					if (number)
+						number = [NSString stringWithFormat:@"%@,%d", 
+										   number, i+1];
+					else
+						number = [NSString stringWithFormat:@"%d", i+1];
+			[ending addAttribute: [NSXMLNode attributeWithName:@"number"
+											 stringValue:number]];
+			[barline addChild:ending];
+			
+			[melMeas addChild:barline];
+		} 
+
 		[self addNotes:&song->fMeasures[measure].fMelody toMeasure:melMeas];
 		[self addChords:&song->fMeasures[measure].fChords toMeasure:harMeas];
 
@@ -404,10 +496,72 @@ int8_t sStepToPitch[] = {
 	return n;
 }
 
+- (void) addRepeat:(VLRepeat *)repeat
+{
+	size_t end = repeat->fEndings.size() > 1 
+		? repeat->fEndings[1].fBegin : repeat->fEndings[0].fEnd;
+	song->AddRepeat(repeat->fEndings[0].fBegin, end, repeat->fTimes);
+	for (size_t e = 1; e<repeat->fEndings.size(); ++e)
+		song->AddEnding(repeat->fEndings[e].fBegin, repeat->fEndings[e].fEnd, 
+						repeat->fEndings[e].fVolta);
+}
+
+- (void) readBarlines:(NSArray *)barlines measure:(int)m 
+			   repeat:(VLRepeat *)repeat inRepeat:(bool *)inRepeat 
+				error:(NSError **)outError
+{
+	NSEnumerator * e = [barlines objectEnumerator];
+	for (NSXMLElement * barline; barline = [e nextObject]; ) {
+		NSXMLElement * rep    = [barline nodeForXPath:@"./repeat" error:outError];
+		NSXMLElement * ending = [barline nodeForXPath:@"./ending" error:outError];
+		NSString * direction = nil;
+		if (rep)
+			direction = [rep stringForXPath:@"./@direction" error:outError];
+		NSString * endingType = nil;
+		size_t	   volta 	  = 0;
+		int		   maxEnding  = 0;
+		if (ending) {
+			endingType 	= [ending stringForXPath:@"./@type" error:outError];
+			NSEnumerator * n= 
+				[[[ending stringForXPath:@"./@number" error:outError] 
+					 componentsSeparatedByString:@","] objectEnumerator];
+			for (NSString * num; num = [n nextObject]; ) {
+				int n 		= [num intValue];
+				maxEnding 	= n;
+				volta	   |= 1<<(n-1);
+			}
+		}
+			
+		if ([direction isEqual:@"forward"]) {
+			//
+			// New repeat, add old one if there was one
+			//
+			if (*inRepeat)
+				[self addRepeat:repeat];
+			*inRepeat = true;
+			repeat->fTimes	= 0;
+			repeat->fEndings.clear();
+			repeat->fEndings.push_back(VLRepeat::Ending(m, 0, 0));
+		} else if ([endingType isEqual:@"start"]) {
+			repeat->fTimes	= std::max<int8_t>(repeat->fTimes, maxEnding);
+			repeat->fEndings.push_back(VLRepeat::Ending(m, 0, volta));
+		} else if (endingType) {
+			repeat->fEndings.back().fEnd	= m+1;
+			repeat->fEndings[0].fEnd		= m+1;
+		} else if (direction) {
+			repeat->fTimes = [rep intForXPath:@"./@times" error:outError];
+			repeat->fEndings[0].fEnd		= m+1;
+		}
+	}
+}
+
 - (void) readMelody:(NSArray *)measures error:(NSError **)outError
 {
 	NSEnumerator * e = [measures objectEnumerator];
 	
+	VLRepeat repeat;
+	bool	 inRepeat = false;
+
 	for (NSXMLElement * measure; measure = [e nextObject]; ) {
 		VLProperties & 	prop = song->fProperties.front();
 		VLFraction		unit(1, 4*prop.fDivisions);
@@ -418,6 +572,9 @@ int8_t sStepToPitch[] = {
 		if (m >= song->CountMeasures())
 			song->fMeasures.resize(m);
 
+		[self readBarlines:[measure elementsForName:@"barline"] measure:m
+			  repeat:&repeat inRepeat:&inRepeat error:outError];
+
 		NSEnumerator * n = [[measure elementsForName:@"note"] objectEnumerator];
 
 		for (NSXMLElement * note; note = [n nextObject]; ) {
@@ -427,6 +584,8 @@ int8_t sStepToPitch[] = {
 			at += n.fDuration;
 		}
 	}
+	if (inRepeat)
+		[self addRepeat:&repeat];
 }
 
 - (void) readChords:(NSArray *)measures error:(NSError **)outError
