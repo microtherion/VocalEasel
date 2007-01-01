@@ -139,8 +139,8 @@ struct VLNote {
 	VLNote(std::string name);
 
 	void Name(std::string & name, bool useSharps = false) const;
-	void LilypondName(std::string & name, VLFraction at, const VLProperties & prop) const;
-	void MMAName(std::string & name, VLFraction at, const VLProperties & prop) const;
+	void LilypondName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, bool & triplet, const VLProperties & prop) const;
+	void MMAName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, const VLProperties & prop) const;
 };
 
 struct VLRest : VLNote {
@@ -214,11 +214,11 @@ struct VLProperties {
 	//
 	// Subdivide a note and adjust for swing
 	//
-	void PartialNote(VLFraction at, VLFraction totalDuration, VLFraction * noteDuration) const;  
+	void PartialNote(VLFraction at, VLFraction totalDuration, bool grouped, VLFraction * noteDuration) const;  
 	//
 	// Determine visual representation of note head
 	//
-	void VisualNote(VLFraction at, VLFraction actualDur, VLFraction *visualDur, bool * triplet) const;
+	void VisualNote(VLFraction at, VLFraction actualDur, bool prevTriplet, VLFraction *visualDur, bool * triplet) const;
 };
 
 struct VLLyricsNote : VLNote {

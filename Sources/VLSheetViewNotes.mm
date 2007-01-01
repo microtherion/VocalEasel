@@ -258,20 +258,26 @@
 		const VLMeasure		measure = song->fMeasures[measIdx];
 		const VLNoteList &	melody	= measure.fMelody;
 		VLFraction 			at(0);
+		VLFraction 			prevDur(0);
+		bool				triplet = false;
 		for (VLNoteList::const_iterator note = melody.begin(); 
 			 note != melody.end(); 
 			 ++note
 		) {
 			VLFraction 	dur 	= note->fDuration;
+			VLFraction  nextDur(0);
+			VLNoteList::const_iterator next = note;
+			if (++next != melody.end())
+				nextDur = next->fDuration;
 			BOOL       	first	= !m || !note->fTied;
 			int			pitch	= note->fPitch;
 			while (dur > 0) {
 				VLFraction partialDur; // Actual value of note drawn
 				VLFraction noteDur; 	// Visual value of note
-				bool triplet;
-				prop.PartialNote(at, dur, &partialDur);
-				prop.VisualNote(at, partialDur, &noteDur, &triplet);
-				
+				prop.PartialNote(at, dur, dur==prevDur || dur==nextDur, 
+								 &partialDur);
+				prop.VisualNote(at, partialDur, triplet, &noteDur, &triplet);
+				prevDur	= partialDur;
 				if (pitch != VLNote::kNoPitch) {
 					VLMusicElement		accidental;
 					NSPoint pos = 

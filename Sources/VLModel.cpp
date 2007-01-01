@@ -158,7 +158,7 @@ void VLNote::Name(std::string & name, bool useSharps) const
 	name = PitchName(fPitch, useSharps);
 }
 
-void VLNote::LilypondName(std::string & name, VLFraction at, const VLProperties & prop) const
+void VLNote::LilypondName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, bool & triplet, const VLProperties & prop) const
 {
 	std::string n = LilypondPitchName(fPitch, prop.fKey >= 0);
 	if (fPitch != kNoPitch) {
@@ -173,9 +173,10 @@ void VLNote::LilypondName(std::string & name, VLFraction at, const VLProperties 
 	for (VLFraction dur = fDuration; dur.fNum; ) {
 		char duration[32];
 		VLFraction part, visual;
-		bool	   triplet;
-		prop.PartialNote(at, dur, &part);
-		prop.VisualNote(at, part, &visual, &triplet);
+		bool	   grouped = dur==nextDur ||
+			(prevPart!=0 ? dur==prevPart : dur==prevDur);
+		prop.PartialNote(at, dur, grouped, &part);
+		prop.VisualNote(at, part, triplet, &visual, &triplet);
 		if (!triplet && fPitch != kNoPitch && part == dur && 2*visual == prevPart) {
 			durations.pop_back();
 			sprintf(duration, "%s%d.", n.c_str(), visual.fDenom/2);
@@ -214,22 +215,26 @@ static struct {
   {{0,0}, 0}
 };
 
-void VLNote::MMAName(std::string & name, VLFraction at, const VLProperties & prop) const
+void VLNote::MMAName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, const VLProperties & prop) const
 {
 	bool useSharps = prop.fKey >= 0;
 
 	name.clear();
+	VLFraction prevPart(0);
 	for (VLFraction dur = fDuration; dur.fNum; ) {
 		VLFraction part;
-		prop.PartialNote(at, dur, &part);
+		bool	   grouped = dur==nextDur ||
+			(prevPart!=0 ? dur==prevPart : dur==prevDur);
+		prop.PartialNote(at, dur, grouped, &part);
 		for (int d=0; sMMADur[d].fName; ++d)
 			if (part == sMMADur[d].fVal) {
 				if (name.size())
 					name += '+';
 				name += sMMADur[d].fName;
 			}
-		dur	-= part;
-		at  += part;
+		prevPart	= part;
+		dur		   -= part;
+		at  	   += part;
 	}
 	name += MMAPitchName(fPitch, useSharps);
 	if (fPitch != kNoPitch) {
@@ -448,7 +453,7 @@ void VLChord::LilypondName(std::string & name, bool useSharps) const
 {
 	name = LilypondPitchName(fPitch, useSharps);
 	char duration[16];
-	if (fDuration.fNum == 1 && !(fDuration.fDenom & (fDuration.fDenom-1)))
+	if (fDuration.fNum == 1 && !(fDuration.fDenom & (fDuration.fDenom-1))) // Power of two
 		sprintf(duration, "%d", fDuration.fDenom);
 	else
 		sprintf(duration, "1*%d/%d", fDuration.fNum, fDuration.fDenom);
@@ -687,7 +692,7 @@ static void TrimNote(VLFraction at, VLFraction & d, VLFraction grid)
 }
 
 void VLProperties::PartialNote(VLFraction at, VLFraction totalDuration, 
-							   VLFraction * noteDuration) const
+							   bool grouped, VLFraction * noteDuration) const
 {
 	const VLFraction kBeat(1, fTime.fDenom);
 	
@@ -706,11 +711,20 @@ void VLProperties::PartialNote(VLFraction at, VLFraction totalDuration,
 		else 
 			TrimNote(at, *noteDuration, kBeat);// Don't let other notes span beats
 	}
-	if (!(noteDuration->fDenom % 3) && *noteDuration != totalDuration && ((at+*noteDuration)%kBeat) > 0)
-		*noteDuration *= VLFraction(3,4); // avoid frivolous triplets
+	if (!(noteDuration->fDenom % 3))
+		if (*noteDuration != totalDuration) {
+			if (((at+*noteDuration)%kBeat) > 0)
+				*noteDuration *= VLFraction(3,4); // avoid frivolous triplets
+		} else if (*noteDuration > VLFraction(1,4*fDivisions) && !grouped) {
+			if (*noteDuration == VLFraction(1,2*fDivisions))
+				if (at % VLFraction(1, 4*fDivisions/3) == 0)
+					return; // Permit larger swing notes
+			*noteDuration *= VLFraction(3,4); // avoid other isolated triplets
+		}
 }
 
 void VLProperties::VisualNote(VLFraction at, VLFraction actualDur, 
+							  bool prevTriplet,
 							  VLFraction *visualDur, bool * triplet) const
 {
 	bool 		swing= !(fDivisions % 3);		// In swing mode?
@@ -722,14 +736,14 @@ void VLProperties::VisualNote(VLFraction at, VLFraction actualDur,
 			if (actualDur == 4*swung/3 && (at % swingGrid) == 0) {	
 				*visualDur	= swung;
 				*triplet	= false;
-			} else if (actualDur == 2*swung/3 && ((at+actualDur) % swingGrid) == 0) {
+			} else if (actualDur == 2*swung/3 && ((at+actualDur) % swingGrid) == 0 && !prevTriplet) {
 				*visualDur	= swung;
 				*triplet	= false;
 			} else {
-				*visualDur = 4*actualDur/3;
+				*visualDur = 3*actualDur/2;
 			}
 		} else {
-			*visualDur = 4*actualDur/3;
+			*visualDur = 3*actualDur/2;
 		}
 	} else {
 		*visualDur = actualDur;
@@ -748,9 +762,14 @@ void VLMeasure::MMANotes(std::string & notes, const VLProperties & prop) const
 	VLNoteList::const_iterator 	e 	= fMelody.end();
 
 	notes.clear();
+	VLFraction	prevDur(0);
 	for (; i!=e; ++i) {
-		std::string note;
-		i->MMAName(note, at, prop);
+		std::string 				note;
+		VLFraction 					nextDur(0);
+		VLNoteList::const_iterator	n=i;
+		if (++n != e)
+			nextDur = n->fDuration;
+		i->MMAName(note, at, prevDur, nextDur, prop);
 		if (notes.size())
 			notes += ' ';
 		notes += note+';';
@@ -1087,12 +1106,28 @@ void VLSong::LilypondNotes(std::string & notes) const
 			indent = "";
 		}
 		notes += indent;
+		VLFraction prevDur(0);
+		bool triplet = false;
 		for (; i!=e; ++i) {
 			std::string note;
-			i->LilypondName(note, at, fProperties[fMeasures[measure].fPropIdx]);
-			at += i->fDuration;
-			notes += note+" ";
+			VLNoteList::const_iterator n = i;
+			VLFraction nextDur(0);
+			if (++n != e)
+				nextDur = n->fDuration;
+			i->LilypondName(note, at, prevDur, nextDur, triplet, fProperties[fMeasures[measure].fPropIdx]);
+			prevDur	= i->fDuration;
+			at 	   += i->fDuration;
+			notes  += note+" ";
 		}
+		//
+		// Consolidate triplets
+		//
+		size_t trip;
+		while ((trip = notes.find("} \\times 2/3 { ")) != std::string::npos)
+			notes.erase(trip, 15);
+		while ((trip = notes.find("} ~ \\times 2/3 { ")) != std::string::npos)
+			notes.replace(trip, 17, "~ ", 2);
+
 		notes += '|';
 		if (!(measure % 4)) {
 			char measNo[8];
