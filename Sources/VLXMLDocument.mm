@@ -117,7 +117,7 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 		int 			alt		= sSteps[pitch+1] == 'b';
 		if (alt)
 			if (useSharps) {
-				--step; // Db -> C#
+				step= step=='A' ? 'G' : step-1; // Db -> C#
 				alt = 1;
 			} else {
 				alt = -1;
