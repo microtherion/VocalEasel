@@ -792,8 +792,11 @@ void VLMeasure::MMAChords(std::string & chords, const VLProperties & prop) const
   }
 }
 
-VLSong::VLSong()
+VLSong::VLSong(bool initialize)
 {
+	if (!initialize)
+		return;
+
 	const VLFraction 	fourFour(4,4);
 	VLProperties 		defaultProperties = {fourFour, 0, 1, 3};
 	
@@ -1679,5 +1682,131 @@ void VLSong::iterator::AdjustStatus()
 		if (fStatus.size() && fStatus.back().fVolta == fStatus.back().fTimes)
 			fStatus.pop_back();
 		fStatus.push_back(Repeat(fMeasure, times));
+	}
+}
+
+VLSong VLSong::CopyMeasures(size_t beginMeasure, size_t endMeasure)
+{
+	VLSong	subSong(false);
+
+	int8_t	firstProp	= fMeasures[beginMeasure].fPropIdx;
+	int8_t	lastProp	= fMeasures[endMeasure-1].fPropIdx;
+	
+	subSong.fProperties.insert(subSong.fProperties.end(),
+							   fProperties.begin()+firstProp, 
+							   fProperties.begin()+lastProp+1);
+	subSong.fMeasures.insert(subSong.fMeasures.end(),
+							 fMeasures.begin()+beginMeasure,
+							 fMeasures.begin()+endMeasure);
+
+	if (firstProp)
+		for (size_t i=0; i<subSong.fMeasures.size(); ++i)
+			subSong.fMeasures[i].fPropIdx	-= firstProp;
+
+	for (size_t r=0; r<fRepeats.size(); ++r) 
+		if (fRepeats[r].fEndings[0].fBegin >= beginMeasure 
+         && fRepeats[r].fEndings[0].fEnd   <= endMeasure
+		) {
+			VLRepeat repeat = fRepeats[r];
+			for (size_t e=0; e<repeat.fEndings.size(); ++e) {
+				repeat.fEndings[e].fBegin	-= beginMeasure;
+				repeat.fEndings[e].fEnd		-= endMeasure;
+			}
+			subSong.fRepeats.push_back(repeat);
+		}
+
+	return subSong;
+}
+
+void VLSong::PasteMeasures(size_t beginMeasure, const VLSong & measures, int mode)
+{
+	size_t numMeas		= measures.CountMeasures();
+	size_t nextMeasure 	= mode==kInsert ? beginMeasure : beginMeasure+numMeas;
+	//
+	// Ignore properties for now. We don't use multiple properties yet.
+	//
+	if (mode == kInsert) {
+		fMeasures.insert(fMeasures.begin()+beginMeasure, 
+						 measures.fMeasures.begin(), measures.fMeasures.end());
+		for (size_t r=0; r<fRepeats.size(); ++r) {
+			VLRepeat & repeat = fRepeats[r];
+			for (size_t e=0; e<repeat.fEndings.size(); ++e) {
+				if (repeat.fEndings[e].fBegin >= beginMeasure)
+					repeat.fEndings[e].fBegin += numMeas;
+				if (repeat.fEndings[e].fEnd >= beginMeasure)
+					repeat.fEndings[e].fEnd += numMeas;
+			}
+		}
+		for (size_t r=0; r<measures.fRepeats.size(); ++r) {
+			VLRepeat repeat = measures.fRepeats[r];
+			for (size_t e=0; e<repeat.fEndings.size(); ++e) {
+				repeat.fEndings[e].fBegin 	+= beginMeasure;
+				repeat.fEndings[e].fEnd 	+= beginMeasure;
+			}	
+			fRepeats.push_back(repeat);
+		}
+	} else {
+		if (CountMeasures() < nextMeasure) {
+			VLMeasure 	rest;
+			rest.fPropIdx	= fMeasures.back().fPropIdx;
+			VLFraction	dur	= fProperties[rest.fPropIdx].fTime;
+			rest.fMelody.push_back(VLLyricsNote(VLRest(dur)));
+			VLChord		rchord;
+			rchord.fDuration= dur;
+			rest.fChords.push_back(rchord);
+
+			fMeasures.insert(fMeasures.end(), nextMeasure-CountMeasures(), rest);
+		}
+		for (size_t m=0; m<numMeas; ++m) {
+			const VLMeasure &	srcMeas = measures.fMeasures[m];
+			VLMeasure &			dstMeas = fMeasures[beginMeasure+m];
+			if (mode & kOverwriteChords)
+				dstMeas.fChords = srcMeas.fChords;
+			if (mode & kOverwriteMelody)
+				dstMeas.fMelody = srcMeas.fMelody;			
+		}
+	}
+}
+
+void VLSong::DeleteMeasures(size_t beginMeasure, size_t endMeasure)
+{
+	int8_t	firstProp	= fMeasures[beginMeasure].fPropIdx;
+	int8_t	lastProp	= fMeasures[endMeasure-1].fPropIdx+1;
+
+	if (beginMeasure && fMeasures[beginMeasure-1].fPropIdx == firstProp)
+		++firstProp;
+	if (endMeasure < CountMeasures() && fMeasures[endMeasure].fPropIdx == lastProp)
+		--lastProp;
+	if (lastProp > firstProp) {
+		fProperties.erase(fProperties.begin()+firstProp, 
+						  fProperties.begin()+lastProp);
+		for (size_t m=endMeasure; m<CountMeasures(); ++m)
+			fMeasures[m].fPropIdx -= lastProp-firstProp;
+	}
+	fMeasures.erase(fMeasures.begin()+beginMeasure, 
+					fMeasures.begin()+endMeasure);
+
+	size_t delta = endMeasure-beginMeasure;
+	for (size_t r=0; r<fRepeats.size(); ) {
+		VLRepeat & repeat = fRepeats[r];
+		if (repeat.fEndings[0].fBegin >= beginMeasure 
+		 && repeat.fEndings[0].fEnd	<= endMeasure
+		) {
+			fRepeats.erase(fRepeats.begin()+r);	
+		} else {
+			for (size_t e=0; e<repeat.fEndings.size(); ) {
+				if (repeat.fEndings[e].fBegin > beginMeasure)
+					repeat.fEndings[e].fBegin = 
+						std::max(beginMeasure, repeat.fEndings[e].fBegin-delta);
+				if (repeat.fEndings[e].fEnd > beginMeasure)
+					repeat.fEndings[e].fEnd = 
+						std::max(beginMeasure, repeat.fEndings[e].fEnd-delta);
+				if (e && repeat.fEndings[e].fBegin==repeat.fEndings[e].fEnd) 
+					repeat.fEndings.erase(repeat.fEndings.begin()+e);
+				else
+					++e;
+			}
+			++r;
+		}
 	}
 }

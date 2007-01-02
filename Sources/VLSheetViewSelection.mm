@@ -10,6 +10,11 @@
 #import "VLSheetViewSelection.h"
 #import "VLDocument.h"
 
+//	
+// We're too lazy to properly serialize our private pasteboard format.
+//
+static VLSong	sPasteboard;
+
 @implementation VLSheetView (Selection)
 
 - (void)editSelection
@@ -74,18 +79,41 @@
 
 - (IBAction)cut:(id)sender
 {
+	[self copy:sender];	
+	[self delete:sender];
 }
 
 - (IBAction)copy:(id)sender
 {
+	NSPasteboard * pb = [NSPasteboard generalPasteboard];
+	NSString * pbType = [[NSBundle mainBundle] bundleIdentifier];
+	
+	[pb declareTypes:[NSArray arrayWithObject:pbType] owner:nil];
+	if ([pb setString:@"whatever" forType:pbType])
+		sPasteboard = [self song]->CopyMeasures(fSelStart, fSelEnd);
 }
 
 - (IBAction)paste:(id)sender
 {
+	NSPasteboard * pb = [NSPasteboard generalPasteboard];
+	NSString * pbType = [[NSBundle mainBundle] bundleIdentifier];
+
+	if ([pb availableTypeFromArray:[NSArray arrayWithObject:pbType]]) {
+		[[self document] willChangeSong];
+		if (![sender tag]) // Delete on paste, but not on overwrite 
+			[self song]->DeleteMeasures(fSelStart, fSelEnd);
+		[self song]->PasteMeasures(fSelStart, sPasteboard, [sender tag]);
+		[[self document] didChangeSong];
+		[self setNeedsDisplay:YES];
+	}
 }
 
 - (IBAction)delete:(id)sender
 {
+	[[self document] willChangeSong];
+	[self song]->DeleteMeasures(fSelStart, fSelEnd);
+	[[self document] didChangeSong];
+	[self setNeedsDisplay:YES];
 }
 
 - (IBAction)editRepeat:(id)sender

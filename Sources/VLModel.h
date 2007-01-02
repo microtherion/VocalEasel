@@ -219,6 +219,11 @@ struct VLProperties {
 	// Determine visual representation of note head
 	//
 	void VisualNote(VLFraction at, VLFraction actualDur, bool prevTriplet, VLFraction *visualDur, bool * triplet) const;
+
+	bool operator==(const VLProperties & other)
+	{ return fTime == other.fTime && fKey == other.fKey && fMode == other.fMode
+			&& fDivisions == other.fDivisions;
+	}
 };
 
 struct VLLyricsNote : VLNote {
@@ -257,7 +262,7 @@ struct VLRepeat {
 };
 
 struct VLSong {
-	VLSong();
+	VLSong(bool initialize = true);
 	void swap(VLSong & other);
 	
 	std::vector<VLProperties>	fProperties;
@@ -326,6 +331,16 @@ struct VLSong {
 	bool NextWord(size_t stanza, size_t & measure, VLFraction & at);
 	std::string GetWord(size_t stanza, size_t measure, VLFraction at);
 	void SetWord(size_t stanza, size_t measure, VLFraction at, std::string word);
+
+	enum {
+		kInsert,
+		kOverwriteChords = 1,
+		kOverwriteMelody = 2
+	};
+	VLSong	CopyMeasures(size_t beginMeasure, size_t endMeasure);
+	void	PasteMeasures(size_t beginMeasure, const VLSong & measures, 
+						  int mode = kInsert);
+	void	DeleteMeasures(size_t beginMeasure, size_t endMeasure);
 
 	size_t	CountMeasures() const { return fMeasures.size(); }
 	size_t  CountStanzas() const;
