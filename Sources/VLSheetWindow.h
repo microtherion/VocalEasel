@@ -28,6 +28,7 @@
 	IBOutlet id 	outputToolItem;
 	IBOutlet id 	logToolItem;
 	IBOutlet id		playToolItem;
+	IBOutlet id		stopToolItem;
 	IBOutlet id		zoomInToolItem;
 	IBOutlet id		zoomOutToolItem;
 }

@@ -47,6 +47,7 @@ static NSString*	sOutputToolbarItemIdentifier 	= @"Output Toolbar Item Identifie
 static NSString*	sLogToolbarItemIdentifier		= @"Log Toolbar Item Identifier";
 static NSString*	sRunToolbarItemIdentifier		= @"Run Toolbar Item Identifier";
 static NSString*	sPlayToolbarItemIdentifier		= @"Play Toolbar Item Identifier";
+static NSString*	sStopToolbarItemIdentifier		= @"Stop Toolbar Item Identifier";
 static NSString*	sZoomInToolbarItemIdentifier	= @"Zoom In Toolbar Item Identifier";
 static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identifier";
 
@@ -92,6 +93,8 @@ static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identif
 		prototype = runToolItem;
     else if ([itemIdent isEqual: sPlayToolbarItemIdentifier]) 
 		prototype = playToolItem;
+    else if ([itemIdent isEqual: sStopToolbarItemIdentifier]) 
+		prototype = stopToolItem;
     else if ([itemIdent isEqual: sZoomInToolbarItemIdentifier]) 
 		prototype = zoomInToolItem;
     else if ([itemIdent isEqual: sZoomOutToolbarItemIdentifier]) 
@@ -115,7 +118,9 @@ static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identif
 - (NSArray *) toolbarDefaultItemIdentifiers: (NSToolbar *) toolbar {
     return [NSArray arrayWithObjects:	
 						sRunToolbarItemIdentifier, 
+					NSToolbarSeparatorItemIdentifier,
 					sPlayToolbarItemIdentifier,
+					sStopToolbarItemIdentifier,
 					NSToolbarSeparatorItemIdentifier,
 					sZoomInToolbarItemIdentifier, 
 					sZoomOutToolbarItemIdentifier, 
@@ -128,6 +133,7 @@ static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identif
     return [NSArray arrayWithObjects: 	
 						sRunToolbarItemIdentifier, 
 					sPlayToolbarItemIdentifier,
+					sStopToolbarItemIdentifier,
 					sZoomInToolbarItemIdentifier, 
 					sZoomOutToolbarItemIdentifier, 
 					sOutputToolbarItemIdentifier, 
