@@ -384,6 +384,11 @@
 							[self fileURLWithExtension:@"mid"]]));
 }
 
+- (IBAction) stop:(id)sender
+{
+	VLSoundOut::Instance()->Stop();
+}
+
 - (IBAction) showOutput:(id)sender
 {
 	[[self pdfWin] showWindow:sender];

@@ -54,6 +54,7 @@
                 outputToolItem = id; 
                 playToolItem = id; 
                 runToolItem = id; 
+                stopToolItem = id; 
                 zoomInToolItem = id; 
                 zoomOutToolItem = id; 
             }; 

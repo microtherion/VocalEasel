@@ -27,10 +27,9 @@ public:
 	virtual void 	PlayNote(const VLNote & note);
 	virtual void 	PlayChord(const VLChord & chord); 
 	virtual void 	PlayFile(CFDataRef file);
+	virtual void	Stop();
 	
 	virtual 	   ~VLAUSoundOut();
-
-	void			Stop();
 protected:
 	VLAUSoundOut(bool fileOutput);
 
