@@ -27,6 +27,7 @@
 		95009B800B0EDC7B00EB33A4 /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B4E0B0ED0BB00EB33A4 /* CADebugMacros.cpp */; };
 		95009B810B0EDC7D00EB33A4 /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B260B0ECF9000EB33A4 /* CAStreamBasicDescription.cpp */; };
 		95009B830B0EDCD800EB33A4 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95009B820B0EDCD800EB33A4 /* CoreFoundation.framework */; };
+		950795E10B4A34D9008911A6 /* stop.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 950795E00B4A34D9008911A6 /* stop.tiff */; };
 		952CBB9C095FD1CA00434E43 /* VLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */; };
 		952CBB9D095FD1CA00434E43 /* VLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */; };
 		952CBB9F095FD1D900434E43 /* TVLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9E095FD1D900434E43 /* TVLSoundOut.cpp */; };
@@ -155,6 +156,7 @@
 		95009B620B0ED18700EB33A4 /* CAConditionalMacros.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CAConditionalMacros.h; path = Sources/CoreAudioSDK/CAConditionalMacros.h; sourceTree = "<group>"; };
 		95009B630B0ED18700EB33A4 /* CAMath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CAMath.h; path = Sources/CoreAudioSDK/CAMath.h; sourceTree = "<group>"; };
 		95009B820B0EDCD800EB33A4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
+		950795E00B4A34D9008911A6 /* stop.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = stop.tiff; path = Resources/stop.tiff; sourceTree = "<group>"; };
 		952CBB98095FD19D00434E43 /* TVLSoundOut */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLSoundOut; sourceTree = BUILT_PRODUCTS_DIR; };
 		952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = VLSoundOut.cpp; path = Sources/VLSoundOut.cpp; sourceTree = "<group>"; };
 		952CBB9B095FD1CA00434E43 /* VLSoundOut.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSoundOut.h; path = Sources/VLSoundOut.h; sourceTree = "<group>"; };
@@ -390,6 +392,7 @@
 				954DD4DA0B44E6000056C504 /* MainMenu.nib */,
 				95FC66BC0AF0A4D4003D9C11 /* console.icns */,
 				95FC66BD0AF0A4D4003D9C11 /* music.tiff */,
+				950795E00B4A34D9008911A6 /* stop.tiff */,
 				95FC66BE0AF0A4D4003D9C11 /* nextpage.tiff */,
 				95FC66BF0AF0A4D4003D9C11 /* prevpage.tiff */,
 				95FC66C00AF0A4D4003D9C11 /* run.icns */,
@@ -599,6 +602,7 @@
 				95FC66C90AF0A4D5003D9C11 /* zoomout.tiff in Resources */,
 				959420EB0B44E769006BC62C /* MainMenu.nib in Resources */,
 				959420EC0B44E77A006BC62C /* VLDocument.nib in Resources */,
+				950795E10B4A34D9008911A6 /* stop.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
