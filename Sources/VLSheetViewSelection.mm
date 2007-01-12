@@ -36,6 +36,8 @@ static VLSong	sPasteboard;
 		// Fall through
 		//
 	case kRegionMeasure:
+		fCursorMeasure = 
+			std::max(0, std::min<int>(fCursorMeasure, [self song]->CountMeasures()));
 		if (fCursorMeasure > fSelEnd) {
 			fSelEnd		= fCursorMeasure;
 			[self setNeedsDisplay:YES];
