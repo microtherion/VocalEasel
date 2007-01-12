@@ -20,6 +20,7 @@
 	NSError *	err;
 	NSURL *		mmaURL = [self fileURLWithExtension:@"mma"];
 	[self writeToURL: mmaURL ofType:@"VLMMAType" error:&err];	
+	[self changedFileWrapper];
 
 	NSString *	launch	=
 		[mainBundle pathForResource:@"mmaWrapper" ofType:@""
@@ -47,6 +48,17 @@
 								 userInfo:nil];
 
 		return nil;
+	}
+}
+
+
+- (void)mmaDone:(NSNotification *)notification {
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+    int status = [[notification object] terminationStatus];
+    if (!status) {
+		;
+	} else {
+		NSBeep();
 	}
 }
 

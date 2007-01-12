@@ -316,6 +316,16 @@
 	}
 }
 
+- (void) changedFileWrapper
+{
+	if (NSURL * url = [self fileURL]) 
+		if (NSDate * modDate = 
+			[[[NSFileManager defaultManager] fileAttributesAtPath:[url path] 
+											traverseLink:YES]
+				objectForKey:NSFileModificationDate])
+			[self setFileModificationDate:modDate];
+}
+
 - (NSTask *) taskWithLaunchPath:(NSString *)launch arguments:(NSArray *)args;
 {
 	NSTask *	task	= [[NSTask alloc] init];
@@ -372,6 +382,7 @@
 	} else {
 		NSBeep();
 	}
+	[self changedFileWrapper];
 }
 
 - (IBAction) play:(id)sender
@@ -379,6 +390,7 @@
 	NSError * err;
 	[self writeToURL:[self fileURLWithExtension:@"mid"]
 		  ofType:@"VLMIDIType" error:&err];
+	[self changedFileWrapper];
 	VLSoundOut::Instance()->PlayFile(
 	  CFDataRef([NSData dataWithContentsOfURL: 
 							[self fileURLWithExtension:@"mid"]]));

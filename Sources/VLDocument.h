@@ -54,6 +54,7 @@
 - (NSString *) baseName;
 - (NSURL *)    fileURLWithExtension:(NSString*)extension;
 - (NSTask *)   taskWithLaunchPath:(NSString *)path arguments:(NSArray *)args;
+- (void)	   changedFileWrapper;
 - (void)	   willChangeSong;
 - (void)	   didChangeSong;
 
