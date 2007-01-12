@@ -254,10 +254,6 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	NSScrollView * scroll = [self enclosingScrollView];
 
 	NSSize sz 	=  [scroll contentSize];
-#if 0
-	sz.width   *=	fDisplayScale;
-	sz.height  *= 	fDisplayScale;
-#endif
 
 	const VLSong * 			song = [self song];
 	const VLProperties & 	prop = song->fProperties.front();
@@ -490,7 +486,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 
 - (void)drawRect:(NSRect)rect
 {
-	if (fNeedsRecalc)
+	if (fNeedsRecalc || [self inLiveResize])
 		[self recalculateDimensions];
 
 	size_t stanzas = [self song]->CountStanzas();
