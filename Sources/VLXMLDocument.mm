@@ -569,8 +569,17 @@ int8_t sStepToPitch[] = {
 		int				m = [[[measure attributeForName:@"number"]
 								 stringValue] intValue]-1;
 
-		if (m >= song->CountMeasures())
-			song->fMeasures.resize(m);
+		if (m >= song->CountMeasures()) {
+			size_t oldSz = song->fMeasures.size();
+			song->fMeasures.resize(m+1);
+			VLLyricsNote 	rest = VLLyricsNote(VLRest(prop.fTime));
+			VLChord 		rchord;
+			rchord.fDuration = prop.fTime;
+			for (size_t i=oldSz; i<=m; ++i) {
+				song->fMeasures[i].fChords.push_back(rchord);
+				song->fMeasures[i].fMelody.push_back(rest);
+			}
+		}
 
 		[self readBarlines:[measure elementsForName:@"barline"] measure:m
 			  repeat:&repeat inRepeat:&inRepeat error:outError];
@@ -579,8 +588,7 @@ int8_t sStepToPitch[] = {
 
 		for (NSXMLElement * note; note = [n nextObject]; ) {
 			VLLyricsNote n = [self readNote:note withUnit:unit];
-			if (n.fPitch != VLNote::kNoPitch)
-				song->AddNote(n, m, at);
+			song->AddNote(n, m, at);
 			at += n.fDuration;
 		}
 	}
