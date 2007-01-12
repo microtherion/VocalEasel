@@ -1436,21 +1436,34 @@ void VLSong::DelEnding(size_t beginMeasure, size_t endMeasure)
 bool VLSong::CanBeRepeat(size_t beginMeasure, size_t endMeasure, int * times)
 {
 	for (size_t r=0; r<fRepeats.size(); ++r) {
-		if (fRepeats[r].fEndings[0].fBegin == beginMeasure) {
+		const VLRepeat & rep = fRepeats[r];
+		if (rep.fEndings[0].fBegin == beginMeasure) {
 			//
 			// Look for exact match & return
 			//
 			if (times)
 				*times = fRepeats[r].fTimes;
-			if (fRepeats[r].fEndings[0].fEnd == endMeasure) 
+			if (rep.fEndings[0].fEnd == endMeasure) 
 				return true;
-			if (fRepeats[r].fEndings.size() > 1) {
-				if (fRepeats[r].fEndings[1].fBegin == endMeasure)
+			if (rep.fEndings.size() > 1) {
+				if (rep.fEndings[1].fBegin == endMeasure)
 					return true;
-				if (fRepeats[r].fEndings[1].fEnd == endMeasure)
+				if (rep.fEndings[1].fEnd == endMeasure)
 					return true;
 			}
 		}
+		//
+		// Inclusions and surroundings are OK. Beginnings may match, but
+		// endings must not.
+		//
+		if (rep.fEndings[0].fBegin >= beginMeasure 
+		 && rep.fEndings[0].fEnd < endMeasure
+		)
+			continue;
+		if (rep.fEndings[0].fBegin <= beginMeasure
+		 && rep.fEndings[0].fEnd > endMeasure
+		)
+			continue;
 		//
 		// Look for overlap and reject
 		//
