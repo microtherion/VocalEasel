@@ -263,6 +263,14 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 	return identification;
 }
 
+- (NSXMLElement *) soundElt:(NSString *)title
+{
+	NSXMLElement * sound = [NSXMLNode elementWithName:@"sound"];
+	[sound addAttribute: [NSXMLNode attributeWithName:title
+									stringValue:@"A"]];
+	return sound;
+}
+
 - (NSData *)XMLDataWithError:(NSError **)outError
 {
 	NSXMLElement  * work = [NSXMLNode elementWithName:@"work"];
@@ -386,9 +394,14 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 			
 			[melMeas addChild:barline];
 		} 
+		if (song->fCoda == measure)
+			[melMeas addChild:[self soundElt:@"coda"]];
 
 		[self addNotes:&song->fMeasures[measure].fMelody toMeasure:melMeas];
 		[self addChords:&song->fMeasures[measure].fChords toMeasure:harMeas];
+
+		if (song->fGoToCoda == measure+1) 
+			[melMeas addChild:[self soundElt:@"tocoda"]];
 
 		[melody addChild:melMeas];
 		[chords addChild:harMeas];
@@ -583,7 +596,10 @@ int8_t sStepToPitch[] = {
 
 		[self readBarlines:[measure elementsForName:@"barline"] measure:m
 			  repeat:&repeat inRepeat:&inRepeat error:outError];
-
+		if ([measure nodeForXPath:@".//sound[@coda=\"A\"]" error:outError])
+			song->fCoda = m;
+		if ([measure nodeForXPath:@".//sound[@tocoda=\"A\"]" error:outError])
+			song->fGoToCoda = m+1;
 		NSEnumerator * n = [[measure elementsForName:@"note"] objectEnumerator];
 
 		for (NSXMLElement * note; note = [n nextObject]; ) {
