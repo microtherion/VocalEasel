@@ -268,6 +268,8 @@ struct VLSong {
 	std::vector<VLProperties>	fProperties;
 	std::vector<VLMeasure>		fMeasures;
 	std::vector<VLRepeat>		fRepeats;
+	int8_t						fGoToCoda;
+	int8_t						fCoda;
 
 	//
 	// Iterate over measures in performance order
@@ -324,6 +326,7 @@ struct VLSong {
 	bool DoesEndRepeat(size_t measure, int * times = 0) const;
 	bool DoesBeginEnding(size_t measure, bool * repeat = 0, size_t * volta = 0) const;
 	bool DoesEndEnding(size_t measure, bool * repeat = 0, size_t * volta = 0) const;
+	bool IsNonEmpty() const;
 	void Transpose(int semitones);
 
 	bool FindWord(size_t stanza, size_t & measure, VLFraction & at);

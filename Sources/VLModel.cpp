@@ -811,12 +811,18 @@ VLSong::VLSong(bool initialize)
 		fMeasures[i].fChords.push_back(rchord);
 		fMeasures[i].fMelody.push_back(rest);
 	}
+
+	fGoToCoda	= -1;
+	fCoda		= -1;
 }
 
 void VLSong::swap(VLSong & other)
 {
 	fProperties.swap(other.fProperties);
 	fMeasures.swap(other.fMeasures);
+	fRepeats.swap(other.fRepeats);
+	std::swap(fGoToCoda, other.fGoToCoda);
+	std::swap(fCoda, other.fCoda);
 }
 
 //
@@ -1009,6 +1015,27 @@ static void TransposePinned(int8_t & pitch, int semi)
 		pitch 		  = octave+pitchInOctave;
 }
 
+bool VLSong::IsNonEmpty() const
+{
+	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
+		VLNoteList::const_iterator i = fMeasures[measure].fMelody.begin();
+		VLNoteList::const_iterator e = fMeasures[measure].fMelody.end();
+		
+		for (; i!=e; ++i) 
+			if (i->fPitch != VLNote::kNoPitch)
+				return true;
+	}
+	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
+		VLChordList::const_iterator i = fMeasures[measure].fChords.begin();
+		VLChordList::const_iterator e = fMeasures[measure].fChords.end();
+
+		for (; i!=e; ++i) 
+			if (i->fPitch != VLNote::kNoPitch)
+				return true;
+	}
+	return false;
+}
+
 void VLSong::Transpose(int semi)
 {
 	for (int pass=0; pass<2 && semi;) {
@@ -1109,6 +1136,9 @@ void VLSong::LilypondNotes(std::string & notes) const
 			indent = "";
 		}
 		notes += indent;
+		if (fCoda == measure)
+			notes += "\\break \\mark \\markup { \\musicglyph #\"scripts.coda\" }\n"
+				+ indent;
 		VLFraction prevDur(0);
 		bool triplet = false;
 		for (; i!=e; ++i) {
@@ -1131,7 +1161,12 @@ void VLSong::LilypondNotes(std::string & notes) const
 		while ((trip = notes.find("} ~ \\times 2/3 { ")) != std::string::npos)
 			notes.replace(trip, 17, "~ ", 2);
 
-		notes += '|';
+		if (fGoToCoda == measure+1)
+			notes += "\n"
+				+ indent 
+				+ "\\mark \\markup { \\musicglyph #\"scripts.coda\" } |";
+		else
+			notes += '|';
 		if (!(measure % 4)) {
 			char measNo[8];
 			sprintf(measNo, " %% %d", measure+1);
@@ -1672,6 +1707,12 @@ void VLSong::iterator::AdjustStatus()
 			return;
 		} 
 	}
+	if (fSong.fCoda > 0 && fMeasure==fSong.fGoToCoda)
+		if (fStatus.size() && fStatus.back().fVolta == fStatus.back().fTimes-1) {
+			fMeasure = fSong.fCoda;
+			
+			return;
+		}
 	if (fMeasure == fSong.CountMeasures())
 		while (fStatus.size())
 			if (++fStatus.back().fVolta < fStatus.back().fTimes) {
