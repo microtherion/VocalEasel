@@ -13,15 +13,9 @@
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		95009B280B0ECF9000EB33A4 /* AUOutputBL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B220B0ECF9000EB33A4 /* AUOutputBL.cpp */; };
-		95009B290B0ECF9000EB33A4 /* AUOutputBL.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95009B230B0ECF9000EB33A4 /* AUOutputBL.h */; };
 		95009B2A0B0ECF9000EB33A4 /* CAAudioFileFormats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B240B0ECF9000EB33A4 /* CAAudioFileFormats.cpp */; };
-		95009B2B0B0ECF9000EB33A4 /* CAAudioFileFormats.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95009B250B0ECF9000EB33A4 /* CAAudioFileFormats.h */; };
 		95009B2C0B0ECF9000EB33A4 /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B260B0ECF9000EB33A4 /* CAStreamBasicDescription.cpp */; };
-		95009B2D0B0ECF9000EB33A4 /* CAStreamBasicDescription.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95009B270B0ECF9000EB33A4 /* CAStreamBasicDescription.h */; };
 		95009B500B0ED0BB00EB33A4 /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B4E0B0ED0BB00EB33A4 /* CADebugMacros.cpp */; };
-		95009B510B0ED0BB00EB33A4 /* CADebugMacros.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95009B4F0B0ED0BB00EB33A4 /* CADebugMacros.h */; };
-		95009B640B0ED18700EB33A4 /* CAConditionalMacros.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95009B620B0ED18700EB33A4 /* CAConditionalMacros.h */; };
-		95009B650B0ED18700EB33A4 /* CAMath.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95009B630B0ED18700EB33A4 /* CAMath.h */; };
 		95009B7E0B0EDC7400EB33A4 /* AUOutputBL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B220B0ECF9000EB33A4 /* AUOutputBL.cpp */; };
 		95009B7F0B0EDC7900EB33A4 /* CAAudioFileFormats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B240B0ECF9000EB33A4 /* CAAudioFileFormats.cpp */; };
 		95009B800B0EDC7B00EB33A4 /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B4E0B0ED0BB00EB33A4 /* CADebugMacros.cpp */; };
@@ -39,9 +33,7 @@
 		95498DBD0AE3812F006B5F81 /* VLSoundSched.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */; };
 		954BBD860AEDDE5300BBFD5F /* VLAppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954BBD850AEDDE5300BBFD5F /* VLAppController.mm */; };
 		954BBD9A0AEDE81500BBFD5F /* VLPitchTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954BBD990AEDE81500BBFD5F /* VLPitchTransformer.mm */; };
-		954DD4B90B444B220056C504 /* VLSheetViewSelection.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 954DD4B70B444B220056C504 /* VLSheetViewSelection.h */; };
 		954DD4E60B44E67F0056C504 /* VLSheetViewSelection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954DD4E50B44E67F0056C504 /* VLSheetViewSelection.mm */; };
-		955CBA4E0B2366DD001CF4A1 /* VLKeyValueUndo.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 955CBA4C0B2366DD001CF4A1 /* VLKeyValueUndo.h */; };
 		955CBA4F0B2366DD001CF4A1 /* VLKeyValueUndo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 955CBA4D0B2366DD001CF4A1 /* VLKeyValueUndo.mm */; };
 		955E58E5095658AB0045FDA5 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		955E59610957C1400045FDA5 /* TVLChord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E59600957C1400045FDA5 /* TVLChord.cpp */; };
@@ -72,9 +64,7 @@
 		95E04DAB0AEB4886006F30A0 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
 		95E04DC70AEB4B57006F30A0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		95E04DCE0AEB4D9B006F30A0 /* Templates in Resources */ = {isa = PBXBuildFile; fileRef = 95E04DCA0AEB4D9B006F30A0 /* Templates */; };
-		95E299BF0B2006F5001977D2 /* VLSheetViewLyrics.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95E299BD0B2006F5001977D2 /* VLSheetViewLyrics.h */; };
 		95E299C00B2006F5001977D2 /* VLSheetViewLyrics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95E299BE0B2006F5001977D2 /* VLSheetViewLyrics.mm */; };
-		95EDA5AA0B06DE46004D8D6E /* VLMIDIDocument.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95EDA5A80B06DE46004D8D6E /* VLMIDIDocument.h */; };
 		95EDA5AB0B06DE47004D8D6E /* VLMIDIDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95EDA5A90B06DE46004D8D6E /* VLMIDIDocument.mm */; };
 		95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
 		95F5F5340ADCCFBB003980B2 /* DTD in Resources */ = {isa = PBXBuildFile; fileRef = 95F5F51E0ADCCFBB003980B2 /* DTD */; };
@@ -103,16 +93,6 @@
 				95C461FE0B04432700649F92 /* MMA in Copy MMA Library */,
 				95C461C40B043E8900649F92 /* includes in Copy MMA Library */,
 				95C461C50B043E8900649F92 /* lib in Copy MMA Library */,
-				95EDA5AA0B06DE46004D8D6E /* VLMIDIDocument.h in Copy MMA Library */,
-				95009B290B0ECF9000EB33A4 /* AUOutputBL.h in Copy MMA Library */,
-				95009B2B0B0ECF9000EB33A4 /* CAAudioFileFormats.h in Copy MMA Library */,
-				95009B2D0B0ECF9000EB33A4 /* CAStreamBasicDescription.h in Copy MMA Library */,
-				95009B510B0ED0BB00EB33A4 /* CADebugMacros.h in Copy MMA Library */,
-				95009B640B0ED18700EB33A4 /* CAConditionalMacros.h in Copy MMA Library */,
-				95009B650B0ED18700EB33A4 /* CAMath.h in Copy MMA Library */,
-				95E299BF0B2006F5001977D2 /* VLSheetViewLyrics.h in Copy MMA Library */,
-				955CBA4E0B2366DD001CF4A1 /* VLKeyValueUndo.h in Copy MMA Library */,
-				954DD4B90B444B220056C504 /* VLSheetViewSelection.h in Copy MMA Library */,
 			);
 			name = "Copy MMA Library";
 			runOnlyForDeploymentPostprocessing = 0;

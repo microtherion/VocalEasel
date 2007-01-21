@@ -39,4 +39,6 @@ const float kStemH		= 30.0f;
 const float kWholeRestY	= 20.0f;
 const float kHalfRestY	= 15.0f;
 const float kTieDepth	= 10.0f;
+const float kCodaX		=-10.0f;
+const float kCodaY		=  5.0f;
 const int 	kMaxLedgers =  3;

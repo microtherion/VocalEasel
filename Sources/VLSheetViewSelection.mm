@@ -59,6 +59,27 @@ static VLSong	sPasteboard;
 	fCursorRegion = kRegionMeasure;
 }
 
+- (BOOL)validateMenuItem:(id) item
+{
+	SEL action = [item action];
+	if (action == @selector(insertJumpToCoda:))
+		if (fSelStart == fSelEnd) {
+			[item setState:[self song]->fGoToCoda==fSelStart];
+			
+			return YES;
+		} else
+			return NO;
+	else if (action == @selector(insertStartCoda:))
+		if (fSelStart == fSelEnd) {
+			[item setState:[self song]->fCoda==fSelStart];
+			
+			return YES;
+		} else
+			return NO;
+	else 
+		return [self validateUserInterfaceItem:item];
+}
+
 - (BOOL)validateUserInterfaceItem:(id) item
 {
 	SEL action = [item action];
@@ -213,6 +234,30 @@ static VLSong	sPasteboard;
 		fVolta	|= mask;
 	else
 		fVolta  &= ~mask;
+}
+
+- (IBAction)insertJumpToCoda:(id)sender
+{
+	[[self document] willChangeSong];
+	VLSong * song = [self song];
+	if (song->fGoToCoda == fSelStart)
+		song->fGoToCoda = -1;
+	else
+		song->fGoToCoda = fSelStart;
+	[self setNeedsDisplay:YES];
+	[[self document] didChangeSong];
+}
+
+- (IBAction)insertStartCoda:(id)sender
+{
+	[[self document] willChangeSong];
+	VLSong * song = [self song];
+	if (song->fCoda == fSelStart)
+		song->fCoda = -1;
+	else
+		song->fCoda = fSelStart;
+	[self setNeedsDisplay:YES];
+	[[self document] didChangeSong];
 }
 
 @end

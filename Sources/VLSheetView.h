@@ -36,6 +36,7 @@ enum VLMusicElement {
 	kMusicNaturalCursor,
 	kMusicRestCursor,
 	kMusicKillCursor,
+	kMusicCoda,
 	kMusicElements
 };
 

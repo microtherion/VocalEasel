@@ -4,6 +4,8 @@
             ACTIONS = {
                 editRepeat = id; 
                 editRepeatEnding = id; 
+                insertJumpToCoda = id; 
+                insertStartCoda = id; 
                 zoomIn = id; 
                 zoomOut = id; 
                 zoomToActualSize = id; 

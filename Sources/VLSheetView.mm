@@ -42,7 +42,8 @@ static NSString * sElementNames[kMusicElements] = {
 	@"sharpcursor",
 	@"naturalcursor",
 	@"restcursor",
-	@"killcursor"
+	@"killcursor",
+	@"coda"
 };
 
 static float sSharpPos[] = {
@@ -407,6 +408,10 @@ VLMusicElement sSemi2Accidental[12][12] = {
 				[bz removeAllPoints];			
 				[bz setLineWidth:2.0];
 			}
+			if (song->fGoToCoda == m || song->fCoda == m) 
+				[[self musicElement:kMusicCoda] 
+					compositeToPoint: NSMakePoint(x+kCodaX, yy+kCodaY)
+					operation: NSCompositeSourceOver];
 		}
 	}
 
@@ -518,15 +523,19 @@ VLMusicElement sSemi2Accidental[12][12] = {
 
 - (IBAction) setKey:(id)sender
 {
-	[[NSAlert alertWithMessageText:@"Transpose Song?"
-			 defaultButton:@"Transpose"
-			 alternateButton:@"Cancel"
-			 otherButton:@"Change Key"
-			 informativeTextWithFormat:
-				 @"Do you want to transpose the song into the new key?"]
-		beginSheetModalForWindow:[self window]
-		modalDelegate:self didEndSelector:@selector(setKey:returnCode:contextInfo:)
-		contextInfo:sender];
+	if ([self song]->IsNonEmpty())
+		[[NSAlert alertWithMessageText:@"Transpose Song?"
+				  defaultButton:@"Transpose"
+				  alternateButton:@"Cancel"
+				  otherButton:@"Change Key"
+				  informativeTextWithFormat:
+					  @"Do you want to transpose the song into the new key?"]
+			beginSheetModalForWindow:[self window]
+			modalDelegate:self 
+			didEndSelector:@selector(setKey:returnCode:contextInfo:)
+			contextInfo:sender];
+	else
+		[self setKey:nil returnCode:NSAlertOtherReturn contextInfo:sender];
 }
 
 - (void)setKey:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(id)sender
