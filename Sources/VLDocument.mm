@@ -73,6 +73,7 @@
 		tmpPath				= nil;
 		vcsWrapper			= nil;
 		repeatVolta			= 2;
+		brandNew			= true;
 		[self setHasUndoManager:YES];
 		undo				=
 			[[VLKeyValueUndo alloc] initWithOwner:self
@@ -114,6 +115,8 @@
 		logWin = nil;	
 	else if (win == pdfWin)
 		pdfWin = nil;
+	else if (win == sheetWin)
+		sheetWin = nil;
 
 	[super removeWindowController:win];
 }
@@ -223,6 +226,11 @@
 	return repeatVolta;
 }
 
+- (bool) brandNew
+{
+	return brandNew && ![self isDocumentEdited];
+}
+
 - (void) setRepeatVolta:(int)volta
 {
 	repeatVolta = volta;
@@ -305,6 +313,17 @@
 
 - (BOOL)readFromFileWrapper:(NSFileWrapper *)wrapper ofType:(NSString *)typeName error:(NSError **)outError
 {
+	brandNew	= false;
+	//
+	// On opening a document, close all unchanged empty documents
+	//
+	NSEnumerator * docs = [[[NSDocumentController sharedDocumentController] 
+							  documents] objectEnumerator];
+	while (VLDocument * doc = [docs nextObject])
+		if ([doc brandNew]) 
+			[[doc windowControllers] 
+				makeObjectsPerformSelector:@selector(close)];
+
 	if ([typeName isEqual:@"VLNativeType"]) {
 		return [self readFromXMLFileWrapper:wrapper error:outError];
 	} else {
