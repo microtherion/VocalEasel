@@ -1326,7 +1326,7 @@ std::string VLSong::GetWord(size_t stanza, size_t measure, VLFraction at)
 	return word;
 }
 
-void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string word)
+void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string word, size_t * nextMeas, VLFract * nextAt)
 {
 	uint8_t	kind = 0;
 	bool	cleanup = false;
@@ -1347,30 +1347,63 @@ void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string w
 					if (note->fLyrics.size() >= stanza)
 						note->fLyrics[stanza-1].fKind &= ~VLSyllable::kHasPrev;
 					
+					if (nextMeas)
+						*nextMeas = measure;
+					if (nextAt)
+						*nextAt	  = now;
+
 					return;
 				}
 				if (note->fLyrics.size()<stanza)
 					note->fLyrics.resize(stanza);
-				size_t root = word.find('-');
+				size_t sep = word.find_first_of(" \t-");
+				size_t esp;
 				std::string syll;
-				if (root == std::string::npos) {
-					syll 	= word;
+				char   type= 0;
+				if (sep == std::string::npos) {
+					esp = sep;
+					syll= word;
+				} else {
+					esp = word.find_first_not_of(" \t-", sep);
+					syll= word.substr(0, sep);
+					if (esp != std::string::npos) {
+						size_t tpos = word.substr(sep, esp-sep).find('-');
+						type = (tpos != std::string::npos) ? '-' : ' ';
+						word.erase(0, esp);
+					}
+				}
+				switch (type) {
+				default:
+					//
+					// Last syllable in text
+					//
 					kind   &= ~VLSyllable::kHasNext;
 					cleanup = true;
-				} else {
-					syll 	= word.substr(0, root);
-					word.erase(0, root+1);
+					break;
+				case ' ':
+					//
+					// Last syllable in word
+					//
+					kind 	&= ~VLSyllable::kHasNext;	
+					break;
+				case '-':
 					kind   |= VLSyllable::kHasNext;
+					break;
 				}
 				note->fLyrics[stanza-1].fText = syll;
 				note->fLyrics[stanza-1].fKind = kind;
-				kind |= VLSyllable::kHasPrev;
+				if (type == '-')
+					kind |= VLSyllable::kHasPrev;
 			}
 			now += note->fDuration;
 			++note;
 		}	
 		at = 0;
 	} while (++measure < fMeasures.size());	
+	if (nextMeas)
+		*nextMeas = 0;
+	if (nextAt)
+		*nextAt	  = VLFraction(0);
 }
 
 void VLSong::AddRepeat(size_t beginMeasure, size_t endMeasure, int times)

@@ -14,6 +14,8 @@
 	size_t 			fStanza;
 	size_t 			fMeasure;
 	VLFract 		fAt;
+	size_t			fNextMeas;
+	VLFract			fNextAt;
 }
 
 - (VLLyricsEditable *)initWithView:(VLSheetView *)view

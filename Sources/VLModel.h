@@ -333,7 +333,8 @@ struct VLSong {
 	bool PrevWord(size_t stanza, size_t & measure, VLFraction & at);
 	bool NextWord(size_t stanza, size_t & measure, VLFraction & at);
 	std::string GetWord(size_t stanza, size_t measure, VLFraction at);
-	void SetWord(size_t stanza, size_t measure, VLFraction at, std::string word);
+	void SetWord(size_t stanza, size_t measure, VLFraction at, std::string word,
+				 size_t * nextMeas=0, VLFract * nextAt=0);
 
 	enum {
 		kInsert,

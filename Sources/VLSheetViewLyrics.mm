@@ -22,12 +22,14 @@
 						  measure:(int)measure
 							   at:(VLFract)at
 {
-	self 	= [super init];
-	fView	= view;
-	fSong	= song;
-	fStanza	= stanza;
-	fMeasure= measure;
-	fAt		= at;
+	self 		= [super init];
+	fView		= view;
+	fSong		= song;
+	fStanza		= stanza;
+	fMeasure	= measure;
+	fAt 		= at;
+	fNextMeas	= fMeasure;
+	fNextAt		= fAt;
 	
 	VLFraction At = fAt;
 	fSong->FindWord(fStanza, fMeasure, At);
@@ -47,7 +49,7 @@
 - (void) setStringValue:(NSString *)val
 {
 	[[fView document] willChangeSong];
-	fSong->SetWord(fStanza, fMeasure, fAt, [val UTF8String]);
+	fSong->SetWord(fStanza, fMeasure, fAt, [val UTF8String], &fNextMeas, &fNextAt);
 	[[fView document] didChangeSong];
 }
 
@@ -58,13 +60,22 @@
 
 - (void) moveToNext
 {
-	VLFraction at = fAt;
-	if (!fSong->NextWord(fStanza, fMeasure, at)) {
-		fMeasure	= 0;
-		at			= 0;
+	if (fNextMeas != fMeasure || fNextAt != fAt) {
+		fMeasure = fNextMeas;
+		VLFraction at = fNextAt;
 		fSong->FindWord(fStanza, fMeasure, at);
+		fAt	 = at;
+	} else {
+		VLFraction at = fAt;
+		if (!fSong->NextWord(fStanza, fMeasure, at)) {
+			fMeasure	= 0;
+			at			= 0;
+			fSong->FindWord(fStanza, fMeasure, at);
+		}
+		fAt = at;
 	}
-	fAt = at;
+	fNextMeas = fMeasure;
+	fNextAt	  = fAt;
 }
 
 - (void) moveToPrev
@@ -76,6 +87,8 @@
 		fSong->PrevWord(fStanza, fMeasure, at);
 	}
 	fAt = at;
+	fNextMeas = fMeasure;
+	fNextAt	  = fAt;
 }
 
 - (void) highlightCursor
