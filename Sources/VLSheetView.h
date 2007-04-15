@@ -87,6 +87,7 @@ enum VLRecalc {
 	IBOutlet id			fEndingSheet;
 	IBOutlet id			fRepeatMsg;
 	IBOutlet id			fEndingMsg;
+	IBOutlet id			fGrooveMenu;
 }
 
 - (IBAction) setKey:(id)sender;
@@ -94,6 +95,7 @@ enum VLRecalc {
 - (IBAction) setDivisions:(id)sender;
 - (IBAction) hideFieldEditor:(id)sender;
 - (IBAction) endRepeatSheet:(id)sender;
+- (IBAction) selectGroove:(id)sender;
 
 - (VLDocument *) document;
 - (VLSong *) song;
@@ -117,6 +119,8 @@ enum VLRecalc {
 - (VLEditable *) editTarget;
 - (void) setEditTarget:(VLEditable *)editable;
 - (VLRegion) findRegionForEvent:(NSEvent *) event;
+
+- (void) setGroove:(NSString *)groove;
 
 @end
 

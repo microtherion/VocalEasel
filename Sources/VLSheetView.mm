@@ -13,6 +13,7 @@
 #import "VLSheetViewLyrics.h"
 #import "VLSheetViewSelection.h"
 #import "VLSoundOut.h"
+#import "VLGrooveController.h"
 
 #import "VLDocument.h"
 
@@ -521,6 +522,17 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	[[self editTarget] highlightCursor];
 }
 
+- (void)setKey:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(id)sender
+{
+	if (returnCode == NSAlertAlternateReturn)
+		return;
+
+	int key = [[sender selectedItem] tag];
+	[[self document] setKey:key transpose:returnCode==NSAlertDefaultReturn];
+	fNeedsRecalc = kRecalc;
+	[self setNeedsDisplay: YES];	
+}
+
 - (IBAction) setKey:(id)sender
 {
 	if ([self song]->IsNonEmpty())
@@ -536,17 +548,6 @@ VLMusicElement sSemi2Accidental[12][12] = {
 			contextInfo:sender];
 	else
 		[self setKey:nil returnCode:NSAlertOtherReturn contextInfo:sender];
-}
-
-- (void)setKey:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(id)sender
-{
-	if (returnCode == NSAlertAlternateReturn)
-		return;
-
-	int key = [[sender selectedItem] tag];
-	[[self document] setKey:key transpose:returnCode==NSAlertDefaultReturn];
-	fNeedsRecalc = kRecalc;
-	[self setNeedsDisplay: YES];	
 }
 
 - (IBAction) setTime:(id)sender
@@ -892,6 +893,7 @@ static int8_t sSharpAcc[] = {
 {
 	[[self document] addObserver:self forKeyPath:@"song" options:0 context:nil];
 	[[self document] addObserver:self forKeyPath:@"songKey" options:0 context:nil];	
+	[self setGroove:[[self document] valueForKey:@"songGroove"]];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)o change:(NSDictionary *)c context:(id)ctx
@@ -904,6 +906,30 @@ static int8_t sSharpAcc[] = {
 - (IBAction)endRepeatSheet:(id)sender
 {
 	[NSApp endSheet:[sender window] returnCode:[sender tag]];
+}
+
+- (IBAction)selectGroove:(id)sender
+{
+	if ([sender tag])
+		[[VLGrooveController alloc] initWithSheetView:self];
+	else	
+		[self setGroove:[sender title]];
+}
+
+- (void)setGroove:(NSString *)groove
+{
+	[[self document] setValue:groove forKey:@"songGroove"];
+	int removeIndex = [fGrooveMenu indexOfItemWithTitle:groove];
+	if (removeIndex < 0 && [fGrooveMenu numberOfItems] > 11)
+		removeIndex = 11;
+	if (removeIndex >= 0)
+		[fGrooveMenu removeItemAtIndex:removeIndex];
+	[[[fGrooveMenu menu] insertItemWithTitle:groove action:@selector(selectGroove:) 
+		keyEquivalent:@"" atIndex:2] setTarget:self];
+	[fGrooveMenu selectItemAtIndex:2];
+	NSArray * grooves = [fGrooveMenu itemTitles];
+	grooves = [grooves subarrayWithRange:NSMakeRange(2, [grooves count]-2)];
+	[[NSUserDefaults standardUserDefaults] setObject:grooves forKey:@"VLGrooves"];
 }
 
 @end

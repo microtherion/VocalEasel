@@ -1,0 +1,13 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {endSheet = id; updateDescription = id; }; 
+            CLASS = VLGrooveController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {fBrowser = NSBrowser; fDescription = NSTextField; fOKButton = NSButton; }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}

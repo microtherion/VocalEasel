@@ -46,6 +46,9 @@
 		959408AE096922F7007CCCF8 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		959420EB0B44E769006BC62C /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 954DD4DA0B44E6000056C504 /* MainMenu.nib */; };
 		959420EC0B44E77A006BC62C /* VLDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = 954DD4DF0B44E61E0056C504 /* VLDocument.nib */; };
+		9599ED960B73185800A6A2F7 /* VLGroove.nib in Resources */ = {isa = PBXBuildFile; fileRef = 9599ED940B73185800A6A2F7 /* VLGroove.nib */; };
+		9599ED9C0B731CC500A6A2F7 /* VLGrooveController.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 9599ED9A0B731CC500A6A2F7 /* VLGrooveController.h */; };
+		9599ED9D0B731CC500A6A2F7 /* VLGrooveController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9599ED9B0B731CC500A6A2F7 /* VLGrooveController.mm */; };
 		95A1C37C0AF1D4370076597D /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A1C37B0AF1D4370076597D /* Quartz.framework */; };
 		95A1C3860AF2ACE20076597D /* VLSheetWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */; };
 		95B3E1A70960E58B000E9C0D /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 95B3E1980960E58B000E9C0D /* Music */; };
@@ -57,6 +60,7 @@
 		95C461FE0B04432700649F92 /* MMA in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95C461DD0B04430F00649F92 /* MMA */; };
 		95C462000B04472E00649F92 /* mmaWrapper in Copy Tools */ = {isa = PBXBuildFile; fileRef = 95C461FF0B04472900649F92 /* mmaWrapper */; };
 		95C462830B045CB700649F92 /* lilyWrapper in Copy Tools */ = {isa = PBXBuildFile; fileRef = 95C4627A0B045C8E00649F92 /* lilyWrapper */; };
+		95D0C2FC0B785D020061080E /* rebuildGrooves in Copy Tools */ = {isa = PBXBuildFile; fileRef = 95D0C2FB0B785D020061080E /* rebuildGrooves */; };
 		95E04DA70AEB486E006F30A0 /* TVLLilypond.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */; };
 		95E04DA80AEB4878006F30A0 /* VLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* VLDocument.mm */; };
 		95E04DA90AEB487A006F30A0 /* VLLilypondDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */; };
@@ -93,6 +97,7 @@
 				95C461FE0B04432700649F92 /* MMA in Copy MMA Library */,
 				95C461C40B043E8900649F92 /* includes in Copy MMA Library */,
 				95C461C50B043E8900649F92 /* lib in Copy MMA Library */,
+				9599ED9C0B731CC500A6A2F7 /* VLGrooveController.h in Copy MMA Library */,
 			);
 			name = "Copy MMA Library";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,6 +108,7 @@
 			dstPath = bin;
 			dstSubfolderSpec = 7;
 			files = (
+				95D0C2FC0B785D020061080E /* rebuildGrooves in Copy Tools */,
 				95C462830B045CB700649F92 /* lilyWrapper in Copy Tools */,
 				95C462000B04472E00649F92 /* mmaWrapper in Copy Tools */,
 				95C461D80B0440A300649F92 /* mma.py in Copy Tools */,
@@ -167,6 +173,9 @@
 		9593E4E70AE0ED1F00035816 /* vocalese.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = vocalese.icns; path = Resources/vocalese.icns; sourceTree = "<group>"; };
 		959408A0096922CA007CCCF8 /* TVLEdit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLEdit; sourceTree = BUILT_PRODUCTS_DIR; };
 		959408AC096922EA007CCCF8 /* TVLEdit.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = TVLEdit.cpp; path = Tests/TVLEdit.cpp; sourceTree = "<group>"; };
+		9599ED950B73185800A6A2F7 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/VLGroove.nib; sourceTree = "<group>"; };
+		9599ED9A0B731CC500A6A2F7 /* VLGrooveController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLGrooveController.h; path = Sources/VLGrooveController.h; sourceTree = "<group>"; };
+		9599ED9B0B731CC500A6A2F7 /* VLGrooveController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLGrooveController.mm; path = Sources/VLGrooveController.mm; sourceTree = "<group>"; };
 		95A1C37B0AF1D4370076597D /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
 		95A1C3840AF2ACE20076597D /* VLSheetWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSheetWindow.h; path = Sources/VLSheetWindow.h; sourceTree = "<group>"; };
 		95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetWindow.mm; path = Sources/VLSheetWindow.mm; sourceTree = "<group>"; };
@@ -182,6 +191,7 @@
 		95C461DD0B04430F00649F92 /* MMA */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MMA; path = mma/MMA; sourceTree = "<group>"; };
 		95C461FF0B04472900649F92 /* mmaWrapper */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; name = mmaWrapper; path = Tools/mmaWrapper; sourceTree = "<group>"; };
 		95C4627A0B045C8E00649F92 /* lilyWrapper */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; name = lilyWrapper; path = Tools/lilyWrapper; sourceTree = "<group>"; };
+		95D0C2FB0B785D020061080E /* rebuildGrooves */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; name = rebuildGrooves; path = Tools/rebuildGrooves; sourceTree = "<group>"; };
 		95E04DA00AEB4837006F30A0 /* TVLLilypond */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLLilypond; sourceTree = BUILT_PRODUCTS_DIR; };
 		95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = TVLLilypond.mm; path = Tests/TVLLilypond.mm; sourceTree = "<group>"; };
 		95E04DCA0AEB4D9B006F30A0 /* Templates */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Templates; path = Resources/Templates; sourceTree = "<group>"; };
@@ -352,6 +362,8 @@
 				955CBA4D0B2366DD001CF4A1 /* VLKeyValueUndo.mm */,
 				954DD4B70B444B220056C504 /* VLSheetViewSelection.h */,
 				954DD4E50B44E67F0056C504 /* VLSheetViewSelection.mm */,
+				9599ED9A0B731CC500A6A2F7 /* VLGrooveController.h */,
+				9599ED9B0B731CC500A6A2F7 /* VLGrooveController.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -388,6 +400,7 @@
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
 				8D15AC360486D014006FF6A4 /* Info.plist */,
 				089C165FFE840EACC02AAC07 /* InfoPlist.strings */,
+				9599ED940B73185800A6A2F7 /* VLGroove.nib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -435,6 +448,7 @@
 				95C4627A0B045C8E00649F92 /* lilyWrapper */,
 				95C461FF0B04472900649F92 /* mmaWrapper */,
 				95C461D50B04406300649F92 /* mma.py */,
+				95D0C2FB0B785D020061080E /* rebuildGrooves */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -583,6 +597,7 @@
 				959420EB0B44E769006BC62C /* MainMenu.nib in Resources */,
 				959420EC0B44E77A006BC62C /* VLDocument.nib in Resources */,
 				950795E10B4A34D9008911A6 /* stop.tiff in Resources */,
+				9599ED960B73185800A6A2F7 /* VLGroove.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -600,7 +615,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "$BUILT_PRODUCTS_DIR/VocalEasel.app/Contents/Resources/bin/mmaWrapper -g\n";
+			shellScript = "$BUILT_PRODUCTS_DIR/VocalEasel.app/Contents/Resources/bin/mmaWrapper -g\n$SRCROOT/Tools/rebuildGrooves $BUILT_PRODUCTS_DIR/VocalEasel.app/Contents/Resources/share/mma/lib $BUILT_PRODUCTS_DIR/VocalEasel.app/Contents/Resources/Grooves.plist\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -634,6 +649,7 @@
 				95E299C00B2006F5001977D2 /* VLSheetViewLyrics.mm in Sources */,
 				955CBA4F0B2366DD001CF4A1 /* VLKeyValueUndo.mm in Sources */,
 				954DD4E60B44E67F0056C504 /* VLSheetViewSelection.mm in Sources */,
+				9599ED9D0B731CC500A6A2F7 /* VLGrooveController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -698,6 +714,14 @@
 				2A37F4BAFDCFA73011CA2CEA /* English */,
 			);
 			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		9599ED940B73185800A6A2F7 /* VLGroove.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9599ED950B73185800A6A2F7 /* English */,
+			);
+			name = VLGroove.nib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

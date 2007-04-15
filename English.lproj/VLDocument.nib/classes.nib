@@ -31,6 +31,7 @@
             ACTIONS = {
                 endRepeatSheet = id; 
                 hideFieldEditor = id; 
+                selectGroove = id; 
                 setDivisions = id; 
                 setKey = id; 
                 setTime = id; 
@@ -41,6 +42,7 @@
                 fEndingMsg = id; 
                 fEndingSheet = id; 
                 fFieldEditor = id; 
+                fGrooveMenu = id; 
                 fRepeatMsg = id; 
                 fRepeatSheet = id; 
             }; 

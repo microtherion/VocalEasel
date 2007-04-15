@@ -260,6 +260,14 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 						  objectForInfoDictionaryKey:@"CFBundleVersion"]]]];
 	[identification addChild:encoding];
 
+	NSXMLElement * misc 	= [NSXMLNode elementWithName:@"miscellaneous"];
+	NSXMLElement * groove	= [NSXMLNode elementWithName:@"miscellaneous-field"
+										 stringValue:songGroove];
+	[groove addAttribute: [NSXMLNode attributeWithName:@"name"
+									 stringValue:@"VocalEasel-groove"]];
+	[misc addChild: groove];
+	[identification addChild: misc];
+
 	return identification;
 }
 
@@ -674,6 +682,12 @@ int8_t sStepToPitch[] = {
 						error: outError] retain];
 	songLyricist= [[doc stringForXPath:@".//creator[@type=\"poet\"]" 
 					   error: outError] retain];
+	id groove   = [doc stringForXPath:@".//miscellaneous-field[@name=\"VocalEasel-groove\"]"
+						error: outError];
+	if (groove) {
+		[songGroove autorelease];
+		songGroove = [groove retain];
+	}
 
 	NSXMLElement * chords	= [doc nodeForXPath:@".//part[@id=\"HARM\"]" 
 								   error:outError];

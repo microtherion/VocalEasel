@@ -1,0 +1,83 @@
+#!/usr/bin/ruby
+#
+#  rebuildGrooves
+#  Vocalese
+#
+#  Created by Matthias Neeracher on 2/5/07.
+#  Copyright (c) 2007 __MyCompanyName__. All rights reserved.
+#
+
+require 'find'
+
+grooves = {}
+Find.find(ARGV[0]) do |f|
+  if File.directory?(f) 
+    Find.prune if File.exist?("f/MMAIGNORE")
+  elsif f =~ %r|.*/(\S+?).mma$|
+    style = $1
+    g     = {}
+    doc   = ""
+    groove= ""
+    File.open(f) do |file|
+      inDoc = false
+      inCont= false
+      file.each do |line|
+        if line =~ /^\s*Begin\s+Doc\s*$/
+          inDoc = true
+        elsif inDoc
+          if line =~ /^\s*End\s*$/
+            inDoc = false
+          else
+            doc = doc+" "+line.strip
+          end
+        elsif line =~ /^\s*DefGroove\s+(\S+)\s+(.+?)\s*$/
+          groove = $1
+          gdoc   = $2
+          if gdoc =~ /(.*?)\s+\\\s*$/
+            gdoc   = $1
+            inCont = true
+          end
+          g[groove] = gdoc
+        elsif inCont
+          if line =~ /^\s*(.*?)\s*(\\)?\s*$/
+            g[groove] = g[groove] + " " + $1
+            inCont = $2 != nil
+          else
+            inCont = false
+          end
+        end
+      end
+    end
+    unless g.empty?
+      g[".DESC"] = doc.lstrip
+      grooves[style] = g
+    end
+  end		
+end
+
+OUT = File.new(ARGV[1], "w")
+
+OUT.print <<'END_HEADER'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+END_HEADER
+
+def xmlesc(s)
+  s.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&rt;')
+end
+
+grooves.each do |style,grooves|
+  OUT.puts "\t<key>#{xmlesc(style)}</key>"
+  OUT.puts "\t<dict>"
+  grooves.each do |name,desc|
+    OUT.puts "\t\t<key>#{xmlesc(name)}</key>"
+    OUT.puts "\t\t<string>#{xmlesc(desc)}</string>"
+  end
+  OUT.puts "\t</dict>"
+end
+
+OUT.puts "</dict>"
+OUT.puts "</plist>"
+
