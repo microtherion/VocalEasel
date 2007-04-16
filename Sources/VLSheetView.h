@@ -121,6 +121,7 @@ enum VLRecalc {
 - (VLRegion) findRegionForEvent:(NSEvent *) event;
 
 - (void) setGroove:(NSString *)groove;
+- (void) setGrooveMenu:(NSString *)groove;
 
 @end
 

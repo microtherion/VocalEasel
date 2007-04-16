@@ -893,14 +893,20 @@ static int8_t sSharpAcc[] = {
 {
 	[[self document] addObserver:self forKeyPath:@"song" options:0 context:nil];
 	[[self document] addObserver:self forKeyPath:@"songKey" options:0 context:nil];	
-	[self setGroove:[[self document] valueForKey:@"songGroove"]];
+	[[self document] addObserver:self forKeyPath:@"songGroove" options:0 context:nil];	
+	[self setGrooveMenu:[[self document] valueForKey:@"songGroove"]];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)o change:(NSDictionary *)c context:(id)ctx
 {
-	if ([keyPath isEqual:@"songKey"])
+	if ([keyPath isEqual:@"songKey"]) {
 		fNeedsRecalc = kRecalc;
-	[self setNeedsDisplay: YES];			
+		[self setNeedsDisplay: YES];
+	} else if ([keyPath isEqual:@"songKey"]) {
+		[self setNeedsDisplay: YES];
+	} else if ([keyPath isEqual:@"songGroove"]) {
+		[self setGrooveMenu:[[self document] valueForKey:@"songGroove"]];
+	}					
 }
 
 - (IBAction)endRepeatSheet:(id)sender
@@ -910,7 +916,7 @@ static int8_t sSharpAcc[] = {
 
 - (IBAction)selectGroove:(id)sender
 {
-	if ([sender tag])
+	if ([sender tag]) 
 		[[VLGrooveController alloc] initWithSheetView:self];
 	else	
 		[self setGroove:[sender title]];
@@ -919,6 +925,11 @@ static int8_t sSharpAcc[] = {
 - (void)setGroove:(NSString *)groove
 {
 	[[self document] setValue:groove forKey:@"songGroove"];
+	[self setGrooveMenu:groove];
+}
+
+- (void)setGrooveMenu:(NSString *)groove
+{
 	int removeIndex = [fGrooveMenu indexOfItemWithTitle:groove];
 	if (removeIndex < 0 && [fGrooveMenu numberOfItems] > 11)
 		removeIndex = 11;
