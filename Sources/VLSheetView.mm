@@ -492,17 +492,17 @@ VLMusicElement sSemi2Accidental[12][12] = {
 
 - (void)drawRect:(NSRect)rect
 {
-	if (fNeedsRecalc || [self inLiveResize])
+	if (fNeedsRecalc || [self inLiveResize]) {
 		[self recalculateDimensions];
+		rect = [self bounds];
+	}
 
 	size_t stanzas = [self song]->CountStanzas();
 	const float kLineW = fClefKeyW + fMeasPerSystem*fMeasureW;
 	for (int system = 0; system<fNumSystems; ++system) {
 		const float kSystemY = [self systemY:system];
-		if (!NSIntersectsRect(rect, 
-							  NSMakeRect(kLineX, kSystemY+kClefY, 
-										 kLineW, kSystemH-kClefY)
-		))
+		NSRect systemRect	 = NSMakeRect(kLineX, kSystemY+kClefY, kLineW, kSystemH-kClefY);
+		if (!NSIntersectsRect(rect, systemRect)) 
 			continue; // This system does not need to be drawn
 		//
 		// When highlighting, draw highlight FIRST and then draw our stuff
