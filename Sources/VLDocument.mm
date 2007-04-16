@@ -74,6 +74,7 @@
 		vcsWrapper			= nil;
 		repeatVolta			= 2;
 		brandNew			= true;
+		observers			= [[NSMutableArray alloc] init];
 		[self setHasUndoManager:YES];
 		undo				=
 			[[VLKeyValueUndo alloc] initWithOwner:self
@@ -89,6 +90,17 @@
     return self;
 }
 
+- (void) addObserver:(id)observer
+{
+	[observers addObject:observer];
+}
+
+- (void) close
+{
+	[observers makeObjectsPerformSelector:@selector(removeObservers:) withObject:self];
+	[super close];
+}
+
 - (void) dealloc
 {
 	delete song;
@@ -100,7 +112,8 @@
 	[songArranger release];
 	[vcsWrapper release];
 	[undo release];
-	
+	[observers release];
+		
 	if (tmpPath) {
 		[[NSFileManager defaultManager] removeFileAtPath:tmpPath handler:nil];
 		[tmpPath release];

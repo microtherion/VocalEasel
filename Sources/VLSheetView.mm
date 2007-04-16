@@ -891,10 +891,18 @@ static int8_t sSharpAcc[] = {
 
 - (void)awakeFromNib
 {
+	[[self document] addObserver:self];
 	[[self document] addObserver:self forKeyPath:@"song" options:0 context:nil];
 	[[self document] addObserver:self forKeyPath:@"songKey" options:0 context:nil];	
 	[[self document] addObserver:self forKeyPath:@"songGroove" options:0 context:nil];	
 	[self setGrooveMenu:[[self document] valueForKey:@"songGroove"]];
+}
+
+- (void)removeObservers:(id)target
+{
+	[target removeObserver:self forKeyPath:@"song"];
+	[target removeObserver:self forKeyPath:@"songKey"];	
+	[target removeObserver:self forKeyPath:@"songGroove"];	
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)o change:(NSDictionary *)c context:(id)ctx

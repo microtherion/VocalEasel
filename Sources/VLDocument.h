@@ -26,6 +26,7 @@
 	NSNumber *		songTempo;
 	NSString *		tmpPath;
 	NSFileWrapper *	vcsWrapper;
+	NSMutableArray* observers;
 	int				repeatVolta;
 	bool			brandNew;
 
@@ -59,6 +60,7 @@
 - (void)	   changedFileWrapper;
 - (void)	   willChangeSong;
 - (void)	   didChangeSong;
+- (void)	   addObserver:(id)observer;
 
 @end
 

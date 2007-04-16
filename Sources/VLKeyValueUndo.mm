@@ -16,6 +16,7 @@
 	owner			= o;
 	keysAndNames	= [kn retain];
 
+	[owner addObserver:self];
 	for (NSEnumerator * e = [keysAndNames keyEnumerator];
 		 NSString * key = [e nextObject];
 	)
@@ -26,13 +27,16 @@
 	return self;
 }
 
-- (void) dealloc
+- (void)removeObservers:(id)target
 {
 	for (NSEnumerator * e = [keysAndNames keyEnumerator];
 		 NSString * key = [e nextObject];
 	)
-		[owner removeObserver:self forKeyPath:key];
+		[target removeObserver:self forKeyPath:key];
+}
 
+- (void) dealloc
+{
 	[keysAndNames release];
 	[super dealloc];
 }
