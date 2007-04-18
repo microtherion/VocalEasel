@@ -1,5 +1,5 @@
 //
-//  VLLilypondDocument.mm
+//  VLMMADocument.mm
 //  Vocalese
 //
 //  Created by Matthias Neeracher on 10/20/06.

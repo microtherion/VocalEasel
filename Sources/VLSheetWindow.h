@@ -24,16 +24,18 @@
 @interface VLSheetWindow : NSWindowController {
 	VLEditable *	editTarget;
 
-	IBOutlet id 	runToolItem;
 	IBOutlet id 	outputToolItem;
 	IBOutlet id 	logToolItem;
 	IBOutlet id		playToolItem;
 	IBOutlet id		stopToolItem;
 	IBOutlet id		zoomInToolItem;
 	IBOutlet id		zoomOutToolItem;
+	IBOutlet id		progressToolItem;
 }
 
 - (VLEditable *) editTarget;
 - (void) setEditTarget:(VLEditable *)editable;
+- (void) startAnimation;
+- (void) stopAnimation;
 
 @end

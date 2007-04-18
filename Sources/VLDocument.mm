@@ -75,6 +75,7 @@
 		repeatVolta			= 2;
 		brandNew			= true;
 		observers			= [[NSMutableArray alloc] init];
+		validTmpFiles		= [[NSMutableDictionary alloc] initWithCapacity:10];
 		[self setHasUndoManager:YES];
 		undo				=
 			[[VLKeyValueUndo alloc] initWithOwner:self
@@ -88,6 +89,12 @@
 					nil]];
     }
     return self;
+}
+
+- (void)updateChangeCount:(NSDocumentChangeType)changeType
+{
+	[validTmpFiles removeAllObjects];
+	[super updateChangeCount:changeType];
 }
 
 - (void) addObserver:(id)observer
@@ -299,6 +306,8 @@
 					  forSaveOperation:saveOperation error:outError];
 	if (!vcsWrapper)
 		vcsWrapper = preservedVCSWrapper;
+	if ([typeName isEqual:@"VLNativeType"])
+		[validTmpFiles removeAllObjects];
 	
 	return res;
 }
@@ -315,6 +324,8 @@
 		return [self mmaFileWrapperWithError:outError];
 	} else if ([typeName isEqual:@"VLMIDIType"]) {
 		return [self midiFileWrapperWithError:outError];
+	} else if ([typeName isEqual:@"VLPDFType"]) {
+		return [self pdfFileWrapperWithError:outError];
 	} else {
 		if (outError)
 			*outError = [NSError errorWithDomain:NSCocoaErrorDomain
@@ -358,6 +369,19 @@
 			[self setFileModificationDate:modDate];
 }
 
+- (void) createTmpFileWithExtension:(NSString*)ext ofType:(NSString*)type
+{
+	if (![validTmpFiles objectForKey:ext]) {
+		NSError * err;
+		if ([self writeToURL:[self fileURLWithExtension:ext] 
+				  ofType:type error:&err]
+		) {
+			[validTmpFiles setObject:type forKey:ext];
+			[self changedFileWrapper];
+		}
+	}
+}
+
 - (NSTask *) taskWithLaunchPath:(NSString *)launch arguments:(NSArray *)args;
 {
 	NSTask *	task	= [[NSTask alloc] init];
@@ -377,52 +401,9 @@
 	return task;
 }
 
-- (IBAction) engrave:(id)sender
-{
-	NSString *  base			= [self baseName];
-	NSBundle *	mainBundle		= [NSBundle mainBundle];
-
-	//
-	// Convert to Lilypond format
-	//
-	NSError *			err;
-	[self writeToURL:[self fileURLWithExtension:@"ly"]
-		  ofType:@"VLLilypondType" error:&err];
-	NSString *	launch	=
-		[mainBundle pathForResource:@"lilyWrapper" ofType:@""
-					inDirectory:@"bin"];
-	NSString *	tool	= 
-		[[NSUserDefaults standardUserDefaults] 
-			stringForKey:@"VLLilypondPath"];
-	NSArray *	args	= [NSArray arrayWithObjects:tool, base, nil];
-	NSTask *	task	= [self taskWithLaunchPath:launch arguments:args];
-
-	[[NSNotificationCenter defaultCenter] 
-		addObserver:self selector:@selector(engraveDone:)
-		name:NSTaskDidTerminateNotification object:task];
-	
-	[task launch];
-}
-
-- (void)engraveDone:(NSNotification *)notification {
-	[[NSNotificationCenter defaultCenter] removeObserver: self];
-    int status = [[notification object] terminationStatus];
-    if (!status) {
-		[[self pdfWin] showWindow: self];
-		[pdfWin reloadPDF];
-	} else {
-		[[self logWin] showWindow: self];		
-		NSBeep();
-	}
-	[self changedFileWrapper];
-}
-
 - (IBAction) play:(id)sender
 {
-	NSError * err;
-	[self writeToURL:[self fileURLWithExtension:@"mid"]
-		  ofType:@"VLMIDIType" error:&err];
-	[self changedFileWrapper];
+	[self createTmpFileWithExtension:@"mid" ofType:@"VLMIDIType"];
 	VLSoundOut::Instance()->PlayFile(
 	  CFDataRef([NSData dataWithContentsOfURL: 
 							[self fileURLWithExtension:@"mid"]]));
@@ -435,7 +416,9 @@
 
 - (IBAction) showOutput:(id)sender
 {
+	[self createTmpFileWithExtension:@"pdf" ofType:@"VLPDFType"];
 	[[self pdfWin] showWindow:sender];
+	[pdfWin reloadPDF];
 }
 
 - (IBAction) showLog:(id)sender

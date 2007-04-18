@@ -55,7 +55,7 @@
                 logToolItem = id; 
                 outputToolItem = id; 
                 playToolItem = id; 
-                runToolItem = id; 
+                progressToolItem = id; 
                 stopToolItem = id; 
                 zoomInToolItem = id; 
                 zoomOutToolItem = id; 

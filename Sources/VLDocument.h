@@ -16,24 +16,24 @@
 
 @interface VLDocument : NSDocument
 {
-	VLSong *		song;
-	NSString *		lilypondTemplate;
-	NSString * 		songTitle;
-	NSString *		songLyricist;
-	NSString *		songComposer;
-	NSString *		songArranger;
-	NSString *		songGroove;
-	NSNumber *		songTempo;
-	NSString *		tmpPath;
-	NSFileWrapper *	vcsWrapper;
-	NSMutableArray* observers;
-	int				repeatVolta;
-	bool			brandNew;
-
-	VLSheetWindow *	sheetWin;
-	VLLogWindow *	logWin;
-	VLPDFWindow *	pdfWin;
-	VLKeyValueUndo*	undo;
+	VLSong *			song;
+	NSString *			lilypondTemplate;
+	NSString * 			songTitle;
+	NSString *			songLyricist;
+	NSString *			songComposer;
+	NSString *			songArranger;
+	NSString *			songGroove;
+	NSNumber *			songTempo;
+	NSString *			tmpPath;
+	NSFileWrapper *		vcsWrapper;
+	NSMutableArray* 	observers;
+	NSMutableDictionary*validTmpFiles;
+	int					repeatVolta;
+	bool				brandNew;
+	VLSheetWindow *		sheetWin;
+	VLLogWindow *		logWin;
+	VLPDFWindow *		pdfWin;
+	VLKeyValueUndo*		undo;
 }
 
 - (VLSong *)	song;
@@ -48,7 +48,6 @@
 - (void)		setDivisions:(int)divisions;
 - (void) 		setRepeatVolta:(int)repeatVolta;
 
-- (IBAction) engrave:(id)sender;
 - (IBAction) showOutput:(id)sender;
 - (IBAction) showLog:(id)sender;
 
@@ -56,11 +55,13 @@
 - (NSString *) workPath;
 - (NSString *) baseName;
 - (NSURL *)    fileURLWithExtension:(NSString*)extension;
+- (void)	   createTmpFileWithExtension:(NSString*)ext ofType:(NSString*)type;
 - (NSTask *)   taskWithLaunchPath:(NSString *)path arguments:(NSArray *)args;
 - (void)	   changedFileWrapper;
 - (void)	   willChangeSong;
 - (void)	   didChangeSong;
 - (void)	   addObserver:(id)observer;
+- (VLLogWindow *)logWin;
 
 @end
 

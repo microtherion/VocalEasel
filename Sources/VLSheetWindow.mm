@@ -45,11 +45,11 @@
 static NSString* 	sInputToolbarIdentifier 		= @"Vocalese Sheet Window Toolbar Identifier";
 static NSString*	sOutputToolbarItemIdentifier 	= @"Output Toolbar Item Identifier";
 static NSString*	sLogToolbarItemIdentifier		= @"Log Toolbar Item Identifier";
-static NSString*	sRunToolbarItemIdentifier		= @"Run Toolbar Item Identifier";
 static NSString*	sPlayToolbarItemIdentifier		= @"Play Toolbar Item Identifier";
 static NSString*	sStopToolbarItemIdentifier		= @"Stop Toolbar Item Identifier";
 static NSString*	sZoomInToolbarItemIdentifier	= @"Zoom In Toolbar Item Identifier";
 static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identifier";
+static NSString*	sProgressToolbarItemIdentifier	= @"Progress Toolbar Item Identifier";
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -89,8 +89,6 @@ static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identif
 		prototype = outputToolItem;
     else if ([itemIdent isEqual: sLogToolbarItemIdentifier]) 
 		prototype = logToolItem;
-    else if ([itemIdent isEqual: sRunToolbarItemIdentifier]) 
-		prototype = runToolItem;
     else if ([itemIdent isEqual: sPlayToolbarItemIdentifier]) 
 		prototype = playToolItem;
     else if ([itemIdent isEqual: sStopToolbarItemIdentifier]) 
@@ -109,6 +107,10 @@ static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identif
 		[toolbarItem setImage: [prototype image]];
 		[toolbarItem setTarget: [prototype target]];
 		[toolbarItem setAction: [prototype action]];
+	} else if ([itemIdent isEqual: sProgressToolbarItemIdentifier]) {
+        toolbarItem = [[[NSToolbarItem alloc] initWithItemIdentifier: itemIdent] autorelease];
+		
+		[toolbarItem setView: progressToolItem];
     } else {
 		toolbarItem = nil;
     }
@@ -117,7 +119,7 @@ static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identif
 
 - (NSArray *) toolbarDefaultItemIdentifiers: (NSToolbar *) toolbar {
     return [NSArray arrayWithObjects:	
-						sRunToolbarItemIdentifier, 
+						sOutputToolbarItemIdentifier, 
 					NSToolbarSeparatorItemIdentifier,
 					sPlayToolbarItemIdentifier,
 					sStopToolbarItemIdentifier,
@@ -125,23 +127,34 @@ static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identif
 					sZoomInToolbarItemIdentifier, 
 					sZoomOutToolbarItemIdentifier, 
 					NSToolbarFlexibleSpaceItemIdentifier, 
-					sOutputToolbarItemIdentifier, 
-					sLogToolbarItemIdentifier, nil];
+					sLogToolbarItemIdentifier, 
+					sProgressToolbarItemIdentifier,
+					nil];
 }
 
 - (NSArray *) toolbarAllowedItemIdentifiers: (NSToolbar *) toolbar {
     return [NSArray arrayWithObjects: 	
-						sRunToolbarItemIdentifier, 
 					sPlayToolbarItemIdentifier,
 					sStopToolbarItemIdentifier,
 					sZoomInToolbarItemIdentifier, 
 					sZoomOutToolbarItemIdentifier, 
 					sOutputToolbarItemIdentifier, 
 					sLogToolbarItemIdentifier, 
+					sProgressToolbarItemIdentifier,
 					NSToolbarCustomizeToolbarItemIdentifier, 
 					NSToolbarFlexibleSpaceItemIdentifier, 
 					NSToolbarSpaceItemIdentifier, 
 					NSToolbarSeparatorItemIdentifier, nil];
+}
+
+- (void) startAnimation
+{
+	[progressToolItem startAnimation:self];
+}
+
+- (void) stopAnimation
+{
+	[progressToolItem stopAnimation:self];
 }
 
 @end

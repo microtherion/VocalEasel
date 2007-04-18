@@ -1,30 +1,33 @@
 //
-//  VLMIDIDocument.mm
+//  VLPDFDocument.mm
 //  Vocalese
 //
 //  Created by Matthias Neeracher on 10/20/06.
 //  Copyright 2006 __MyCompanyName__. All rights reserved.
 //
 
-#import "VLMIDIDocument.h"
+#import "VLPDFDocument.h"
 
-@implementation VLDocument (MIDI)
+@implementation VLDocument (PDF)
 
-- (NSFileWrapper *)midiFileWrapperWithError:(NSError **)outError
+- (NSFileWrapper *)pdfFileWrapperWithError:(NSError **)outError
 {
-	NSBundle *	mainBundle	= [NSBundle mainBundle];
+	NSString *  base			= [self baseName];
+	NSBundle *	mainBundle		= [NSBundle mainBundle];
 
-	[self createTmpFileWithExtension:@"mma" ofType:@"VLMMAType"];
+	[self createTmpFileWithExtension:@"ly" ofType:@"VLLilypondType"];
 
-	NSURL *		mmaURL  = [self fileURLWithExtension:@"mma"];
 	NSString *	launch	=
-		[mainBundle pathForResource:@"mmaWrapper" ofType:@""
+		[mainBundle pathForResource:@"lilyWrapper" ofType:@""
 					inDirectory:@"bin"];
-	NSArray *	args	= [NSArray arrayWithObject: [mmaURL path]];
+	NSString *	tool	= 
+		[[NSUserDefaults standardUserDefaults] 
+			stringForKey:@"VLLilypondPath"];
+	NSArray *	args	= [NSArray arrayWithObjects:tool, base, nil];
 	NSTask *	task	= [self taskWithLaunchPath:launch arguments:args];
 
 	[[NSNotificationCenter defaultCenter] 
-		addObserver:self selector:@selector(mmaDone:)
+		addObserver:self selector:@selector(pdfDone:)
 		name:NSTaskDidTerminateNotification object:task];
 	
 	[sheetWin startAnimation];
@@ -34,7 +37,7 @@
     int status = [task terminationStatus];
     if (!status) {
 		return [[[NSFileWrapper alloc] 
-					initWithPath:[[self fileURLWithExtension:@"mid"] path]]
+					initWithPath:[[self fileURLWithExtension:@"pdf"] path]]
 				   autorelease];
 	} else {
 		if (outError)
@@ -47,13 +50,13 @@
 }
 
 
-- (void)mmaDone:(NSNotification *)notification {
+- (void)pdfDone:(NSNotification *)notification {
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
     int status = [[notification object] terminationStatus];
     if (!status) {
 		;
 	} else {
-		[logWin showWindow: self];		
+		[[self logWin] showWindow: self];		
 		NSBeep();
 	}
 }

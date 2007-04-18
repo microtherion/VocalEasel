@@ -1,5 +1,5 @@
 //
-//  VLMIDIDocument.h
+//  VLPDFDocument.h
 //  Vocalese
 //
 //  Created by Matthias Neeracher on 10/20/06.
@@ -9,8 +9,8 @@
 #import <Cocoa/Cocoa.h>
 #import "VLDocument.h"
 
-@interface VLDocument (MIDI)
+@interface VLDocument (PDF)
 
-- (NSFileWrapper *)midiFileWrapperWithError:(NSError **)outError;
+- (NSFileWrapper *)pdfFileWrapperWithError:(NSError **)outError;
 
 @end

@@ -51,6 +51,7 @@
 		9599ED9D0B731CC500A6A2F7 /* VLGrooveController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9599ED9B0B731CC500A6A2F7 /* VLGrooveController.mm */; };
 		95A1C37C0AF1D4370076597D /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A1C37B0AF1D4370076597D /* Quartz.framework */; };
 		95A1C3860AF2ACE20076597D /* VLSheetWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */; };
+		95A55C540BD5E5770068A203 /* VLPDFDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A55C530BD5E5770068A203 /* VLPDFDocument.mm */; };
 		95B3E1A70960E58B000E9C0D /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 95B3E1980960E58B000E9C0D /* Music */; };
 		95B66658096BCA1F00FE18C9 /* VLSheetViewNotes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */; };
 		95BDA15909540BF1009F9D65 /* VLSheetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */; };
@@ -179,6 +180,8 @@
 		95A1C37B0AF1D4370076597D /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
 		95A1C3840AF2ACE20076597D /* VLSheetWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSheetWindow.h; path = Sources/VLSheetWindow.h; sourceTree = "<group>"; };
 		95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetWindow.mm; path = Sources/VLSheetWindow.mm; sourceTree = "<group>"; };
+		95A55C520BD5E5760068A203 /* VLPDFDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLPDFDocument.h; path = Sources/VLPDFDocument.h; sourceTree = "<group>"; };
+		95A55C530BD5E5770068A203 /* VLPDFDocument.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPDFDocument.mm; path = Sources/VLPDFDocument.mm; sourceTree = "<group>"; };
 		95B3E1980960E58B000E9C0D /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Music; path = Resources/Music; sourceTree = "<group>"; };
 		95B66653096BC6A100FE18C9 /* VLSheetViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSheetViewInternal.h; path = Sources/VLSheetViewInternal.h; sourceTree = "<group>"; };
 		95B66656096BCA1F00FE18C9 /* VLSheetViewNotes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSheetViewNotes.h; path = Sources/VLSheetViewNotes.h; sourceTree = "<group>"; };
@@ -321,6 +324,8 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				95A55C520BD5E5760068A203 /* VLPDFDocument.h */,
+				95A55C530BD5E5770068A203 /* VLPDFDocument.mm */,
 				95EDA5A80B06DE46004D8D6E /* VLMIDIDocument.h */,
 				95EDA5A90B06DE46004D8D6E /* VLMIDIDocument.mm */,
 				95F820A90AF884A30010963D /* VLMMADocument.h */,
@@ -650,6 +655,7 @@
 				955CBA4F0B2366DD001CF4A1 /* VLKeyValueUndo.mm in Sources */,
 				954DD4E60B44E67F0056C504 /* VLSheetViewSelection.mm in Sources */,
 				9599ED9D0B731CC500A6A2F7 /* VLGrooveController.mm in Sources */,
+				95A55C540BD5E5770068A203 /* VLPDFDocument.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

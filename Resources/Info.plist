@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
@@ -97,11 +97,29 @@
 				<string>Midi</string>
 			</array>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
+			<string>None</string>
 			<key>LSTypeIsPackage</key>
 			<false/>
 			<key>NSPersistentStoreTypeKey</key>
-			<string>XML</string>
+			<string>Binary</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>pdf</string>
+			</array>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>application/pdf</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>VLPDFType</string>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+			<key>LSTypeIsPackage</key>
+			<false/>
+			<key>NSPersistentStoreTypeKey</key>
+			<string>Binary</string>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
@@ -117,7 +135,7 @@
 	<key>CFBundleSignature</key>
 	<string>VçEz</string>
 	<key>CFBundleVersion</key>
-	<string>1.0a1</string>
+	<string>1.0a2</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
