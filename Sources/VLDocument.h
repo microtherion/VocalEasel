@@ -13,6 +13,7 @@
 @class VLSheetWindow;
 @class VLPDFWindow;
 @class VLLogWindow;
+@class PDFDocument;
 
 @interface VLDocument : NSDocument
 {
@@ -34,6 +35,7 @@
 	VLLogWindow *		logWin;
 	VLPDFWindow *		pdfWin;
 	VLKeyValueUndo*		undo;
+	PDFDocument *		printDoc;
 }
 
 - (VLSong *)	song;

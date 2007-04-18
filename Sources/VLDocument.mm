@@ -11,10 +11,17 @@
 #import "VLLilypondDocument.h"
 #import "VLMMADocument.h"
 #import "VLMIDIDocument.h"
+#import "VLPDFDocument.h"
 #import "VLPDFWindow.h"
 #import "VLLogWindow.h"
 #import "VLSheetWindow.h"
 #import "VLSoundOut.h"
+
+#import <Quartz/Quartz.h>
+
+@interface PDFDocument (PDFKitSecretsIKnow)
+- (NSPrintOperation *)getPrintOperationForPrintInfo:(NSPrintInfo *)printInfo autoRotate:(BOOL)doRotate;
+@end
 
 @interface VLSongWrapper : NSObject {
 	VLSong * wrappedSong;
@@ -87,6 +94,7 @@
 					@"", @"songGroove",
 					@"", @"songTempo",
 					nil]];
+		printDoc			= nil;
     }
     return self;
 }
@@ -419,6 +427,24 @@
 	[self createTmpFileWithExtension:@"pdf" ofType:@"VLPDFType"];
 	[[self pdfWin] showWindow:sender];
 	[pdfWin reloadPDF];
+}
+
+- (NSPrintOperation *)printOperationWithSettings:(NSDictionary *)printSettings 
+										   error:(NSError **)outError 
+{
+	[self createTmpFileWithExtension:@"pdf" ofType:@"VLPDFType"];
+	[printDoc autorelease];
+	printDoc = [[PDFDocument alloc] initWithURL:[self fileURLWithExtension:@"pdf"]];
+
+    NSPrintOperation *printOperation = [printDoc getPrintOperationForPrintInfo:[self printInfo] autoRotate:NO];
+
+    // Specify that the print operation can run in a separate thread. This will cause the print progress panel to appear as a sheet on the document window.
+    [printOperation setCanSpawnSeparateThread:YES];
+    
+    // Set any print settings that might have been specified in a Print Document Apple event. 
+    [[[printOperation printInfo] dictionary] addEntriesFromDictionary:printSettings];
+    
+    return printOperation;    
 }
 
 - (IBAction) showLog:(id)sender
