@@ -369,8 +369,7 @@
 	[task setStandardError: pipe];
 	[task setArguments: args];
 	[task setLaunchPath: launch]; 
-
-	[[self logWin] showWindow: self];
+	[[self logWin] window]; // Load but don't show
 	
 	[NSThread detachNewThreadSelector:@selector(logFromFileHandle:) toTarget:logWin 
 		withObject:[pipe fileHandleForReading]];
@@ -412,6 +411,7 @@
 		[[self pdfWin] showWindow: self];
 		[pdfWin reloadPDF];
 	} else {
+		[[self logWin] showWindow: self];		
 		NSBeep();
 	}
 	[self changedFileWrapper];

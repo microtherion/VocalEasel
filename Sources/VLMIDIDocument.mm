@@ -58,6 +58,7 @@
     if (!status) {
 		;
 	} else {
+		[[self logWin] showWindow: self];		
 		NSBeep();
 	}
 }
