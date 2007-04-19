@@ -943,8 +943,7 @@ static int8_t sSharpAcc[] = {
 		removeIndex = 11;
 	if (removeIndex >= 0)
 		[fGrooveMenu removeItemAtIndex:removeIndex];
-	[[[fGrooveMenu menu] insertItemWithTitle:groove action:@selector(selectGroove:) 
-		keyEquivalent:@"" atIndex:2] setTarget:self];
+	[fGrooveMenu insertItemWithTitle:groove atIndex:2];
 	[fGrooveMenu selectItemAtIndex:2];
 	NSArray * grooves = [fGrooveMenu itemTitles];
 	grooves = [grooves subarrayWithRange:NSMakeRange(2, [grooves count]-2)];

@@ -23,7 +23,7 @@
 		[owner addObserver:self forKeyPath:key 
 			   options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
 			   context:[keysAndNames objectForKey:key]];
-
+		
 	return self;
 }
 

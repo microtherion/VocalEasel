@@ -48,7 +48,8 @@
 
 
 - (void)mmaDone:(NSNotification *)notification {
-	[[NSNotificationCenter defaultCenter] removeObserver: self];
+	[[NSNotificationCenter defaultCenter] removeObserver: self 
+		name:NSTaskDidTerminateNotification object:[notification object]];
     int status = [[notification object] terminationStatus];
     if (!status) {
 		;

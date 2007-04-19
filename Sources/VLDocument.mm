@@ -472,10 +472,12 @@
 	[self willChangeValueForKey:@"songKey"];
 	[self willChangeValueForKey:@"songTime"];
 	[self willChangeValueForKey:@"songDivisions"];
+	[self willChangeValueForKey:@"songGroove"];
 	song->swap(*[savedSong song]);
 	[self didChangeValueForKey:@"songKey"];
 	[self didChangeValueForKey:@"songTime"];
 	[self didChangeValueForKey:@"songDivisions"];
+	[self didChangeValueForKey:@"songGroove"];
 	[self didChangeSong];
 }
 
