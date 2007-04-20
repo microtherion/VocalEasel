@@ -113,6 +113,7 @@
 - (void) close
 {
 	[observers makeObjectsPerformSelector:@selector(removeObservers:) withObject:self];
+	[observers removeAllObjects];
 	[super close];
 }
 
