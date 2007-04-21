@@ -45,6 +45,28 @@
 	}
 }
 
+- (void) drawLedgerLinesWithPitch:(int)pitch at:(NSPoint)p
+{
+	p.x	   += kLedgerX;
+	int	octave	= (pitch / 12) - 5;
+	int step	= (octave*7+[self stepWithPitch:pitch]-2)/2;
+	
+	for (int i=0; i-- > step; ) {
+		NSPoint p0	= p;
+		p0.y	   += i*kLineH;
+		NSPoint p1	= p0;
+		p1.x	   += kLedgerW;
+		[NSBezierPath strokeLineFromPoint:p0 toPoint:p1];
+	}
+	for (int i=4; i++ < step; ) {
+		NSPoint p0	= p;
+		p0.y	   += i*kLineH;
+		NSPoint p1	= p0;
+		p1.x	   += kLedgerW;
+		[NSBezierPath strokeLineFromPoint:p0 toPoint:p1];
+	}
+}
+
 - (void) drawNoteCursor
 {
 	int 			cursorX;
@@ -52,7 +74,7 @@
 	VLMusicElement	accidental;
 	VLMusicElement	cursorElt;
 	
-	cursorX = [self noteXInMeasure:fCursorMeasure at:fCursorAt]-kNoteX;
+	cursorX = [self noteXInMeasure:fCursorMeasure at:fCursorAt];
 	switch (fClickMode) {
 	default:
 		cursorY 	= 
@@ -60,6 +82,9 @@
 				  withPitch:fCursorPitch
 				  accidental:&accidental]
 			-kNoteY;
+		[self drawLedgerLinesWithPitch:fCursorPitch 
+			  at:NSMakePoint(cursorX, 
+							 [self systemY:fCursorMeasure/fMeasPerSystem])];
 		cursorElt 	= kMusicNoteCursor;
 		break;
 	case 'r':
@@ -76,7 +101,7 @@
 		break;
 	}
 	
-	NSPoint	at = NSMakePoint(cursorX, cursorY);
+	NSPoint	at = NSMakePoint(cursorX-kNoteX, cursorY);
 	[[self musicElement:cursorElt] 
 		compositeToPoint:at
 		operation: NSCompositeSourceOver];
@@ -279,6 +304,8 @@
 				prop.VisualNote(at, partialDur, triplet, &noteDur, &triplet);
 				prevDur	= partialDur;
 				if (pitch != VLNote::kNoPitch) {
+					[self drawLedgerLinesWithPitch:pitch 
+						  at:NSMakePoint([self noteXInMeasure:m at:at], kSystemY)];
 					VLMusicElement		accidental;
 					NSPoint pos = 
 						NSMakePoint([self noteXInMeasure:m at:at],

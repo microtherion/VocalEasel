@@ -42,4 +42,5 @@ const float kHalfRestY	= 15.0f;
 const float kTieDepth	= 10.0f;
 const float kCodaX		=-10.0f;
 const float kCodaY		=  5.0f;
-const int 	kMaxLedgers =  3;
+const float kLedgerX	=-10.0f;
+const float kLedgerW	= 20.0f;
