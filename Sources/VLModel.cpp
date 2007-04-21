@@ -1089,6 +1089,55 @@ size_t  VLSong::CountStanzas() const
 	return stanzas;
 }
 
+size_t VLSong::CountTopLedgers() const
+{
+	int8_t maxPitch = VLNote::kMiddleC;
+
+	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
+		VLNoteList::const_iterator i 	= fMeasures[measure].fMelody.begin();
+		VLNoteList::const_iterator e 	= fMeasures[measure].fMelody.end();
+
+		for (; i!=e; ++i) 
+			if (i->fPitch != VLNote::kNoPitch)
+				maxPitch = std::max(maxPitch, i->fPitch);
+	}
+
+	if (maxPitch > 89)		// F''
+		return 4;
+	else if (maxPitch > 86) // D''
+		return 3;
+	else if (maxPitch > 83) // B'
+		return 2;
+	else if (maxPitch > 79) // G'
+		return 1;
+	else
+		return 0;
+}
+
+size_t VLSong::CountBotLedgers() const
+{
+	int8_t minPitch = VLNote::kMiddleC+VLNote::kOctave;
+
+	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
+		VLNoteList::const_iterator i 	= fMeasures[measure].fMelody.begin();
+		VLNoteList::const_iterator e 	= fMeasures[measure].fMelody.end();
+
+		for (; i!=e; ++i) 
+			if (i->fPitch != VLNote::kNoPitch)
+				minPitch = std::min(minPitch, i->fPitch);
+	}
+	
+	if (minPitch < 52) 		// E,
+		return 4;
+	else if (minPitch < 55)	// G,
+		return 3;
+	else if (minPitch < 59)	// B,
+		return 2;
+	else if (minPitch < 62) // D
+		return 1;
+	else
+		return 0;
+}
 
 void VLSong::LilypondNotes(std::string & notes) const
 {

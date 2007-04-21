@@ -90,6 +90,9 @@ static float sFlatPos[] = {
 		fCursorPitch		= VLNote::kNoPitch;
 		fSelStart			= 0;
 		fSelEnd				= -1;
+		fNumTopLedgers 		= 0;
+		fNumBotLedgers 		= 2;
+		fNumStanzas    		= 2;
 	}
     return self;
 }
@@ -128,7 +131,7 @@ static float sFlatPos[] = {
 {
 	NSRect b = [self bounds];
 
-	return kSystemY+b.origin.y+b.size.height-(system+1)*kSystemH;
+	return kSystemBaseline+b.origin.y+b.size.height-(system+1)*kSystemH;
 }
 
 int8_t sSemi2Pitch[2][12] = {{
@@ -206,7 +209,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 - (void) scrollMeasureToVisible:(int)measure
 {
 	NSRect r = NSMakeRect(fClefKeyW+(measure%fMeasPerSystem)*fMeasureW,
-						  [self systemY:measure/fMeasPerSystem]-kSystemY,
+						  [self systemY:measure/fMeasPerSystem]-kSystemBaseline,
 						  fMeasureW, kSystemH);
 	[self scrollRectToVisible:r];
 }
@@ -423,8 +426,8 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	[[NSColor colorWithDeviceWhite:0.8f alpha:1.0f] set];
 	for (int measure = 0; measure<fMeasPerSystem; ++measure) {
 		const float mx	= fClefKeyW+measure*fMeasureW;
-		const float y0	= kSystemY-2.0f*kLineH;
-		const float yy	= kSystemY+6.0f*kLineH;
+		const float y0	= kSystemY-(fNumBotLedgers+1)*kLineH;
+		const float yy	= kSystemY+(fNumTopLedgers+5)*kLineH;
 		for (int group = 0; group < fGroups; ++group) {
 			for (int div = 0; div < fDivPerGroup; ++div) {
 				const float x = mx+(group*(fDivPerGroup+1)+div+1)*kNoteW;
@@ -471,11 +474,31 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	}
 }
 
+- (void)drawBackgroundForSystem:(int)system
+{
+	const float kSystemY 	= [self systemY:system];
+	const float kLineW		= fClefKeyW + fMeasPerSystem*fMeasureW;
+
+	NSArray * colors = [NSColor controlAlternatingRowBackgroundColors];
+	[NSGraphicsContext saveGraphicsState];
+	[[colors objectAtIndex:1] setFill];
+	[NSBezierPath fillRect:
+	   NSMakeRect(kLineX, kSystemY-kSystemBaseline, 
+				  kLineW, fNumStanzas*kLyricsH)];
+	[NSBezierPath fillRect:
+	   NSMakeRect(kLineX, kSystemY+kChordY, kLineW, kChordH)];
+	[[colors objectAtIndex:0] setFill];
+	[NSBezierPath fillRect:
+	   NSMakeRect(kLineX, kSystemY-kSystemBaseline+fNumStanzas*kLyricsH, 
+				  kLineW, kSystemBaseline+kChordY-fNumStanzas*kLyricsH)];
+	[NSGraphicsContext restoreGraphicsState];
+}
+
 - (void)highlightSelectionForSystem:(int)system
 {
 	int startMeas = std::max(fSelStart-system*fMeasPerSystem, 0);
 	int endMeas	  = std::min(fSelEnd-system*fMeasPerSystem, fMeasPerSystem);
-	const float kRawSystemY = [self systemY:system]-kSystemY;
+	const float kRawSystemY = [self systemY:system]-kSystemBaseline;
 
 	[NSGraphicsContext saveGraphicsState];
 	[[NSColor selectedTextBackgroundColor] setFill];
@@ -496,14 +519,20 @@ VLMusicElement sSemi2Accidental[12][12] = {
 		[self recalculateDimensions];
 		rect = [self bounds];
 	}
+	[NSGraphicsContext saveGraphicsState];
+	[[NSColor whiteColor] setFill];
+	[NSBezierPath fillRect:rect];
+	[NSGraphicsContext restoreGraphicsState];
 
 	size_t stanzas = [self song]->CountStanzas();
 	const float kLineW = fClefKeyW + fMeasPerSystem*fMeasureW;
 	for (int system = 0; system<fNumSystems; ++system) {
 		const float kSystemY = [self systemY:system];
-		NSRect systemRect	 = NSMakeRect(kLineX, kSystemY+kClefY, kLineW, kSystemH-kClefY);
+		NSRect systemRect	 = NSMakeRect(kLineX, kSystemY-kSystemBaseline, kLineW, kSystemH);
 		if (!NSIntersectsRect(rect, systemRect)) 
 			continue; // This system does not need to be drawn
+
+		[self drawBackgroundForSystem:system];
 		//
 		// When highlighting, draw highlight FIRST and then draw our stuff
 		// on top.
@@ -694,7 +723,7 @@ static int8_t sSharpAcc[] = {
 	loc.y      = fmodf(loc.y, kSystemH);
 
 	loc.x -= fClefKeyW;
-	if (loc.y > kSystemY && loc.y < kSystemY+4.0f*kLineH
+	if (loc.y > kSystemBaseline && loc.y < kSystemBaseline+4.0f*kLineH
 	 && fmodf(loc.x+kMeasTol, fMeasureW) < 2*kMeasTol
 	) {
 		int measure = static_cast<int>((loc.x+kMeasTol)/fMeasureW);
@@ -724,20 +753,20 @@ static int8_t sSharpAcc[] = {
 	if (fCursorMeasure > [self song]->fMeasures.size())
 		return fCursorRegion = kRegionNowhere;
 		
-	if (loc.y >= kSystemY+kChordY) {
+	if (loc.y >= kSystemBaseline+kChordY) {
 		//
 		// Chord, round to quarters
 		//
 		int scale = fCursorAt.fDenom / 4;
 		fCursorAt = VLFraction(fCursorAt.fNum / scale, 4);
 		return fCursorRegion = kRegionChord;
-	} else if (loc.y < kSystemY+kLyricsY) {
-		fCursorStanza = static_cast<size_t>((kSystemY+kLyricsY-loc.y) / kLyricsH)
+	} else if (loc.y < kSystemBaseline+kLyricsY) {
+		fCursorStanza = static_cast<size_t>((kSystemBaseline+kLyricsY-loc.y) / kLyricsH)
 			+ 1;
 		return fCursorRegion = kRegionLyrics;
 	}
 
-	loc.y		   	   -= kSystemY+kSemiFloor;
+	loc.y		   	   -= kSystemBaseline+kSemiFloor;
 	int semi			= static_cast<int>(roundf(loc.y / (0.5f*kLineH)));
 	fCursorPitch		= sSemiToPitch[semi];
 
@@ -891,11 +920,18 @@ static int8_t sSharpAcc[] = {
 
 - (void)awakeFromNib
 {
-	[[self document] addObserver:self];
-	[[self document] addObserver:self forKeyPath:@"song" options:0 context:nil];
-	[[self document] addObserver:self forKeyPath:@"songKey" options:0 context:nil];	
-	[[self document] addObserver:self forKeyPath:@"songGroove" options:0 context:nil];	
-	[self setGrooveMenu:[[self document] valueForKey:@"songGroove"]];
+	VLDocument * doc = [self document];
+
+	[doc addObserver:self];
+	[doc addObserver:self forKeyPath:@"song" options:0 context:nil];
+	[doc addObserver:self forKeyPath:@"songKey" options:0 context:nil];	
+	[doc addObserver:self forKeyPath:@"songGroove" options:0 context:nil];	
+	[self setGrooveMenu:[doc valueForKey:@"songGroove"]];
+
+	VLSong * song 	= [self song];
+	fNumTopLedgers 	= std::max<int>(song->CountTopLedgers(), 1);
+	fNumBotLedgers 	= std::max<int>(song->CountBotLedgers(), 1);
+	fNumStanzas    	= std::max<int>(song->CountStanzas(), 2);
 }
 
 - (void)removeObservers:(id)target
@@ -917,7 +953,7 @@ static int8_t sSharpAcc[] = {
 	}					
 }
 
-- (IBAction)endRepeatSheet:(id)sender
+- (IBAction)endSheetWithButton:(id)sender
 {
 	[NSApp endSheet:[sender window] returnCode:[sender tag]];
 }
@@ -948,6 +984,40 @@ static int8_t sSharpAcc[] = {
 	NSArray * grooves = [fGrooveMenu itemTitles];
 	grooves = [grooves subarrayWithRange:NSMakeRange(2, [grooves count]-2)];
 	[[NSUserDefaults standardUserDefaults] setObject:grooves forKey:@"VLGrooves"];
+}
+
+- (IBAction)editDisplayOptions:(id)sender
+{
+	VLSheetWindow * wc = [[self window] windowController];
+	[wc setValue:[NSNumber numberWithInt:fNumTopLedgers] 
+		forKey:@"editNumTopLedgers"];
+	[wc setValue:[NSNumber numberWithInt:fNumBotLedgers] 
+		forKey:@"editNumBotLedgers"];
+	[wc setValue:[NSNumber numberWithInt:fNumStanzas] 
+		forKey:@"editNumStanzas"];
+
+	[NSApp beginSheet:fDisplaySheet modalForWindow:[self window]
+		   modalDelegate:self 
+		   didEndSelector:@selector(didEndDisplaySheet:returnCode:contextInfo:)
+		   contextInfo:nil];
+}
+
+- (void)didEndDisplaySheet:(NSWindow *)sheet returnCode:(int)returnCode 
+			  contextInfo:(void *)ctx
+{
+	switch (returnCode) {
+	case NSAlertFirstButtonReturn: {
+		VLSheetWindow * wc = [[self window] windowController];
+		fNumTopLedgers = [[wc valueForKey:@"editNumTopLedgers"] intValue];
+		fNumBotLedgers = [[wc valueForKey:@"editNumBotLedgers"] intValue];
+		fNumStanzas    = [[wc valueForKey:@"editNumStanzas"] intValue];
+		fNeedsRecalc   = kRecalc;
+		[self setNeedsDisplay:YES];
+	    } break;
+	default:
+		break;
+	}	
+	[sheet orderOut:self];
 }
 
 @end

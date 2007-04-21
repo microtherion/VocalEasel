@@ -348,6 +348,8 @@ struct VLSong {
 
 	size_t	CountMeasures() const { return fMeasures.size(); }
 	size_t  CountStanzas() const;
+	size_t	CountTopLedgers() const;
+	size_t	CountBotLedgers() const;
 	void	LilypondNotes(std::string & notes) const;
 	void	LilypondChords(std::string & chords) const;
 	void 	LilypondStanza(std::string & lyrics, size_t stanza) const;

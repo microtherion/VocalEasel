@@ -79,12 +79,16 @@ enum VLRecalc {
 	size_t				fCursorStanza;
 	int					fSelStart;
 	int					fSelEnd;
+	int 				fNumTopLedgers;
+	int					fNumBotLedgers;
+	int					fNumStanzas;
 	size_t				fVolta;
 	size_t				fVoltaOK;
 
 	IBOutlet id			fFieldEditor;
 	IBOutlet id			fRepeatSheet;
 	IBOutlet id			fEndingSheet;
+	IBOutlet id			fDisplaySheet;
 	IBOutlet id			fRepeatMsg;
 	IBOutlet id			fEndingMsg;
 	IBOutlet id			fGrooveMenu;
@@ -94,8 +98,9 @@ enum VLRecalc {
 - (IBAction) setTime:(id)sender;
 - (IBAction) setDivisions:(id)sender;
 - (IBAction) hideFieldEditor:(id)sender;
-- (IBAction) endRepeatSheet:(id)sender;
+- (IBAction) endSheetWithButton:(id)sender;
 - (IBAction) selectGroove:(id)sender;
+- (IBAction) editDisplayOptions:(id)sender;
 
 - (VLDocument *) document;
 - (VLSong *) song;

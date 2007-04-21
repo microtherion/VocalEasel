@@ -31,6 +31,11 @@
 	IBOutlet id		zoomInToolItem;
 	IBOutlet id		zoomOutToolItem;
 	IBOutlet id		progressToolItem;
+	IBOutlet id		displayToolItem;
+
+	int					editNumTopLedgers;
+	int					editNumBotLedgers;
+	int					editNumStanzas;
 }
 
 - (VLEditable *) editTarget;

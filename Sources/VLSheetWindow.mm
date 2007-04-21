@@ -50,6 +50,7 @@ static NSString*	sStopToolbarItemIdentifier		= @"Stop Toolbar Item Identifier";
 static NSString*	sZoomInToolbarItemIdentifier	= @"Zoom In Toolbar Item Identifier";
 static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identifier";
 static NSString*	sProgressToolbarItemIdentifier	= @"Progress Toolbar Item Identifier";
+static NSString*	sDisplayToolbarItemIdentifier	= @"Display Toolbar Item Identifier";
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -97,6 +98,8 @@ static NSString*	sProgressToolbarItemIdentifier	= @"Progress Toolbar Item Identi
 		prototype = zoomInToolItem;
     else if ([itemIdent isEqual: sZoomOutToolbarItemIdentifier]) 
 		prototype = zoomOutToolItem;
+	else if ([itemIdent isEqual: sDisplayToolbarItemIdentifier]) 
+		prototype = displayToolItem;
 	
 	if (prototype) {
         toolbarItem = [[[NSToolbarItem alloc] initWithItemIdentifier: itemIdent] autorelease];
@@ -127,6 +130,7 @@ static NSString*	sProgressToolbarItemIdentifier	= @"Progress Toolbar Item Identi
 					sZoomInToolbarItemIdentifier, 
 					sZoomOutToolbarItemIdentifier, 
 					NSToolbarFlexibleSpaceItemIdentifier, 
+					sDisplayToolbarItemIdentifier,
 					sLogToolbarItemIdentifier, 
 					sProgressToolbarItemIdentifier,
 					nil];
@@ -140,6 +144,7 @@ static NSString*	sProgressToolbarItemIdentifier	= @"Progress Toolbar Item Identi
 					sZoomOutToolbarItemIdentifier, 
 					sOutputToolbarItemIdentifier, 
 					sLogToolbarItemIdentifier, 
+					sDisplayToolbarItemIdentifier,
 					sProgressToolbarItemIdentifier,
 					NSToolbarCustomizeToolbarItemIdentifier, 
 					NSToolbarFlexibleSpaceItemIdentifier, 
