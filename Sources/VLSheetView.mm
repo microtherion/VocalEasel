@@ -602,9 +602,11 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	[fFieldEditor setAction:nil];
 }
 
-const float kSemiFloor = -3.0f*kLineH;
+const float kSemiFloor = -5.0f*kLineH;
 static int8_t sSemiToPitch[] = {
-	53, // F
+	47,     // B
+	48, 50, // D
+	52, 53, // F
 	55,	57, // A
 	59, 60, // Middle C
 	62, 64, // E
@@ -614,7 +616,10 @@ static int8_t sSemiToPitch[] = {
 	76, 77, // F
 	79, 81, // A
 	83, 84, // C
-	86, 88  // E
+	86, 88, // E
+	89, 91, // G
+	93, 95, // B
+	96, 98  // D
 };
 
 static int8_t sFlatAcc[] = {
