@@ -946,7 +946,7 @@ static int8_t sSharpAcc[] = {
 	if ([keyPath isEqual:@"songKey"]) {
 		fNeedsRecalc = kRecalc;
 		[self setNeedsDisplay: YES];
-	} else if ([keyPath isEqual:@"songKey"]) {
+	} else if ([keyPath isEqual:@"song"]) {
 		[self setNeedsDisplay: YES];
 	} else if ([keyPath isEqual:@"songGroove"]) {
 		[self setGrooveMenu:[[self document] valueForKey:@"songGroove"]];
