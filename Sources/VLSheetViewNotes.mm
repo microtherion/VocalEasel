@@ -22,7 +22,9 @@
 		VLNote	newNote(1, fClickMode==' ' ? fCursorActualPitch : VLNote::kNoPitch);
 
 		[[self document] willChangeSong];
-		if (fClickMode == 'k')
+		if (fCursorAccidental == kMusicExtendCursor) 
+			[self song]->ExtendNote(fCursorMeasure, fCursorAt);
+		else if (fClickMode == 'k')
 			[self song]->DelNote(fCursorMeasure, fCursorAt);
 		else	
 			[self song]->AddNote(VLLyricsNote(newNote), fCursorMeasure, fCursorAt);
@@ -75,37 +77,40 @@
 	VLMusicElement	cursorElt;
 	
 	cursorX = [self noteXInMeasure:fCursorMeasure at:fCursorAt];
-	switch (fClickMode) {
-	default:
+	if (fCursorAccidental == kMusicExtendCursor) {
 		cursorY 	= 
 			[self noteYInMeasure:fCursorMeasure 
 				  withPitch:fCursorPitch
-				  accidental:&accidental]
-			-kNoteY;
-		[self drawLedgerLinesWithPitch:fCursorPitch 
-			  at:NSMakePoint(cursorX, 
-							 [self systemY:fCursorMeasure/fMeasPerSystem])];
-		cursorElt 	= kMusicNoteCursor;
-		break;
-	case 'r':
-		cursorY 	= [self noteYInMeasure:fCursorMeasure 
-							withPitch:65 
-							accidental:&accidental];
-		cursorElt	= kMusicRestCursor;
-		break;
-	case 'k':
-		cursorY 	= [self noteYInMeasure:fCursorMeasure 
-							withPitch:fCursorPitch
-							accidental:&accidental];
-		cursorElt	= kMusicKillCursor;
-		break;
-	}
+				  accidental:&accidental];
+		cursorElt	= fCursorAccidental;
+	} else
+		switch (fClickMode) {
+		default:
+			cursorY 	= 
+				[self noteYInMeasure:fCursorMeasure 
+					  withPitch:fCursorPitch accidental:&accidental] - kNoteY;
+			[self drawLedgerLinesWithPitch:fCursorPitch 
+				  at:NSMakePoint(cursorX, 
+								 [self systemY:fCursorMeasure/fMeasPerSystem])];
+			cursorElt 	= kMusicNoteCursor;
+			break;
+		case 'r':
+			cursorY 	= [self noteYInMeasure:fCursorMeasure 
+								withPitch:65 accidental:&accidental];
+			cursorElt	= kMusicRestCursor;
+			break;
+		case 'k':
+			cursorY 	= [self noteYInMeasure:fCursorMeasure 
+								withPitch:fCursorPitch accidental:&accidental];
+			cursorElt	= kMusicKillCursor;
+			break;
+		}
 	
 	NSPoint	at = NSMakePoint(cursorX-kNoteX, cursorY);
 	[[self musicElement:cursorElt] 
 		compositeToPoint:at
 		operation: NSCompositeSourceOver];
-	if (fCursorAccidental) {
+	if (fCursorAccidental  && fCursorAccidental != kMusicExtendCursor) {
 		at.y	+= kNoteY;
 		switch (cursorElt= fCursorAccidental) {
 		case kMusicFlatCursor:

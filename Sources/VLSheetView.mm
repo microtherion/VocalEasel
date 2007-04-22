@@ -44,6 +44,7 @@ static NSString * sElementNames[kMusicElements] = {
 	@"naturalcursor",
 	@"restcursor",
 	@"killcursor",
+	@"extendcursor",
 	@"coda"
 };
 
@@ -654,9 +655,17 @@ static int8_t sSharpAcc[] = {
 
 - (void) accidentalFromEvent:(NSEvent *)event
 {
+	fCursorAccidental	= (VLMusicElement)0;
+
+	//
+	// Extension
+	//
+	if ([event modifierFlags] & NSShiftKeyMask) {
+		fCursorAccidental = kMusicExtendCursor;
+		return;
+	}
 	const VLProperties & 	prop = [self song]->fProperties.front();
 
-	fCursorAccidental	= (VLMusicElement)0;
 	if (prop.fKey >= 0) {
 		if (prop.fKey >= sSharpAcc[fCursorPitch % 12]) { // Sharp in Key
 			switch ([event modifierFlags] & (NSAlternateKeyMask|NSCommandKeyMask)) {

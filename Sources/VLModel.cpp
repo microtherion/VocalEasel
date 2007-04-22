@@ -999,6 +999,67 @@ void VLSong::DelNote(size_t measure, VLFraction at)
 	}
 }
 
+void VLSong::ExtendNote(size_t measure, VLFraction at)
+{
+	VLNoteList::iterator i = fMeasures[measure].fMelody.begin();
+	VLFraction			  t(0);
+
+	for (;;) {
+		if (t == at) {
+			if (i->fPitch == VLNote::kNoPitch)
+				return; // Don't extend rests
+			do {
+				VLNoteList::iterator j=i;
+				++j;
+				if (j != fMeasures[measure].fMelody.end()) {
+					//
+					// Extend across next note/rest
+					//
+					i->fDuration += j->fDuration;
+					fMeasures[measure].fMelody.erase(j);				
+				} else if (++measure < fMeasures.size()) { 
+					//
+					// Extend into next measure
+					//
+					VLNoteList::iterator k = fMeasures[measure].fMelody.begin();
+					if (k->fTied & VLNote::kTiedWithPrev) {
+						//
+						// Already extended, extend further
+						//
+						i = k;
+						continue; // Go for another spin
+					} else {
+						bool wasTied = k->fTied & VLNote::kTiedWithNext;
+						//
+						// Extend previous note
+						//
+						k->fPitch = i->fPitch;
+						k->fTied  = VLNote::kTiedWithPrev;
+						i->fTied != VLNote::kTiedWithNext;
+						k->fLyrics.clear();
+						if (wasTied) {
+							//
+							// Extend further
+							//
+							i = k;
+							continue;
+						}
+					}
+				}
+			} while (0);
+			//
+			// Finished extending
+			//
+			return;
+		}
+		VLFraction tEnd = t+i->fDuration;
+		if (tEnd > at) 
+			break; // Past the point, quit
+		t = tEnd;
+		++i;
+	}
+}
+
 static void TransposePinned(int8_t & pitch, int semi)
 {
 	if (pitch == VLNote::kNoPitch)
