@@ -299,7 +299,7 @@
 			VLNoteList::const_iterator next = note;
 			if (++next != melody.end())
 				nextDur = next->fDuration;
-			BOOL       	first	= !m || !note->fTied;
+			BOOL       	first	= !m || !(note->fTied & VLNote::kTiedWithPrev);
 			int			pitch	= note->fPitch;
 			while (dur > 0) {
 				VLFraction partialDur; // Actual value of note drawn

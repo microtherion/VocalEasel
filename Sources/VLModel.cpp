@@ -191,10 +191,12 @@ void VLNote::LilypondName(std::string & name, VLFraction at, VLFraction prevDur,
 		dur        -= part;
 	}
 	for (size_t i=0; i<durations.size(); ++i) {
-		if (i)
+		if (i && fPitch != kNoPitch)
 			name += " ~ ";
 		name += durations[i];
 	}
+	if (fTied & kTiedWithNext)
+		name += " ~";
 }
 
 static struct {
@@ -215,13 +217,21 @@ static struct {
   {{0,0}, 0}
 };
 
-void VLNote::MMAName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, const VLProperties & prop) const
+void VLNote::MMAName(std::string & name, VLFraction at, VLFraction dur, VLFraction prevDur, VLFraction nextDur, const VLProperties & prop) const
 {
+	if (fTied & kTiedWithPrev) {
+		if (fTied & kTiedWithNext) {
+			name = "~<>~";
+		} else {
+			name = '~';
+		}
+		return;
+	}
 	bool useSharps = prop.fKey >= 0;
 
 	name.clear();
 	VLFraction prevPart(0);
-	for (VLFraction dur = fDuration; dur.fNum; ) {
+	while (dur.fNum) {
 		VLFraction part;
 		bool	   grouped = dur==nextDur ||
 			(prevPart!=0 ? dur==prevPart : dur==prevDur);
@@ -236,13 +246,16 @@ void VLNote::MMAName(std::string & name, VLFraction at, VLFraction prevDur, VLFr
 		dur		   -= part;
 		at  	   += part;
 	}
-	name += MMAPitchName(fPitch, useSharps);
-	if (fPitch != kNoPitch) {
-		for (int raise = (fPitch-kMiddleC)/kOctave; raise>0; --raise)
+	int pitch = fTied & kTiedWithPrev ? kNoPitch : fPitch;
+	name += MMAPitchName(pitch, useSharps);
+	if (pitch != kNoPitch) {
+		for (int raise = (pitch-kMiddleC)/kOctave; raise>0; --raise)
 			name += '+';
-		for (int lower = (kMiddleC-fPitch)/kOctave; lower>0; --lower)
+		for (int lower = (kMiddleC-pitch)/kOctave; lower>0; --lower)
 			name += '-';
 	}
+	if (fTied & kTiedWithNext)
+		name += '~';
 }
 
 struct VLChordModifier {
@@ -755,7 +768,8 @@ VLMeasure::VLMeasure()
 {
 }
 
-void VLMeasure::MMANotes(std::string & notes, const VLProperties & prop) const
+void VLMeasure::MMANotes(std::string & notes, const VLProperties & prop,
+						 VLFraction extra) const
 {
 	VLFraction					at(0);
 	VLNoteList::const_iterator 	i 	= fMelody.begin();
@@ -766,15 +780,23 @@ void VLMeasure::MMANotes(std::string & notes, const VLProperties & prop) const
 	for (; i!=e; ++i) {
 		std::string 				note;
 		VLFraction 					nextDur(0);
+		VLFraction					dur(i->fDuration);
 		VLNoteList::const_iterator	n=i;
 		if (++n != e)
 			nextDur = n->fDuration;
-		i->MMAName(note, at, prevDur, nextDur, prop);
-		if (notes.size())
+		else
+			dur	   += extra;
+		i->MMAName(note, at, dur, prevDur, nextDur, prop);
+		if (notes.size()>1)
 			notes += ' ';
-		notes += note+';';
+		if (note == "~")
+			notes += note;
+		else
+			notes += note+';';
 		at    += i->fDuration;
 	}
+	if (notes == "~")
+		notes += "<>;";
 }
 
 void VLMeasure::MMAChords(std::string & chords, const VLProperties & prop) const
@@ -934,8 +956,6 @@ void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
 				//
 				// Overlap, split current
 				//
-				if (i->fTied & VLNote::kTiedWithPrev) 
-					LastTie(fMeasures[measure-1]) &= ~VLNote::kTiedWithNext;
 				note.fDuration 	= tEnd-at;
 				i->fDuration	= at-t;
 				i = fMeasures[measure].fMelody.insert(++i, note);
@@ -1035,7 +1055,7 @@ void VLSong::ExtendNote(size_t measure, VLFraction at)
 						//
 						k->fPitch = i->fPitch;
 						k->fTied  = VLNote::kTiedWithPrev;
-						i->fTied != VLNote::kTiedWithNext;
+						i->fTied |= VLNote::kTiedWithNext;
 						k->fLyrics.clear();
 						if (wasTied) {
 							//
@@ -2006,4 +2026,20 @@ void VLSong::DeleteMeasures(size_t beginMeasure, size_t endMeasure)
 			++r;
 		}
 	}
+}
+
+VLFract VLSong::TiedDuration(size_t measure)
+{
+	VLFraction total(0);
+
+	while (measure < fMeasures.size()) {
+		VLNote n = fMeasures[measure++].fMelody.front();
+		
+		if (!(n.fTied & VLNote::kTiedWithPrev))
+			break;
+		total += n.fDuration;
+		if (!(n.fTied & VLNote::kTiedWithNext))
+			break;	   
+	}
+	return total;
 }

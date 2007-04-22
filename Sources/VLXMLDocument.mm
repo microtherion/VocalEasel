@@ -104,7 +104,7 @@
 
 const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 
-- (NSXMLElement *)noteWithPitch:(int)pitch duration:(int)units useSharps:(BOOL)useSharps
+- (NSXMLElement *)noteWithPitch:(int)pitch duration:(int)units useSharps:(BOOL)useSharps tied:(int)tied
 {
 	NSXMLElement * note = [NSXMLNode elementWithName:@"note"];
 	if (pitch == VLNote::kNoPitch) {
@@ -140,6 +140,18 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 	[note addChild: [NSXMLNode elementWithName:@"duration"
 							   stringValue: [NSString stringWithFormat:@"%d",	
 													  units]]];
+	if (tied & VLNote::kTiedWithPrev) {
+		NSXMLElement * tie = [NSXMLNode elementWithName:@"tie"];
+		[tie addAttribute: [NSXMLNode attributeWithName:@"type"
+									  stringValue:@"stop"]];
+		[note addChild:tie];
+	}
+	if (tied & VLNote::kTiedWithNext) {
+		NSXMLElement * tie = [NSXMLNode elementWithName:@"tie"];
+		[tie addAttribute: [NSXMLNode attributeWithName:@"type"
+									  stringValue:@"start"]];
+		[note addChild:tie];
+	}
 	[note addChild: [NSXMLNode elementWithName:@"voice"
 							   stringValue: @"1"]];
 
@@ -189,7 +201,8 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 		VLFraction 	u 		= note->fDuration / resolution;
 		int			units	= (u.fNum+u.fDenom/2)/u.fDenom;
 		NSXMLElement*n		= 
-			[self noteWithPitch:note->fPitch duration:units useSharps:useSharps];
+			[self noteWithPitch:note->fPitch duration:units useSharps:useSharps
+				  tied:note->fTied];
 		for (size_t i=0; i<note->fLyrics.size(); ++i)
 			if (note->fLyrics[i])
 				[n addChild:[self syllable:&note->fLyrics[i] inStanza:i+1]];
@@ -210,12 +223,12 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 		int				units	= (u.fNum+u.fDenom/2)/u.fDenom;
 		NSXMLElement*	ch   	= nil;
 		if (chord->fPitch == VLNote::kNoPitch) {
-			[meas addChild:[self noteWithPitch:chord->fPitch duration:units useSharps:useSharps]];
+			[meas addChild:[self noteWithPitch:chord->fPitch duration:units useSharps:useSharps tied:0]];
 			continue;
 		}
 		if (chord->fRootPitch != VLNote::kNoPitch) {
 			[meas addChild:[self noteWithPitch:chord->fRootPitch
-								 duration:units useSharps:useSharps]];
+								 duration:units useSharps:useSharps tied:0]];
 			ch = [NSXMLNode elementWithName:@"chord"];
 		}
 		for (int step=0; step<32; ++step)
@@ -224,7 +237,7 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 			} else if (chord->fSteps & (1 << step)) {
 				NSXMLElement * note = 
 					[self noteWithPitch:chord->fPitch+step
-						  duration:units useSharps:useSharps];
+						  duration:units useSharps:useSharps tied:0];
 				[note insertChild:ch atIndex:0];
 				[meas addChild: note];
 				ch = [NSXMLNode elementWithName:@"chord"];
@@ -494,6 +507,8 @@ int8_t sStepToPitch[] = {
 			n.fPitch += [[alter stringValue] intValue];
 	}
 	n.fDuration = VLFraction([note intForXPath:@"./duration" error:&outError])*unit;
+	if ([note nodeForXPath:@".//tie[@type=\"stop\"]" error:&outError])
+		n.fTied |= VLNote::kTiedWithPrev;
 	NSEnumerator * e = [[note elementsForName:@"lyric"] objectEnumerator];
 	for (NSXMLElement * lyric; lyric = [e nextObject]; ) {
 		int stanza = [[[lyric attributeForName:@"number"]

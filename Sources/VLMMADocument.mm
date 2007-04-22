@@ -39,7 +39,7 @@
 		mmaFile += buf;
 		song->fMeasures[m].MMAChords(mmas, prop);
 		mmaFile += mmas;
-		song->fMeasures[m].MMANotes(mmas, prop);
+		song->fMeasures[m].MMANotes(mmas, prop, song->TiedDuration(m+1));
 		mmaFile += "\t{ " + mmas + " }\n";
 	}
 

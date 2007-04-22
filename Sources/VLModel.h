@@ -140,7 +140,7 @@ struct VLNote {
 
 	void Name(std::string & name, bool useSharps = false) const;
 	void LilypondName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, bool & triplet, const VLProperties & prop) const;
-	void MMAName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, const VLProperties & prop) const;
+	void MMAName(std::string & name, VLFraction at, VLFraction dur, VLFraction prevDur, VLFraction nextDur, const VLProperties & prop) const;
 };
 
 struct VLRest : VLNote {
@@ -244,7 +244,7 @@ struct VLMeasure {
 
 	VLMeasure();
 
-	void MMANotes(std::string & notes, const VLProperties & prop) const;
+	void MMANotes(std::string & notes, const VLProperties & prop, VLFraction extra) const;
 	void MMAChords(std::string & chords, const VLProperties & prop) const;
 };
 
@@ -354,6 +354,7 @@ struct VLSong {
 	void	LilypondNotes(std::string & notes) const;
 	void	LilypondChords(std::string & chords) const;
 	void 	LilypondStanza(std::string & lyrics, size_t stanza) const;
+	VLFract TiedDuration(size_t measure);
 };
 
 // Local Variables:
