@@ -138,8 +138,8 @@
 				NSSize		sz			= 
 					[syll sizeWithAttributes:sLyricsFont];
 				NSPoint 	syllLoc  	=
-					NSMakePoint(fClefKeyW+(m+at)*fMeasureW
-							  + 0.5f*(kNoteW-sz.width), 
+					NSMakePoint([self noteXInMeasure:m at:at]
+								- 0.5f*sz.width, 
 								kSystemY+kLyricsY-stanza*kLyricsH);
 				if (note->fLyrics[stanza-1].fKind & VLSyllable::kHasNext)
 					syll = [syll stringByAppendingString:@" -"];
