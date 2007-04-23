@@ -8,6 +8,7 @@
 
 #import "VLGrooveController.h"
 #import "VLSheetView.h"
+#import "VLDocument.h"
 
 @implementation VLGrooveController
 
@@ -20,6 +21,7 @@
 		[[NSPredicate predicateWithFormat:
 			@"!(SELF like[c] '.DESC') AND !(SELF matches[c] '.*(Intro|End)\\\\d*$')"]
 			retain];
+	fDocument	= [view document];
 
 	[NSApp beginSheet: [self window]
 		   modalForWindow: [view window]
@@ -36,6 +38,14 @@
 	[super dealloc];
 }
 
+- (IBAction) togglePlay:(id)sender
+{
+	if ([sender state])
+		[fDocument playWithGroove:[[fBrowser selectedCellInColumn:1] stringValue]];
+	else
+		[fDocument stop:sender];
+}
+
 - (IBAction)endSheet:(id)sender
 {
 	[NSApp endSheet:[self window] returnCode:[sender tag]];
@@ -43,9 +53,12 @@
 
 - (void)didEndSheet:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo
 {
+	[fDocument stop:self];
 	if (returnCode == NSAlertFirstButtonReturn)
 		[(VLSheetView *)contextInfo setGroove:[[fBrowser selectedCellInColumn:1] stringValue]];
-	
+	else
+		[(VLSheetView *)contextInfo setGroove:nil];
+		
 	[[self window] orderOut:self];
 }
 
@@ -98,13 +111,16 @@
 {
 	BOOL validStyle = [fBrowser selectedColumn];
 	[fOKButton setEnabled:validStyle];
-	if (validStyle) 
+	[fPlayButton setEnabled:validStyle];
+	if (validStyle) {
 		[fDescription setStringValue:
 			[NSString stringWithFormat:@"%@\n\n%@",
 			    [fSubStyles objectForKey:@".DESC"],
 			    [fSubStyles objectForKey:
 				    [[fBrowser selectedCellInColumn:1] stringValue]]]];
-	else
+		[fDocument stop:self];
+		[self togglePlay:fPlayButton];
+	} else
 		[fDescription setStringValue:[fSubStyles objectForKey:@".DESC"]];
 }
 

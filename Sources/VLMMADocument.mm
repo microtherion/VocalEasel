@@ -37,7 +37,7 @@
 		size_t m	= *i;
 		sprintf(buf, "%-5d", ++meas);
 		mmaFile += buf;
-		song->fMeasures[m].MMAChords(mmas, prop);
+		song->fMeasures[m].MMAChords(mmas, prop, i==song->begin());
 		mmaFile += mmas;
 		song->fMeasures[m].MMANotes(mmas, prop, song->TiedDuration(m+1));
 		mmaFile += "\t{ " + mmas + " }\n";

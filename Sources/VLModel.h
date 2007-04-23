@@ -202,7 +202,7 @@ struct VLChord : VLNote {
 	VLChord(std::string name);
 	void	Name(std::string & base, std::string & ext, std::string & root, bool useSharps = false) const;
 	void 	LilypondName(std::string & name, bool useSharps = false) const;
-	void 	MMAName(std::string & name, bool useSharps) const;
+	bool 	MMAName(std::string & name, bool useSharps, bool initial) const;
 };
 
 struct VLProperties {
@@ -245,7 +245,7 @@ struct VLMeasure {
 	VLMeasure();
 
 	void MMANotes(std::string & notes, const VLProperties & prop, VLFraction extra) const;
-	void MMAChords(std::string & chords, const VLProperties & prop) const;
+	void MMAChords(std::string & chords, const VLProperties & prop, bool initial) const;
 };
 
 struct VLRepeat {

@@ -418,6 +418,18 @@
 							[self fileURLWithExtension:@"mid"]]));
 }
 
+- (void) playWithGroove:(NSString *)groove
+{
+	NSString * savedGroove	= songGroove;
+	songGroove				= groove;
+	[validTmpFiles removeObjectForKey:@"mma"]; 
+	[validTmpFiles removeObjectForKey:@"mid"]; 
+	[self play:groove];
+	songGroove				= savedGroove;
+	[validTmpFiles removeObjectForKey:@"mma"]; 
+	[validTmpFiles removeObjectForKey:@"mid"]; 
+}
+
 - (IBAction) stop:(id)sender
 {
 	VLSoundOut::Instance()->Stop();

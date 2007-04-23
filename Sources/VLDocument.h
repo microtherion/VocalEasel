@@ -52,6 +52,8 @@
 
 - (IBAction) showOutput:(id)sender;
 - (IBAction) showLog:(id)sender;
+- (IBAction) play:(id)sender;
+- (IBAction) stop:(id)sender;
 
 - (NSString *) tmpPath;
 - (NSString *) workPath;
@@ -64,6 +66,7 @@
 - (void)	   didChangeSong;
 - (void)	   addObserver:(id)observer;
 - (VLLogWindow *)logWin;
+- (void)	   playWithGroove:(NSString *)groove;
 
 @end
 

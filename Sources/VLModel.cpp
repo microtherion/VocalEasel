@@ -619,15 +619,15 @@ static const VLChordModifier kMMAModifiers[] = {
 	{NULL, 0, 0}
 };
 
-void VLChord::MMAName(std::string & name, bool useSharps) const
+bool VLChord::MMAName(std::string & name, bool useSharps, bool initial) const
 {
 	VLFraction dur = fDuration;
 	int   quarters = static_cast<int>(dur*4.0f+0.5f);
 	name = "";
 	if (!quarters--)
-		return;
+		return initial;
 	if (fPitch == kNoPitch) {
-		name = '/';
+		name = initial ? 'z' : '/';
 	} else {
 		std::string base, ext;
 		VLNote::Name(base, useSharps);
@@ -675,6 +675,8 @@ void VLChord::MMAName(std::string & name, bool useSharps) const
 	}
 	while (quarters--) 
 		name += " /";
+	
+	return false;
 }
 
 static VLFraction MaxNote(VLFraction d)
@@ -799,7 +801,8 @@ void VLMeasure::MMANotes(std::string & notes, const VLProperties & prop,
 		notes += "<>;";
 }
 
-void VLMeasure::MMAChords(std::string & chords, const VLProperties & prop) const
+void VLMeasure::MMAChords(std::string & chords, const VLProperties & prop,
+						  bool initial) const
 {
   VLChordList::const_iterator i	= fChords.begin();
   VLChordList::const_iterator e	= fChords.end();
@@ -807,7 +810,7 @@ void VLMeasure::MMAChords(std::string & chords, const VLProperties & prop) const
   chords.clear();
   for (; i!=e; ++i) {
     std::string chord;
-    i->MMAName(chord, prop.fKey >= 0);
+    initial = i->MMAName(chord, prop.fKey >= 0, initial);
     if (chords.size())
       chords += ' ';
     chords += chord;

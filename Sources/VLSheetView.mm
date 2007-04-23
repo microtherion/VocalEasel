@@ -982,8 +982,12 @@ static int8_t sSharpAcc[] = {
 
 - (void)setGroove:(NSString *)groove
 {
-	[[self document] setValue:groove forKey:@"songGroove"];
-	[self setGrooveMenu:groove];
+	if (groove) {
+		[[self document] setValue:groove forKey:@"songGroove"];
+		[self setGrooveMenu:groove];
+	} else {
+		[fGrooveMenu selectItemAtIndex:2];
+	}
 }
 
 - (void)setGrooveMenu:(NSString *)groove
