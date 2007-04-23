@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.5
 
 """
 The program "MMA - Musical Midi Accompaniment" and the associated

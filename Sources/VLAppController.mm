@@ -97,6 +97,11 @@
 	return [self getLineFromCommand:cmd];
 }
 
+- (void)adviseLilypondInstallation:(id)sender
+{
+//	[NSApp terminate:self];
+}
+
 - (void)awakeFromNib
 {
 	[lilypondPath setAutoenablesItems:NO];
@@ -168,7 +173,87 @@
 		wantTool = true;
 		[defaults setObject:toolPath forKey:@"VLLilypondPath"];
 	}
-	[lilypondPath selectItemWithTag:wantTool ? 0 : 1];
+	[lilypondPath selectItemWithTag:wantTool ? 0 : 1];	
+}
+
+- (BOOL)promptForSoftwareInstallation:(NSString *)label
+							withTitle:(NSString *)title
+						  explanation:(NSString *)expl
+							   script:(NSString *)script
+								  url:(NSURL *)url
+{
+	NSString * hasFink = [self getLineFromCommand:@"bash -l which fink"];
+
+	NSInteger response = 
+		[[NSAlert alertWithMessageText:title
+				  defaultButton: hasFink 
+				  ? @"Install through fink" 
+				  : label
+				  alternateButton:@"Continue"
+				  otherButton:hasFink 
+				  ? label
+				  : @""
+				  informativeTextWithFormat: expl, hasFink 
+				  ? @"\n\nSince you have fink installed already, you may "
+				  "choose to install this package through fink." : @""]
+			runModal];
+
+	if (response == NSAlertAlternateReturn)
+		return NO;
+	else if (hasFink && response == NSAlertDefaultReturn) {
+		NSDictionary * error;
+		NSURL *		   scptURL = 
+			[NSURL fileURLWithPath:
+			   [[NSBundle mainBundle] pathForResource:script
+									  ofType:@"scpt"]];
+		NSAppleScript * scpt = 
+			[[NSAppleScript alloc] 
+				initWithContentsOfURL:scptURL error:&error];
+		[scpt executeAndReturnError:&error];
+	} else {
+		[[NSWorkspace sharedWorkspace] openURL:url];
+	}
+	return YES;
+}
+
+- (void)applicationWillFinishLaunching:(NSNotification *)aNotification
+{
+	BOOL       quit	   = NO;
+
+	if (!toolPath && !appPath) 
+		if ([self promptForSoftwareInstallation:@"Download from lilypond.org"
+				  withTitle: @"Lilypond Not Found!"
+				  explanation: 
+					  @"Couldn't find an installation of Lilypond, which "
+				  "is needed to typeset the sheet music. If you continue "
+				  "without installing, you will be unable to preview, "
+				  "print, or save as PDF.%@"
+				  script:@"installLilypond"
+				  url:[NSURL URLWithString:@"http://lilypond.org/web/install"]]
+		)
+			quit = YES;
+	if (![self getLineFromCommand:@"bash -l which python2.5"]) 
+		if ([self promptForSoftwareInstallation:@"Download from python.org"
+				  withTitle: @"Python 2.5 Not Found!"
+				  explanation: 
+					  @"Python 2.5 is needed to play accompaniments. The "
+				  "version preinstalled on your computer is not recent "
+				  "enough. If you continue without installing, you will be "
+				  "unable to play accompaniments, or save as MIDI.%@"
+				  script:@"installPython"
+				  url:[NSURL URLWithString:@"http://www.python.org/download"]]
+		)
+			quit = YES;
+
+	if (quit) {
+		[[NSAlert alertWithMessageText:@"Quit and Restart"
+					  defaultButton: @"OK" alternateButton: @"" otherButton: @""
+					  informativeTextWithFormat:
+					  @"The software you have chosen to install will be "
+				  "available after you restart this application."]
+			runModal];
+		[NSApp terminate:self];
+	}
 }
 
 - (IBAction) playNewPitch:(id)sender
