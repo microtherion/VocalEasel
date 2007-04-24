@@ -214,19 +214,19 @@ static VLSong	sPasteboard;
 //
 // Data source for endings
 //
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
+- (int)numberOfRowsInTableView:(NSTableView *)aTableView
 {
 	return 1;
 }
 
 - (id)tableView:(NSTableView*)tv objectValueForTableColumn:(NSTableColumn *)col
-			row:(NSInteger)rowIndex
+			row:(int)rowIndex
 {
 	int mask = [[col identifier] intValue];
 	return (fVoltaOK & mask) ? [NSNumber numberWithBool:(fVolta & mask)] : nil;
 }
 
-- (void)tableView:(NSTableView *)tv setObjectValue:(id)val forTableColumn:(NSTableColumn *)col row:(NSInteger)rowIndex
+- (void)tableView:(NSTableView *)tv setObjectValue:(id)val forTableColumn:(NSTableColumn *)col row:(int)rowIndex
 {
 	int mask = [[col identifier] intValue];
 

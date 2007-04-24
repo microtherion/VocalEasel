@@ -62,7 +62,7 @@
 	[[self window] orderOut:self];
 }
 
-- (NSString *)browser:(NSBrowser *)sender titleOfColumn:(NSInteger)column
+- (NSString *)browser:(NSBrowser *)sender titleOfColumn:(int)column
 {
 	if (!column)
 		return @"Style";
@@ -81,7 +81,7 @@
 						  retain];
 }
 
-- (NSInteger)browser:(NSBrowser *)sender numberOfRowsInColumn:(NSInteger)column
+- (int)browser:(NSBrowser *)sender numberOfRowsInColumn:(int)column
 {
 	[fBrowser setTakesTitleFromPreviousColumn:NO];
 	[fBrowser setDoubleAction:@selector(endSheet:)];
@@ -94,7 +94,7 @@
 	}
 }
 
-- (void)browser:(NSBrowser *)sender willDisplayCell:(id)cell atRow:(NSInteger)row column:(NSInteger)column
+- (void)browser:(NSBrowser *)sender willDisplayCell:(id)cell atRow:(int)row column:(int)column
 {
 	if (!column) {
 		[cell setStringValue:

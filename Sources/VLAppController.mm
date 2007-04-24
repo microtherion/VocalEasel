@@ -184,7 +184,7 @@
 {
 	NSString * hasFink = [self getLineFromCommand:@"bash -l which fink"];
 
-	NSInteger response = 
+	int response = 
 		[[NSAlert alertWithMessageText:title
 				  defaultButton: hasFink 
 				  ? @"Install through fink" 
