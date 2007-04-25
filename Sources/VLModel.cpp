@@ -1122,6 +1122,15 @@ bool VLSong::IsNonEmpty() const
 
 void VLSong::Transpose(int semi)
 {
+	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
+		VLChordList::iterator i = fMeasures[measure].fChords.begin();
+		VLChordList::iterator e = fMeasures[measure].fChords.end();
+
+		for (; i!=e; ++i) {
+			TransposePinned(i->fPitch, semi);
+			TransposePinned(i->fRootPitch, semi);
+		}
+	}
 	for (int pass=0; pass<2 && semi;) {
 		int8_t low		= 127;
 		int8_t high	= 0;
@@ -1138,20 +1147,11 @@ void VLSong::Transpose(int semi)
 			}
 		}
 		if (low < VLNote::kMiddleC-6 && high < VLNote::kMiddleC+7)
-			semi	+= 12;	// Transpose an Octave up
+			semi	= 12;	// Transpose an Octave up
 		else if (low > VLNote::kMiddleC+7 && high > VLNote::kMiddleC+16)
-			semi 	-= 12;	// Transpose an Octave down
+			semi 	= -12;	// Transpose an Octave down
 		else
 			break;			// Looks like we're done
-	}
-	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
-		VLChordList::iterator i = fMeasures[measure].fChords.begin();
-		VLChordList::iterator e = fMeasures[measure].fChords.end();
-
-		for (; i!=e; ++i) {
-			TransposePinned(i->fPitch, semi);
-			TransposePinned(i->fRootPitch, semi);
-		}
 	}
 }
 
