@@ -1471,7 +1471,9 @@ void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string w
 		VLFraction				now(0);
 
 		while (note != meas.fMelody.end()) {
-			if (now >= at && note->fPitch != VLNote::kNoPitch) {
+			if (now >= at && note->fPitch != VLNote::kNoPitch
+				&& !(note->fTied & VLNote::kTiedWithPrev)
+			) {
 				if (cleanup) {
 					//
 					// Make sure that following syllable doesn't have
