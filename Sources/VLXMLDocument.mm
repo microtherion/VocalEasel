@@ -40,13 +40,7 @@
 
 - (NSXMLDTD *)partwiseDTD
 {
-	NSString * dtdPath = [[NSBundle mainBundle] pathForResource:@"partwise"
-												ofType:@"dtd"
-												inDirectory:@"DTD"];
-	NSXMLDTD * dtd = [[[NSXMLDTD alloc]
-						  initWithContentsOfURL:[NSURL fileURLWithPath:dtdPath]
-						  options:0 error:nil]
-						 autorelease];
+	NSXMLDTD * dtd = [[[NSXMLDTD alloc] init] autorelease];
 	[dtd setPublicID:@"-//Recordare//DTD MusicXML 1.1 Partwise//EN"];
 	[dtd setSystemID:@"http://www.musicxml.org/dtds/partwise.dtd"];
 	[dtd setName:@"score-partwise"];

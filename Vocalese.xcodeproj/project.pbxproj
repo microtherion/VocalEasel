@@ -75,7 +75,6 @@
 		95E299C00B2006F5001977D2 /* VLSheetViewLyrics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95E299BE0B2006F5001977D2 /* VLSheetViewLyrics.mm */; };
 		95EDA5AB0B06DE47004D8D6E /* VLMIDIDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95EDA5A90B06DE46004D8D6E /* VLMIDIDocument.mm */; };
 		95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
-		95F5F5340ADCCFBB003980B2 /* DTD in Resources */ = {isa = PBXBuildFile; fileRef = 95F5F51E0ADCCFBB003980B2 /* DTD */; };
 		95F820AB0AF884A30010963D /* VLMMADocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F820AA0AF884A30010963D /* VLMMADocument.mm */; };
 		95FC668F0AF0A08C003D9C11 /* VLLogWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95FC668E0AF0A08C003D9C11 /* VLLogWindow.mm */; };
 		95FC66960AF0A112003D9C11 /* VLLogWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66950AF0A112003D9C11 /* VLLogWindow.nib */; };
@@ -595,7 +594,6 @@
 				8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */,
 				8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */,
 				95B3E1A70960E58B000E9C0D /* Music in Resources */,
-				95F5F5340ADCCFBB003980B2 /* DTD in Resources */,
 				9593E4E80AE0ED1F00035816 /* vlsong.icns in Resources */,
 				9593E4E90AE0ED1F00035816 /* vocalese.icns in Resources */,
 				95E04DCE0AEB4D9B006F30A0 /* Templates in Resources */,
