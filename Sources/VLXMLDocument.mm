@@ -679,6 +679,8 @@ int8_t sStepToPitch[] = {
 
 - (BOOL)readFromXMLData:(NSData *)data error:(NSError **)outError
 {
+	song->clear();
+
 	NSXMLDocument * doc 	= [[NSXMLDocument alloc] initWithData:data
 													 options:0
 													 error:outError];

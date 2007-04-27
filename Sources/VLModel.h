@@ -264,6 +264,7 @@ struct VLRepeat {
 struct VLSong {
 	VLSong(bool initialize = true);
 	void swap(VLSong & other);
+	void clear();
 	
 	std::vector<VLProperties>	fProperties;
 	std::vector<VLMeasure>		fMeasures;
