@@ -1,9 +1,11 @@
 //
-//  VLPDFDocument.h
-//  Vocalese
+// File: VLPDFDocument.h - Export document in PDF format
 //
-//  Created by Matthias Neeracher on 10/20/06.
-//  Copyright 2006 __MyCompanyName__. All rights reserved.
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2006-2007 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>

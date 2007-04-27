@@ -1,9 +1,11 @@
 //
-//  VLSheetViewChords.h
-//  Vocalese
+// File: VLSheetViewChords.h - Chord editing functionality
 //
-//  Created by Matthias Neeracher on 1/4/06.
-//  Copyright 2006 __MyCompanyName__. All rights reserved.
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2006-2007 Matthias Neeracher
 //
 
 #import "VLSheetWindow.h"

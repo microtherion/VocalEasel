@@ -1,11 +1,12 @@
-/*
- *  VLSoundOut.cpp
- *  Vocalese
- *
- *  Created by Matthias Neeracher on 12/18/05.
- *  Copyright 2005 __MyCompanyName__. All rights reserved.
- *
- */
+//
+// File: VLSoundOut.cpp - Sound output and file playing functionality
+//
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2005-2007 Matthias Neeracher
+//
 
 #include "VLSoundOut.h"
 

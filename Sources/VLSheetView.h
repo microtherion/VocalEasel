@@ -1,9 +1,11 @@
 //
-//  VLSheetView.h
-//  Vocalese
+// File: VLSheetView.h - Lead sheet editing view
 //
-//  Created by Matthias Neeracher on 12/17/05.
-//  Copyright 2005 __MyCompanyName__. All rights reserved.
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2005-2007 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>

@@ -1,9 +1,11 @@
 //
-//  VLSheetViewInternal.h
-//  Vocalese
+// File: VLSheetViewInternal.h - Metrics for lead sheet drawing
 //
-//  Created by Matthias Neeracher on 1/4/06.
-//  Copyright 2006 __MyCompanyName__. All rights reserved.
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2006-2007 Matthias Neeracher
 //
 
 const float kLineX		=  5.0;

@@ -1,9 +1,11 @@
 //
-//  VLSheetViewSelection.h
-//  Vocalese
+// File: VLSheetViewSelection.h - Measure selection functionality
 //
-//  Created by Matthias Neeracher on 12/28/06.
-//  Copyright 2006 __MyCompanyName__. All rights reserved.
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2006-2007 Matthias Neeracher
 //
 
 @interface VLSheetView (Selection)

@@ -1,11 +1,12 @@
-/*
- *  VLModel.h
- *  Vocalese
- *
- *  Created by Matthias Neeracher on 12/18/05.
- *  Copyright 2005 __MyCompanyName__. All rights reserved.
- *
- */
+//
+// File: VLModel.h - Represent music for a song.
+//
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2005-2007 Matthias Neeracher
+//
 
 #include <list>
 #include <vector>

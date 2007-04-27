@@ -1,9 +1,11 @@
 //
-//  VLSheetViewNotes.h
-//  Vocalese
+// File: VLSheetViewNotes.h - Melody editing functionality
 //
-//  Created by Matthias Neeracher on 1/4/06.
-//  Copyright 2006 __MyCompanyName__. All rights reserved.
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2005-2007 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>

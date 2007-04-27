@@ -1,9 +1,11 @@
 //
-//  VLDocument.mm
-//  Vocalese
+// File: VLDocument.mm - VocalEasel document
 //
-//  Created by Matthias Neeracher on 12/17/05.
-//  Copyright __MyCompanyName__ 2005 . All rights reserved.
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2005-2007 Matthias Neeracher
 //
 
 #import "VLDocument.h"

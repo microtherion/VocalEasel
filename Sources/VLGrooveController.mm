@@ -1,9 +1,11 @@
 //
-//  VLGrooveController.mm
-//  Vocalese
+// File: VLGrooveController.mm - Control groove selection sheet
 //
-//  Created by Matthias Neeracher on 2/1/07.
-//  Copyright 2007 __MyCompanyName__. All rights reserved.
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2007 Matthias Neeracher
 //
 
 #import "VLGrooveController.h"

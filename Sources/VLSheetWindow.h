@@ -1,9 +1,11 @@
 //
-//  VLSheetWindow.h
-//  Lilypond
+// File: VLSheetWindow.h - Control lead sheet editing window
 //
-//  Created by Matthias Neeracher on 5/29/05.
-//  Copyright 2005 __MyCompanyName__. All rights reserved.
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2005-2007 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>

@@ -1,0 +1,35 @@
+VocalEasel consists of contributions from a number of different sources:
+
+* The musical graphical symbols in Resources/Music were extracted from
+   LilyPond fonts created by Han-Wen Nienhuys <hanwen@xs4all.nl>,
+   Jan Nieuwenhuizen <janneke@gnu.org>, and others, and are available 
+   under the GNU General Public License (Resources/Music/COPYING)
+* The MMA Musical Midi Accompaniment software package in mma was
+   written by Robert van der Poel <bob@mellowood.ca> and is available
+   under the GNU General Public License (mma/COPYING)
+* The Audio code in Sources/CoreAudioSDK was written by Apple Computer
+   and is available under Apple's Sample Code License 
+   (Sources/CoreAudioSDK/LICENSE)
+* All code not in the abovementioned directories was written by me and is
+  available under the license stated below.
+
+Copyright (c) 2005-2007 Matthias Neeracher
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must not
+claim that you wrote the original software. If you use this software
+in a product, an acknowledgment in the product documentation would be
+appreciated but is not required.
+
+2. Altered source versions must be plainly marked as such, and must not be
+misrepresented as being the original software.
+
+3. This notice may not be removed or altered from any source
+distribution.

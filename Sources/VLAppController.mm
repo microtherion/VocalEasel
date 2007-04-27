@@ -1,9 +1,11 @@
 //
-//  VLAppController.mm
-//  Vocalese
+// File: VLAppController.mm - Application wide controller
 //
-//  Created by Matthias Neeracher on 10/23/06.
-//  Copyright 2006 __MyCompanyName__. All rights reserved.
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2005-2007 Matthias Neeracher
 //
 
 #import "VLAppController.h"

@@ -1,9 +1,12 @@
 //
-//  VLKeyValueUndo.mm
-//  Vocalese
+// File: VLKeyValueUndo.mm - Automatically handle undo functionality for 
+//                          key-value paths
 //
-//  Created by Matthias Neeracher on 12/3/06.
-//  Copyright 2006 __MyCompanyName__. All rights reserved.
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2007 Matthias Neeracher
 //
 
 #import "VLKeyValueUndo.h"

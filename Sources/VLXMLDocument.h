@@ -1,9 +1,11 @@
 //
-//  VLXMLDocument.h
-//  Vocalese
+// File: VLXMLDocument.h - Read and write native (MusicXML) document format
 //
-//  Created by Matthias Neeracher on 10/10/06.
-//  Copyright 2006 __MyCompanyName__. All rights reserved.
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2006-2007 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>

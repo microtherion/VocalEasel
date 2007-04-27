@@ -1,11 +1,12 @@
-/*
- *  VLSoundOut.h
- *  Vocalese
- *
- *  Created by Matthias Neeracher on 12/18/05.
- *  Copyright 2005 __MyCompanyName__. All rights reserved.
- *
- */
+//
+// File: VLSoundOut.h - Sound output and file conversion
+//
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2005-2007 Matthias Neeracher
+//
 
 #include "VLModel.h"
 #import <CoreFoundation/CoreFoundation.h>

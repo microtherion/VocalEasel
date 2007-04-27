@@ -1,9 +1,11 @@
 //
-//  VLMIDIDocument.mm
-//  Vocalese
+// File: VLMIDIDocument.mm - Export document in MIDI format
 //
-//  Created by Matthias Neeracher on 10/20/06.
-//  Copyright 2006 __MyCompanyName__. All rights reserved.
+// Author(s):
+//
+//      (MN)    Matthias Neeracher
+//
+// Copyright © 2006-2007 Matthias Neeracher
 //
 
 #import "VLMIDIDocument.h"
