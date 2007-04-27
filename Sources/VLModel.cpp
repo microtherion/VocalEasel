@@ -850,6 +850,16 @@ void VLSong::swap(VLSong & other)
 	std::swap(fCoda, other.fCoda);
 }
 
+void VLSong::clear()
+{
+	fProperties.resize(1);
+	fMeasures.clear();
+	fRepeats.clear();
+	
+	fGoToCoda	= -1;
+	fCoda		= -1;
+}
+
 //
 // Deal with chords - a bit simpler
 //
@@ -1024,63 +1034,56 @@ void VLSong::DelNote(size_t measure, VLFraction at)
 
 void VLSong::ExtendNote(size_t measure, VLFraction at)
 {
-	VLNoteList::iterator i = fMeasures[measure].fMelody.begin();
-	VLFraction			  t(0);
+	VLNoteList::iterator i 	= fMeasures[measure].fMelody.begin();
+	VLNoteList::iterator end= fMeasures[measure].fMelody.end();
+	
+	for (VLFraction t(0); i != end && t+i->fDuration <= at; ++i) 
+		t += i->fDuration;
+
+	if (i == end)
+		--i;
+	if (i->fPitch == VLNote::kNoPitch)
+		return; // Don't extend rests
 
 	for (;;) {
-		if (t == at) {
-			if (i->fPitch == VLNote::kNoPitch)
-				return; // Don't extend rests
-			do {
-				VLNoteList::iterator j=i;
-				++j;
-				if (j != fMeasures[measure].fMelody.end()) {
+		VLNoteList::iterator j=i;
+		++j;
+		if (j != fMeasures[measure].fMelody.end()) {
+			//
+			// Extend across next note/rest
+			//
+			i->fDuration += j->fDuration;
+			fMeasures[measure].fMelody.erase(j);				
+		} else if (++measure < fMeasures.size()) { 
+			//
+			// Extend into next measure
+			//
+			VLNoteList::iterator k = fMeasures[measure].fMelody.begin();
+			if (k->fTied & VLNote::kTiedWithPrev) {
+				//
+				// Already extended, extend further
+				//
+				i = k;
+				continue; // Go for another spin
+			} else {
+				for (;;) {
+					bool wasTied = k->fTied & VLNote::kTiedWithNext;
 					//
-					// Extend across next note/rest
+					// Extend previous note
 					//
-					i->fDuration += j->fDuration;
-					fMeasures[measure].fMelody.erase(j);				
-				} else if (++measure < fMeasures.size()) { 
-					//
-					// Extend into next measure
-					//
-					VLNoteList::iterator k = fMeasures[measure].fMelody.begin();
-					if (k->fTied & VLNote::kTiedWithPrev) {
-						//
-						// Already extended, extend further
-						//
-						i = k;
-						continue; // Go for another spin
-					} else {
-						bool wasTied = k->fTied & VLNote::kTiedWithNext;
-						//
-						// Extend previous note
-						//
-						k->fPitch = i->fPitch;
-						k->fTied  = VLNote::kTiedWithPrev;
-						i->fTied |= VLNote::kTiedWithNext;
-						k->fLyrics.clear();
-						if (wasTied) {
-							//
-							// Extend further
-							//
-							i = k;
-							continue;
-						}
-					}
+					k->fPitch = i->fPitch;
+					k->fTied  = VLNote::kTiedWithPrev;
+					i->fTied |= VLNote::kTiedWithNext;
+					k->fLyrics.clear();
+					if (!wasTied) 
+						break;
+					i = k;
+					k = fMeasures[++measure].fMelody.begin();
 				}
-			} while (0);
-			//
-			// Finished extending
-			//
-			return;
+			}
 		}
-		VLFraction tEnd = t+i->fDuration;
-		if (tEnd > at) 
-			break; // Past the point, quit
-		t = tEnd;
-		++i;
-	}
+		break;
+	} 
 }
 
 static void TransposePinned(int8_t & pitch, int semi)
