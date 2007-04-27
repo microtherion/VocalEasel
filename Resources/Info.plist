@@ -125,7 +125,7 @@
 	<key>CFBundleExecutable</key>
 	<string>VocalEasel</string>
 	<key>CFBundleIconFile</key>
-	<string>vocalese</string>
+	<string>vlapp</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.aereperennius.VocalEasel</string>
 	<key>CFBundleInfoDictionaryVersion</key>

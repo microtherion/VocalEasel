@@ -44,7 +44,7 @@
 		95932B91096527700008B0DB /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB3095FD34F00434E43 /* AudioUnit.framework */; };
 		95932B92096527710008B0DB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB2095FD34F00434E43 /* AudioToolbox.framework */; };
 		9593E4E80AE0ED1F00035816 /* vlsong.icns in Resources */ = {isa = PBXBuildFile; fileRef = 9593E4E60AE0ED1F00035816 /* vlsong.icns */; };
-		9593E4E90AE0ED1F00035816 /* vocalese.icns in Resources */ = {isa = PBXBuildFile; fileRef = 9593E4E70AE0ED1F00035816 /* vocalese.icns */; };
+		9593E4E90AE0ED1F00035816 /* vlapp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 9593E4E70AE0ED1F00035816 /* vlapp.icns */; };
 		959408AD096922EA007CCCF8 /* TVLEdit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959408AC096922EA007CCCF8 /* TVLEdit.cpp */; };
 		959408AE096922F7007CCCF8 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		959420EB0B44E769006BC62C /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 954DD4DA0B44E6000056C504 /* MainMenu.nib */; };
@@ -176,7 +176,7 @@
 		955E595C0957C0FC0045FDA5 /* TVLChord */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLChord; sourceTree = BUILT_PRODUCTS_DIR; };
 		955E59600957C1400045FDA5 /* TVLChord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TVLChord.cpp; path = Tests/TVLChord.cpp; sourceTree = "<group>"; };
 		9593E4E60AE0ED1F00035816 /* vlsong.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = vlsong.icns; path = Resources/vlsong.icns; sourceTree = "<group>"; };
-		9593E4E70AE0ED1F00035816 /* vocalese.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = vocalese.icns; path = Resources/vocalese.icns; sourceTree = "<group>"; };
+		9593E4E70AE0ED1F00035816 /* vlapp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = vlapp.icns; path = Resources/vlapp.icns; sourceTree = "<group>"; };
 		959408A0096922CA007CCCF8 /* TVLEdit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLEdit; sourceTree = BUILT_PRODUCTS_DIR; };
 		959408AC096922EA007CCCF8 /* TVLEdit.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = TVLEdit.cpp; path = Tests/TVLEdit.cpp; sourceTree = "<group>"; };
 		9599ED950B73185800A6A2F7 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/VLGroove.nib; sourceTree = "<group>"; };
@@ -209,7 +209,6 @@
 		95EDA5A90B06DE46004D8D6E /* VLMIDIDocument.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLMIDIDocument.mm; path = Sources/VLMIDIDocument.mm; sourceTree = "<group>"; };
 		95F5F50D0ADCC433003980B2 /* VLXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLXMLDocument.h; path = Sources/VLXMLDocument.h; sourceTree = "<group>"; };
 		95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLXMLDocument.mm; path = Sources/VLXMLDocument.mm; sourceTree = "<group>"; };
-		95F5F51E0ADCCFBB003980B2 /* DTD */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DTD; path = Resources/DTD; sourceTree = "<group>"; };
 		95F820A90AF884A30010963D /* VLMMADocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLMMADocument.h; path = Sources/VLMMADocument.h; sourceTree = "<group>"; };
 		95F820AA0AF884A30010963D /* VLMMADocument.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLMMADocument.mm; path = Sources/VLMMADocument.mm; sourceTree = "<group>"; };
 		95FC668D0AF0A08C003D9C11 /* VLLogWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLLogWindow.h; path = Sources/VLLogWindow.h; sourceTree = "<group>"; };
@@ -407,8 +406,7 @@
 				95FC66950AF0A112003D9C11 /* VLLogWindow.nib */,
 				95E04DCA0AEB4D9B006F30A0 /* Templates */,
 				9593E4E60AE0ED1F00035816 /* vlsong.icns */,
-				9593E4E70AE0ED1F00035816 /* vocalese.icns */,
-				95F5F51E0ADCCFBB003980B2 /* DTD */,
+				9593E4E70AE0ED1F00035816 /* vlapp.icns */,
 				95B3E1980960E58B000E9C0D /* Music */,
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
 				8D15AC360486D014006FF6A4 /* Info.plist */,
@@ -479,9 +477,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8D15AC270486D014006FF6A4 /* Vocalese */ = {
+		8D15AC270486D014006FF6A4 /* VocalEasel */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 95D7BF780AA699C600D5E02C /* Build configuration list for PBXNativeTarget "Vocalese" */;
+			buildConfigurationList = 95D7BF780AA699C600D5E02C /* Build configuration list for PBXNativeTarget "VocalEasel" */;
 			buildPhases = (
 				8D15AC2B0486D014006FF6A4 /* Resources */,
 				8D15AC300486D014006FF6A4 /* Sources */,
@@ -494,7 +492,7 @@
 			);
 			dependencies = (
 			);
-			name = Vocalese;
+			name = VocalEasel;
 			productInstallPath = "$(HOME)/Applications";
 			productName = Vocalese;
 			productReference = 8D15AC370486D014006FF6A4 /* VocalEasel.app */;
@@ -569,7 +567,7 @@
 /* Begin PBXProject section */
 		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = 95D7BF740AA699C600D5E02C /* Build configuration list for PBXProject "Vocalese" */;
+			buildConfigurationList = 95D7BF740AA699C600D5E02C /* Build configuration list for PBXProject "VocalEasel" */;
 			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 2A37F4AAFDCFA73011CA2CEA /* Vocalese */;
@@ -577,7 +575,7 @@
 			projectRoot = "";
 			shouldCheckCompatibility = 1;
 			targets = (
-				8D15AC270486D014006FF6A4 /* Vocalese */,
+				8D15AC270486D014006FF6A4 /* VocalEasel */,
 				955E595B0957C0FC0045FDA5 /* TVLChord */,
 				952CBB97095FD19D00434E43 /* TVLSoundOut */,
 				9594089F096922CA007CCCF8 /* TVLEdit */,
@@ -597,7 +595,7 @@
 				8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */,
 				95B3E1A70960E58B000E9C0D /* Music in Resources */,
 				9593E4E80AE0ED1F00035816 /* vlsong.icns in Resources */,
-				9593E4E90AE0ED1F00035816 /* vocalese.icns in Resources */,
+				9593E4E90AE0ED1F00035816 /* vlapp.icns in Resources */,
 				95E04DCE0AEB4D9B006F30A0 /* Templates in Resources */,
 				95FC66960AF0A112003D9C11 /* VLLogWindow.nib in Resources */,
 				95FC66BA0AF0A3AD003D9C11 /* VLPDFWindow.nib in Resources */,
@@ -774,7 +772,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Sources/Vocalese_Prefix.pch;
+				GCC_PREFIX_HEADER = Sources/VocalEasel_Prefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
@@ -793,7 +791,7 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Sources/Vocalese_Prefix.pch;
+				GCC_PREFIX_HEADER = Sources/VocalEasel_Prefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
@@ -810,7 +808,7 @@
 			buildSettings = {
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Sources/Vocalese_Prefix.pch;
+				GCC_PREFIX_HEADER = Sources/VocalEasel_Prefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
@@ -1094,7 +1092,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		95D7BF740AA699C600D5E02C /* Build configuration list for PBXProject "Vocalese" */ = {
+		95D7BF740AA699C600D5E02C /* Build configuration list for PBXProject "VocalEasel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				95D7BF750AA699C600D5E02C /* Development */,
@@ -1104,7 +1102,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Default;
 		};
-		95D7BF780AA699C600D5E02C /* Build configuration list for PBXNativeTarget "Vocalese" */ = {
+		95D7BF780AA699C600D5E02C /* Build configuration list for PBXNativeTarget "VocalEasel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				95D7BF790AA699C600D5E02C /* Development */,
