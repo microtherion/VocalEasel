@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-Bob van der Poel <bvdp@xplornet.com>
+Bob van der Poel <bob@mellowood.ca>
 
 """
 
@@ -29,110 +29,110 @@ from MMA.common import *
 
 
 def harmonize(hmode, note, chord):
-	""" Get harmony note(s) for given chord. """
+    """ Get harmony note(s) for given chord. """
 
-	hnotes = []
+    hnotes = []
 
-	for tp in hmode.split('+'):
+    for tp in hmode.split('+'):
 
-		if tp in ('2', '2BELOW'):
-			hnotes.append( gethnote(note, chord) )
+        if tp in ('2', '2BELOW'):
+            hnotes.append( gethnote(note, chord) )
 
-		elif tp == '2ABOVE':
-			hnotes.append( gethnote(note, chord)+12 )
+        elif tp == '2ABOVE':
+            hnotes.append( gethnote(note, chord)+12 )
 
-		elif tp in ( '3', '3BELOW'):
-			a = gethnote(note, chord)
-			b = gethnote(a, chord)
-			hnotes.extend( [a, b] )
+        elif tp in ( '3', '3BELOW'):
+            a = gethnote(note, chord)
+            b = gethnote(a, chord)
+            hnotes.extend( [a, b] )
 
-		elif tp == '3ABOVE':
-			a = gethnote(note, chord)
-			b = gethnote(a, chord)
-			hnotes.extend( [a+12, b+12] )
+        elif tp == '3ABOVE':
+            a = gethnote(note, chord)
+            b = gethnote(a, chord)
+            hnotes.extend( [a+12, b+12] )
 
-		elif tp in ('OPEN', "OPENBELOW"):
-			a=gethnote(note, chord)
-			hnotes.append( gethnote(a, chord))
+        elif tp in ('OPEN', "OPENBELOW"):
+            a=gethnote(note, chord)
+            hnotes.append( gethnote(a, chord))
 
-		elif tp == 'OPENABOVE':
-			a=gethnote(note, chord)
-			hnotes.append( gethnote(a, chord) + 12 )
+        elif tp == 'OPENABOVE':
+            a=gethnote(note, chord)
+            hnotes.append( gethnote(a, chord) + 12 )
 
-		elif tp in ('8', '8BELOW'):
-			hnotes.append( note - 12 )
+        elif tp in ('8', '8BELOW'):
+            hnotes.append( note - 12 )
 
-		elif tp == '8ABOVE':
-			hnotes.append( note + 12 )
+        elif tp == '8ABOVE':
+            hnotes.append( note + 12 )
 
-		elif tp in ('16', '16BELOW'):
-			hnotes.append( note - (2 * 12) )
+        elif tp in ('16', '16BELOW'):
+            hnotes.append( note - (2 * 12) )
 
-		elif tp == '16ABOVE':
-			hnotes.append( note + (2 * 12) )
+        elif tp == '16ABOVE':
+            hnotes.append( note + (2 * 12) )
 
-		elif tp in ('24', '24BELOW'):
-			hnotes.append( note - (3 * 12) )
+        elif tp in ('24', '24BELOW'):
+            hnotes.append( note - (3 * 12) )
 
-		elif tp == '24ABOVE':
-			hnotes.append( note + (3 * 12) )
-		else:
-			error("Unknown harmony type '%s'." % tp)
+        elif tp == '24ABOVE':
+            hnotes.append( note + (3 * 12) )
+        else:
+            error("Unknown harmony type '%s'" % tp)
 
-	""" Strip out duplicate notes from harmony list. Cute trick here,
-	    we use the note values as keys for a new dictionary, assign
-		a null value, and return the list of keys.
-	"""
+    """ Strip out duplicate notes from harmony list. Cute trick here,
+        we use the note values as keys for a new dictionary, assign
+        a null value, and return the list of keys.
+    """
 
-	return dict([(i, None) for i in hnotes]).keys()
+    return dict([(i, None) for i in hnotes]).keys()
 
 
 def gethnote(note, chord):
-	""" Determine harmony notes for a note based on the chord.
+    """ Determine harmony notes for a note based on the chord.
 
-	note - midi value of the note
+    note - midi value of the note
 
-	chord - list of midi values for the chord
-
-
-	This routine works by creating a chord list with all
-	its notes having a value less than the note (remember, this
-	is all MIDI values). We then grab notes from the end of
-	the chord until one is found which is less than the original
-	note.
-	"""
-
-	wm="No harmony note found since no chord, using note " + \
-		"0 which will sound bad."
+    chord - list of midi values for the chord
 
 
-	if not chord:		# should never happen!
-		warning(wm)
-		return 0
+    This routine works by creating a chord list with all
+    its notes having a value less than the note (remember, this
+    is all MIDI values). We then grab notes from the end of
+    the chord until one is found which is less than the original
+    note.
+    """
 
-	ch = list(chord)	# copy chord and sort
-	ch.sort()
+    wm="No harmony note found since no chord, using note " + \
+        "0 which will sound bad"
 
-	# ensure that the note is in the chord
 
-	while ch[-1] < note:
-		for i,n in enumerate(ch):
-			ch[i]+=12
+    if not chord:        # should never happen!
+        warning(wm)
+        return 0
 
-	while ch[0] >= note:
-		for i,v in enumerate(ch):
-			ch[i]-=12
+    ch = list(chord)    # copy chord and sort
+    ch.sort()
 
-	# get one lower than the note
+    # ensure that the note is in the chord
 
-	while 1:
-		if not ch:			# this probably can't happen
-			warning(wm)
-			return 0
+    while ch[-1] < note:
+        for i,n in enumerate(ch):
+            ch[i]+=12
 
-		h=ch.pop()
-		if h<note: break
+    while ch[0] >= note:
+        for i,v in enumerate(ch):
+            ch[i]-=12
 
-	return h
+    # get one lower than the note
+
+    while 1:
+        if not ch:            # this probably can't happen
+            warning(wm)
+            return 0
+
+        h=ch.pop()
+        if h<note: break
+
+    return h
 
 

@@ -1,20 +1,21 @@
 
-Version 1.0-RC2 of MMA - Musical MIDI Accompaniment - is now
+Version 1.1 of MMA - Musical MIDI Accompaniment - is now
 available for downloading. Included in this release:
 
-	Improved support for windows path names.
+  Addition of ARIA tracks for auto-generated melodies,
 
-	A number of packaging issues resolved.
+  Fixed solo/harmony volumes,
 
-	Inclusion of mklibdoc.py for updating of lib docs from user contributed files.
+  Chord fixes,
 
-	Fractional RANGE settings for arpeggio and scale tracks.
+  New commands: NEWSET, DOCVAR, GROOVECLEAR,
 
-This is our second version 1 release candidate. Please let me know
-if anything is broken before we release the real 1.0!
+  -0 sync command line switch,
 
-Please note the new web and email addresses. The old ones still work,
-but not for long. Update your records.
+  Many library additions/enhancements,
+
+  Minor bug fixes.
+
 
 MMA is a accompaniment generator -- it creates midi tracks
 for a soloist to perform with. User supplied files contain

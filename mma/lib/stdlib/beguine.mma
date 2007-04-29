@@ -3,11 +3,11 @@
 
 Begin Doc
 
-  This started life as a copy of the rumba patterns. I've changed 
-  the drum sounds from snares to toms, and deleted hits on final 8th 
-  beat. I really don't know the difference between a rhumba and a 
-  beguine, so help would be welcome! 
-  
+  This started life as a copy of the rumba patterns. I've changed
+  the drum sounds from snares to toms, and deleted hits on final 8th
+  beat. I really don't know the difference between a rhumba and a
+  beguine, so help would be welcome!
+
 End
 
 Author Bob van der Poel
@@ -44,7 +44,7 @@ Begin Drum-Maraca
 	Rtime 2
 	RSkip 5
 End
-	
+
 Begin Drum-Lconga
 	Tone LowConga
 	Sequence     D4   { D4; D3 shift .5 }
@@ -108,8 +108,8 @@ End
 Begin Walk
 	Voice FretLessBass
 	Begin Define
-		Wa   1 4 85 ; 2.5 4 88 ; 4 4 80 
-		Wb   Wa ; 4.5 8 77  
+		Wa   1 4 85 ; 2.5 4 88 ; 4 4 80
+		Wb   Wa ; 4.5 8 77
 	End
 	Sequence	Wa	z	Wb	z
 	Accent 1 20
@@ -129,7 +129,7 @@ End
 
 DefGroove Beguine    Nice, smooth easy listening.
 
-//////// Sustained strings in the background. 
+//////// Sustained strings in the background.
 
 Begin Chord-Sus
 	Voice TremoloStrings
@@ -151,7 +151,7 @@ DefGroove BeguineSus   Adds in a sustained string.
 Groove Beguine
 
 Begin Arpeggio
-	Sequence    A4    
+	Sequence    A4
 	Invert      0   0   1   2
 	SeqRnd On
 	Voice PizzicatoString
@@ -183,11 +183,11 @@ Begin Drum-Wis         /// added tone
 	Volume mp
 	Rvolume 5
 	Rtime 2
-End 
+End
 
 Drum-Maraca  Sequence   D8
 Drum-Lconga  Sequence   D24
-Drum-Toms1   Sequence   D3  
+Drum-Toms1   Sequence   D3
 Drum-Toms2   Sequence   D14
 Drum-Hconga  Sequence   D2
 Drum-HH      Sequence   D8
@@ -209,7 +209,7 @@ Alltracks RSkip 0
 Drum            Sequence  *  *  *  D12
 Drum-Maraca     Sequence  *  *  *  D12
 Drum-Lconga     Sequence  D4 /  /  z
-Drum-HH         Sequence  *  
+Drum-HH         Sequence  *
 
 Chord           Sequence  *  *  * {1 2 90}
 
@@ -227,6 +227,8 @@ DefGroove BeguineIntro    Simple enough 4 bar introduction.
 
 Groove Beguine
 
+Alltracks SeqRnd Off
+
 Begin Scale
 	Sequence   Scale8 Scale4 Scale2 Scale
 	Voice      SlowStrings
@@ -242,6 +244,26 @@ End
 DefGroove BeguineEnd     Ending with string scales. Uses 8ths \
             on 1st bar 4th on 2nd, halves 3rd and a fullish chord \
             on the 4th. Use a CUT if the final chord sounds too long.
+
+
+Groove Beguine
+Seqsize 2
+
+Alltracks SeqRnd Off
+
+Drum          Sequence   *       D13  // claves
+Drum-Maraca   Sequence   *       D12
+Drum-Lconga   Sequence   D1234   z
+Drum-Toms1    Sequence   D13     /
+Drum-Toms2    Sequence   D1234   D12
+Drum-Hconga   Sequence   *
+Drum-HH       Sequence   *
+
+Chord         Sequence	 C1234   {1 2 90}
+Walk          Sequence   z
+Bass          Sequence   B13      B1
+
+DefGroove Beguine2End    A more abrupt 2 bar ending.
 
 
 

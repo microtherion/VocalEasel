@@ -2,7 +2,7 @@
 # alloc.py
 
 """
-This module is an integeral part of the program 
+This module is an integeral part of the program
 MMA - Musical Midi Accompaniment.
 
 This program is free software; you can redistribute it and/or modify
@@ -19,10 +19,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-Bob van der Poel <bvdp@xplornet.com>
-	
+Bob van der Poel <bob@mellowood.ca>
+
 """
-	
+
 import MMA.patChord
 import MMA.patWalk
 import MMA.patBass
@@ -30,74 +30,77 @@ import MMA.patDrum
 import MMA.patScale
 import MMA.patArpeggio
 import MMA.patSolo
+import MMA.patAria
 import gbl
 from   MMA.common import *
 
 
 trkClasses = {
-	'BASS'     : MMA.patBass.Bass,
-	'CHORD'    : MMA.patChord.Chord,
-	'ARPEGGIO' : MMA.patArpeggio.Arpeggio,
-	'SCALE'    : MMA.patScale.Scale,
-	'DRUM'     : MMA.patDrum.Drum,
-	'WALK'     : MMA.patWalk.Walk,
-	'MELODY'   : MMA.patSolo.Melody,
-	'SOLO'     : MMA.patSolo.Solo    }
+    'BASS'     : MMA.patBass.Bass,
+    'CHORD'    : MMA.patChord.Chord,
+    'ARPEGGIO' : MMA.patArpeggio.Arpeggio,
+    'SCALE'    : MMA.patScale.Scale,
+    'DRUM'     : MMA.patDrum.Drum,
+    'WALK'     : MMA.patWalk.Walk,
+    'MELODY'   : MMA.patSolo.Melody,
+    'SOLO'     : MMA.patSolo.Solo,
+    'ARIA'     : MMA.patAria.Aria
+}
 
 
 def trackAlloc(name, err):
-	""" Check existence of track and create if possible.
+    """ Check existence of track and create if possible.
 
-	    If 'err' is set, the function will 'error out' if
-	    it's not possible to create the track. Otherwise,
-	    it is content to return without creation taking place.
-	"""
+        If 'err' is set, the function will 'error out' if
+        it's not possible to create the track. Otherwise,
+        it is content to return without creation taking place.
+    """
 
-	# If the track already exists, just return
-	
-	if name in gbl.tnames:
-		return 
+    # If the track already exists, just return
 
-	# Get the trackname. Can be just a type, or type-name.
-	
-	if '-' in name:
-		base, ext = name.split('-',1)
-	else:
-		ext = None
-		base = name
+    if name in gbl.tnames:
+        return
+
+    # Get the trackname. Can be just a type, or type-name.
+
+    if '-' in name:
+        base, ext = name.split('-',1)
+    else:
+        ext = None
+        base = name
 
 
-	""" See if there is a track class 'base'. If there is, then
-	    'f' points to the initialization function for the class.
-		If not, we either error (err==1) or return (err==0).
-	"""
+    """ See if there is a track class 'base'. If there is, then
+        'f' points to the initialization function for the class.
+        If not, we either error (err==1) or return (err==0).
+    """
 
-	if trkClasses.has_key(base):
-		f = trkClasses[base]
-	else:
-		if err:
-			error("There is no track class '%s' for trackname '%s'" % (base, name) )
-		else:
-			return
+    if trkClasses.has_key(base):
+        f = trkClasses[base]
+    else:
+        if err:
+            error("There is no track class '%s' for trackname '%s'" % (base, name) )
+        else:
+            return
 
-	# Now attempt to allocate the track
-	
-	gbl.tnames[name] = newtk = f(name)
+    # Now attempt to allocate the track
 
-	# Set the sequence size of new track
-	
-	newtk.setSeqSize()
+    gbl.tnames[name] = newtk = f(name)
 
-	# Update current grooves to reflect new track.
-	
-	for slot in gbl.settingsGroove.keys():
-		newtk.saveGroove(slot)									
+    # Set the sequence size of new track
 
-	
-	if gbl.debug:
-		print "Creating new track", name
+    newtk.setSeqSize()
 
-	return 
-	
+    # Update current grooves to reflect new track.
+
+    for slot in gbl.settingsGroove.keys():
+        newtk.saveGroove(slot)
+
+
+    if gbl.debug:
+        print "Creating new track", name
+
+    return
+
 
 

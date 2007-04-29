@@ -19,10 +19,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-Bob van der Poel <bvdp@xplornet.com>
+Bob van der Poel <bob@mellowood.ca>
 
 """
-
 
 import sys
 import os
@@ -31,38 +30,38 @@ import gbl
 from   MMA.common import *
 
 def locFile(name, lib):
-	""" Locate a filename.
+    """ Locate a filename.
 
-	This checks, in order:
-	   lib/name + .mma
-	   lib/name
-	   name + .mma
-	   name
-	"""
+    This checks, in order:
+       lib/name + .mma
+       lib/name
+       name + .mma
+       name
+    """
 
-	ext=gbl.ext
-	exists = os.path.exists
+    ext=gbl.ext
+    exists = os.path.exists
 
-	name=os.path.expanduser(name)  # for ~ expansion only
+    name=os.path.expanduser(name)  # for ~ expansion only
 
-	if lib:
-		if not name.endswith(ext):
-			t=os.path.join(lib, name + ext)
-			if exists(t):
-				return t
-		t=os.path.join(lib, name)
-		if exists(t):
-			return t
+    if lib:
+        if not name.endswith(ext):
+            t=os.path.join(lib, name + ext)
+            if exists(t):
+                return t
+        t=os.path.join(lib, name)
+        if exists(t):
+            return t
 
-	if not name.endswith(ext):
-		t = name + ext
-		if exists(t):
-			return	t
+    if not name.endswith(ext):
+        t = name + ext
+        if exists(t):
+            return    t
 
-	if exists(name):
-		return name
+    if exists(name):
+        return name
 
-	return None
+    return None
 
 
 ###########################
@@ -72,241 +71,241 @@ def locFile(name, lib):
 
 class ReadFile:
 
-	class FileData:
-		""" After reading the file in bulk it is parsed and stored in this
-		data structure. Blanks lines and comments are removed.
-		"""
+    class FileData:
+        """ After reading the file in bulk it is parsed and stored in this
+        data structure. Blanks lines and comments are removed.
+        """
 
-		def __init__(self, lnum, data, label):
-			self.lnum=lnum
-			self.data=data
-			self.label=label
+        def __init__(self, lnum, data, label):
+            self.lnum=lnum
+            self.data=data
+            self.label=label
 
 
-	def __init__(self, fname):
+    def __init__(self, fname):
 
-		self.fdata=fdata=[]
-		self.lastline = None
-		self.lineptr = None
-		self.fname = None
+        self.fdata=fdata=[]
+        self.lastline = None
+        self.lineptr = None
+        self.fname = None
 
-		self.que    = [] 	# que for pushed lines (mainly for REPEAT)
-		self.qnums  = []
+        self.que    = []     # que for pushed lines (mainly for REPEAT)
+        self.qnums  = []
 
 
-		dataStore = self.FileData # shortcut to avoid '.'s
+        dataStore = self.FileData # shortcut to avoid '.'s
 
-		try:
-			inpath = file(fname, 'r')
+        try:
+            inpath = file(fname, 'r')
 
-		except:
-			error("Unable to open '%s' for input" % fname)
+        except:
+            error("Unable to open '%s' for input" % fname)
 
-		if gbl.debug or gbl.showFilenames:
-			print "Opening file '%s'." % fname
+        if gbl.debug or gbl.showFilenames:
+            print "Opening file '%s'." % fname
 
-		self.fname = fname
+        self.fname = fname
 
-		""" Read entire file, line by line:
+        """ Read entire file, line by line:
 
-		     - strip off blanks, comments
-		     - join continuation lines
-		     - parse out LABELS
-		     - create line numbers
-		"""
+             - strip off blanks, comments
+             - join continuation lines
+             - parse out LABELS
+             - create line numbers
+        """
 
-		lcount=0
-		label=''
-		labs=[]		# track label defs, error if duplicate in same file
-		nlabs=[]    # track linenumber label defs
+        lcount=0
+        label=''
+        labs=[]        # track label defs, error if duplicate in same file
+        nlabs=[]    # track linenumber label defs
 
-		while 1:
-			l = inpath.readline()
+        while 1:
+            l = inpath.readline()
 
-			if not l:		# EOF
-				break
+            if not l:        # EOF
+                break
 
-			l= l.strip()
-			lcount += 1
+            l= l.strip()
+            lcount += 1
 
-			if not l:
-				continue
+            if not l:
+                continue
 
-			while l[-1] == '\\':
-				l = l[0:-1] + ' ' + inpath.readline().strip()
-				lcount +=1
+            while l[-1] == '\\':
+                l = l[0:-1] + ' ' + inpath.readline().strip()
+                lcount +=1
 
 
-			""" This next line splits the line at the first found
-			    comment '//', drops the comment, and splits the
-				remaining line into tokens using whitespace delimiters.
-				Note that split() will strip off trailing and leading
-				spaces, so a strip() is not needed here.
-			"""
+            """ This next line splits the line at the first found
+                comment '//', drops the comment, and splits the
+                remaining line into tokens using whitespace delimiters.
+                Note that split() will strip off trailing and leading
+                spaces, so a strip() is not needed here.
+            """
 
-			l = l.split('//',1)[0].split()
+            l = l.split('//',1)[0].split()
 
-			if not l:
-				continue
+            if not l:
+                continue
 
 
-			""" Parse out label lines. There are 2 different kinds of labels:
-			    - LABEL XXX
-				   and
-			    - NNN
+            """ Parse out label lines. There are 2 different kinds of labels:
+                - LABEL XXX
+                   and
+                - NNN
 
-				The first kind is treated as an exclusive. If a NNN label or previous
-				XXX duplicates, and error is generated.
+                The first kind is treated as an exclusive. If a NNN label or previous
+                XXX duplicates, and error is generated.
 
-				The LINE NUMBER type is not exclusive. If a duplicate NNN is found, the
-				last one is used.
+                The LINE NUMBER type is not exclusive. If a duplicate NNN is found, the
+                last one is used.
 
-				XXX NNN types can not duplicate each other.
+                XXX NNN types can not duplicate each other.
 
-				Also note that XXX lines are stripped from input as well as NNN lines
-				with only a NNN.
-			"""
+                Also note that XXX lines are stripped from input as well as NNN lines
+                with only a NNN.
+            """
 
 
-			if l[0].upper()=='LABEL':
-				if len(l) !=2:
-					gbl.lineno = lcount
-					error("Usage: LABEL <string>")
-				label=l[1].upper()
-				if label[0]=='$':
-					gbl.lineno = lcount
-					error("Variables are not permitted as labels")
-				if label in labs:
-					gbl.lineno = lcount
-					error("Duplicate label specified in line %s." % lcount)
-				elif label in nlabs:
-					gbl.lineno = lcount
-					error("Label '%s' duplicates line number label" % label)
-				labs.append(label)
+            if l[0].upper()=='LABEL':
+                if len(l) !=2:
+                    gbl.lineno = lcount
+                    error("Usage: LABEL <string>")
+                label=l[1].upper()
+                if label[0]=='$':
+                    gbl.lineno = lcount
+                    error("Variables are not permitted as labels")
+                if label in labs:
+                    gbl.lineno = lcount
+                    error("Duplicate label specified in line %s" % lcount)
+                elif label in nlabs:
+                    gbl.lineno = lcount
+                    error("Label '%s' duplicates line number label" % label)
+                labs.append(label)
 
-			elif l[0].isdigit():
-				label=l[0]
+            elif l[0].isdigit():
+                label=l[0]
 
-				if label in labs:
-					gbl.lineno = lcount
-					error("Line number '%s' duplicates LABEL." % label)
+                if label in labs:
+                    gbl.lineno = lcount
+                    error("Line number '%s' duplicates LABEL" % label)
 
-				if not label in nlabs:
-					nlabs.append(label)
-				else:
-					for i, a in enumerate(fdata):
-						if a.label == label:
-							fdata[i].label=''
+                if not label in nlabs:
+                    nlabs.append(label)
+                else:
+                    for i, a in enumerate(fdata):
+                        if a.label == label:
+                            fdata[i].label=''
 
-			else:
-				label = None
+            else:
+                label = None
 
-			# Save the line, linenumber and (maybe) the label.
+            # Save the line, linenumber and (maybe) the label.
 
-			fdata.append( dataStore(lcount, l, label))
+            fdata.append( dataStore(lcount, l, label))
 
 
-		inpath.close()
+        inpath.close()
 
-		self.lineptr = 0
-		self.lastline = len(fdata)
+        self.lineptr = 0
+        self.lastline = len(fdata)
 
 
-	def toEof(self):
-		""" Move pointer to End of File. """
+    def toEof(self):
+        """ Move pointer to End of File. """
 
-		self.lineptr=self.lastline+1
-		self.que = []
-		self.qnums = []
+        self.lineptr=self.lastline+1
+        self.que = []
+        self.qnums = []
 
 
-	def goto(self, l):
-		""" Do a goto jump.
+    def goto(self, l):
+        """ Do a goto jump.
 
-		This isn't perfect, but is probably the way most GOTOs work. If
-		inside a repeat/if then nothing more is processed. The jump is
-		immediate. Of course, you'll run into problems with missing
-		repeat/repeatend if you try it. Since all repeats are stacked
-		back into the que, we just delete the que. Then we look for a
-		matching label in the file line array.
+        This isn't perfect, but is probably the way most GOTOs work. If
+        inside a repeat/if then nothing more is processed. The jump is
+        immediate. Of course, you'll run into problems with missing
+        repeat/repeatend if you try it. Since all repeats are stacked
+        back into the que, we just delete the que. Then we look for a
+        matching label in the file line array.
 
-		Label search is linear. Not too efficient, but the lists
-		will probably never be that long either.
+        Label search is linear. Not too efficient, but the lists
+        will probably never be that long either.
 
-		"""
+        """
 
-		if not l:
-			error("No label specified")
+        if not l:
+            error("No label specified")
 
-		if self.que:
-			self.que=[]
+        if self.que:
+            self.que=[]
 
-		for i,a in enumerate(self.fdata):
-			if a.label == l:
-				self.lineptr=i
-				return
+        for i,a in enumerate(self.fdata):
+            if a.label == l:
+                self.lineptr=i
+                return
 
-		error("Label '%s' has not be set." % l)
+        error("Label '%s' has not be set" % l)
 
 
-	def push(self, q, nums):
-		""" Push a list of lines back into the input stream.
+    def push(self, q, nums):
+        """ Push a list of lines back into the input stream.
 
-		Note: This is a list of semi-processed lines, no comments, etc.
+        Note: This is a list of semi-processed lines, no comments, etc.
 
-		It's quicker to extend a list than to insert, so add to the end.
-		Note: we reverse the original, extend() then reverse again, just
-		in case the caller cares.
+        It's quicker to extend a list than to insert, so add to the end.
+        Note: we reverse the original, extend() then reverse again, just
+        in case the caller cares.
 
-		nums is a list of linenumbers. Needed to report error lines.
-		"""
+        nums is a list of linenumbers. Needed to report error lines.
+        """
 
-		if not self.que:
-			self.que = ['']
-			self.qnums=[gbl.lineno]
+        if not self.que:
+            self.que = ['']
+            self.qnums=[gbl.lineno]
 
 
-		q.reverse()
-		self.que.extend(q)
-		q.reverse()
+        q.reverse()
+        self.que.extend(q)
+        q.reverse()
 
-		nums.reverse()
-		self.qnums.extend(nums)
-		nums.reverse()
+        nums.reverse()
+        self.qnums.extend(nums)
+        nums.reverse()
 
-	def read(self):
-		""" Return a line.
+    def read(self):
+        """ Return a line.
 
-		This will return either a queued line or a line from the
-		file (which was stored/processed earlier).
-		"""
+        This will return either a queued line or a line from the
+        file (which was stored/processed earlier).
+        """
 
-		while 1:
+        while 1:
 
-			# Return a queued line if possible.
+            # Return a queued line if possible.
 
-			if self.que:
-				ln = self.que.pop(-1)
+            if self.que:
+                ln = self.que.pop(-1)
 
-				gbl.lineno = self.qnums.pop()
+                gbl.lineno = self.qnums.pop()
 
-				if not ln:
-					continue
+                if not ln:
+                    continue
 
-				return ln
+                return ln
 
 
-			# Return the next line in the file.
+            # Return the next line in the file.
 
 
-			if self.lineptr>=self.lastline:
-				return None		####  EOF
+            if self.lineptr>=self.lastline:
+                return None        ####  EOF
 
 
-			ln=self.fdata[self.lineptr].data
-			gbl.lineno = self.fdata[self.lineptr].lnum
-			self.lineptr +=1
+            ln=self.fdata[self.lineptr].data
+            gbl.lineno = self.fdata[self.lineptr].lnum
+            self.lineptr +=1
 
-			return ln
+            return ln
 
 

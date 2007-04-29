@@ -120,7 +120,9 @@ DefGroove PopBallad      Plain old Pop Ballad.
 
 Groove PopBallad
 
-Drum-HH   Sequence -
+Begin Drum-HH 
+  Sequence -
+End
 
 Begin Drum-Ride
 	Tone RideCymbal1
@@ -183,6 +185,80 @@ End
 Drum-Kick Sequence D1234	// Kill kickdrum offbeats
 
 Defgroove PopBallad2       A straighter version of the ballad.
+
+/////////////
+/// Sustained version
+
+Groove PopBallad
+
+Begin Drum-HH
+ Volume mp
+ sequence D13
+End
+
+Begin Drum-Cym
+	  Sequence D1 z z z
+	  Volume p
+End
+
+Begin Drum-Kick
+	Volume mp
+End
+
+Begin Drum-Snare
+	Sequence  D24
+	Volume mp
+End
+
+Begin Drum-Cabasa
+	Volume m
+End
+
+Begin Drum-Shake
+	Volume m
+End
+
+// Bass -- no change
+
+Begin Chord
+	Octave 5
+End
+
+// Arpeggio - no change
+
+
+Begin Chord-Sus
+	Voice  TremoloStrings
+	Sequence { 1 1 90 70 80 0 * 4 }
+	Voicing Mode=Optimal
+	Octave 5
+	Articulate 100
+	Unify On
+	Rvolume 10
+	Volume p
+End
+
+DefGroove PopBalladSus    A slightly lighter version, with strings.
+
+/////////////////////
+///////////// Intro
+
+Groove PopBallad
+
+Drum-HH    Sequence * * * D123
+Drum-Cym   Sequence D1 / / z
+Drum-Kick  Sequence *  *  * D1
+Drum-Snare  Sequence *  *  * D123
+Drum-Cabasa Sequence  *  *  * z
+Drum-Shake  Sequence  *  *  *  z
+
+Bass        Sequence  *  *  *  B1
+
+Chord       Sequence  *  *  * L1
+
+Arpeggio    Sequence  *  *  A4  A1
+
+DefGroove  PopBalladIntro   A simple introduction.
 
 /////// Ending
 

@@ -19,12 +19,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-Bob van der Poel <bvdp@xplornet.com>
+Bob van der Poel <bob@mellowood.ca>
 
 """
-
-
-
 
 import random
 
@@ -32,184 +29,203 @@ from   MMA.harmony import harmonize
 from   MMA.notelen import getNoteLen
 import gbl
 from   MMA.common import *
-from   MMA.pat import PC
+from   MMA.pat import PC, seqBump
 
 
 class Scale(PC):
-	""" Pattern class for a Scale track. """
+    """ Pattern class for a Scale track. """
 
-	vtype = 'SCALE'
+    vtype = 'SCALE'
 
-	lastNote = -1
-	lastChord = None
-	lastStype = None
-	lastDirect = 1
-	lastRange = 0
-	sOffset = 0
-	notes = None
-	dirfact = 1
+    lastNote = -1
+    lastChord = None
+    lastStype = None
+    lastDirect = 1
+    lastRange = 0
+    sOffset = 0
+    notes = None
+    dirfact = 1
 
-	def getPgroup(self, ev):
-		""" Get group for scale patterns.
+    def getPgroup(self, ev):
+        """ Get group for scale patterns.
 
-		    Fields - start, length, volume
-		"""
-
-
-		if len(ev) != 3:
-			error("There must be at exactly 3 items in each group "
-				  "in a Scale definition, not <%s>." % ' '.join(ev))
-
-		a = struct()
-
-		a.offset   = self.setBarOffset(ev[0])
-		a.duration = getNoteLen(ev[1])
-		a.vol      = stoi(ev[2], "Type error in Scale definition")
+            Fields - start, length, volume
+        """
 
 
-		return a
+        if len(ev) != 3:
+            error("There must be at exactly 3 items in each group "
+                  "in a Scale definition, not <%s>." % ' '.join(ev))
 
-	def restart(self):
-		self.ssvoice = -1
-		self.lastNote = -1
-		self.lastChord = None
-		self.lastStype = None
-		self.lastDirect = 1
-		self.lastRange = 0
-		self.sOffset = 0
-		self.notes = None
-		self.dirfact = 1
+        a = struct()
 
-	def trackBar(self, pattern, ctable):
-		""" Do a scale bar.
-
-		Called from self.bar()
-		"""
-
-		sc = self.seq
-		direct = self.direction[sc]
-		unify = self.unify[sc]
-
-		# If the range or direction has changed, we just start
-		# with a new scale.
+        a.offset   = self.setBarOffset(ev[0])
+        a.duration = getNoteLen(ev[1])
+        a.vol      = stoi(ev[2], "Type error in Scale definition")
 
 
-		t = self.chordRange[sc]
-		if t != self.lastRange:
-			self.lastRange = t
-			self.lastChord = None
+        return a
 
-		if self.lastDirect != direct:
-			self.lastDirect = direct
-			self.lastChord = None
+    def setScaletype(self, ln):
+        """ Set scale type. """
 
-		for p in pattern:
+        ln = self.lnExpand(ln, "ScaleType")
+        tmp = []
 
-			tb = self.getChordInPos(p.offset, ctable)
+        for n in ln:
+            n = n.upper()
+            if not n in ( 'CHROMATIC', 'AUTO'):
+                error("Unknown %s ScaleType. Only Chromatic and Auto are valid" % self.name)
+            tmp.append(n)
 
-			if tb.scaleZ:
-				continue
+        self.scaleType = seqBump(tmp)
 
-
-			thisChord = tb.chord.tonic + tb.chord.chordType
-			stype = self.scaleType[sc]
-
-			if thisChord != self.lastChord or stype != self.lastStype:
-				self.lastChord = thisChord
-				self.lastStype = stype
-
-				if stype == 'CHROMATIC':
-					notelist = [ tb.chord.rootNote + x for x in range(0,12)]
-
-				else:
-					notelist = list(tb.chord.scaleList)
-
-				""" Get the current scale and append enuf copies
-				together for RANGE setting. If Range happens
-				to be 0 or 1 we end up with a single copy.
-				"""
-
-				ln=self.chordRange[sc]	# RANGE 1...x (def. == 1)
-
-				o=0
-				self.notes = []
-
-				while ln >= 1:
-					for a in notelist:
-						self.notes.append(a+o)
-					o+=12
-					ln-=1
-
-				if ln>0 and ln<1:  # for fractional scale lengths
-					ln = int(len(notelist) * ln)
-					if ln < 2:   # important, must be at least 2 notes in a scale
-						ln=2
-					for a in notelist[:ln]:
-						self.notes.append(a+o)
-
-				if direct == 'DOWN':
-					self.dirfact = -1
-					if self.lastNote == -1:
-						self.sOffset = len(self.notes)-1
-				else:
-					self.sOffset = 0
-
-				if self.lastNote > -1:
-					if self.lastNote in self.notes:
-						self.sOffset = self.notes.index(self.lastNote)
-
-					else:
-						self.sOffset=len(self.notes)-1
-						for	 i, a in enumerate(self.notes):
-							if a>self.lastNote:
-								self.sOffset = i
-								break
+        if gbl.debug:
+            print "Set %s ScaleType to " % self.name,
+            printList(ln)
 
 
-			# Keep offset into note list in range
+    def restart(self):
+        self.ssvoice = -1
+        self.lastNote = -1
+        self.lastChord = None
+        self.lastStype = None
+        self.lastDirect = 1
+        self.lastRange = 0
+        self.sOffset = 0
+        self.notes = None
+        self.dirfact = 1
 
-			# only > end of list if BOTH or UP
+    def trackBar(self, pattern, ctable):
+        """ Do a scale bar.
 
-			if self.sOffset >= len(self.notes):
-				if direct == 'BOTH':
-					self.dirfact = -1
-					self.sOffset = len(self.notes)-2
-				else:		## UP
-					self.sOffset = 0
+            Called from self.bar()
+        """
 
-			# only < start of list if DOWN or BOTH
+        sc = self.seq
+        direct = self.direction[sc]
+        unify = self.unify[sc]
 
-			elif self.sOffset < 0:
-				if direct == 'BOTH':
-					self.dirfact = 1
-					self.sOffset = 1
-				else:		## DOWN
-					self.sOffset = len(self.notes)-1
-
-			if direct == 'RANDOM':
-				note = random.choice(self.notes)
-			else:
-				note = self.notes[self.sOffset]
-				self.sOffset += self.dirfact
-
-			self.lastNote = note
-
-			if not self.harmonyOnly[sc]:
-				self.sendNote(
-					p.offset,
-					self.getDur(p.duration),
-					self.adjustNote(note),
-					self.adjustVolume(p.vol, p.offset))
+        # If the range or direction has changed, we just start
+        # with a new scale.
 
 
-			if self.harmony[sc]:
-				ch = self.getChordInPos(p.offset, ctable).chord.noteList
-				h = harmonize(self.harmony[sc], note, ch)
-				for n in h:
-					self.sendNote(
-						p.offset,
-						self.getDur(p.duration),
-						self.adjustNote(n),
-						self.adjustVolume(self.harmonyVolume[sc] * p.vol, -1) )
+        t = self.chordRange[sc]
+        if t != self.lastRange:
+            self.lastRange = t
+            self.lastChord = None
+
+        if self.lastDirect != direct:
+            self.lastDirect = direct
+            self.lastChord = None
+
+        for p in pattern:
+
+            tb = self.getChordInPos(p.offset, ctable)
+
+            if tb.scaleZ:
+                continue
+
+
+            thisChord = tb.chord.tonic + tb.chord.chordType
+            stype = self.scaleType[sc]
+
+            if thisChord != self.lastChord or stype != self.lastStype:
+                self.lastChord = thisChord
+                self.lastStype = stype
+
+                if stype == 'CHROMATIC':
+                    notelist = [ tb.chord.rootNote + x for x in range(0,12)]
+                
+                else:
+                    notelist = list(tb.chord.scaleList)
+
+                """ Get the current scale and append enuf copies
+                together for RANGE setting. If Range happens
+                to be 0 or 1 we end up with a single copy.
+                """
+
+                ln=self.chordRange[sc]    # RANGE 1...x (def. == 1)
+
+                o=0
+                self.notes = []
+
+                while ln >= 1:
+                    for a in notelist:
+                        self.notes.append(a+o)
+                    o+=12
+                    ln-=1
+
+                if ln>0 and ln<1:  # for fractional scale lengths
+                    ln = int(len(notelist) * ln)
+                    if ln < 2:   # important, must be at least 2 notes in a scale
+                        ln=2
+                    for a in notelist[:ln]:
+                        self.notes.append(a+o)
+
+                if direct == 'DOWN':
+                    self.dirfact = -1
+                    if self.lastNote == -1:
+                        self.sOffset = len(self.notes)-1
+                else:
+                    self.sOffset = 0
+
+                if self.lastNote > -1:
+                    if self.lastNote in self.notes:
+                        self.sOffset = self.notes.index(self.lastNote)
+
+                    else:
+                        self.sOffset=len(self.notes)-1
+                        for     i, a in enumerate(self.notes):
+                            if a>self.lastNote:
+                                self.sOffset = i
+                                break
+
+
+            # Keep offset into note list in range
+
+            # only > end of list if BOTH or UP
+
+            if self.sOffset >= len(self.notes):
+                if direct == 'BOTH':
+                    self.dirfact = -1
+                    self.sOffset = len(self.notes)-2
+                else:        ## UP
+                    self.sOffset = 0
+
+            # only < start of list if DOWN or BOTH
+
+            elif self.sOffset < 0:
+                if direct == 'BOTH':
+                    self.dirfact = 1
+                    self.sOffset = 1
+                else:        ## DOWN
+                    self.sOffset = len(self.notes)-1
+
+            if direct == 'RANDOM':
+                note = random.choice(self.notes)
+            else:
+                note = self.notes[self.sOffset]
+                self.sOffset += self.dirfact
+
+            self.lastNote = note
+
+            if not self.harmonyOnly[sc]:
+                self.sendNote(
+                    p.offset,
+                    self.getDur(p.duration),
+                    self.adjustNote(note),
+                    self.adjustVolume(p.vol, p.offset))
+
+
+            if self.harmony[sc]:
+                ch = self.getChordInPos(p.offset, ctable).chord.noteList
+                h = harmonize(self.harmony[sc], note, ch)
+                for n in h:
+                    self.sendNote(
+                        p.offset,
+                        self.getDur(p.duration),
+                        self.adjustNote(n),
+                        self.adjustVolume(self.harmonyVolume[sc] * p.vol, -1) )
 
 

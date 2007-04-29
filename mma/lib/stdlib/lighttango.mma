@@ -149,6 +149,25 @@ DefGroove LightTango1          Change out the accordion for a piano.
 Chord-Sus Groove LightTangoSus 
 DefGroove LightTango1Sus       Add a sustained tone to the piano variant.
 
+////////////////////////
+//// Fill
+
+Groove LightTango
+Seqsize 1
+
+// Drum-Kick
+Drum-Snare       Sequence D1234
+// Drum-PHH
+Drum-Tam         Sequence -
+Drum-Clave       Sequence D1234
+Chord-Accordion  Sequence L2
+Chord-Guitar     Sequence C8
+Bass-Piano       Sequence B13
+Bass             Sequence B13
+
+DefGroove LightTangoFill     A one bar fill pattern.
+
+
 /////////////////////
 /// Introduction
 

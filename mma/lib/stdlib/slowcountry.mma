@@ -16,10 +16,7 @@ Time 4		// All these patterns are 4/4
 Timesig 4 4
 Include stdpats
 
-Begin Chord
-	Define C13'4 1 2 90; 3 4 90 0; 3.5 8. 0 0 90 0; 4 4 90
 
-End
 
 ///////////////////////////
 /// SlowCountry
@@ -40,10 +37,10 @@ Begin Chord
 	Voice JazzGuitar
     Define CL4 1 2 80 60 ;  4 4 80 60
 	Sequence	CL4  L2  CL4  L2
+	Articulate   90  80   90  80
 	Volume mf
 	Voicing Mode=Optimal
-	Articulate 95
-	Strum 15
+	Strum        10  15  10   15
 	Accent 1 10 3 5
 	RVolume 10
 	Octave 4
@@ -56,7 +53,7 @@ Begin Bass-Fill
 	Define  F1 3 4. 1 90; 3.5 4 5 90
 	Define  F2 4.5 8 1 90
 	Sequence  F1 F2 F1 z
-	Volume mp
+	Volume p
 End
 
 // Toggle between bass and walk for the bass line.

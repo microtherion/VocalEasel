@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-Bob van der Poel <bvdp@xplornet.com>
+Bob van der Poel <bob@mellowood.ca>
 
 """
 
@@ -32,47 +32,47 @@ import MMA.midiC
 
 
 def docDrumNames(order):
-	""" Print LaTex table of drum names. """
+    """ Print LaTex table of drum names. """
 
-	notenames = ['E\\flat', 'E', 'F', 'G\\flat', 'G', 'A\\flat',
-				 'A', 'B\\flat', 'B', 'C', 'D\\flat', 'D'] * 5
+    notenames = ['E\\flat', 'E', 'F', 'G\\flat', 'G', 'A\\flat',
+                 'A', 'B\\flat', 'B', 'C', 'D\\flat', 'D'] * 5
 
-	n=zip( MMA.midiC.drumNames, range(27,len(MMA.midiC.drumNames)+27), notenames )
+    n=zip( MMA.midiC.drumNames, range(27,len(MMA.midiC.drumNames)+27), notenames )
 
-	if order == "a":
-		for a,v,m in sorted(n):
-			print "\\insline{%s} {%s$^{%s}$}" % (a, v, m )
+    if order == "a":
+        for a,v,m in sorted(n):
+            print "\\insline{%s} {%s$^{%s}$}" % (a, v, m )
 
-	else:
-		for a,v,m in n:
-			print "\\insline{%s} {%s$^{%s}$}" % (v, a, m)
+    else:
+        for a,v,m in n:
+            print "\\insline{%s} {%s$^{%s}$}" % (v, a, m)
 
 def docCtrlNames(order):
-	""" Print LaTex table of MIDI controller names. """
+    """ Print LaTex table of MIDI controller names. """
 
-	n=zip( MMA.midiC.ctrlNames, range(len(MMA.midiC.ctrlNames)) )
+    n=zip( MMA.midiC.ctrlNames, range(len(MMA.midiC.ctrlNames)) )
 
-	if order == "a":
-		for a,v in sorted(n):
-			print "\\insline{%s} {%02x}" % (a, v)
+    if order == "a":
+        for a,v in sorted(n):
+            print "\\insline{%s} {%02x}" % (a, v)
 
-	else:
-		for a,v in n:
-			print "\\insline{%02x} {%s}" % (v, a)
+    else:
+        for a,v in n:
+            print "\\insline{%02x} {%s}" % (v, a)
 
 def docInstNames(order):
-	""" Print LaTex table of instrument names. """
+    """ Print LaTex table of instrument names. """
 
-	n=zip( MMA.midiC.voiceNames, range(len(MMA.midiC.voiceNames)) )
-	if order == "a":
-		for a,v in sorted(n):
-			a=a.replace('&', '\&')
-			print "\\insline{%s} {%s}" % (a, v)
+    n=zip( MMA.midiC.voiceNames, range(len(MMA.midiC.voiceNames)) )
+    if order == "a":
+        for a,v in sorted(n):
+            a=a.replace('&', '\&')
+            print "\\insline{%s} {%s}" % (a, v)
 
-	else:
-		for a,v in n:
-			a=a.replace('&', '\&')
-			print "\\insline{%s} {%s}" % (v, a)
+    else:
+        for a,v in n:
+            a=a.replace('&', '\&')
+            print "\\insline{%s} {%s}" % (v, a)
 
 
 """ Whenever MMA encounters a DOC command, or if it defines
@@ -91,129 +91,166 @@ fname = ''
 author=""
 notes=""
 defs=[]
+variables=[]
 
 def docAuthor(ln):
-	global author
+    global author
 
-	author = ' '.join(ln)
+    author = ' '.join(ln)
 
 
 def docNote(ln):
-	""" Add a doc line. """
+    """ Add a doc line. """
 
-	global fname, notes
+    global fname, notes
 
-	if not gbl.docs or not ln:
-		return
+    if not gbl.docs or not ln:
+        return
 
-	# Grab the arg and data, save it
+    # Grab the arg and data, save it
 
-	fname = os.path.basename(gbl.inpath.fname)
-	if notes:
-		notes += ' '
-	notes +=  ' '.join(ln)
+    fname = os.path.basename(gbl.inpath.fname)
+    if notes:
+        notes += ' '
+    notes +=  ' '.join(ln)
+
+def docVars(ln):
+    """ Add a VARIABLE line (docs vars used in lib file)."""
+
+    global fname, variables
+
+    if not gbl.docs or not ln:
+        return
+
+    fname = os.path.basename(gbl.inpath.fname)
+    variables.append([ln[0], ' '.join(ln[1:]) ] )
 
 
 def docDefine(ln):
-	""" Save a DEFGROOVE comment string.
+    """ Save a DEFGROOVE comment string.
 
-	Entries are stored as a list. Each item in the list is
-	complete groove def looking like:
-	defs[ [ Name, Seqsize, Description, [ [TRACK,INST]...]] ...]
+    Entries are stored as a list. Each item in the list is
+    complete groove def looking like:
+    defs[ [ Name, Seqsize, Description, [ [TRACK,INST]...]] ...]
 
-	"""
+    """
 
-	global defs
+    global defs
 
-	l = [ ln[0], gbl.seqSize, ' '.join(ln[1:]) ]
-	for a in sorted(gbl.tnames.keys()):
-		c=gbl.tnames[a]
-		if c.sequence and len(c.sequence) != c.sequence.count(None):
-			if c.vtype=='DRUM':
-				v=MMA.midiC.valueToDrum(c.toneList[0])
-			else:
-				v=MMA.midiC.valueToInst(c.voice[0])
-			l.append( [c.name, v ] )
+    l = [ ln[0], gbl.seqSize, ' '.join(ln[1:]) ]
+    for a in sorted(gbl.tnames.keys()):
+        c=gbl.tnames[a]
+        if c.sequence and len(c.sequence) != c.sequence.count(None):
+            if c.vtype=='DRUM':
+                v=MMA.midiC.valueToDrum(c.toneList[0])
+            else:
+                v=MMA.midiC.valueToInst(c.voice[0])
+            l.append( [c.name, v ] )
 
-	defs.append(l)
+    defs.append(l)
 
 def docDump():
-	""" Print the LaTex docs. """
+    """ Print the LaTex docs. """
 
-	global fname, author, notes, defs
+    global fname, author, notes, defs, variables
 
-	if gbl.docs == 1:    # latex docs
-		if notes:
-			if fname.endswith(gbl.ext):
-				fname='.'.join(fname.split('.')[:-1])
-			print "\\filehead{%s}{%s}" % (totex(fname), totex(notes))
-			print
+    if gbl.docs == 1:    # latex docs
+        if notes:
+            if fname.endswith(gbl.ext):
+                fname='.'.join(fname.split('.')[:-1])
+            print "\\filehead{%s}{%s}" % (totex(fname), totex(notes))
+            print
 
-		if defs:
-			for l in defs:
-				print "	 \\instable{%s}{%s}{%s}{" % \
-					(totex(l[0]), totex(l[2]), l[1] )
-				for c,v in l[3:]:
-					print "	   \\insline{%s}{%s}" % (c.title(), totex(v))
-				print "	 }"
+        if variables:
+            print "  \\variables{" 
+            for l in variables:
+                print "     \\insvar{%s}{%s}" % ( totex(l[0]), totex(l[1]) )
+            print "  }"
+            print
 
-	if gbl.docs == 2:    # html docs
-		if notes:
-			print '<!-- Auto-Generated by MMA on: %s -->' % time.ctime()
-			print '<HTML>'
-			print '<BODY  BGCOLOR="#B7DFFF" Text=Black>'
-			if fname.endswith(gbl.ext):
-				fname='.'.join(fname.split('.')[:-1])
-			print "<H1>%s</H1>" % fname.title()
-			print "<P>%s" % notes
-		if defs:
-			print "<ul>"
-			for l in defs:
-				print "<LI><A Href=#%s>%s</a>" % (l[0], l[0])
-			print "</ul>"
-			for l in defs:
-				print '<A Name=%s></a>' % l[0]
-				print '<P>'
-				print '<Table Border=3 CELLSPACING=0 CELLPADDING=5 BGColor="#eeeeee" Width="60%">'
-				print '  <TR><TD>'
-				print '    <H2> %s </H2> ' % l[0]
-				print '    %s <B>(%s)</B> ' % ( l[2], l[1] )
-				print '  </TD></TR>'
-				print '  <TR><TD>'
-				print '    <Table CELLSPACING=0 CELLPADDING=5 BGColor="#eeeeee" Width="10%">'
-				for c,v in l[3:]:
-					print "       <TR><TD> %s </TD> <TD> %s </TD></TR>" % (c.title(), v)
-				print '    </Table>'
-				print '  </TD></TR>'
-				print '</Table>'
-			print
-			print '</Body></HTML>'
-	defs = []
-	notes = ""
-	author = ""
+        if defs:
+            for l in defs:
+                print "     \\instable{%s}{%s}{%s}{" % \
+                    (totex(l[0]), totex(l[2]), l[1] )
+                for c,v in l[3:]:
+                    print "       \\insline{%s}{%s}" % (c.title(), totex(v))
+                print "     }"
+
+    if gbl.docs == 2:    # html docs
+        if notes:
+            print '<!-- Auto-Generated by MMA on: %s -->' % time.ctime()
+            print '<HTML>'
+            print '<BODY  BGCOLOR="#B7DFFF" Text=Black>'
+            if fname.endswith(gbl.ext):
+                fname='.'.join(fname.split('.')[:-1])
+            print "<H1>%s</H1>" % fname.title()
+            print "<P>%s" % notes
+
+        if variables:
+            print "<P>"
+            print '<Table Border=3 CELLSPACING=0 CELLPADDING=5 BGColor="#eeeeee" Width="60%">'
+            print '  <TR><TD>'
+            print '    <H2> Variables </H2> ' 
+            print '  </TD></TR>'
+            print '  <TR><TD>'
+            print '    <Table CELLSPACING=0 CELLPADDING=5 BGColor="#eeeeee" Width="100%">'
+            for l in variables:
+                print "       <TR>"
+                print "          <TD Valign=Top> <B> %s </B> </TD> " % l[0]
+                print "          <TD Valign=Top> %s </TD>" %  l[1]
+                print "       </TR>"
+            print '    </Table>'
+            print '  </TD></TR>'
+            print '</Table>'
+
+        if defs:
+            print "<ul>"
+            for l in defs:
+                print "<LI><A Href=#%s>%s</a>" % (l[0], l[0])
+            print "</ul>"
+            for l in defs:
+                print '<A Name=%s></a>' % l[0]
+                print '<Table Border=3 CELLSPACING=0 CELLPADDING=5 BGColor="#eeeeee" Width="60%">'
+                print '  <TR><TD>'
+                print '    <H2> %s </H2> ' % l[0]
+                print '    %s <B>(%s)</B> ' % ( l[2], l[1] )
+                print '  </TD></TR>'
+                print '  <TR><TD>'
+                print '    <Table CELLSPACING=0 CELLPADDING=5 BGColor="#eeeeee" Width="10%">'
+                for c,v in l[3:]:
+                    print "       <TR><TD> %s </TD> <TD> %s </TD></TR>" % (c.title(), v)
+                print '    </Table>'
+                print '  </TD></TR>'
+                print '</Table>'
+            print
+            print '</Body></HTML>'
+    defs = []
+    variables=[]
+    notes = ""
+    author = ""
 
 
 
 def totex(s):
-	""" Parse a string and quote tex stuff.
+    """ Parse a string and quote tex stuff.
 
-	Also handles proper quotation style.
-	"""
+    Also handles proper quotation style.
+    """
 
-	s = s.replace("$", "\\$")
-	s = s.replace("*", "$*$")
-	s = s.replace("\\", "\\\\")
-	s = s.replace("#", "\\#")
-	s = s.replace("&", "\\&")
+    s = s.replace("$", "\$")
+    s = s.replace("*", "$*$")
+    s = s.replace("_", "\\_")
+    #s = s.replace("\\", "\\\\")
+    s = s.replace("#", "\\#")
+    s = s.replace("&", "\\&")
 
-	q="``"
-	while s.count('"'):
-		i=s.find('"')
-		s=s[:i] + q + s[i+1:]
-		if q=="``":
-			q="''"
-		else:
-			a="``"
+    q="``"
+    while s.count('"'):
+        s=s.replace('"', q, 1)
+        if q=="``":
+            q="''"
+        else:
+            q="``"
 
 
-	return s
+    return s

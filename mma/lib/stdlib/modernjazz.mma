@@ -8,6 +8,13 @@ End
   
 Author Bob van der Poel
 
+NewSet ArpeggioVoice MutedTrumpet
+
+Begin DocVar
+	  ApreggioVoice  Voice for the alternating apreggios in ModernJazz1 \
+        (Default=MutedTrumpet). Also used in Introduction and Ending.
+End
+
 SeqClear
 Time 4
 Timesig 4 4
@@ -107,7 +114,7 @@ End
 DefGroove ModernJazz    ModernJazz with just a piano and guitar.
 
 Begin Arpeggio
-	Voice MutedTrumpet
+	Voice  $ArpeggioVoice
 	Octave 5
 	Range 1
 	Volume mf
@@ -119,7 +126,7 @@ Begin Arpeggio
 End
 
 Begin Bass-Trp
-	Voice MutedTrumpet
+	Voice $ArpeggioVoice
 	Octave 5
 	Volume mf
 	Rvolume 5
@@ -181,7 +188,7 @@ Chord-Guitar Sequence  C1  Sync23  C1  L1
 Chord-Piano Sequence   C24  Sync34  C2 C1
 
 Begin Chord-Trp
-	Voice MutedTrumpet
+	Voice $ArpeggioVoice
 	Octave 5
 	Volume mf
 	Rvolume 5
@@ -200,7 +207,7 @@ SeqSize 2
 Arpeggio     Sequence  -
 
 Begin Bass-Trp
-	Voice MutedTrumpet
+	Voice $ArpeggioVoice
 	Octave 5
 	Volume mf
 	Articulate 70

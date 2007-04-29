@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-Bob van der Poel <bvdp@xplornet.com>
+Bob van der Poel <bob@mellowood.ca>
 
 This module contains the MIDI number (un)packing routines.
 
@@ -29,29 +29,29 @@ MIDI expects.
 
 
 def intToWord(x):
-	""" Convert INT to a 2 byte MSB LSB value. """
+    """ Convert INT to a 2 byte MSB LSB value. """
 
-	return	chr(x>>8 & 0xff) + chr(x & 0xff)
+    return    chr(x>>8 & 0xff) + chr(x & 0xff)
 
 def intTo3Byte(x):
-	""" Convert INT to a 3 byte MSB...LSB value. """
+    """ Convert INT to a 3 byte MSB...LSB value. """
 
-	return intToLong(x)[1:]
+    return intToLong(x)[1:]
 
 def intToLong(x):
-	""" Convert INT to a 4 byte MSB...LSB value. """
+    """ Convert INT to a 4 byte MSB...LSB value. """
 
-	return intToWord(x>>16) + intToWord(x)
+    return intToWord(x>>16) + intToWord(x)
 
 
 def intToVarNumber(x):
-	""" Convert INT to a variable length MIDI value. """
+    """ Convert INT to a variable length MIDI value. """
 
-	lst = chr(x & 0x7f)
-	while  1:
-		x = x >> 7
-		if x:
-			lst = chr((x & 0x7f) | 0x80) + lst
-		else:
-			return lst
+    lst = chr(x & 0x7f)
+    while  1:
+        x = x >> 7
+        if x:
+            lst = chr((x & 0x7f) | 0x80) + lst
+        else:
+            return lst
 

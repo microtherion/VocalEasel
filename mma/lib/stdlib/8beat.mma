@@ -175,7 +175,29 @@ DefGroove 8Beat1     Adds interest to bass line with alternate walking bars.
 Chord-Sus Groove 8BeatSus
 DefGroove 8Beat1Sus  Adds sustained string to 8Beat1.
 	
-	
+
+///////////////////////
+/// Intro
+
+Groove 8Beat
+
+Alltracks SeqRnd Off
+
+Drum-OHH     Sequence   *    *    *    D1234
+Drum-CHH     Sequence   *    *    *    D13
+Drum-Snare   Sequence   D24  /    /    /
+Drum-Kick    Sequence   *    *    *    D1
+
+Bass         Sequence	Bmain  /  /    B1
+
+Chord        Sequence   P1    P2  P3   C123
+
+Chord-Guitar Sequence	G1    G1  G1   L1
+
+
+DefGroove 8BeatIntro   Straight-ahead four bar introduction.
+
+
 ///////////////////////////////////////
 // 8BeatEnd	
 

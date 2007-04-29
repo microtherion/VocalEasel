@@ -3,14 +3,24 @@
 
 Begin Doc
 
-	A popular, albeit somewhat dated and make trite by Americanized versions,
-	The Cha-Cha-Cha remains a popular rhythm with broad audience appeal.
-	I've used ``Rico Vacilon'' as a demo.
-	This file was mostly developed from the patterns in``Latin Rhythms: Mystery Unraveled''
-	by Victor Lopez.
+	The Cha-Cha-Cha remains a popular rhythm with broad audience appeal,
+    despite the fact that it is somewhat dated and made trite by
+    Americanized versions. I've used "Rico Vacilon" as a demo.
+	This file was mostly developed from the patterns in
+    "Latin Rhythms: Mystery Unraveled" by Victor Lopez.
 End
 
 Author Bob van der Poel
+
+NewSet ArpeggioOctave  7
+NewSet ArpeggioVoice   Flute
+NewSet ScaleVoice      Flute
+
+Begin DocVar
+  ArpeggioOctave   The Octave setting for the flute arpeggios (default=7)
+  ArpeggioVoice    Voice for the ChaCha1 Arpeggios (default=Flute)
+  ScaleVoice       Voice for the accending scale in ChaCha1Fill (default=Flute)
+End
 
 SeqClear
 Time 4
@@ -121,11 +131,11 @@ DefGroove ChaCha       Our basic, non-American, pattern.
 Groove ChaCha
 
 Begin Arpeggio
-	Voice Flute
+	Voice $ArpeggioVoice
 	Volume m
 	Articulate 80
 	SeqRnd On
-	Octave 7
+	Octave $ArpeggioOctave
 	Range 1
 	Direction Random
 	Harmony Open
@@ -138,6 +148,7 @@ End
 
 DefGroove ChaCha1      Adds in flute arpeggios.
 
+//////////////////////////
 //////  Sustained
 
 Groove ChaCha
@@ -161,6 +172,43 @@ Groove ChaCha1
 Arpeggio-Sus Groove ChaChaSus
 DefGroove ChaCha1Sus   Combines the flute and string arpeggios.
 
+///////////////////////////
+//// Fills
+
+Groove ChaCha
+Seqsize 1
+
+Drum-Clave       Sequence   D1234 
+//Drum-LGuiro    
+//Drum-SGuiro     
+Drum-HConga      Sequence { D1234 Shift .5 }
+Drum-LConga      Sequence   { D1234 Shift .75 }
+//Drum-Snare      
+//Drum-HH       
+//Drum-MTom  
+//Drum-HTom      
+Bass             Sequence  {1 2. 1 120; 3 4 5 120}
+Chord            Sequence  C13
+
+DefGroove ChaChaFill   A one bar fill.
+
+Groove ChaChaFill
+
+Begin Scale
+	Voice $ScaleVoice
+	Octave 6
+	Volume mf
+	Sequence { 1 1 90 * 24 }
+	Articulate 102
+	Range 2
+	ScaleType Chromatic
+	Direction Up
+End
+
+DefGroove ChaCha1Fill  Fill with accending flute run. Makes a good section introduction.
+
+
+////////////////////////////
 //////  Introduction
 
 Groove ChaCha
@@ -176,10 +224,11 @@ Drum-HH          Sequence   *       *       D16    D123
 //Drum-MTom        Sequence D4
 //Drum-HTom        Sequence {D4 Shift .5}
 Bass             Sequence   *       *       *      B11
-Chord            Sequence   *       *       {C4; C4 Shift .5}   L1
+Chord            Sequence   *       *       C1234     L1 
 
 DefGroove ChaChaIntro  A plain 4 bar introduction.
 
+/////////////////////////
 ///// Ending
 
 Groove ChaCha
@@ -197,6 +246,7 @@ Bass             Sequence   *       B11
 Chord            Sequence   *       L1
 
 DefGroove ChaChaEnd    The End.
+
 
 
 

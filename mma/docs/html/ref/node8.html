@@ -26,21 +26,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY  bgcolor="#ffffff">
 <!--Navigation Panel-->
-<A NAME="tex2html420"
+<A NAME="tex2html432"
   HREF="node9.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html418"
+<A NAME="tex2html430"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html412"
+<A NAME="tex2html424"
   HREF="node7.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html421"
+<B> Next:</B> <A NAME="tex2html433"
   HREF="node9.html">Lyrics</A>
-<B> Up:</B> <A NAME="tex2html419"
+<B> Up:</B> <A NAME="tex2html431"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html413"
+<B> Previous:</B> <A NAME="tex2html425"
   HREF="node7.html">Riffs</A>
 <BR>
 <BR>
@@ -49,15 +49,15 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html422"
+<LI><A NAME="tex2html434"
   HREF="node8.html#SECTION00810000000000000000">Bar Numbers</A>
-<LI><A NAME="tex2html423"
+<LI><A NAME="tex2html435"
   HREF="node8.html#SECTION00820000000000000000">Bar Repeat</A>
-<LI><A NAME="tex2html424"
+<LI><A NAME="tex2html436"
   HREF="node8.html#SECTION00830000000000000000">Chords</A>
-<LI><A NAME="tex2html425"
+<LI><A NAME="tex2html437"
   HREF="node8.html#SECTION00840000000000000000">Rests</A>
-<LI><A NAME="tex2html426"
+<LI><A NAME="tex2html438"
   HREF="node8.html#SECTION00850000000000000000">Case Sensitivity</A>
 </UL>
 <!--End of Table of Child-Links-->
@@ -71,7 +71,7 @@ Musical Data Format
 
 <P>
 Compared to patterns, sequences, grooves and the various directives used in 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> , 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> ,
 the actual bar by bar chord notations are surprisingly simple.
 
 <P>
@@ -111,41 +111,44 @@ Formally, this becomes:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>[num] Chord [Chord ...] [lyric] [solo] [* Factor]  </B> 
    
-<BLOCKQUOTE><B>[num] Chord [Chord ...] [lyric] [solo] [* Factor] </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 As you can see, all that is really needed is a single chord. So, the line:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Cm  </B> 
    
-<BLOCKQUOTE><B>Cm </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 is completely valid. As is:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>10 Cm Dm Em Fm * 4   </B> 
    
-<BLOCKQUOTE><B>10 Cm Dm Em Fm * 4  </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
-The optional solo or melody data is enclosed in ``{ }''. The
+The optional solo or melody data is enclosed in ``{ }''s. The
 complete format and use is detailed in the <A HREF="node10.html#chap-solo">Solo and
   Melody Tracks</A>.
+
+<P>
+Lyrics are enclosed in ''[ ]'' brackets. See the <A HREF="node9.html#sec-lyrics">Lyrics section</A>.
 
 <P>
 
@@ -172,10 +175,9 @@ example:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
-   
-<BLOCKQUOTE><B>1   Cm * 4 
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>1   Cm * 4 
 <BR>
 2
 <BR>
@@ -183,9 +185,10 @@ example:
 <BR>
 4 
 <BR>
-5 A  </B></BLOCKQUOTE>
+5 A   </B> 
    
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 In the above example bars 2, 3 and 4 are comment bars.
@@ -200,19 +203,19 @@ Bar Repeat</A>
 Quite often music has several sequential identical bars. Instead of
 typing these bars over and over again, 
 <FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  has an optional
-<B>multiplier</B> which can be placed at the end of a line of music
+<I>multiplier</I> which can be placed at the end of a line of music
 data. The multiplier or factor can is specified as ``* NN'' This will
 cause the current bar to repeated the specified number of times. For
 example:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Cm / Dm / * 4  </B> 
    
-<BLOCKQUOTE><B>Cm / Dm / * 4 </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 produces 4 bars of output with each the first 2 beats of each bar a Cm
@@ -231,12 +234,12 @@ For example:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Cm Dm Em Fm  </B> 
    
-<BLOCKQUOTE><B>Cm Dm Em Fm </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 specifies four different chords in a bar. It should be obvious by now
@@ -249,24 +252,24 @@ automatically with the last chord name on the line. In other words:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Cm   </B> 
    
-<BLOCKQUOTE><B>Cm  </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 and
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Cm Cm Cm Cm   </B> 
    
-<BLOCKQUOTE><B>Cm Cm Cm Cm  </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 are equivalent (assuming 4 beats per bar). There must be one (or more)
@@ -278,24 +281,24 @@ last chord. So:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Cm / Dm /   </B> 
    
-<BLOCKQUOTE><B>Cm / Dm /  </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 is the same as
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Cm Cm Dm Dm   </B> 
    
-<BLOCKQUOTE><B>Cm Cm Dm Dm  </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 It is perfectly okay to start a line with a ``/''. In this case the
@@ -309,21 +312,21 @@ smart, but it doesn't read minds.
 <FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  recognizes a wide variety of chords in standard notation. In
 addition, you can specify slash chords and shift the octave up or
 down. Refer to the complete table in the appendix for
-<A HREF="node26.html#sec-chordname">details</A>.
+<A HREF="node27.html#sec-chordname">details</A>.
 
 <P>
 
 <H1><A NAME="SECTION00840000000000000000">
 Rests</A>
-</H1> 
+</H1>
 
 <P>
 To disable a voice for a beat you can use a ``z'' for a chord name. If
 used by itself a ``z'' will disable all but the drum tracks for the
 given beat. However, you can disable ``Chord'', ``Arpeggio'',
-``Scale'', ``Walk'' or ``Bass'' tracks as well by appending a track
+``Scale'', ``Walk'', ``Aria'', or ``Bass'' tracks as well by appending a track
 specifier to the ``z''. Track specifiers are the single letters ``C'',
-``A'', ``S'', ``W'', ``B'' or `D'' and ``!''. Track specifiers are
+``A'', ``S'', ``W'', ``B'', ``R'' or `D'' and ``!''. Track specifiers are
 only valid if you also specify a chord. The track specifiers are:
 
 <P>
@@ -351,6 +354,10 @@ only valid if you also specify a chord. The track specifiers are:
 <P>
 <DT>S
 <DD>All scale tracks,
+
+<P>
+<DT>R
+<DD>All aria tracks,
 
 <P>
 <DT>!
@@ -388,12 +395,12 @@ Assuming that you have a drum, chord and bass pattern defined:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Fm z G7zC CmzD  </B> 
    
-<BLOCKQUOTE><B>Fm z G7zC CmzD </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 would generate the following beats:
@@ -422,7 +429,7 @@ would generate the following beats:
 <P>
 In addition, there is a super-z notation. ``z!'' forces all
 instruments to be silent for the given beats. ``z!'' is the same as
-``zABCDW'', except that the latter is not valid since it needs a
+``zABCDWR'', except that the latter is not valid since it needs a
 prefixed chord.
 
 <P>
@@ -438,38 +445,38 @@ Case Sensitivity</A>
 
 <P>
 In direct conflict with the rest of the rules for input files, all
-chord names <B>are</B> case sensitive. This means that you <B>can
-  not</B> use notations like ``cm''--use ``Cm'' instead.
+chord names <I>are</I> case sensitive. This means that you <I>can
+  not</I> use notations like ``cm''--use ``Cm'' instead.
 
 <P>
 The ``z'' and the associated track specifiers are also case sensitive.
-For example, the form ``Zc'' will <B>not</B> work!
+For example, the form ``Zc'' will <I>not</I> work!
 
 <P>
 
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html420"
+<A NAME="tex2html432"
   HREF="node9.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html418"
+<A NAME="tex2html430"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html412"
+<A NAME="tex2html424"
   HREF="node7.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html421"
+<B> Next:</B> <A NAME="tex2html433"
   HREF="node9.html">Lyrics</A>
-<B> Up:</B> <A NAME="tex2html419"
+<B> Up:</B> <A NAME="tex2html431"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html413"
+<B> Previous:</B> <A NAME="tex2html425"
   HREF="node7.html">Riffs</A>
 <!--End of Navigation Panel-->
 <ADDRESS>
-Bob
-2006-10-15
+bob
+2007-03-07
 </ADDRESS>
 </BODY>
 </HTML>

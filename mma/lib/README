@@ -25,6 +25,8 @@ Some initial guidelines....
 >> Include an "Author" directive line. Currently this is treated as a
    comment, but we might use it in the future.
 
+>> Do document ANY variables you use in the file with the DocVar command.
+
 >> Add a DocDefine to the end of each goove definition. Something like:
 	
        DefGroove Waltz This is a nice waltz groove.
@@ -55,7 +57,7 @@ Some initial guidelines....
    files. 
 
 >> Do use the standard pattern include files! And don't rename the
-   patterns defined in them!
+   patterns defined in them ... well, unless you're sure you want to.
     
 >> Create patterns in logical order. The order in which you define them
    is also the order in which they'll be listed in the docs.

@@ -152,8 +152,7 @@ End
 DefGroove BossaNova   Standard bossanova beat.
 
 //////////////////////////////////
-// BossaNovaSus
-// Add in sustained 1st ,3rd and 5ths
+// Sustained versions
 
 Groove BossaNova
 
@@ -175,6 +174,8 @@ End
 
 DefGroove BossaNovaSus    Adds sustained choir voices.
 
+/// Back to 4 bar patterns
+
 Groove BossaNova
 
 Begin Chord-Sus
@@ -188,6 +189,36 @@ Begin Chord-Sus
 End
 
 DefGroove BossaNova1Sus    Adds sustained strings.
+
+Groove BossaNova
+
+Begin Bass-Sus
+	Voice Strings
+	Octave 6
+	Harmony Open+8Below
+	Sequence {1 2. 5 90; 4 4 3 90} {1 1 1 90}
+	Articulate 120
+	Unify On
+	Volume mp
+End
+
+DefGroove BossaNova2Sus   Basic Bossa with decending string pattern.
+
+Groove BossaNova1Sus
+SeqSize 4
+Begin Bass-Sus
+	Groove BossaNova2Sus
+	Sequence * * z z
+End
+
+Begin Chord-Sus
+	Sequence z z * *
+	Volume mp
+	Octave 6
+End
+
+DefGroove BossaNova3Sus  A combination of BossaNova1Sus and BossaNova2Sus. Alternating \
+                         bars of decending strings with full chords.
 
 //////////////////////////
 // BossaNovaFill

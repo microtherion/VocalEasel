@@ -19,11 +19,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-Bob van der Poel <bvdp@xplornet.com>
+Bob van der Poel <bob@mellowood.ca>
 
 The macros are stored, set and parsed in this single-instance
 class. At the top of MMAparse an instance in created with
-something like:	 macros=MMMmacros.Macros().
+something like:     macros=MMMmacros.Macros().
 """
 
 import gbl
@@ -33,6 +33,7 @@ import MMA.midiC
 import MMA.lyric
 import MMA.translate
 import MMA.patSolo
+import MMA.patAria
 import MMA.volume
 import MMA.notelen
 
@@ -41,634 +42,655 @@ import random
 
 class Macros:
 
-	vars={}			# storage
-	expandMode = 1		# flag for variable expansion
-	pushstack = []
+    vars={}            # storage
+    expandMode = 1        # flag for variable expansion
+    pushstack = []
 
-	def __init__(self):
+    def __init__(self):
 
-		self.vars={}
+        self.vars={}
 
-	def stackValue(self, s):
-		self.pushstack.append(' '.join(s))
+    def clear(self, ln):
+        if ln:
+            error("VarClear does not take an argument.")
+        self.vars={}
+        if gbl.debug:
+            print "All variable definitions cleared."
 
+    def stackValue(self, s):
+        self.pushstack.append(' '.join(s))
 
-	def sysvar(self, s):
-		""" Create an internal macro. """
 
-		# Simple/global	 system values
+    def sysvar(self, s):
+        """ Create an internal macro. """
 
-		if s == 'KEYSIG':
-			a=MMA.patSolo.keySig.kSig
-			if a >= 0:
-				f='#'
-			else:
-				f='b'
-			return "%s%s" % (abs(a), f)
+        # Simple/global     system values
 
-		elif s == 'TIME':
-			return str(gbl.QperBar)
+        if s == 'KEYSIG':
+            a=MMA.patSolo.keySig.kSig
+            if a >= 0:
+                f='#'
+            else:
+                f='b'
+            return "%s%s" % (abs(a), f)
 
-		elif s == 'TEMPO':
-			return str(gbl.tempo)
+        elif s == 'TIME':
+            return str(gbl.QperBar)
 
-		elif s == 'VOLUME':
-			return	str(int(MMA.volume.volume * 100))  # INT() is important
+        elif s == 'TEMPO':
+            return str(gbl.tempo)
 
-		elif s == 'VOLUMERATIO':
-			return str((MMA.volume.vTRatio * 100))
+        elif s == 'VOLUME':
+            return    str(int(MMA.volume.volume * 100))  # INT() is important
 
-		elif s == 'LASTVOLUME':
-			return str(int(MMA.volume.lastVolume * 100))
+        elif s == 'VOLUMERATIO':
+            return str((MMA.volume.vTRatio * 100))
 
-		elif s == 'GROOVE':
-			return gbl.currentGroove
+        elif s == 'LASTVOLUME':
+            return str(int(MMA.volume.lastVolume * 100))
 
-		elif s == 'LASTGROOVE':
-			return gbl.lastGroove
+        elif s == 'GROOVE':
+            return gbl.currentGroove
 
-		elif s == 'SEQRND':
-			if gbl.seqRnd[0] == 0: return "Off"
-			if gbl.seqRnd[0] == 1: return "On"
-			return ' '.join(gbl.seqRnd[1:])
+        elif s == 'LASTGROOVE':
+            return gbl.lastGroove
 
-		elif s == 'SEQSIZE':
-			return str(gbl.seqSize)
+        elif s == 'SEQRND':
+            if gbl.seqRnd[0] == 0: return "Off"
+            if gbl.seqRnd[0] == 1: return "On"
+            return ' '.join(gbl.seqRnd[1:])
 
-		elif s == 'SWINGMODE':
-			if gbl.swingMode:
-				a = "On"
-			else:
-				a = "Off"
-			return "%s Skew=%s" % (a, gbl.swingSkew)
+        elif s == 'SEQSIZE':
+            return str(gbl.seqSize)
 
-		elif s == 'TRANSPOSE':
-			return str(gbl.transpose)
+        elif s == 'SWINGMODE':
+            if gbl.swingMode:
+                a = "On"
+            else:
+                a = "Off"
+            return "%s Skew=%s" % (a, gbl.swingSkew)
 
-		elif s == 'STACKVALUE':
-			if not self.pushstack:
-				error( "Empty push/pull variable stack.")
-			return self.pushstack.pop()
+        elif s == 'TRANSPOSE':
+            return str(gbl.transpose)
 
-		elif s == 'DEBUG':
-			return "Debug=%s  Filenames=%s Patterns=%s " \
-					"Sequence=%s Runtime=%s Warnings=%s Expand=%s" % \
-					(gbl.debug, gbl.showFilenames, gbl.pshow, gbl.seqshow, \
-					gbl.showrun,  int(not gbl.noWarn), gbl.showExpand)
+        elif s == 'STACKVALUE':
+            if not self.pushstack:
+                error( "Empty push/pull variable stack")
+            return self.pushstack.pop()
 
+        elif s == 'DEBUG':
+            return "Debug=%s  Filenames=%s Patterns=%s " \
+                    "Sequence=%s Runtime=%s Warnings=%s Expand=%s" % \
+                    (gbl.debug, gbl.showFilenames, gbl.pshow, gbl.seqshow, \
+                    gbl.showrun,  int(not gbl.noWarn), gbl.showExpand)
 
-		elif s == 'LASTDEBUG':
-			return "Debug=%s  Filenames=%s Patterns=%s " \
-					"Sequence=%s Runtime=%s Warnings=%s Expand=%s" % \
-					(gbl.Ldebug, gbl.LshowFilenames, gbl.Lpshow, gbl.Lseqshow, \
-					gbl.Lshowrun,  int(not gbl.LnoWarn), gbl.LshowExpand)
 
-		elif s == 'VEXPAND':
-			if self.expandMode:
-				return "On"
-			else:
-				return "Off"
+        elif s == 'LASTDEBUG':
+            return "Debug=%s  Filenames=%s Patterns=%s " \
+                    "Sequence=%s Runtime=%s Warnings=%s Expand=%s" % \
+                    (gbl.Ldebug, gbl.LshowFilenames, gbl.Lpshow, gbl.Lseqshow, \
+                    gbl.Lshowrun,  int(not gbl.LnoWarn), gbl.LshowExpand)
 
-		elif s == "MIDISPLIT":
-			return ' '.join([str(x) for x in MMA.midi.splitChannels])
+        elif s == 'VEXPAND':
+            if self.expandMode:
+                return "On"
+            else:
+                return "Off"
 
-		elif s == 'SEQRNDWEIGHT':
-			return ' '.join([str(x) for x in MMA.parse.seqRndWeight])
+        elif s == "MIDISPLIT":
+            return ' '.join([str(x) for x in MMA.midi.splitChannels])
 
-		elif s == 'AUTOLIBPATH':
-			return gbl.autoLib
+        elif s == 'SEQRNDWEIGHT':
+            return ' '.join([str(x) for x in MMA.parse.seqRndWeight])
 
-		elif s == 'LIBPATH':
-			return gbl.libPath
+        elif s == 'AUTOLIBPATH':
+            return gbl.autoLib
 
-		elif s == 'INCPATH':
-			return gbl.incPath
+        elif s == 'LIBPATH':
+            return gbl.libPath
 
-		elif s == 'VOICETR':
-			return MMA.translate.vtable.retlist()
+        elif s == 'INCPATH':
+            return gbl.incPath
 
-		elif s == 'TONETR':
-			return MMA.translate.dtable.retlist()
+        elif s == 'VOICETR':
+            return MMA.translate.vtable.retlist()
 
-		elif s == 'OUTPATH':
-			return gbl.outPath
+        elif s == 'TONETR':
+            return MMA.translate.dtable.retlist()
 
-		elif s == 'BARNUM':
-			return str(gbl.barNum + 1)
+        elif s == 'OUTPATH':
+            return gbl.outPath
 
-		elif s == 'LINENUM':
-			return str(gbl.lineno)
+        elif s == 'BARNUM':
+            return str(gbl.barNum + 1)
 
-		elif s == 'LYRIC':
-			return MMA.lyric.lyric.setting()
+        elif s == 'LINENUM':
+            return str(gbl.lineno)
 
-		# Track vars ... these are in format TRACKNAME_VAR
+        elif s == 'LYRIC':
+            return MMA.lyric.lyric.setting()
 
-		a=s.rfind('_')
-		if a==-1:
-			error("Unknown system variable $_%s" % s)
+        # Track vars ... these are in format TRACKNAME_VAR
 
-		tname = s[:a]
-		func = s[a+1:]
+        a=s.rfind('_')
+        if a==-1:
+            error("Unknown system variable $_%s" % s)
 
-		if gbl.tnames.has_key(tname):
-			t=gbl.tnames[tname]
-		else:
-			error("System variable $_%s refers to nonexistent track." % s)
+        tname = s[:a]
+        func = s[a+1:]
 
+        if gbl.tnames.has_key(tname):
+            t=gbl.tnames[tname]
+        else:
+            error("System variable $_%s refers to nonexistent track" % s)
 
-		if func == 'ACCENT':
-			r=[]
-			for s in t.accent:
-				r.append("{")
-				for b,v in s:
-					r.append(str((b/gbl.BperQ)+1))
-					r.append(str(int(v * 100)))
-				r.append("}")
-			return ' '.join(r)
 
-		elif func == 'ARTICULATE':
-			return ' '.join([str(x) for x in t.artic])
+        if func == 'ACCENT':
+            r=[]
+            for s in t.accent:
+                r.append("{")
+                for b,v in s:
+                    r.append(str((b/gbl.BperQ)+1))
+                    r.append(str(int(v * 100)))
+                r.append("}")
+            return ' '.join(r)
 
-		elif func == 'CHANNEL':
-			return str(t.channel)
+        elif func == 'ARTICULATE':
+            return ' '.join([str(x) for x in t.artic])
 
-		elif func == 'COMPRESS':
-			return ' '.join([str(x) for x in t.compress])
+        elif func == 'CHANNEL':
+            return str(t.channel)
 
-		elif func == 'DIRECTION':
-			return ' '.join([str(x) for x in t.direction])
+        elif func == 'COMPRESS':
+            return ' '.join([str(x) for x in t.compress])
 
-		elif func == 'DUPROOT':
-			if t.vtype != "CHORD":
-				error("Only CHORD tracks have DUPROOT")
-			return ' '.join([str(x) for x in t.dupRoot])
+        elif func == 'DIRECTION':
+            if t.vtype == 'ARIA':
+                return ' '.join([str(x) for x in t.selectDir])
+            else:
+                return ' '.join([str(x) for x in t.direction])
 
-		elif func == 'HARMONY':
-			return ' '.join([str(x) for x in t.harmony])
+        elif func == 'DUPROOT':
+            if t.vtype != "CHORD":
+                error("Only CHORD tracks have DUPROOT")
+            return ' '.join([str(x) for x in t.dupRoot])
 
-		elif func == 'HARMONYVOLUME':
-			return ' '.join([str(int(a * 100)) for a in t.harmonyVolume])
+        elif func == 'HARMONY':
+            return ' '.join([str(x) for x in t.harmony])
 
-		elif func == 'INVERT':
-			return ' '.join([str(x) for x in t.invert])
+        elif func == 'HARMONYVOLUME':
+            return ' '.join([str(int(a * 100)) for a in t.harmonyVolume])
 
-		elif func == 'LIMIT':
-			return str( t.chordLimit )
+        elif func == 'INVERT':
+            return ' '.join([str(x) for x in t.invert])
 
-		elif func == 'MALLET':
-			if t.vtype not in ("SOLO", "MELODY"):
-				error("Mallet only valid in SOLO and MELODY tracks.")
-			return "Mallet Rate=%i Decay=%i" % (t.mallet, t.malletDecay*100)
+        elif func == 'LIMIT':
+            return str( t.chordLimit )
 
-		elif func == 'OCTAVE':
-			return ' '.join([str(a/12) for a in t.octave])
+        elif func == 'MALLET':
+            if t.vtype not in ("SOLO", "MELODY"):
+                error("Mallet only valid in SOLO and MELODY tracks")
+            return "Mallet Rate=%i Decay=%i" % (t.mallet, t.malletDecay*100)
 
-		elif func == 'RANGE':
-			return ' '.join([str(x) for x in t.chordRange])
+        elif func == 'OCTAVE':
+            return ' '.join([str(a/12) for a in t.octave])
 
-		elif func == 'RSKIP':
-			return ' '.join([str(int(a * 100)) for a in t.rSkip])
+        elif func == 'RANGE':
+            return ' '.join([str(x) for x in t.chordRange])
 
-		elif func == 'RTIME':
-			return ' '.join([str(x) for x in t.rTime])
+        elif func == 'RSKIP':
+            return ' '.join([str(int(a * 100)) for a in t.rSkip])
 
-		elif func == 'RVOLUME':
-			return ' '.join([str(int(a * 100)) for a in t.rVolume])
+        elif func == 'RTIME':
+            return ' '.join([str(x) for x in t.rTime])
 
-		elif func == 'SEQRND':
-			if t.seqRnd: return 'On'
-			else:        return 'Off'
+        elif func == 'RVOLUME':
+            return ' '.join([str(int(a * 100)) for a in t.rVolume])
 
-		elif func == 'SEQRNDWEIGHT':
-			return ' '.join([str(x) for x in t.seqRndWeight])
+        elif func == 'SEQRND':
+            if t.seqRnd: return 'On'
+            else:        return 'Off'
 
-		elif func == 'SPAN':
-			return "%s %s" % (t.spanStart, t.spanEnd)
+        elif func == 'SEQRNDWEIGHT':
+            return ' '.join([str(x) for x in t.seqRndWeight])
 
-		elif func == 'STRUM':
-			if t.vtype != "CHORD":
-				error("Only CHORD tracks have STRUM")
-			return ' '.join([str(x) for x in t.strum])
+        elif func == 'SPAN':
+            return "%s %s" % (t.spanStart, t.spanEnd)
 
-		elif func == 'TONE':
-			if t.vtype != "DRUM":
-				error("Only DRUM tracks have TONE")
-			return ' '.join([MMA.midiC.valueToDrum(a) for a in t.toneList])
+        elif func == 'STRUM':
+            if t.vtype != "CHORD":
+                error("Only CHORD tracks have STRUM")
+            return ' '.join([str(x) for x in t.strum])
 
-		elif func == 'UNIFY':
-			return ' '.join([str(x) for x in t.unify])
+        elif func == 'TONE':
+            if t.vtype != "DRUM":
+                error("Only DRUM tracks have TONE")
+            return ' '.join([MMA.midiC.valueToDrum(a) for a in t.toneList])
 
-		elif func == 'VOICE':
-			return ' '.join([MMA.midiC.voiceNames[a] for a in t.voice])
+        elif func == 'UNIFY':
+            return ' '.join([str(x) for x in t.unify])
 
-		elif func == 'VOICING':
-			if t.vtype != 'CHORD':
-				error("Only CHORD tracks have VOICING")
-			t=t.voicing
-			return "Mode=%s Range=%s Center=%s RMove=%s Move=%s Dir=%s" % \
-				(t.mode, t.range, t.center, t.random, t.bcount, t.dir)
+        elif func == 'VOICE':
+            return ' '.join([MMA.midiC.voiceNames[a] for a in t.voice])
 
-		elif func == 'VOLUME':
-			return ' '.join([str(int(a * 100)) for a in t.volume])
+        elif func == 'VOICING':
+            if t.vtype != 'CHORD':
+                error("Only CHORD tracks have VOICING")
+            t=t.voicing
+            return "Mode=%s Range=%s Center=%s RMove=%s Move=%s Dir=%s" % \
+                (t.mode, t.range, t.center, t.random, t.bcount, t.dir)
 
-		else:
-			error("Unknown system track variable %s." % s)
+        elif func == 'VOLUME':
+            return ' '.join([str(int(a * 100)) for a in t.volume])
 
+        else:
+            error("Unknown system track variable %s" % s)
 
 
-	def expand(self, l):
-		""" Loop though input line and make variable subsitutions.
-			MMA variables are pretty simple ... any word starting
-			with a "$xxx" is a variable.
 
-			l - list
+    def expand(self, l):
+        """ Loop though input line and make variable subsitutions.
+            MMA variables are pretty simple ... any word starting
+            with a "$xxx" is a variable.
 
-			RETURNS: new list with all subs done.
-		"""
+            l - list
 
-		if not self.expandMode:
-			return l
+            RETURNS: new list with all subs done.
+        """
 
-		while 1:          # Loop until no more subsitutions have been done
-			sub=0
-			for i,s in enumerate(l):
-				if s[:2] == '$$':
-					continue
+        if not self.expandMode:
+            return l
 
-				if s[0]=='$':
-					s=s[1:].upper()
+        while 1:          # Loop until no more subsitutions have been done
+            sub=0
+            for i,s in enumerate(l):
+                if s[:2] == '$$':
+                    continue
 
-					if s.startswith('_'):
-						ex=self.sysvar(s[1:])
+                if s[0]=='$':
+                    s=s[1:].upper()
 
-					elif not s in self.vars:
-						error("User variable '%s'  has not been defined." % s )
+                    if s.startswith('_'):
+                        ex=self.sysvar(s[1:])
 
-					else:
-						ex=self.vars[s]
+                    elif not s in self.vars:
+                        error("User variable '%s'  has not been defined" % s )
 
-					if type(ex) == type([]):    # MSET variable
-						if len(ex):
-							gbl.inpath.push( ex[1:], [gbl.lineno] * len(ex[1:]))
-							if len(ex):
-								ex=ex[0]
-							else:
-								ex=[]
-					else:                       # regular SET variable
-						ex=ex.split()
+                    else:
+                        ex=self.vars[s]
 
-					l=l[:i] + ex + l[i+1:]    # ex might be a list, so this is needed
-					sub=1
-					break
+                    if type(ex) == type([]):    # MSET variable
+                        if len(ex):
+                            gbl.inpath.push( ex[1:], [gbl.lineno] * len(ex[1:]))
+                            if len(ex):
+                                ex=ex[0]
+                            else:
+                                ex=[]
+                    else:                       # regular SET variable
+                        ex=ex.split()
 
-			if not sub:
-				break
+                    l=l[:i] + ex + l[i+1:]    # ex might be a list, so this is needed
+                    sub=1
+                    break
 
-		return l
+            if not sub:
+                break
 
+        return l
 
-	def showvars(self, ln):
-		""" Display all currently defined variables. """
 
-		if len(ln):
-			for a in ln:
-				a=a.upper()
-				if a in self.vars:
-					print "$%s: %s" % (a, self.vars[a])
-				else:
-					print "$%s - not defined" % a
+    def showvars(self, ln):
+        """ Display all currently defined variables. """
 
-		else:
+        if len(ln):
+            for a in ln:
+                a=a.upper()
+                if a in self.vars:
+                    print "$%s: %s" % (a, self.vars[a])
+                else:
+                    print "$%s - not defined" % a
 
-			print "User variables defined:"
-			kys = self.vars.keys()
-			kys.sort()
+        else:
 
-			mx = 0
+            print "User variables defined:"
+            kys = self.vars.keys()
+            kys.sort()
 
-			for a in kys:					# get longest name
-				if len(a) > mx:
-					mx = len(a)
+            mx = 0
 
-			mx = mx + 2
+            for a in kys:                    # get longest name
+                if len(a) > mx:
+                    mx = len(a)
 
-			for a in kys:
-				print "	 %-*s  %s" % (mx, '$'+a, self.vars[a])
+            mx = mx + 2
 
-	def getvname(self, v):
-		""" Helper routine to validate variable name. """
+            for a in kys:
+                print "     %-*s  %s" % (mx, '$'+a, self.vars[a])
 
-		if v[0] in ('$', '_'):
-			error("Variable names cannot start with a '$' or '_'.")
-		return v.upper()
+    def getvname(self, v):
+        """ Helper routine to validate variable name. """
 
-	def rndvar(self, ln):
-		""" Set a variable randomly from a list. """
+        if v[0] in ('$', '_'):
+            error("Variable names cannot start with a '$' or '_'")
+        return v.upper()
 
-		if len(ln) < 2:
-			error("Use: RndSet Variable_Name <list of possible values>")
+    def rndvar(self, ln):
+        """ Set a variable randomly from a list. """
 
-		v = self.getvname(ln[0])
+        if len(ln) < 2:
+            error("Use: RndSet Variable_Name <list of possible values>")
 
-		self.vars[v] = random.choice(ln[1:])
+        v = self.getvname(ln[0])
 
-		if gbl.debug:
-			print "Variable $%s randomly set to '%s'" % (v, self.vars[v])
+        self.vars[v] = random.choice(ln[1:])
 
-	def setvar(self, ln):
-		""" Set a variable. Not the difference between the next 2 lines:
-		        Set Bar BAR
-		        Set Foo AAA BBB $bar
-				   $Foo == "AAA BBB BAR"
-				Set Foo AAA + BBB + $bar
-				   $Foo == "AAABBBBAR"
+        if gbl.debug:
+            print "Variable $%s randomly set to '%s'" % (v, self.vars[v])
 
-	        The "+"s just strip out interveing spaces.
-		"""
+    def newsetvar(self, ln):
+        """ Set a new variable. Ignore if already set. """
 
-		if len(ln) < 1:
-			error("Use: SET VARIABLE_NAME [Value] [[+] [Value]]")
+        if not len(ln):
+            error("Use: NSET VARIABLE_NAME [Value] [[+] [Value]]")
 
-		v=self.getvname(ln.pop(0))
+        if self.getvname(ln[0]) in self.vars:
+            return
 
-		t=''
-		addSpace = 0
-		for i,a in enumerate(ln):
-			if a == '+':
-				addSpace = 0
-				continue
-			else:
-				if addSpace:
-					t += ' '
-				t += a
-				addSpace = 1
+        self.setvar(ln)
 
+    def setvar(self, ln):
+        """ Set a variable. Not the difference between the next 2 lines:
+                Set Bar BAR
+                Set Foo AAA BBB $bar
+                   $Foo == "AAA BBB BAR"
+                Set Foo AAA + BBB + $bar
+                   $Foo == "AAABBBBAR"
 
-		self.vars[v]=t
+            The "+"s just strip out interveing spaces.
+        """
 
-		if gbl.debug:
-			print "Variable $%s == '%s'" % (v, self.vars[v])
+        if len(ln) < 1:
+            error("Use: SET VARIABLE_NAME [Value] [[+] [Value]]")
 
+        v=self.getvname(ln.pop(0))
 
-	def msetvar(self, ln):
-		""" Set a variable to a number of lines. """
+        t=''
+        addSpace = 0
+        for i,a in enumerate(ln):
+            if a == '+':
+                addSpace = 0
+                continue
+            else:
+                if addSpace:
+                    t += ' '
+                t += a
+                addSpace = 1
 
-		if len(ln) !=1:
-			error("Use: MSET VARIABLE_NAME <lines> MsetEnd")
 
-		v=self.getvname(ln[0])
+        self.vars[v]=t
 
-		lm=[]
+        if gbl.debug:
+            print "Variable $%s == '%s'" % (v, self.vars[v])
 
-		while 1:
-			l=gbl.inpath.read()
-			if not l:
-				error("Reached EOF while looking for MSetEnd")
-			cmd=l[0].upper()
-			if cmd in ("MSETEND", 'ENDMSET'):
-				if len(l) > 1:
-					error("No arguments permitted for MSetEnd/EndMSet")
-				else:
-					break
-			lm.append(l)
 
-		self.vars[v]=lm
+    def msetvar(self, ln):
+        """ Set a variable to a number of lines. """
 
+        if len(ln) !=1:
+            error("Use: MSET VARIABLE_NAME <lines> MsetEnd")
 
-	def unsetvar(self, ln):
-		""" Delete a variable reference. """
+        v=self.getvname(ln[0])
 
+        lm=[]
 
-		if len(ln) != 1:
-			error("Use: UNSET Variable")
-		v=ln[0].upper()
-		if v[0] == '_':
-			error("Internal variables cannot be deleted or modified.")
+        while 1:
+            l=gbl.inpath.read()
+            if not l:
+                error("Reached EOF while looking for MSetEnd")
+            cmd=l[0].upper()
+            if cmd in ("MSETEND", 'ENDMSET'):
+                if len(l) > 1:
+                    error("No arguments permitted for MSetEnd/EndMSet")
+                else:
+                    break
+            lm.append(l)
 
-		if v in self.vars:
-			del(macros.vars[v])
+        self.vars[v]=lm
 
-			if gbl.debug:
-				print "Variable '%s' UNSET" % v
-		else:
-			warning("Attempt to UNSET nonexistent variable '%s'." % v)
 
+    def unsetvar(self, ln):
+        """ Delete a variable reference. """
 
-	def vexpand(self, ln):
 
-		if len(ln) == 1:
-			cmd = ln[0].upper()
-		else:
-			cmd=''
+        if len(ln) != 1:
+            error("Use: UNSET Variable")
+        v=ln[0].upper()
+        if v[0] == '_':
+            error("Internal variables cannot be deleted or modified")
 
-		if cmd == 'ON':
-			self.expandMode=1
-			if gbl.debug:
-				print "Variable expansion ON"
+        if v in self.vars:
+            del(macros.vars[v])
 
-		elif cmd == 'OFF':
-			self.expandMode=0
-			if gbl.debug:
-				print "Variable expansion OFF"
+            if gbl.debug:
+                print "Variable '%s' UNSET" % v
+        else:
+            warning("Attempt to UNSET nonexistent variable '%s'" % v)
 
-		else:
-			error("Use: Vexpand ON/Off.")
 
+    def vexpand(self, ln):
 
-	def varinc(self, ln):
-		""" Increment  a variable. """
+        if len(ln) == 1:
+            cmd = ln[0].upper()
+        else:
+            cmd=''
 
-		if len(ln) == 1:
-			inc=1
+        if cmd == 'ON':
+            self.expandMode=1
+            if gbl.debug:
+                print "Variable expansion ON"
 
-		elif len(ln) == 2:
-			inc = stof(ln[1], "Expecting a value (not %s) for Inc." % ln[1])
+        elif cmd == 'OFF':
+            self.expandMode=0
+            if gbl.debug:
+                print "Variable expansion OFF"
 
-		else:
-			error("Usage: INC Variable [value]")
+        else:
+            error("Use: Vexpand ON/Off")
 
-		v=ln[0].upper()
 
-		if v[0] == '_':
-			error("Internal variables cannot be modified.")
+    def varinc(self, ln):
+        """ Increment  a variable. """
 
-		if not v in self.vars:
-			error("Variable '%s' not defined" % v)
+        if len(ln) == 1:
+            inc=1
 
-		vl=stoi(self.vars[v], "Variable must be a value to increment.") + inc
+        elif len(ln) == 2:
+            inc = stof(ln[1], "Expecting a value (not %s) for Inc" % ln[1])
 
-		if vl == int(vl):
-			vl = int(vl)
-		self.vars[v]=str(vl)
+        else:
+            error("Usage: INC Variable [value]")
 
-		if gbl.debug:
-			print "Variable '%s' INC to %s" % (v, self.vars[v])
+        v=ln[0].upper()
 
+        if v[0] == '_':
+            error("Internal variables cannot be modified")
 
-	def vardec(self, ln):
-		""" Decrement a varaiable. """
+        if not v in self.vars:
+            error("Variable '%s' not defined" % v)
 
-		if len(ln) == 1:
-			dec = 1
+        vl=stoi(self.vars[v], "Variable must be a value to increment") + inc
 
-		elif len(ln) == 2:
-			dec = stof(ln[1], "Expecting a value (not %s) for Inc." % ln[1])
+        if vl == int(vl):
+            vl = int(vl)
+        self.vars[v]=str(vl)
 
-		else:
-			error("Usage: DEC Variable [value]")
+        if gbl.debug:
+            print "Variable '%s' INC to %s" % (v, self.vars[v])
 
-		v=ln[0].upper()
-		if v[0] == '_':
-			error("Internal variables cannot be modified.")
 
-		if not v in self.vars:
-			error("Variable '%s' not defined" % v)
+    def vardec(self, ln):
+        """ Decrement a varaiable. """
 
-		vl=stoi(self.vars[v], "Variable must be a value to decrement.") - dec
+        if len(ln) == 1:
+            dec = 1
 
-		if vl == int(vl):
-			vl = int(vl)
+        elif len(ln) == 2:
+            dec = stof(ln[1], "Expecting a value (not %s) for Inc" % ln[1])
 
-		self.vars[v]=str(vl)
+        else:
+            error("Usage: DEC Variable [value]")
 
-		if gbl.debug:
-			print "Variable '%s' DEC to %s" % (v, self.vars[v])
+        v=ln[0].upper()
+        if v[0] == '_':
+            error("Internal variables cannot be modified")
 
+        if not v in self.vars:
+            error("Variable '%s' not defined" % v)
 
-	def varIF(self, ln):
-		""" Conditional variable if/then. """
+        vl=stoi(self.vars[v], "Variable must be a value to decrement") - dec
 
-		def expandV(l):
-			""" Private func. """
+        if vl == int(vl):
+            vl = int(vl)
 
-			l=l.upper()
+        self.vars[v]=str(vl)
 
-			if l[:2] == '$$':
-				l=l[2:]
-				if not l in self.vars:
-					error("String Variable '%s' does not exist." % l)
-				l=self.vars[l]
+        if gbl.debug:
+            print "Variable '%s' DEC to %s" % (v, self.vars[v])
 
-			try:
-				v=float(l)
-			except:
-				v=None
 
-			return ( l, v )
+    def varIF(self, ln):
+        """ Conditional variable if/then. """
 
+        def expandV(l):
+            """ Private func. """
 
-		def readblk():
-			""" Private, reads a block until ENDIF, IFEND or ELSE.
-				Return (Terminator, lines[], linenumbers[] )
-			"""
+            l=l.upper()
 
-			q=[]
-			qnum=[]
-			nesting=0
+            if l[:2] == '$$':
+                l=l[2:]
+                if not l in self.vars:
+                    error("String Variable '%s' does not exist" % l)
+                l=self.vars[l]
 
-			while 1:
-				l=gbl.inpath.read()
-				if not l:
-					error("EOF reached while looking for EndIf")
+            try:
+                v=float(l)
+            except:
+                v=None
 
-				cmd=l[0].upper()
-				if cmd == 'IF':
-					nesting+=1
-				if cmd in ("IFEND", 'ENDIF', 'ELSE'):
-					if len(l) > 1:
-						error("No arguments permitted for IfEnd/EndIf/Else")
-					if not nesting:
-						break
-					if cmd != 'ELSE':
-						nesting -= 1
+            return ( l, v )
 
-				q.append(l)
-				qnum.append(gbl.lineno)
 
-			return (cmd, q, qnum)
+        def readblk():
+            """ Private, reads a block until ENDIF, IFEND or ELSE.
+                Return (Terminator, lines[], linenumbers[] )
+            """
 
+            q=[]
+            qnum=[]
+            nesting=0
 
-		if len(ln)<2:
-			error("Usage: IF <Operator> ")
+            while 1:
+                l=gbl.inpath.read()
+                if not l:
+                    error("EOF reached while looking for EndIf")
 
-		action = ln[0].upper()
+                cmd=l[0].upper()
+                if cmd == 'IF':
+                    nesting+=1
+                if cmd in ("IFEND", 'ENDIF', 'ELSE'):
+                    if len(l) > 1:
+                        error("No arguments permitted for IfEnd/EndIf/Else")
+                    if not nesting:
+                        break
+                    if cmd != 'ELSE':
+                        nesting -= 1
 
-		# 1. do the unary options: DEF, NDEF
+                q.append(l)
+                qnum.append(gbl.lineno)
 
-		if action in ('DEF', 'NDEF'):
-			if len(ln) != 2:
-				error("Usage: IF %s VariableName" % action)
+            return (cmd, q, qnum)
 
-			v=ln[1].upper()
-			retpoint = 2
 
-			if action == 'DEF':
-				compare = self.vars.has_key(v)
-			elif action == 'NDEF':
-				compare = ( not self.vars.has_key(v))
-			else:
-				error("Unreachable unary conditional")
+        if len(ln)<2:
+            error("Usage: IF <Operator> ")
 
+        action = ln[0].upper()
 
-		# 2. Binary ops: EQ, NE, etc.
+        # 1. do the unary options: DEF, NDEF
 
-		elif action in ('LT', 'LE', 'EQ', 'GE', 'GT', 'NE'):
-			if len(ln) != 3:
-				error("Usage: VARS %s Value1 Value2" % action)
+        if action in ('DEF', 'NDEF'):
+            if len(ln) != 2:
+                error("Usage: IF %s VariableName" % action)
 
+            v=ln[1].upper()
+            retpoint = 2
 
-			s1,v1 = expandV(ln[1])
-			s2,v2 = expandV(ln[2])
+            if action == 'DEF':
+                compare = self.vars.has_key(v)
+            elif action == 'NDEF':
+                compare = ( not self.vars.has_key(v))
+            else:
+                error("Unreachable unary conditional")
 
-			if type(v1) == type(1.0) and type(v2) == type(1.0):
-				s1=v1
-				s2=v2
 
+        # 2. Binary ops: EQ, NE, etc.
 
-			retpoint = 3
+        elif action in ('LT', 'LE', 'EQ', 'GE', 'GT', 'NE'):
+            if len(ln) != 3:
+                error("Usage: VARS %s Value1 Value2" % action)
 
-			if	 action == 'LT':
-				compare = (v1 <	 v2)
-			elif action == 'LE':
-				compare = (v1 <= v2)
-			elif action == 'EQ':
-				compare = (v1 == v2)
-			elif action == 'GE':
-				compare = (v1 >= v2)
-			elif action == 'GT':
-				compare = (v1 >	 v2)
-			elif action == 'NE':
-				compare = (v1 != v2)
-			else:
-				error("Unreachable binary conditional")
 
-		else:
-			error("Usage: IF <CONDITON> ...")
+            s1,v1 = expandV(ln[1])
+            s2,v2 = expandV(ln[2])
 
+            if type(v1) == type(1.0) and type(v2) == type(1.0):
+                s1=v1
+                s2=v2
 
-		""" Go read until end of if block.
-			We shove the block back if the compare was true.
-			Unless, the block is terminated by an ELSE ... then we need
-			to read another block and push back one of the two.
-		"""
 
-		cmd, q, qnum = readblk()
+            retpoint = 3
 
+            if     action == 'LT':
+                compare = (v1 <     v2)
+            elif action == 'LE':
+                compare = (v1 <= v2)
+            elif action == 'EQ':
+                compare = (v1 == v2)
+            elif action == 'GE':
+                compare = (v1 >= v2)
+            elif action == 'GT':
+                compare = (v1 >     v2)
+            elif action == 'NE':
+                compare = (v1 != v2)
+            else:
+                error("Unreachable binary conditional")
 
-		if cmd == 'ELSE':
-			cmd, q1, qnum1 = readblk()
+        else:
+            error("Usage: IF <CONDITON> ...")
 
-			if cmd == 'ELSE':
-				error("Only one ELSE is permitted in IF construct.")
 
-			if not compare:
-				compare = 1
-				q = q1
-				qnum = qnum1
+        """ Go read until end of if block.
+            We shove the block back if the compare was true.
+            Unless, the block is terminated by an ELSE ... then we need
+            to read another block and push back one of the two.
+        """
 
-		if compare:
-			gbl.inpath.push( q, qnum )
+        cmd, q, qnum = readblk()
+
+
+        if cmd == 'ELSE':
+            cmd, q1, qnum1 = readblk()
+
+            if cmd == 'ELSE':
+                error("Only one ELSE is permitted in IF construct")
+
+            if not compare:
+                compare = 1
+                q = q1
+                qnum = qnum1
+
+        if compare:
+            gbl.inpath.push( q, qnum )
 
 
 macros = Macros()

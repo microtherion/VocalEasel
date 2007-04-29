@@ -240,6 +240,11 @@ DefGroove BalladIntro2     Add in some sustained strings to BalladIntro1.
 
 Groove Ballad
 
+Begin Alltracks
+	SeqRnd Off
+	Rskip 0
+End
+
 Drum-Kick     Sequence D13
 Drum-Cym      Sequence D1234 
 Drum-MuteTri  Sequence D24
@@ -259,4 +264,26 @@ End
 DefGroove BalladEnd  A 4 bar ending with a scale played on a harp. \
 	The scale goes from 16ths, 8ths, quarters and half notes on \
 	bars 1 to 4.
+
+
+Groove BalladEnd
+
+Scale Sequence -
+
+Begin Arpeggio
+	  SeqClear
+	  Voice OrchestralHarp
+	  Articulate 110
+	  Sequence A4
+	  Range 1.7
+	  Direction Up
+	  Volume mf
+	  Octave 5
+	  Harmony Open+8Below
+End
+
+DefGroove Ballad1End  A simpler 4 bar ending. We still have a harp, but it's \
+                      doing quarter note arpeggios.
+
+
 

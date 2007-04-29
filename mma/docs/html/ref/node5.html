@@ -26,21 +26,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY  bgcolor="#ffffff">
 <!--Navigation Panel-->
-<A NAME="tex2html381"
+<A NAME="tex2html392"
   HREF="node6.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html379"
+<A NAME="tex2html390"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html373"
+<A NAME="tex2html384"
   HREF="node4.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html382"
+<B> Next:</B> <A NAME="tex2html393"
   HREF="node6.html">Grooves</A>
-<B> Up:</B> <A NAME="tex2html380"
+<B> Up:</B> <A NAME="tex2html391"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html374"
+<B> Previous:</B> <A NAME="tex2html385"
   HREF="node4.html">Patterns</A>
 <BR>
 <BR>
@@ -49,15 +49,15 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html383"
+<LI><A NAME="tex2html394"
   HREF="node5.html#SECTION00510000000000000000">Defining Sequences</A>
-<LI><A NAME="tex2html384"
+<LI><A NAME="tex2html395"
   HREF="node5.html#SECTION00520000000000000000">SeqClear</A>
-<LI><A NAME="tex2html385"
+<LI><A NAME="tex2html396"
   HREF="node5.html#SECTION00530000000000000000">SeqRnd</A>
-<LI><A NAME="tex2html386"
+<LI><A NAME="tex2html397"
   HREF="node5.html#SECTION00540000000000000000">SeqRndWeight</A>
-<LI><A NAME="tex2html387"
+<LI><A NAME="tex2html398"
   HREF="node5.html#SECTION00550000000000000000">SeqSize</A>
 </UL>
 <!--End of Table of Child-Links-->
@@ -85,12 +85,12 @@ each track in your song:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Track Sequence Pattern1 Pattern2 ...  </B> 
    
-<BLOCKQUOTE><B>Track Sequence Pattern1 Pattern2 ... </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 ``Track'' can be any valid track name: ``Chord'', ``Walk'',
@@ -104,17 +104,16 @@ definition in a set of curly brackets ``{ }''.
 
 <P>
 
-		<BR>
-		<TABLE CELLSPACING=0 Align="Center" CELLPADDING=10 BGCOLOR="#efefef" BORDER=3>
-		<TR> <TD ALIGN="CENTER" BGCOLOR="White">
-	    	<B><FONT SIZE="+2">Simple Sequence</FONT></B>    <A NAME="eg:seq1"></A>	
-	 	</TR></TD> <TR><TD Align="Center">
-		
+		<Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="#efefef" Border=3>
+		   <tr><td Align="CENTER" BGColor="White">
+	      <B><FONT SIZE="+2">Simple Sequence</FONT></B>  <A NAME="eg:seq1"></A>	
+	 	   </tr> </td>
+           <tr> <td >
+		     
   
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
-   
-<BLOCKQUOTE><B>SeqClear 
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>SeqClear 
 <BR>
 SeqSize 2 
 <BR>
@@ -134,12 +133,14 @@ Chord Sequence Broken8
 <BR>
 Bass Sequence Broken8 
 <BR>
-Arpeggio Sequence { 1 1 100 * 8 } { 1 1 80 * 4 }  </B></BLOCKQUOTE>
+Arpeggio Sequence { 1 1 100 * 8 } { 1 1 80 * 4 }   </B> 
    
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
  
 	
-		</TD></TR></TABLE>
+	       </td> </tr>
+        </Table>
 
 <P>
 
@@ -148,12 +149,12 @@ Arpeggio Sequence { 1 1 100 * 8 } { 1 1 80 * 4 }  </B></BLOCKQUOTE>
 pattern. The Drum, Chord and Bass patterns repeat on every bar; the
 Drum-1 sequence repeats after 2 bars. Note how the Arpeggio pattern is
 defined at run-time.<A NAME="tex2html29"
-  HREF="#foot2246"><SUP>5.1</SUP></A>
+  HREF="#foot2157"><SUP>5.1</SUP></A>
 <P>
 If there are fewer patterns than S<SMALL>EQ</SMALL>S<SMALL>IZE</SMALL>, the sequence will be
 filled out to correct size. If the number of patterns used is greater
 than S<SMALL>EQ</SMALL>S<SMALL>IZE</SMALL> (see
-<A HREF="node20.html#sec-directives">directives</A>) a warning
+<A HREF="node21.html#sec-directives">directives</A>) a warning
 message will be printed and the pattern list will be truncated.
 
 <P>
@@ -163,14 +164,14 @@ equivalent:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
-   
-<BLOCKQUOTE><B>Bass Sequence Bass1 Bass1 Bass2 Bass2 
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Bass Sequence Bass1 Bass1 Bass2 Bass2 
 <BR>
-Bass Sequence Bass1 / Bass2 /  </B></BLOCKQUOTE>
+Bass Sequence Bass1 / Bass2 /   </B> 
    
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 <A NAME="sequence-clear"></A>
@@ -182,12 +183,12 @@ and decide to delete the Bass halfway though the song you could:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Bass Sequence -   </B> 
    
-<BLOCKQUOTE><B>Bass Sequence -  </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 The special sequences, ``-'' or ``z'', are also the equivalent of a
@@ -197,18 +198,18 @@ with a 1-5 bass pattern on the first 3 bars and a walking bass on bar
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
-   
-<BLOCKQUOTE><B>Bass Sequence Bass4-13 / / z 
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Bass Sequence Bass4-13 / / z 
 <BR>
-Walk Sequence z / / Walk4-4  </B></BLOCKQUOTE>
+Walk Sequence z / / Walk4-4   </B> 
    
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 If you already have a sequence defined<A NAME="tex2html30"
-  HREF="#foot2261"><SUP>5.2</SUP></A> you can repeat or copy the existing pattern by
+  HREF="#foot2172"><SUP>5.2</SUP></A> you can repeat or copy the existing pattern by
 using a single ``*'' as the pattern name. This is useful when you are
 modifying an exisiting sequence.
 
@@ -220,21 +221,21 @@ fourth bar in the pattern:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
-   
-<BLOCKQUOTE><B>Groove Neato 
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Groove Neato 
 <BR>
 Chord Sequence * * * {1 2 90} 
 <BR>
-Defgroove NeatoIntro  </B></BLOCKQUOTE>
+Defgroove NeatoIntro   </B> 
    
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 When a sequence is created a series of pointers to the existing
 patterns are created. If you change the definition of a particular
-pattern later in your file the new definition will have <B>no</B>
+pattern later in your file the new definition will have <I>no</I>
 effect on your existing sequences.
 
 <P>
@@ -260,12 +261,12 @@ when defining a new sequence and you want to be sure that no
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>SeqClear  </B> 
    
-<BLOCKQUOTE><B>SeqClear </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 deletes all sequence information, with the important exception that
@@ -276,15 +277,15 @@ Alternately, the command:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Drum SeqClear  </B> 
    
-<BLOCKQUOTE><B>Drum SeqClear </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
-deletes <B>all</B> drum sequences. This includes the track ``Drum'',
+deletes <I>all</I> drum sequences. This includes the track ``Drum'',
 ``Drum1'', etc.
 
 <P>
@@ -292,16 +293,16 @@ If you use a sub-track:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord-Piano SeqClear  </B> 
    
-<BLOCKQUOTE><B>Chord-Piano SeqClear </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 only the sequence for that track is cleared.<A NAME="tex2html31"
-  HREF="#foot2343"><SUP>5.3</SUP></A>
+  HREF="#foot2254"><SUP>5.3</SUP></A>
 <P>
 In addition to clearing the sequence pattern, the following other
 settings are restored to a default condition:
@@ -353,27 +354,27 @@ C<SMALL>HORD</SMALL> using this command. The command
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord SeqClear  </B> 
    
-<BLOCKQUOTE><B>Chord SeqClear </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
-resets <B>all</B> C<SMALL>HORD</SMALL> tracks, whereas the command:
+resets <I>all</I> C<SMALL>HORD</SMALL> tracks, whereas the command:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord-Foo SeqClear  </B> 
    
-<BLOCKQUOTE><B>Chord-Foo SeqClear </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
-resets the C<SMALL>HORD-</SMALL>F<SMALL>OO</SMALL> track. If you need to clear <B>only</B>
+resets the C<SMALL>HORD-</SMALL>F<SMALL>OO</SMALL> track. If you need to clear <I>only</I>
 the C<SMALL>HORD</SMALL> track use the ``-'' option.
 
 <P>
@@ -388,12 +389,12 @@ example, if you had a sequence:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Drum-2 Sequence P1 P2 P3 z  </B> 
    
-<BLOCKQUOTE><B>Drum-2 Sequence P1 P2 P3 z </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 bar 1 would use ``P1'', bar 2 ``P2'', etc. However, it is quite
@@ -408,12 +409,12 @@ sequences.
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Drum-Snare SeqRnd On  </B> 
    
-<BLOCKQUOTE><B>Drum-Snare SeqRnd On </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 </LI>
@@ -421,12 +422,12 @@ sequences.
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>SeqRnd On  </B> 
    
-<BLOCKQUOTE><B>SeqRnd On </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 </LI>
@@ -434,12 +435,12 @@ sequences.
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>SeqRnd Drum-Snare Chord-2 Chord-3  </B> 
    
-<BLOCKQUOTE><B>SeqRnd Drum-Snare Chord-2 Chord-3 </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 </LI>
@@ -450,14 +451,14 @@ To disable random sequencing:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
-   
-<BLOCKQUOTE><B>SeqRnd Off
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>SeqRnd Off
 <BR>
-Drum SeqRnd Off </B></BLOCKQUOTE>
+Drum SeqRnd Off  </B> 
    
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 To illustrate the different effects you can generate, assume that you
@@ -467,18 +468,18 @@ sequence for each track with a commands similar to:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
-   
-<BLOCKQUOTE><B>Drum-Snare Sequence D1 D2 D3 D4 
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Drum-Snare Sequence D1 D2 D3 D4 
 <BR>
 Drum-Low Sequence D11 D22 D33 D44 
 <BR>
 Chord Sequence C1 C2 C3 C4 
 <BR>
-Bass Sequence B1 B2 B3 B4 </B></BLOCKQUOTE>
+Bass Sequence B1 B2 B3 B4  </B> 
    
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 With no sequence randomization at all, the tracks will be be processed
@@ -537,12 +538,12 @@ Next, assume we have set sequence randomization with:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>SeqRnd On  </B> 
    
-<BLOCKQUOTE><B>SeqRnd On </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 Now, the sequence may look like:
@@ -605,14 +606,14 @@ Next, we will set randomization for a Drum and Chord track only:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
-   
-<BLOCKQUOTE><B>Drum-Low SeqRnd On 
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Drum-Low SeqRnd On 
 <BR>
-Chord SeqRnd On  </B></BLOCKQUOTE>
+Chord SeqRnd On   </B> 
    
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 <BLOCKQUOTE>
@@ -672,12 +673,12 @@ selected set of tracks. In this case we will set the Drum tracks only:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>SeqRnd Drum-Snare Drum-Low  </B> 
    
-<BLOCKQUOTE><B>SeqRnd Drum-Snare Drum-Low </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 <BLOCKQUOTE>
@@ -749,12 +750,12 @@ you might have a sequence like this:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord Sequence C1  C2  C3  C4  </B> 
    
-<BLOCKQUOTE><B>Chord Sequence C1  C2  C3  C4 </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 and you feel that the patterns C1 and C2 need to be used twice as often as C3 and C4.
@@ -762,12 +763,12 @@ Simple:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord SeqRndWeight 2 2 1 1  </B> 
    
-<BLOCKQUOTE><B>Chord SeqRndWeight 2 2 1 1 </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 Think of the random selection occurring like selecting balls out of bag. The S<SMALL>EQ</SMALL>R<SMALL>ND</SMALL>W<SMALL>EIGHT</SMALL>
@@ -795,18 +796,18 @@ For example:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>SeqSize 4  </B> 
    
-<BLOCKQUOTE><B>SeqSize 4 </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 sets it to 4 bars. The SeqSize applies to all tracks.
 
 <P>
-This command resets the <B>sequence counter</B> to 1.
+This command resets the <I>sequence counter</I> to 1.
 
 <P>
 If some sequences have already been defined, they will be truncated or
@@ -817,7 +818,7 @@ until it is long enough.
 <P>
 <BR><HR><H4>Footnotes</H4>
 <DL>
-<DT><A NAME="foot2246">... run-time.</A><A
+<DT><A NAME="foot2157">... run-time.</A><A
  HREF="node5.html#tex2html29"><SUP>5.1</SUP></A></DT>
 <DD>If you run 
 <FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  with the ``-s'' option
@@ -826,50 +827,50 @@ until it is long enough.
   sequence.
 
 </DD>
-<DT><A NAME="foot2261">... defined</A><A
+<DT><A NAME="foot2172">... defined</A><A
  HREF="node5.html#tex2html30"><SUP>5.2</SUP></A></DT>
 <DD>In reality there is
   always a sequence defined for every track, but it might be a series
   of ``rest'' bars.
 
 </DD>
-<DT><A NAME="foot2343">... cleared.</A><A
+<DT><A NAME="foot2254">... cleared.</A><A
  HREF="node5.html#tex2html31"><SUP>5.3</SUP></A></DT>
 <DD>It is probably
   easier to use the command: 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+   <B>Chord-Piano Sequence -  </B> 
    
-<BLOCKQUOTE><B>Chord-Piano Sequence - </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
  if that is
-  what you want to do. In this case <B>only</B> sequence pattern is
+  what you want to do. In this case <I>only</I> sequence pattern is
   cleared.
 
 </DD>
 </DL><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html381"
+<A NAME="tex2html392"
   HREF="node6.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html379"
+<A NAME="tex2html390"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html373"
+<A NAME="tex2html384"
   HREF="node4.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html382"
+<B> Next:</B> <A NAME="tex2html393"
   HREF="node6.html">Grooves</A>
-<B> Up:</B> <A NAME="tex2html380"
+<B> Up:</B> <A NAME="tex2html391"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html374"
+<B> Previous:</B> <A NAME="tex2html385"
   HREF="node4.html">Patterns</A>
 <!--End of Navigation Panel-->
 <ADDRESS>
-Bob
-2006-10-15
+bob
+2007-03-07
 </ADDRESS>
 </BODY>
 </HTML>

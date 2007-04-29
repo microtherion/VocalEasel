@@ -20,15 +20,16 @@ MMA consists of several parts. They should be installed as follows:
 
 There are 2 install scripts you can use.
 
-The first and recommended one is a shell script called ln-install.
+The first and recommended one is a python script called ln-install.
 This simply creates the symbolic link /usr/local/share/mma pointing
 to the current directory where the uncompressed tar file you downloaded
 exists. I have used the link method for years now and it works fine.
 The only problem you have with this is that you must not delete
 or move the files from the tarball.
 
-ln-install just has one line of code, a ln line. You must be root for this
-to work: on a Linux system the command:
+ln-install has only 2 important lines of code: both create a single
+symbolic link. You must be root for this to work: on a Linux system
+the command:
 
 	su -c './ln-install'
 
@@ -82,7 +83,7 @@ installing. Just issue the command './mma someMMAfile'.
 
 If you run the install script the existing /usr/local/bin/mma will be
 overwritten and your existing /usr/local/share/mma directory will be
-renamed to /usr/local/share/mma-old. You will received prompts for
+renamed to /usr/local/share/mma-old. You will receive prompts for
 this before action is taken. However, if you already have a backup
 directory you will need to delete this by hand. This just a bit of
 safety so I don't get blamed to deleting stuff off your (or my) hard

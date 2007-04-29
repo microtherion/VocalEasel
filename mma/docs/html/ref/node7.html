@@ -26,21 +26,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY  bgcolor="#ffffff">
 <!--Navigation Panel-->
-<A NAME="tex2html410"
+<A NAME="tex2html422"
   HREF="node8.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html408"
+<A NAME="tex2html420"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html402"
+<A NAME="tex2html414"
   HREF="node6.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html411"
+<B> Next:</B> <A NAME="tex2html423"
   HREF="node8.html">Musical Data Format</A>
-<B> Up:</B> <A NAME="tex2html409"
+<B> Up:</B> <A NAME="tex2html421"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html403"
+<B> Previous:</B> <A NAME="tex2html415"
   HREF="node6.html">Grooves</A>
 <BR>
 <BR>
@@ -77,12 +77,12 @@ A R<SMALL>IFF</SMALL> is set with the command:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Track Riff Pattern  </B> 
    
-<BLOCKQUOTE><B>Track Riff Pattern </B></BLOCKQUOTE>
-   
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 where:
@@ -110,10 +110,9 @@ Following is a short example using R<SMALL>IFF</SMALL> to change the Chord Patte
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
-   
-<BLOCKQUOTE><B>Groove Rhumba 
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Groove Rhumba 
 <BR>
 1     Fm7 
 <BR>
@@ -125,9 +124,10 @@ Chord Riff 1 4 100; 3 8 90; 3.666 8 80; 4.333 8 70
 <BR>
 4     Eb6 / Eb 
 <BR>
-5 Fm7  </B></BLOCKQUOTE>
+5 Fm7   </B> 
    
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 In this case there is a Rhumba Groove for the song; however, in bar 4
@@ -141,10 +141,9 @@ like the patterns used in a sequence.
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
-   
-<BLOCKQUOTE><B>Drum Define Emph8 1 0 128 * 8 
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Drum Define Emph8 1 0 128 * 8 
 <BR>
 Groove Blues 
 <BR>
@@ -160,14 +159,15 @@ Drum-Clap Riff Emph8
 <BR>
 Drum-Clap Riff Emph8 
 <BR>
-5 C  </B></BLOCKQUOTE>
+5 C   </B> 
    
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
-Here the <B>Emph8</B> pattern is defined as a series of eighth notes.
+Here the <I>Emph8</I> pattern is defined as a series of eighth notes.
 This is applied for the third and fifth bars. If you compile and play this example
-you will hear a sporadic hand-clap on bar 3. The <B>Drum-Clap</B>
+you will hear a sporadic hand-clap on bar 3. The <I>Drum-Clap</I>
 track was previously defined in the Blues G<SMALL>ROOVE</SMALL> as random
 claps on beats 2 and 4--our R<SMALL>IFF</SMALL> changes this to a louder
 volume with multiple hits.
@@ -209,10 +209,9 @@ A few things to keep in mind when using R<SMALL>IFF</SMALL>s:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
-   
-<BLOCKQUOTE><B>Mset CRiff
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Mset CRiff
 <BR>&nbsp;&nbsp;Begin Scale 
 <BR>&nbsp;&nbsp;&nbsp;&nbsp;Define Run 1 1 120
 <BR>&nbsp;&nbsp;&nbsp;&nbsp;Riff Run * $SSpeed
@@ -238,9 +237,10 @@ Set SSpeed 8
 Set SSpeed 12 
 <BR>      $CRIFF
 <BR>
-5 C   </B></BLOCKQUOTE>
+5 C    </B> 
    
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
 </LI>
@@ -260,7 +260,7 @@ S<SMALL>OLO</SMALL> or M<SMALL>ELODY</SMALL> track. Please see <A HREF="node10.h
 The above examples show how to apply a temporary pattern to a single
 bar--the bar which follows the R<SMALL>IFF</SMALL> command.  But, you can
 ``stack''<A NAME="tex2html35"
-  HREF="#foot3122"><SUP>7.1</SUP></A> a number of patterns to be processed sequentially. Each
+  HREF="#foot2960"><SUP>7.1</SUP></A> a number of patterns to be processed sequentially. Each
 successive R<SMALL>IFF</SMALL> command adds a pattern to the stack; these
 patterns are then ``pulled'' from the stack as successive chord lines
 are processed.
@@ -271,10 +271,9 @@ customized pattern for bars 4 and 5 in a mythical song:
 
 <P>
 
-      <TABLE ALIGN="CENTER" CELLSPACING=0 CELLPADDING=5 BGCOLOR="OldLace" BORDER=3>
-        <TR> <TD>
-   
-<BLOCKQUOTE><B>Groove Rhumba 
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Groove Rhumba 
 <BR>
 1     Fm7 
 <BR>
@@ -288,12 +287,13 @@ Chord Riff 1 2 100; 3 8 90;
 <BR>
 4     Eb6 / Eb 
 <BR>
-5 Fm7  </B></BLOCKQUOTE>
+5 Fm7   </B> 
    
-	</TD></TR></TABLE>
+	    </td></tr>
+      </Table>
 
 <P>
-In this example the first <B>Chord Riff</B> will be used in bar 4; the
+In this example the first <I>Chord Riff</I> will be used in bar 4; the
 second in bar 5. For an example of this see the sample file
 <TT><B>egs/riffs.mma</B></TT>.
 
@@ -301,7 +301,7 @@ second in bar 5. For an example of this see the sample file
 I often use this feature when creating a S<SMALL>OLO</SMALL> line.
 <BR><HR><H4>Footnotes</H4>
 <DL>
-<DT><A NAME="foot3122">...
+<DT><A NAME="foot2960">...
 ``stack''</A><A
  HREF="node7.html#tex2html35"><SUP>7.1</SUP></A></DT>
 <DD>Actually a queue or FIFO (First In, First Out)
@@ -310,26 +310,26 @@ buffer.
 </DD>
 </DL><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html410"
+<A NAME="tex2html422"
   HREF="node8.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html408"
+<A NAME="tex2html420"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html402"
+<A NAME="tex2html414"
   HREF="node6.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html411"
+<B> Next:</B> <A NAME="tex2html423"
   HREF="node8.html">Musical Data Format</A>
-<B> Up:</B> <A NAME="tex2html409"
+<B> Up:</B> <A NAME="tex2html421"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html403"
+<B> Previous:</B> <A NAME="tex2html415"
   HREF="node6.html">Grooves</A>
 <!--End of Navigation Panel-->
 <ADDRESS>
-Bob
-2006-10-15
+bob
+2007-03-07
 </ADDRESS>
 </BODY>
 </HTML>

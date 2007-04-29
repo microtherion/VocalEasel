@@ -231,6 +231,29 @@ End
 
 DefGroove BigBandFill   Simple fill bar, good in an ending.
 
+Groove BigBandFill
+
+// Drum-HH
+Drum-Snare  Sequence D13
+// Drum-Kick
+// Drum-Ride
+
+Walk        Sequence  -
+Begin Bass
+	Voice $_Walk_Voice
+	Octave $_Walk_Octave
+	Sequence  B1234
+End
+
+Chord       Sequence C1234
+Begin Chord-Hits1
+	Octave 5
+	Sequence {1 4. 80; 3 8. 95; 4 8 90}
+End
+
+DefGroove BigBand1Fill   Louder, 4 in the bar fill.
+
+
 ///////////////////////////////////
 // Intros
 

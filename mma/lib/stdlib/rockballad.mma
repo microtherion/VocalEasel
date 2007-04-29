@@ -9,6 +9,14 @@ End
 
 Author Bob van der Poel
 
+NewSet SusVoice  ChoirAahs
+NewSet SusVoiceOctave 4
+
+Begin DocVar
+	  SusVoice  Voice used for sustained voicing in RockBalladVoice (default=ChoirAahs).
+      SusVoiceOctave  Octave for sustained voices (default=4).
+End
+ 
 SeqClear
 Time 4
 Timesig 4 4
@@ -72,6 +80,13 @@ End
 
 DefGroove RockBallad   Basic beat with triplet Hi-Hats.
 
+Groove RockBallad
+
+Chord Sequence C1234 
+
+DefGroove RockBallad1   Same as the basic pattern, but skips the chord triplet on bar 4.
+
+
 //////////////////////////
 // Guitar Fill
 
@@ -88,8 +103,11 @@ Begin Arpeggio
 	Articulate 105
 End
 		
-
 DefGroove RockBalladFill    Add guitar arpeggios.
+
+Groove RockBallad1
+Arpeggio Groove RockBalladFill
+DefGroove RockBallad1Fill   Guitar apreggio fills without 4th bar triplets.
 
 /////////////////////////////
 // Adds some (sustained) voices
@@ -97,16 +115,20 @@ DefGroove RockBalladFill    Add guitar arpeggios.
 Groove RockBallad
 
 Begin Chord-Sus
-	Voice ChoirAahs
+	Voice $SusVoice
 	Sequence  { 1 1 90 0 80 0 * 2}  // Root and fifth notes only.
 	Voicing mode=optimal
 	Volume p
-	Octave 4
+	Octave $SusVoiceOctave
 	Articulate 100
 	Unify On
 End
 
 DefGroove RockBalladVoice   Adds some cheese with choir voices.
+
+Groove RockBallad1
+Chord-Sus Groove RockBalladVoice
+DefGroove RockBallad1Voice
 
 /////////////////////////////
 //// Intro
@@ -151,4 +173,14 @@ End
 DefGroove RockBalladEnd    Ending with a scaling tenor sax. Use Seq 1 \
                            to 4 for 16ths, 8th, 4th or 1/2 note runs.
 	
+
+Groove RockBallad
+
+Seqsize 2
+
+Chord Sequence C1234 L2
+Bass  Sequence B13   B1
+Walk  Sequence -
+
+DefGroove RockBalladEnd1  Simple 2 bar ending.
 

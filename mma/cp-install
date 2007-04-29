@@ -15,15 +15,40 @@ def okay(msg):
 # Simple python script to install mma from tarball
 # This should be fixed to be more versatile. Volunteers?
 
-###########################################
-#######  Banner, get destination
+# Before we do anything, make sure we have an up-to-date python.
+
+pyMaj=2
+pyMin=4
+
+if sys.version_info[0] < pyMaj or sys.version_info[1] < pyMin:
+	print
+	print "You need a more current version of Python to run MMA and this install script."
+	print "We're looking for something equal or greater than version %s.%s" % \
+		  (pyMaj,pyMin)
+	print "Current Python version is ", sys.version
+	print
+	sys.exit(0)
+
+
+# Banner. Check to make sure user has root permissions.
 
 print """
 This script will install mma, the standard library and the
 python modules.
+"""
 
-YOU WILL NEED TO BE LOGGED IN AS ROOT TO CONTINUE!
+try:
+	u=os.getuid()
+except:
+	u=1
 
+if u:
+	okay("""You do not appear to be running this script as 'root' user.
+Continuing will probably cause all kinds of strange errors
+and a generally unsatisfactory experience. But, we can try...
+""")
+
+print """
 We recommend that you install the package with this script
 in the default locations. This script will create a
 directory 'mma' in /usr/local/share. If this isn't
@@ -48,6 +73,7 @@ bin='/usr/local/bin/mma'
 
 if os.path.exists(bin):
 	okay("Existing mma executable '%s' is being overwritten." % bin)
+	os.remove(bin)
 
 print "Copying mma to", bin
 

@@ -1,0 +1,16 @@
+
+Short usage file for timsplit.py.
+
+This program is used to create a set of wav tracks from a MMA
+input file. You need MMA, the input file and timidity. The command:
+
+	  timsplit.py somefile.mma
+
+will create a MIDI file (the name is hardcoded to outfile.mid) and
+then create a wav file for each track using timidity. 
+
+Conversion takes a few minutes, depending on the soundfont you're using
+and the size of the MIDI file. Be patient.
+
+bvdp, March 2007.
+

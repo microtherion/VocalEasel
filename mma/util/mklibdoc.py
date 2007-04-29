@@ -10,21 +10,21 @@ libpath = ''
 docpath = ''
 
 for p in installdir:
-	a = os.path.join(p, 'lib', '')
-	if os.path.isdir(a):
-		libpath=a
-		docpath = os.path.join(p, 'docs', 'html', 'lib')
-		break
+    a = os.path.join(p, 'lib', '')
+    if os.path.isdir(a):
+        libpath=a
+        docpath = os.path.join(p, 'docs', 'html', 'lib')
+        break
 
 if not libpath:
-	print "Can't find the MMA library!"
-	print "Please check your installation and/or change the search path in this program."
-	sys.exit(1)
+    print "Can't find the MMA library!"
+    print "Please check your installation and/or change the search path in this program."
+    sys.exit(1)
 
 try:
-	os.mkdir(docpath)
+    os.mkdir(docpath)
 except:
-	pass
+    pass
 
 index = []
 links = []
@@ -32,81 +32,81 @@ links = []
 print "Processing library files"
 
 def  dodir(dir):
-	""" Process files in directory.  """
+    """ Process files in directory.  """
 
-	global index, links
-	newdirs = []
+    global index, links
+    newdirs = []
 
-	olib = os.path.join(docpath, dir)
-	if not os.path.isdir(olib):
-		try:
-			os.mkdir(olib)
-		except:
-			print "Can't create directory", olib
-			sys.exit(1)
+    olib = os.path.join(docpath, dir)
+    if not os.path.isdir(olib):
+        try:
+            os.mkdir(olib)
+        except:
+            print "Can't create directory", olib
+            sys.exit(1)
 
- 	links.append("<li> <A Href=#%s> <h2> %s </h2> </a> </li>" % (dir, dir.title()))
+    links.append("<li> <A Href=#%s> <h2> %s </h2> </a> </li>" % (dir, dir.title()))
 
-	if dir.lower() == "stdlib":
-		index.append("<P><h3>These grooves can be used from a program just by using their name.</h3>")
+    if dir.lower() == "stdlib":
+        index.append("<P><h3>These grooves can be used from a program just by using their name.</h3>")
 
-	index.append("<A Name =%s></a>" % dir)
-	index.append("<h2> %s </h2>" % dir.title() )
+    index.append("<A Name =%s></a>" % dir)
+    index.append("<h2> %s </h2>" % dir.title() )
 
-	index.append("<ul>")
+    index.append("<ul>")
 
 
-	for f in os.listdir(libpath + dir):
-		this = os.path.join(libpath, dir, f)
+    for f in sorted(os.listdir(libpath + dir)):
+        this = os.path.join(libpath, dir, f)
 
-		if os.path.isdir(this):
-			newdirs.append(os.path.join(dir, f))
-			continue
+        if os.path.isdir(this):
+            newdirs.append(os.path.join(dir, f))
+            continue
 
-		if this.endswith('.mma'):
-			htmlfname = os.path.join(dir, f.replace('.mma' , '.html'))
-			htmldate = 0
-			htmlout = os.path.join(docpath, htmlfname)
-			try:
-				htmldate = os.path.getmtime(htmlout)
-			except:
-				pass
+        if this.endswith('.mma'):
+            htmlfname = os.path.join(dir, f.replace('.mma' , '.html'))
+            htmldate = 0
+            htmlout = os.path.join(docpath, htmlfname)
+            try:
+                htmldate = os.path.getmtime(htmlout)
+            except:
+                pass
 
-			libdate = 0
-			try:
-				libdate = os.path.getmtime(this)
-			except:
-				print "NO, NO, NO --- let Bob know about this!"
-				pass   # shouldn't ever happen!
+            libdate = 0
+            try:
+                libdate = os.path.getmtime(this)
+            except:
+                print "NO, NO, NO --- let Bob know about this!"
+                pass   # shouldn't ever happen!
 
-			if libdate < htmldate:
-				print "Skipping:", this
+            if libdate < htmldate:
+                print "Skipping:", this
 
-			else:
-				if htmldate == 0:
-					print "Creating:", htmlfname
-				else:
-					print "Updating:", htmlfname
+            else:
+                if htmldate == 0:
+                    print "Creating:", htmlfname
+                else:
+                    print "Updating:", htmlfname
 
-				err = os.system("mma -Dxh -w -n %s > %s" % (this, htmlout) )
-				if err:
-					print "ERROR Creating %s" % htmlout
-					print "   %s" % err
-					try:
-						os.remove(htmlout)
-					except:
-						pass
-					continue
+                err = os.system("mma -Dxh -w -n %s > %s" % (this, htmlout) )
+                if err:
+                    print "ERROR Creating %s" % htmlout
+                    print "   %s" % err
+                    try:
+                        os.remove(htmlout)
+                    except:
+                        pass
+                    continue
 
-			index.append("<li> <A Href = %s> %s </a> </li>" % (htmlfname, os.path.join(dir, f)))
+            index.append("<li> <A Href = %s> %s </a> </li>" % (htmlfname, os.path.join(dir, f)))
 
-	index.append("</ul>")
+    index.append("</ul>")
 
-	if dir.lower() == "stdlib":
-		index.append('<P><h3>Use the following grooves with a "use" directive.</h3>')
+    if dir.lower() == "stdlib":
+        index.append('<P><h3>Use the following grooves with a "use" directive.</h3>')
 
-	for d in newdirs:
-		dodir(d)
+    for d in newdirs:
+        dodir(d)
 
 ##############################
 
@@ -115,17 +115,17 @@ a = os.listdir(libpath)
 dirs = []
 
 for b in a:
-	if os.path.isdir(libpath + b):
-		dirs.append(b)
+    if os.path.isdir(libpath + b):
+        dirs.append(b)
 dirs.sort()
 
 if dirs.count("stdlib"):
-	dirs.remove("stdlib")
-	dirs.insert(0, "stdlib")
+    dirs.remove("stdlib")
+    dirs.insert(0, "stdlib")
 
 
 for dir in dirs:
-	dodir(dir)
+    dodir(dir)
 
 out = file(os.path.join(docpath, 'index.html'), "w")
 
@@ -179,15 +179,17 @@ information from the each library file:
 
 <LI> The file description from the "Doc Note" directive.
 
+<LI> Any user variables documented in "DocVar" directives.
+
 <LI> Each groove description: This is the optional text following a
   <em>DefGroove</em> directive.
 
-	<UL>
-	<LI> The sequence size. This is extracted from the current groove
+    <UL>
+    <LI> The sequence size. This is extracted from the current groove
   information and was set with the <em>SeqSize</em> directive. It is
   displayed in a small box after the groove description.
 
-	<LI>  A "summary" of the voices used in the groove. Note that a
+    <LI>  A "summary" of the voices used in the groove. Note that a
   different voice or MIDI note is possible for each bar in the
   sequence size; however, this listing only lists the selection for
   the first bar.
@@ -196,8 +198,8 @@ information from the each library file:
 </UL>
 
 <P>If you find that you don't have some of the grooves listed below in your distribution
-	you need to run the program mklibdoc.py to update these docs. Not all style files are
-	distributed in the default MMA distribution.
+    you need to run the program mklibdoc.py to update these docs. Not all style files are
+    distributed in the default MMA distribution.
 
 <HR Size=3pt>
 <CENTER> <H2> Index </H2> </CENTER>
@@ -205,10 +207,10 @@ information from the each library file:
 """)
 
 if links:
-	out.write("<ul>")
-	out.write("\n".join(links))
-	out.write("</ul>")
-	out.write("<HR Size=3pt>")
+    out.write("<ul>")
+    out.write("\n".join(links))
+    out.write("</ul>")
+    out.write("<HR Size=3pt>")
 out.write( "\n".join(index))
 
 out.write("""

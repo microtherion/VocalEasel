@@ -10,6 +10,14 @@ End
 
 Author Bob van der Poel
 
+Begin DocVar
+	  ChordVoice  Voice used in Chord tracks (defaults to Piano2).
+End
+
+If NDef ChordVoice
+   Set ChordVoice Piano2
+Endif
+
 SeqClear
 Time 4		// All these patterns are 4/4
 Timesig 4 4
@@ -68,7 +76,7 @@ Begin Walk
 End
 
 Begin Chord
-	Voice Piano2
+	Voice $ChordVoice
 	Volume mp
 	Articulate 110 110 80 70
 	Octave 5
@@ -84,10 +92,10 @@ Begin Arpeggio
 	Voice      Clarinet
 	Sequence   {A4 Shift .5; A2} A8 A4 {A2 Shift .5}
     SeqRnd     On
-	Harmony    Open
+	Harmony    OpenAbove
 	Articulate 80
 	Octave     5
-	Range      2
+	Range      1.8
 	Direction  Up
 	Rskip      50
 	Volume     p
