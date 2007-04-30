@@ -1,0 +1,3 @@
+#!/bin/sh
+
+rsync -Cavz --delete-excluded --rsh=ssh htdocs shell.vocaleasel.sf.net:/home/groups/v/vo/vocaleasel
