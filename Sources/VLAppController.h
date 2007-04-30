@@ -19,6 +19,7 @@
 
 - (IBAction) playNewPitch:(id)sender;
 - (IBAction) selectLilypondPath:(id)sender;
+- (IBAction) goToHelpPage:(id)sender;							 
 - (IBAction) goToHelpURL:(id)sender;							 
 
 @end

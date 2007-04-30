@@ -12,6 +12,8 @@
 #import "VLPitchTransformer.h"
 #import "VLSoundOut.h"
 
+#import <Carbon/Carbon.h>
+
 @implementation VLAppController
 
 + (void)setupDefaults
@@ -281,6 +283,21 @@
 	}
 }
 
+- (IBAction) goToHelpPage:(id)sender
+{
+	NSString * helpString;
+
+	switch ([sender tag]) {
+	case 0:
+		helpString	= @"license.html";
+		break;
+	}
+	NSString *locBookName = 
+		[[NSBundle mainBundle] 
+			objectForInfoDictionaryKey: @"CFBundleHelpBookName"];
+	AHGotoPage(CFStringRef(locBookName), CFStringRef(helpString), NULL);
+}
+						   
 - (IBAction) goToHelpURL:(id)sender
 {
 	NSString * helpString;
