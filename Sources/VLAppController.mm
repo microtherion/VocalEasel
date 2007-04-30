@@ -281,4 +281,22 @@
 	}
 }
 
+- (IBAction) goToHelpURL:(id)sender
+{
+	NSString * helpString;
+
+	switch ([sender tag]) {
+	case 0:
+		helpString	= @"http://vocaleasel.sf.net";
+		break;
+	case 1:
+		helpString	= @"http://sourceforge.net/tracker/?func=add&group_id=195076&atid=951989";
+		break;
+	case 2:
+		helpString = @"http://sourceforge.net/tracker/?func=add&group_id=195076&atid=951992";
+		break;
+	}
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:helpString]];
+}
+						   
 @end

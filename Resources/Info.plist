@@ -27,10 +27,11 @@
 			<string>VLDocument</string>
 			<key>NSExportableAs</key>
 			<array>
-				<string>VLLilypondType</string>
-				<string>VLMusicXMLType</string>
-				<string>VLMMAType</string>
+				<string>VLPDFType</string>
 				<string>VLMIDIType</string>
+				<string>VLMusicXMLType</string>
+				<string>VLLilypondType</string>
+				<string>VLMMAType</string>
 			</array>
 			<key>NSPersistentStoreTypeKey</key>
 			<string>XML</string>
@@ -140,5 +141,9 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-</dict>
+	<key>CFBundleHelpBookFolder</key>
+	<string>Help</string>
+	<key>CFBundleHelpBookName</key>
+	<string>VocalEasel Help</string>
+	</dict>
 </plist>

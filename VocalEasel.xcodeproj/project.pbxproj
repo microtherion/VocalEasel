@@ -24,6 +24,7 @@
 		95049CF30BDC32EB0015EE6E /* installLilypond.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 95049CF20BDC32CD0015EE6E /* installLilypond.scpt */; };
 		95049D020BDC436A0015EE6E /* installPython.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 95049D010BDC43510015EE6E /* installPython.scpt */; };
 		950795E10B4A34D9008911A6 /* stop.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 950795E00B4A34D9008911A6 /* stop.tiff */; };
+		9524DAFB0BE569C50002AC03 /* Help in Resources */ = {isa = PBXBuildFile; fileRef = 9524DAF70BE569C50002AC03 /* Help */; };
 		952CBB9C095FD1CA00434E43 /* VLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */; };
 		952CBB9D095FD1CA00434E43 /* VLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */; };
 		952CBB9F095FD1D900434E43 /* TVLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9E095FD1D900434E43 /* TVLSoundOut.cpp */; };
@@ -148,6 +149,7 @@
 		95049CF20BDC32CD0015EE6E /* installLilypond.scpt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.scpt; name = installLilypond.scpt; path = Resources/installLilypond.scpt; sourceTree = "<group>"; };
 		95049D010BDC43510015EE6E /* installPython.scpt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.scpt; name = installPython.scpt; path = Resources/installPython.scpt; sourceTree = "<group>"; };
 		950795E00B4A34D9008911A6 /* stop.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = stop.tiff; path = Resources/stop.tiff; sourceTree = "<group>"; };
+		9524DAF70BE569C50002AC03 /* Help */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Help; path = Resources/Help; sourceTree = "<group>"; };
 		952CBB98095FD19D00434E43 /* TVLSoundOut */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLSoundOut; sourceTree = BUILT_PRODUCTS_DIR; };
 		952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = VLSoundOut.cpp; path = Sources/VLSoundOut.cpp; sourceTree = "<group>"; };
 		952CBB9B095FD1CA00434E43 /* VLSoundOut.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSoundOut.h; path = Sources/VLSoundOut.h; sourceTree = "<group>"; };
@@ -389,6 +391,7 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9524DAF70BE569C50002AC03 /* Help */,
 				95049CF20BDC32CD0015EE6E /* installLilypond.scpt */,
 				95049D010BDC43510015EE6E /* installPython.scpt */,
 				954DD4DF0B44E61E0056C504 /* VLDocument.nib */,
@@ -611,6 +614,7 @@
 				950795E10B4A34D9008911A6 /* stop.tiff in Resources */,
 				9599ED960B73185800A6A2F7 /* VLGroove.nib in Resources */,
 				9530A7020BD9E16700635FEC /* display.tiff in Resources */,
+				9524DAFB0BE569C50002AC03 /* Help in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

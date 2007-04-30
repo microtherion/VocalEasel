@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>VocalEasel: Entering Music</title>
+</head>
+
+<body>
+<h1>Entering Music</h1>
+
+<h2>Song Setup</h2>
+
+Start by entering some information applying to the entire song:
+
+<ul type="circle">
+  <li>Enter the <i>title</i>, <i>composer</i>, and, if applicable, the <i>lyricist</i> of the song in the appropriate text fields.</li>
+  <li>Choose the <i>key</i> of your song from the popup menu. Major and minor keys are ordered by the number of accidentals (flats or sharps) in the key. Generally, jazz musicians will prefer flats to sharps, and a small number of accidentals, in key signatures of lead sheets.</li>
+  <li>Choose the <i>meter</i> of your song. <b>Right now, only 4/4 is supported</b></li>
+  <li>Choose the <i>subdivisions</i> of your song. Generally, you should choose
+  3 (swing 8ths) for swing tunes and 2 (straight 8ths) for latin tunes.</li>
+  <li>The <i>tempo</i> and <i>groove</i> settings are only used when
+  <a href="play.html">playing</a> the song.
+</ul>
+
+<h2>Entering Chords</h2>
+
+Now you're ready to enter the harmonic structure of the song:
+
+<ul type="circle">
+  <li>Click in the light blue region above one of the musical systems. A text field will appear in the upper right corner of the window.</li>
+  <li>Enter the name of your chord, e.g.
+  <ul type="disc">
+    <li>"d" or "D" (capitalization is ignored) for a D major chord.</li>
+    <li>"dm" for a D minor chord.</li>
+    <li>"dm7" for a D minor chord with added dominant 7th.</li>
+    <li>"dmaj7" for a D major chord with added major 7th.</li>
+    <li>"dm7b5" for a half diminished chord.</li>
+    <li>"d7#5" for a D major chord with a dominant 7th and an augmented 5th.</li>
+  </ul></li>
+  <li>Use the TAB key to advance by a quarter note, Shift-TAB to go back by a quarter note.</li>
+  </li>
+</ul>
+
+<h2>Entering the Melody</h2>
+
+Next, enter the melody:
+
+<ul type="circle">
+  <li>Click to place a note.
+  <ul type="disc">
+    <li>Each vertical gray line in a measure represents
+    one subdivision of a quarter note (an 8th if you selected 2
+    subdivisions, and an 8th triplet if you selected 3 subdivisions).</li>
+    <li>To place swing 8ths, click on the first and third subdivision of
+    a group of 3. The middle subdivision is only used in triplets.</li>
+  </ul></li>
+  <li>By default, the pitch of a note is determined by the key signature,
+  i.e., if the key signature is F major and you click on the middle line of
+  the system, you get a B flat. To change this:
+  <ul>
+    <li>Hold down the option (alt) key while clicking to add a flat to the note.</li>
+    <li>Hold down the command (apple) key to add a sharp.</li>
+    <li>Hold down both option and command to cancel a flat or a sharp in the
+    key signature.</li>
+  </ul>
+  with these modifiers, clicking on the middle line of the system in F major
+  results in a pitch of B flat, C (B sharp), and B natural, respectively.</li>
+  <li>To specify a rest, press the 'R' key before clicking.</li>
+  <li>To delete a note or a rest, press the 'K' key before clicking. If the
+  first note in a measure is deleted, it is replaced with a rest. If any other
+  note or rest is deleted, the previous note or rest is extended.</li>
+  <li>To extend the duration of a note across the next note or measure, hold
+  down the shift key while clicking the note.</li>
+  <li>By default, you can enter notes as low as the A below middle C and as
+  high as the high C. To change that range, click the <i>Display</i> icon at
+  the top right to change the number of top or bottom ledger lines.</li>
+</ul>
+
+<h2>Entering Lyrics</h2>
+
+Finally, you may choose to enter lyrics:
+
+<ul>
+  <li>Click below a note in the light blue region below the musical system.
+  A text field will appear in the upper right corner of the window.</li>
+  <li>Enter one or several words of lyrics.</li>
+  <li>To separate syllables, use dashes (e.g. "em-brace-a-ble")</li>
+  <li>To place two words on the same note, use an underscore ("and_a").</li>
+  <li>Use the TAB key to advance to the next note, Shift-TAB to retreat to the preceding note.</li>
+  <li>By default, you can enter two lines of lyrics. To change that, click the
+  <i>Display</i> icon at the top right to change the number of lyrics lines.</li>
+</ul>
+
+<h2>Editing the Song</h2>
+
+<ul>
+  <li>Click on a bar line to select an insertion point.</li>
+  <li>Click on a bar line and drag to select one or several measures.</li>
+  <li>Use the <i>Cut</i>, <i>Copy</i>, <i>Paste</i>, or <i>Delete</i> menu
+  items to manipulate the selection.</li>
+</ul>
+
+<h2>Repeats / Coda</h2>
+
+<ul>
+  <li>To repeat a section of the song, select it and use the <i>Repeats&rarr;Repeat...</i> menu item to specify the number of repeats.</li>
+  <li>To specify alternate endings, select measures at the end of a repeat and
+  use <i>Repeats&rarr;Endings...</i> to specify when to use the endings.</li>
+ <li>To specify a coda the last time through a song, select a bar line and use
+  <i>Repeats&rarr;Jump to Coda</i> to specify where the jump to the coda
+  occurs and then select another bar line and use <i>Repeats&rarr;Start
+  Coda</i> to specify where the coda starts.</li>  
+</ul>
+
+</body>
+</html>

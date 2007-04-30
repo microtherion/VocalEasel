@@ -19,7 +19,8 @@
 
 - (IBAction) playNewPitch:(id)sender;
 - (IBAction) selectLilypondPath:(id)sender;
-							 
+- (IBAction) goToHelpURL:(id)sender;							 
+
 @end
 
 // Local Variables:
