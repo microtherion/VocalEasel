@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -l
 
 cd ${0%/*/*}/share/mma
 exec ${0%/*}/mma.py $*
