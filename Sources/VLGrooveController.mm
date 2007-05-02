@@ -21,7 +21,7 @@
 		[[NSBundle mainBundle] pathForResource:@"Grooves" ofType:@"plist"]];
 	fSubStyleFilter	= 
 		[[NSPredicate predicateWithFormat:
-			@"!(SELF like[c] '.DESC') AND !(SELF matches[c] '.*(Intro|End)\\\\d*$')"]
+			@"!(SELF matches[c] '.*(Intro|End)\\\\d*$')"]
 			retain];
 	fDocument	= [view document];
 
@@ -78,7 +78,7 @@
 	[fSubStyleList release];
 	fStyle	 		= [[[fBrowser selectedCellInColumn:0] stringValue] retain];
 	fSubStyles		= [fGrooves objectForKey:fStyle];	
-	fSubStyleList	= [[[fSubStyles allKeys]
+	fSubStyleList	= [[[fSubStyles objectForKey:@".ORDER"]
 						   filteredArrayUsingPredicate:fSubStyleFilter]
 						  retain];
 }

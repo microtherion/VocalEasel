@@ -16,6 +16,7 @@ Find.find(ARGV[0]) do |f|
   elsif f =~ %r|.*/(\S+?).mma$|
     style = $1
     g     = {}
+    o     = []
     doc   = ""
     groove= ""
     File.open(f) do |file|
@@ -33,6 +34,7 @@ Find.find(ARGV[0]) do |f|
         elsif line =~ /^\s*DefGroove\s+(\S+)\s+(.+?)\s*$/
           groove = $1
           gdoc   = $2
+	  o.push(groove)
           if gdoc =~ /(.*?)\s+\\\s*$/
             gdoc   = $1
             inCont = true
@@ -49,7 +51,8 @@ Find.find(ARGV[0]) do |f|
       end
     end
     unless g.empty?
-      g[".DESC"] = doc.lstrip
+      g[".DESC"]    = doc.lstrip
+      g[".ORDER"] = o
       grooves[style] = g
     end
   end		
@@ -73,7 +76,15 @@ grooves.each do |style,grooves|
   OUT.puts "\t<dict>"
   grooves.each do |name,desc|
     OUT.puts "\t\t<key>#{xmlesc(name)}</key>"
-    OUT.puts "\t\t<string>#{xmlesc(desc)}</string>"
+    if name == ".ORDER"
+      OUT.puts "\t\t<array>"
+      desc.each do |name| 
+        OUT.puts "\t\t\t<string>#{xmlesc(name)}</string>"
+      end
+      OUT.puts "\t\t</array>"
+    else
+      OUT.puts "\t\t<string>#{xmlesc(desc)}</string>"
+    end
   end
   OUT.puts "\t</dict>"
 end
