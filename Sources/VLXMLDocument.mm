@@ -308,7 +308,8 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 	[melody addAttribute: [NSXMLNode attributeWithName:@"id"
 										   stringValue:@"MELO"]];
 
-	for (int measure = 0; measure < song->CountMeasures(); ++measure) {
+	size_t endMeasure = song->CountMeasures()-song->EmptyEnding();
+	for (int measure = 0; measure < endMeasure; ++measure) {
 		NSXMLElement * melMeas = [NSXMLNode elementWithName:@"measure"];
 		[melMeas addAttribute: 
 					 [NSXMLNode attributeWithName:@"number"
@@ -600,18 +601,6 @@ int8_t sStepToPitch[] = {
 		VLFraction		at(0);
 		int				m = [[[measure attributeForName:@"number"]
 								 stringValue] intValue]-1;
-
-		if (m >= song->CountMeasures()) {
-			size_t oldSz = song->fMeasures.size();
-			song->fMeasures.resize(m+1);
-			VLLyricsNote 	rest = VLLyricsNote(VLRest(prop.fTime));
-			VLChord 		rchord;
-			rchord.fDuration = prop.fTime;
-			for (size_t i=oldSz; i<=m; ++i) {
-				song->fMeasures[i].fChords.push_back(rchord);
-				song->fMeasures[i].fMelody.push_back(rest);
-			}
-		}
 
 		[self readBarlines:[measure elementsForName:@"barline"] measure:m
 			  repeat:&repeat inRepeat:&inRepeat error:outError];

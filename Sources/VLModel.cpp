@@ -818,6 +818,19 @@ void VLMeasure::MMAChords(std::string & chords, const VLProperties & prop,
   }
 }
 
+bool VLMeasure::IsEmpty() const
+{
+	return fChords.size() == 1 && fMelody.size() == 1
+		&& fChords.front().fPitch == VLNote::kNoPitch
+		&& fMelody.front().fPitch == VLNote::kNoPitch;
+}
+
+bool VLMeasure::NoChords() const
+{
+	return fChords.size() == 1 
+		&& fChords.front().fPitch == VLNote::kNoPitch;
+}
+
 VLSong::VLSong(bool initialize)
 {
 	if (!initialize)
@@ -827,19 +840,25 @@ VLSong::VLSong(bool initialize)
 	VLProperties 		defaultProperties = {fourFour, 0, 1, 3};
 	
 	fProperties.push_back(defaultProperties);
-	fMeasures.resize(32); // Leadin, AABA
-	
-	VLLyricsNote 	rest = VLLyricsNote(VLRest(1));
-	VLChord 		rchord;
-	rchord.fDuration = 1;
-	
-	for (int i=0; i<32; ++i) {
-		fMeasures[i].fChords.push_back(rchord);
-		fMeasures[i].fMelody.push_back(rest);
-	}
+
+	AddMeasure();
 
 	fGoToCoda	= -1;
 	fCoda		= -1;
+}
+
+void VLSong::AddMeasure()
+{
+	VLFraction		dur  = fProperties[0].fTime;
+	VLLyricsNote 	rest = VLLyricsNote(VLRest(dur));
+	VLChord 		rchord;
+	rchord.fDuration = dur;
+	VLMeasure meas;
+	
+	meas.fChords.push_back(rchord);
+	meas.fMelody.push_back(rest);
+
+	fMeasures.push_back(meas);
 }
 
 void VLSong::swap(VLSong & other)
@@ -866,6 +885,12 @@ void VLSong::clear()
 //
 void VLSong::AddChord(VLChord chord, size_t measure, VLFraction at)
 {
+	//	
+	// Always keep an empty measure in reserve
+	//
+	while (measure+1 >= fMeasures.size())
+		AddMeasure();
+
 	VLChordList::iterator i = fMeasures[measure].fChords.begin();
 	VLFraction			  t(0);
 
@@ -925,6 +950,11 @@ void VLSong::DelChord(size_t measure, VLFraction at)
 		t = tEnd;
 		++i;
 	}
+	//
+	// Trim excess empty measures
+	//
+	if (measure == fMeasures.size()-2 && fMeasures[measure].IsEmpty())
+		fMeasures.pop_back();
 }
 
 uint8_t & FirstTie(VLMeasure & measure)
@@ -945,6 +975,12 @@ uint8_t & LastTie(VLMeasure & measure)
 //
 void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
 {
+	//	
+	// Always keep an empty measure in reserve
+	//
+	while (measure+1 >= fMeasures.size())
+		AddMeasure();
+
 	VLNoteList::iterator	i = fMeasures[measure].fMelody.begin();
 	VLFraction			  	t(0);
 
@@ -1031,6 +1067,11 @@ void VLSong::DelNote(size_t measure, VLFraction at)
 		t = tEnd;
 		++i;
 	}
+	//
+	// Trim excess empty measures
+	//
+	if (measure == fMeasures.size()-2 && fMeasures[measure].IsEmpty())
+		fMeasures.pop_back();
 }
 
 void VLSong::ExtendNote(size_t measure, VLFraction at)
@@ -1159,7 +1200,17 @@ void VLSong::Transpose(int semi)
 	}
 }
 
-size_t  VLSong::CountStanzas() const
+size_t VLSong::EmptyEnding() const
+{
+	size_t full = fMeasures.size();
+
+	while (full-- && fMeasures[full].IsEmpty())
+		;
+
+	return fMeasures.size()-(full+1);
+}
+
+size_t VLSong::CountStanzas() const
 {
 	size_t stanzas = 0;
 
@@ -1233,6 +1284,7 @@ void VLSong::LilypondNotes(std::string & notes) const
 	std::string indent 		= "";
 	size_t		seenEnding 	= 0;
 	int			numEndings	= 0;
+	size_t		endMeasure  = fMeasures.size()-EmptyEnding();
 	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
 		VLNoteList::const_iterator i 	= fMeasures[measure].fMelody.begin();
 		VLNoteList::const_iterator e 	= fMeasures[measure].fMelody.end();
@@ -1850,7 +1902,7 @@ bool VLSong::DoesEndEnding(size_t measure, bool * repeat, size_t * volta) const
 VLSong::iterator::iterator(const VLSong & song, bool end)
 	: fSong(song)
 {
-	fMeasure	= end ? fSong.CountMeasures() : 0;
+	fMeasure	= end ? fSong.CountMeasures()-fSong.EmptyEnding() : 0;
 	AdjustStatus();
 }
 

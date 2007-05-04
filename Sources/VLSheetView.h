@@ -65,6 +65,7 @@ enum VLRecalc {
 	char				fClickMode;
 	float				fClefKeyW;
 	float				fMeasureW;
+	size_t				fLastMeasures;
 	int 				fGroups; 
 	int 				fQuarterBeats;
 	int 				fDivPerGroup;

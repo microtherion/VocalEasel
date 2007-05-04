@@ -247,6 +247,9 @@ struct VLMeasure {
 
 	void MMANotes(std::string & notes, const VLProperties & prop, VLFraction extra) const;
 	void MMAChords(std::string & chords, const VLProperties & prop, bool initial) const;
+
+	bool IsEmpty() const;
+	bool NoChords() const;
 };
 
 struct VLRepeat {
@@ -350,6 +353,7 @@ struct VLSong {
 	void	DeleteMeasures(size_t beginMeasure, size_t endMeasure);
 
 	size_t	CountMeasures() const { return fMeasures.size(); }
+	size_t	EmptyEnding() const;
 	size_t  CountStanzas() const;
 	size_t	CountTopLedgers() const;
 	size_t	CountBotLedgers() const;
@@ -357,6 +361,8 @@ struct VLSong {
 	void	LilypondChords(std::string & chords) const;
 	void 	LilypondStanza(std::string & lyrics, size_t stanza) const;
 	VLFract TiedDuration(size_t measure);
+private:
+	void	AddMeasure();
 };
 
 // Local Variables:

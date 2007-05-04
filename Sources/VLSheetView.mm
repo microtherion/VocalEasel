@@ -96,6 +96,7 @@ static float sFlatPos[] = {
 		fNumTopLedgers 		= 0;
 		fNumBotLedgers 		= 2;
 		fNumStanzas    		= 2;
+		fLastMeasures		= 0;
 	}
     return self;
 }
@@ -272,7 +273,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	fClefKeyW		= kClefX+kClefW+(std::labs(prop.fKey)+1)*kKeyW;
 	fMeasureW		= fGroups*(fDivPerGroup+1)*kNoteW;
 	fMeasPerSystem	= std::max<int>(1, std::floor((sz.width-fClefKeyW) / fDisplayScale / fMeasureW));
-	fNumSystems 	= (song->CountMeasures()+fMeasPerSystem-1)/fMeasPerSystem;
+	fNumSystems 	= std::max(2lu, (song->CountMeasures()+fMeasPerSystem-1)/fMeasPerSystem);
 	sz.height		= fNumSystems*kSystemH;
 
 	NSSize boundsSz	= {sz.width / fDisplayScale, sz.height / fDisplayScale};
@@ -289,6 +290,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 			NSMakePoint(0.0, NSMaxY([dv frame])-NSHeight([cv bounds]))];
 	}
 
+	fLastMeasures	= song->CountMeasures();
 	fNeedsRecalc	= kNoRecalc;	
 }
 
@@ -518,7 +520,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 
 - (void)drawRect:(NSRect)rect
 {
-	if (fNeedsRecalc || [self inLiveResize]) {
+	if (fNeedsRecalc || [self inLiveResize] || [self song]->CountMeasures() != fLastMeasures) {
 		[self recalculateDimensions];
 		rect = [self bounds];
 	}
