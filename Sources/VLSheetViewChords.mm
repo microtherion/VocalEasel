@@ -120,7 +120,9 @@ std::string NormalizeName(NSString* rawName)
 {
 	std::string	chordName	= NormalizeName(val);
 	if (!chordName.size()) {
+		[[fView document] willChangeSong];
 		fSong->DelChord(fMeasure, fAt);
+		[[fView document] didChangeSong];
 	} else {
 		VLChord 	chord(chordName);
 		VLSoundOut::Instance()->PlayChord(chord);
