@@ -159,7 +159,7 @@ void VLNote::Name(std::string & name, bool useSharps) const
 	name = PitchName(fPitch, useSharps);
 }
 
-void VLNote::LilypondName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, bool & triplet, const VLProperties & prop) const
+void VLNote::LilypondName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, bool & triplet, bool & pickup, const VLProperties & prop) const
 {
 	std::string n = LilypondPitchName(fPitch, prop.fKey >= 0);
 	if (fPitch != kNoPitch) {
@@ -167,6 +167,9 @@ void VLNote::LilypondName(std::string & name, VLFraction at, VLFraction prevDur,
 			n += '\'';
 		for (int commas = (kMiddleC-kOctave-fPitch)/kOctave; commas>0; --commas)
 			n += ',';
+		pickup = false;
+	} else if (pickup) {
+		n = "s";
 	}
 
 	std::vector<std::string> 	durations;
@@ -1285,6 +1288,7 @@ void VLSong::LilypondNotes(std::string & notes) const
 	size_t		seenEnding 	= 0;
 	int			numEndings	= 0;
 	size_t		endMeasure  = fMeasures.size()-EmptyEnding();
+	bool		pickup		= fMeasures[0].NoChords();
 	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
 		VLNoteList::const_iterator i 	= fMeasures[measure].fMelody.begin();
 		VLNoteList::const_iterator e 	= fMeasures[measure].fMelody.end();
@@ -1336,7 +1340,7 @@ void VLSong::LilypondNotes(std::string & notes) const
 			VLFraction nextDur(0);
 			if (++n != e)
 				nextDur = n->fDuration;
-			i->LilypondName(note, at, prevDur, nextDur, triplet, fProperties[fMeasures[measure].fPropIdx]);
+			i->LilypondName(note, at, prevDur, nextDur, triplet, pickup, fProperties[fMeasures[measure].fPropIdx]);
 			prevDur	= i->fDuration;
 			at 	   += i->fDuration;
 			notes  += note+" ";
@@ -1354,7 +1358,7 @@ void VLSong::LilypondNotes(std::string & notes) const
 		//
 		while ((trip = notes.find("} ~")) != std::string::npos)
 			notes.replace(trip, 3, "~ } ", 4);
-
+			
 		if (fGoToCoda == measure+1)
 			notes += "\n"
 				+ indent 

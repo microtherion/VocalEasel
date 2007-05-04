@@ -140,7 +140,7 @@ struct VLNote {
 	VLNote(std::string name);
 
 	void Name(std::string & name, bool useSharps = false) const;
-	void LilypondName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, bool & triplet, const VLProperties & prop) const;
+	void LilypondName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, bool & triplet, bool & pickup, const VLProperties & prop) const;
 	void MMAName(std::string & name, VLFraction at, VLFraction dur, VLFraction prevDur, VLFraction nextDur, const VLProperties & prop) const;
 };
 
