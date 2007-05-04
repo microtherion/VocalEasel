@@ -1349,6 +1349,11 @@ void VLSong::LilypondNotes(std::string & notes) const
 			notes.erase(trip, 15);
 		while ((trip = notes.find("} ~ \\times 2/3 { ")) != std::string::npos)
 			notes.replace(trip, 17, "~ ", 2);
+		// 
+		// Swap ties into correct order
+		//
+		while ((trip = notes.find("} ~")) != std::string::npos)
+			notes.replace(trip, 3, "~ } ", 4);
 
 		if (fGoToCoda == measure+1)
 			notes += "\n"
