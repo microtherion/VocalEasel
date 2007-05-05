@@ -851,7 +851,8 @@ static int8_t sSharpAcc[] = {
 	if (fCursorRegion != kRegionMeasure)
 		[super mouseDragged:event];
 	[self autoscroll:event];
-	[self adjustSelection:event];
+	if (fCursorRegion == kRegionMeasure)
+		[self adjustSelection:event];
 }
 
 - (void) keyDown:(NSEvent *)event
