@@ -87,6 +87,9 @@ std::string NormalizeName(NSString* rawName)
 
 - (NSString *) stringValue
 {
+	if (fMeasure >= fSong->CountMeasures())
+		return @"";
+
 	const VLMeasure		measure = fSong->fMeasures[fMeasure];
 	const VLChordList &	chords	= measure.fChords;
 	VLFraction at(0);

@@ -1499,7 +1499,7 @@ std::string VLSong::GetWord(size_t stanza, size_t measure, VLFraction at)
 {
 	std::string word;
 
-	do {
+	while (measure < fMeasures.size()) {
 		VLMeasure & 			meas	= fMeasures[measure];
 		VLNoteList::iterator 	note 	= meas.fMelody.begin();
 		VLNoteList::iterator 	end  	= meas.fMelody.end();
@@ -1519,13 +1519,20 @@ std::string VLSong::GetWord(size_t stanza, size_t measure, VLFraction at)
 			++note;
 		}	
 		at = 0;
-	} while (++measure < fMeasures.size());
+		++measure;
+	} 
 	
 	return word;
 }
 
 void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string word, size_t * nextMeas, VLFract * nextAt)
 {
+	//	
+	// Always keep an empty measure in reserve
+	//
+	while (measure+1 >= fMeasures.size())
+		AddMeasure();
+
 	uint8_t	kind = 0;
 	bool	cleanup = false;
 
