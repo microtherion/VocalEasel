@@ -204,16 +204,10 @@
 - (void) setKey:(int)key transpose:(BOOL)transpose
 {
 	[self willChangeSong];
-
-	VLProperties & prop = song->fProperties.front();
-
-	if (transpose) 
-		song->Transpose((7*((key>>8)-prop.fKey) % 12));
-
-	prop.fKey = key >> 8;
-	prop.fMode= key & 0xFF;
-
-	[self updateChangeCount:NSChangeDone];
+	[self willChangeValueForKey:@"songKey"];
+	song->ChangeKey(key>>8, key & 0xFF, transpose);
+	[self didChangeValueForKey:@"songKey"];
+	[self didChangeSong];
 }
 
 - (NSNumber *)  songTime
@@ -226,12 +220,10 @@
 - (void) setTimeNum:(int)num denom:(int)denom
 {
 	[self willChangeSong];
-
-	VLProperties & prop = song->fProperties.front();
-
-	prop.fTime = VLFraction(num, denom);
-
-	[self updateChangeCount:NSChangeDone];
+	[self willChangeValueForKey:@"songTime"];
+	song->ChangeTime(VLFraction(num, denom));
+	[self didChangeValueForKey:@"songTime"];
+	[self didChangeSong];
 }
 
 - (NSNumber *) songDivisions
@@ -244,12 +236,11 @@
 - (void) setDivisions:(int)divisions
 {
 	[self willChangeSong];
-
-	VLProperties & prop = song->fProperties.front();
-
-	prop.fDivisions	= divisions;
-
-	[self updateChangeCount:NSChangeDone];
+	[self willChangeValueForKey:@"songDivisions"];
+	[self willChangeSong];
+	song->ChangeDivisions(divisions);
+	[self didChangeValueForKey:@"songDivisions"];
+	[self didChangeSong];
 }
 
 - (int) repeatVolta

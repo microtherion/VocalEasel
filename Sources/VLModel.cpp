@@ -852,7 +852,7 @@ VLSong::VLSong(bool initialize)
 
 void VLSong::AddMeasure()
 {
-	VLFraction		dur  = fProperties[0].fTime;
+	VLFraction		dur  = fProperties.front().fTime;
 	VLLyricsNote 	rest = VLLyricsNote(VLRest(dur));
 	VLChord 		rchord;
 	rchord.fDuration = dur;
@@ -1131,22 +1131,6 @@ void VLSong::ExtendNote(size_t measure, VLFraction at)
 	} 
 }
 
-static void TransposePinned(int8_t & pitch, int semi)
-{
-	if (pitch == VLNote::kNoPitch)
-		return;
-
-	int pitchInOctave = pitch % 12;
-	int octave		  = pitch-pitchInOctave;
-	pitchInOctave	 += semi;
-	if (pitchInOctave < 0)
-		pitch		  = octave+pitchInOctave+12;
-	else if (pitchInOctave > 11)
-		pitch		  = octave+pitchInOctave-12;
-	else
-		pitch 		  = octave+pitchInOctave;
-}
-
 bool VLSong::IsNonEmpty() const
 {
 	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
@@ -1168,8 +1152,31 @@ bool VLSong::IsNonEmpty() const
 	return false;
 }
 
-void VLSong::Transpose(int semi)
+static void TransposePinned(int8_t & pitch, int semi)
 {
+	if (pitch == VLNote::kNoPitch)
+		return;
+
+	int pitchInOctave = pitch % 12;
+	int octave		  = pitch-pitchInOctave;
+	pitchInOctave	 += semi;
+	if (pitchInOctave < 0)
+		pitch		  = octave+pitchInOctave+12;
+	else if (pitchInOctave > 11)
+		pitch		  = octave+pitchInOctave-12;
+	else
+		pitch 		  = octave+pitchInOctave;
+}
+
+void VLSong::ChangeKey(int newKey, bool newMode, bool transpose)
+{
+	VLProperties & prop = fProperties.front();
+	int semi 	= 7*(newKey-prop.fKey) % 12;
+	prop.fKey 	= newKey;
+	prop.fMode	= newMode;	
+	if (!transpose)
+		return;
+
 	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
 		VLChordList::iterator i = fMeasures[measure].fChords.begin();
 		VLChordList::iterator e = fMeasures[measure].fChords.end();
@@ -1201,6 +1208,192 @@ void VLSong::Transpose(int semi)
 		else
 			break;			// Looks like we're done
 	}
+}
+
+//
+// We try a table based approach for converting the beginning and end of
+// notes
+//
+
+static const uint8_t sDiv2_3[] = {0, 2};
+static const uint8_t sDiv2_4[] = {0, 2};
+static const uint8_t sDiv2_6[] = {0, 3};
+static const uint8_t sDiv2_8[] = {0, 4};
+static const uint8_t sDiv2_12[]= {0, 6};
+static const uint8_t * sDiv2[] = {
+	          NULL,     sDiv2_3,  sDiv2_4,  NULL,     sDiv2_6,  
+	NULL,     sDiv2_8,  NULL,     NULL,     NULL,     sDiv2_12};
+
+static const uint8_t sDiv3_2[] = {0, 1, 1};
+static const uint8_t sDiv3_4[] = {0, 2, 3};
+static const uint8_t sDiv3_6[] = {0, 2, 4};
+static const uint8_t sDiv3_8[] = {0, 3, 6};
+static const uint8_t sDiv3_12[]= {0, 4, 8};
+static const uint8_t * sDiv3[] = {
+	          sDiv3_2,  NULL,     sDiv3_4,  NULL,     sDiv3_6,  
+	NULL,     sDiv3_8,  NULL,     NULL,     NULL,     sDiv3_12};
+	   
+static const uint8_t sDiv4_2[] = {0, 0, 1, 1};
+static const uint8_t sDiv4_3[] = {0, 1, 2, 2};
+static const uint8_t sDiv4_6[] = {0, 2, 3, 5};
+static const uint8_t sDiv4_8[] = {0, 2, 4, 6};
+static const uint8_t sDiv4_12[]= {0, 3, 6, 9};
+static const uint8_t * sDiv4[] = {
+	          sDiv4_2,  sDiv4_3,  NULL,     NULL,     sDiv4_6,  
+	NULL,     sDiv4_8,  NULL,     NULL,     NULL,     sDiv4_12};
+
+static const uint8_t sDiv6_2[] = {0, 0, 0, 1, 1, 1};
+static const uint8_t sDiv6_3[] = {0, 0, 1, 1, 2, 2};
+static const uint8_t sDiv6_4[] = {0, 1, 2, 2, 3, 3};
+static const uint8_t sDiv6_8[] = {0, 2, 3, 4, 6, 7};
+static const uint8_t sDiv6_12[]= {0, 2, 4, 6, 8,10};
+static const uint8_t * sDiv6[] = {
+	          sDiv6_2,  sDiv6_3,  sDiv6_4,  NULL,     NULL,  
+	NULL,     sDiv6_8,  NULL,     NULL,     NULL,     sDiv6_12};
+
+static const uint8_t sDiv8_2[] = {0, 0, 0, 0, 1, 1, 1, 1};
+static const uint8_t sDiv8_3[] = {0, 0, 1, 1, 1, 2, 2, 2};
+static const uint8_t sDiv8_4[] = {0, 0, 1, 1, 2, 2, 3, 3};
+static const uint8_t sDiv8_6[] = {0, 1, 2, 2, 3, 4, 5, 5};
+static const uint8_t sDiv8_12[]= {0, 2, 3, 5, 6, 8, 9,11};
+static const uint8_t * sDiv8[] = {
+	          sDiv8_2,  sDiv8_3,  sDiv8_4,  NULL,     sDiv8_6,  
+	NULL,     NULL,     NULL,     NULL,     NULL,     sDiv8_12};
+
+static const uint8_t sDiv12_2[]= {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1};
+static const uint8_t sDiv12_3[]= {0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2};
+static const uint8_t sDiv12_4[]= {0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3};
+static const uint8_t sDiv12_6[]= {0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
+static const uint8_t sDiv12_8[]= {0, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 7};
+static const uint8_t * sDiv12[]= {
+	          sDiv12_2, sDiv12_3, sDiv12_4, NULL,     sDiv12_6,  
+	NULL,     sDiv12_8, NULL,     NULL,     NULL,     NULL};
+
+static const uint8_t ** sDiv[]  = {
+	        sDiv2,  sDiv3,  sDiv4,  NULL,   sDiv6,
+	NULL,   sDiv8,  NULL,   NULL,   NULL,   sDiv12};
+
+class VLRealigner {
+public:
+	VLRealigner(int oldDiv, int newDiv);
+
+	VLFraction operator()(VLFraction at);
+private:
+	VLFraction		fOldFrac;
+	VLFraction  	fNewFrac;
+	const uint8_t *	fTable;
+};
+
+VLRealigner::VLRealigner(int oldDiv, int newDiv)
+	: fOldFrac(1, 4*oldDiv), fNewFrac(1, 4*newDiv), 
+	  fTable(sDiv[oldDiv-2][newDiv-2])
+{
+}
+
+VLFraction VLRealigner::operator()(VLFraction at)
+{
+	VLFraction quarters(4*at.fNum / at.fDenom, 4);
+	at   = (at-quarters) / fOldFrac;
+	
+	return quarters + fTable[at.fNum / at.fDenom]*fNewFrac;
+}
+
+void VLSong::ChangeDivisions(int newDivisions)
+{
+	VLProperties & prop = fProperties.front();
+	if (newDivisions == prop.fDivisions)
+		return; // Unchanged
+	
+	VLRealigner realign(prop.fDivisions, newDivisions);
+	//
+	// Only melody needs to be realigned, chords are already quarter notes
+	//
+	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
+		VLNoteList newMelody;
+		VLFraction at(0);
+		VLFraction lastAt;
+
+		VLNoteList::iterator i = fMeasures[measure].fMelody.begin();
+		VLNoteList::iterator e = fMeasures[measure].fMelody.end();
+
+		for (; i!=e; ++i) {
+			VLLyricsNote n 		= *i;
+			VLFraction 	 newAt 	= realign(at);
+			if (newMelody.empty()) {
+				newMelody.push_back(n);
+				lastAt	= newAt;
+			} else if (newAt != lastAt) {
+				newMelody.back().fDuration = newAt-lastAt;
+				newMelody.push_back(n);
+				lastAt	= newAt;
+			}
+			at += n.fDuration;
+		}
+		if (lastAt == at)
+			newMelody.pop_back();
+		else
+			newMelody.back().fDuration = at-lastAt;
+		fMeasures[measure].fMelody.swap(newMelody);
+	}
+	prop.fDivisions = newDivisions;
+}
+
+void VLSong::ChangeTime(VLFraction newTime)
+{
+	VLProperties & prop = fProperties.front();
+	if (prop.fTime == newTime)
+		return; // No change
+	VLChord 		rchord;
+	rchord.fDuration	= newTime-prop.fTime;
+	VLLyricsNote rnote  = VLLyricsNote(VLRest(newTime-prop.fTime));
+	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
+		if (newTime < prop.fTime) {
+			VLChordList::iterator i = fMeasures[measure].fChords.begin();
+			VLChordList::iterator e = fMeasures[measure].fChords.end();
+			VLFraction 	at(0);
+			VLChordList	newChords;
+
+			for (; i!=e; ++i) {
+				VLChord	c = *i;
+				if (at+c.fDuration >= newTime) {
+					if (at < newTime) {
+						c.fDuration = newTime-at;
+						newChords.push_back(c);
+					}
+					break;
+				} else {
+					newChords.push_back(c);
+					at += c.fDuration;
+				}
+			}
+			fMeasures[measure].fChords.swap(newChords);
+		} else
+			fMeasures[measure].fChords.push_back(rchord);
+
+		if (newTime < prop.fTime) {
+			VLNoteList::iterator i = fMeasures[measure].fMelody.begin();
+			VLNoteList::iterator e = fMeasures[measure].fMelody.end();
+			VLFraction 	at(0);
+			VLNoteList	newMelody;
+
+			for (; i!=e; ++i) {
+				VLLyricsNote	n = *i;
+				if (at+n.fDuration >= newTime) {
+					if (at < newTime) {
+						n.fDuration = newTime-at;
+						newMelody.push_back(n);
+					}
+					break;
+				} else {
+					newMelody.push_back(n);
+					at += n.fDuration;
+				}
+			}
+			fMeasures[measure].fMelody.swap(newMelody);
+		} else
+			fMeasures[measure].fMelody.push_back(rnote);
+	}
+	prop.fTime	= newTime;
 }
 
 size_t VLSong::EmptyEnding() const
@@ -1289,7 +1482,7 @@ void VLSong::LilypondNotes(std::string & notes) const
 	int			numEndings	= 0;
 	size_t		endMeasure  = fMeasures.size()-EmptyEnding();
 	bool		pickup		= fMeasures[0].NoChords();
-	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
+	for (size_t measure=0; measure<endMeasure; ++measure) {
 		VLNoteList::const_iterator i 	= fMeasures[measure].fMelody.begin();
 		VLNoteList::const_iterator e 	= fMeasures[measure].fMelody.end();
 		VLFraction 				   at(0);

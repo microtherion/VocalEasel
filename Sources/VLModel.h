@@ -333,7 +333,9 @@ struct VLSong {
 	bool DoesBeginEnding(size_t measure, bool * repeat = 0, size_t * volta = 0) const;
 	bool DoesEndEnding(size_t measure, bool * repeat = 0, size_t * volta = 0) const;
 	bool IsNonEmpty() const;
-	void Transpose(int semitones);
+	void ChangeKey(int newKey, bool newMode, bool transpose);
+	void ChangeDivisions(int newDivisions);
+	void ChangeTime(VLFraction newTime);
 
 	bool FindWord(size_t stanza, size_t & measure, VLFraction & at);
 	bool PrevWord(size_t stanza, size_t & measure, VLFraction & at);
