@@ -604,6 +604,8 @@ int8_t sStepToPitch[] = {
 	
 	VLRepeat repeat;
 	bool	 inRepeat = false;
+	uint8_t	 prevKind[20];
+	memset(prevKind, 0, 20);
 
 	for (NSXMLElement * measure; measure = [e nextObject]; ) {
 		VLProperties & 	prop = song->fProperties.front();
@@ -622,6 +624,16 @@ int8_t sStepToPitch[] = {
 
 		for (NSXMLElement * note; note = [n nextObject]; ) {
 			VLLyricsNote n = [self readNote:note withUnit:unit];
+			//
+			// Sanitize syllabic information which was corrupt in early
+			// versions.
+			//
+			for (size_t i = 0; i<n.fLyrics.size(); ++i)
+				if (n.fLyrics[i].fText.size()) {
+					if (!(prevKind[i] & VLSyllable::kHasNext))
+						n.fLyrics[i].fKind &= ~VLSyllable::kHasPrev;
+					prevKind[i] = n.fLyrics[i].fKind;
+				}
 			song->AddNote(n, m, at);
 			at += n.fDuration;
 		}

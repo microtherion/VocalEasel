@@ -1699,7 +1699,9 @@ std::string VLSong::GetWord(size_t stanza, size_t measure, VLFraction at)
 		VLFraction				now(0);
 
 		while (note != end) {
-			if (now >= at && note->fPitch != VLNote::kNoPitch) {
+			if (now >= at && note->fPitch != VLNote::kNoPitch
+				&& !(note->fTied & VLNote::kTiedWithPrev)
+			) {
 				if (word.size()) 
 					word += '-';
 				if (stanza <= note->fLyrics.size()) {
@@ -1794,6 +1796,8 @@ void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string w
 				note->fLyrics[stanza-1].fKind = kind;
 				if (type == '-')
 					kind |= VLSyllable::kHasPrev;
+				else 
+					kind &= ~VLSyllable::kHasPrev;
 			}
 			now += note->fDuration;
 			++note;
