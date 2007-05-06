@@ -255,7 +255,7 @@ void VLNote::MMAName(std::string & name, VLFraction at, VLFraction dur, VLFracti
 	if (pitch != kNoPitch) {
 		for (int raise = (pitch-kMiddleC)/kOctave; raise>0; --raise)
 			name += '+';
-		for (int lower = (kMiddleC-pitch)/kOctave; lower>0; --lower)
+		for (int lower = (kMiddleC+kOctave-1-pitch)/kOctave; lower>0; --lower)
 			name += '-';
 	}
 	if (fTied & kTiedWithNext)
