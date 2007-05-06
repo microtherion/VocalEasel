@@ -269,14 +269,6 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 						  objectForInfoDictionaryKey:@"CFBundleVersion"]]]];
 	[identification addChild:encoding];
 
-	NSXMLElement * misc 	= [NSXMLNode elementWithName:@"miscellaneous"];
-	NSXMLElement * groove	= [NSXMLNode elementWithName:@"miscellaneous-field"
-										 stringValue:songGroove];
-	[groove addAttribute: [NSXMLNode attributeWithName:@"name"
-									 stringValue:@"VocalEasel-groove"]];
-	[misc addChild: groove];
-	[identification addChild: misc];
-
 	return identification;
 }
 
@@ -444,6 +436,17 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 	return [doc XMLDataWithOptions:NSXMLNodePrettyPrint|NSXMLNodeCompactEmptyElement];
 }
 
+- (NSArray *)propertyKeys
+{
+	static NSArray * sPropertyKeys = nil;
+	
+	if (!sPropertyKeys)
+		sPropertyKeys = [[NSArray alloc] initWithObjects:
+											 @"songGroove", @"songTempo", nil];
+
+	return sPropertyKeys;
+}
+
 - (NSFileWrapper *)XMLFileWrapperWithError:(NSError **)outError flat:(BOOL)flat;
 {
 	NSData * contents = [self XMLDataWithError:outError];
@@ -461,6 +464,13 @@ const char * sSteps = "C DbD EbE F GbG AbA BbB ";
 									  autorelease];
 		[wrap addRegularFileWithContents:contents
 			  preferredFilename:@"Song"];
+		NSDictionary * prop = 
+			[self dictionaryWithValuesForKeys:[self propertyKeys]];
+		[wrap addRegularFileWithContents:
+				  [NSPropertyListSerialization dataFromPropertyList:prop
+											   format:NSPropertyListXMLFormat_v1_0
+											   errorDescription:nil]
+			  preferredFilename:@"Properties"];
 		if (vcsWrapper)
 			[wrap addFileWrapper:vcsWrapper];
 
@@ -719,6 +729,13 @@ int8_t sStepToPitch[] = {
      || (vcsWrapper = [wrappers objectForKey:@".svn"])
 	)
 		[vcsWrapper retain];
+	NSFileWrapper * prop = [wrappers objectForKey:@"Properties"];
+	if (prop)
+		[self setValuesForKeysWithDictionary:
+				  [NSPropertyListSerialization 
+					  propertyListFromData:[prop regularFileContents]
+					  mutabilityOption:NSPropertyListImmutable
+					  format:nil errorDescription:nil]];
 	return [self readFromXMLData:
 					 [[wrappers objectForKey:@"Song"] regularFileContents]	
 				 error:outError];
