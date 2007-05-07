@@ -2150,7 +2150,7 @@ void VLSong::iterator::AdjustStatus()
 			
 			return;
 		}
-	if (fMeasure == fSong.CountMeasures())
+	if (fMeasure == fSong.CountMeasures()-fSong.EmptyEnding())
 		while (fStatus.size())
 			if (++fStatus.back().fVolta < fStatus.back().fTimes) {
 				fMeasure = fStatus.back().fBegin;
