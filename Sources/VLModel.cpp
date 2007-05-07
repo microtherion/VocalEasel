@@ -2259,8 +2259,16 @@ void VLSong::PasteMeasures(size_t beginMeasure, const VLSong & measures, int mod
 	}
 }
 
-void VLSong::DeleteMeasures(size_t beginMeasure, size_t endMeasure)
+void VLSong::DeleteMeasures(size_t beginMeasure, size_t endMeasure, int mode)
 {
+	if (mode == kOverwriteMelody) {
+		VLLyricsNote rest(VLRest(fProperties.front().fTime));
+		for (size_t m=beginMeasure; m<endMeasure; ++m) {
+			fMeasures[m].fMelody.clear();
+			fMeasures[m].fMelody.push_back(rest);
+		}
+		return;
+	}
 	int8_t	firstProp	= fMeasures[beginMeasure].fPropIdx;
 	int8_t	lastProp	= fMeasures[endMeasure-1].fPropIdx+1;
 
@@ -2268,6 +2276,8 @@ void VLSong::DeleteMeasures(size_t beginMeasure, size_t endMeasure)
 		++firstProp;
 	if (endMeasure < CountMeasures() && fMeasures[endMeasure].fPropIdx == lastProp)
 		--lastProp;
+	if (lastProp - firstProp == fProperties.size())	
+		++firstProp;
 	if (lastProp > firstProp) {
 		fProperties.erase(fProperties.begin()+firstProp, 
 						  fProperties.begin()+lastProp);
@@ -2300,6 +2310,11 @@ void VLSong::DeleteMeasures(size_t beginMeasure, size_t endMeasure)
 			++r;
 		}
 	}
+	//
+	// Keep an empty meausure at the end
+	//
+	if (!EmptyEnding())
+		AddMeasure();
 }
 
 VLFract VLSong::TiedDuration(size_t measure)

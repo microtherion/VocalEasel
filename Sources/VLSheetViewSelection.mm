@@ -136,7 +136,7 @@ static VLSong	sPasteboard;
 - (IBAction)delete:(id)sender
 {
 	[[self document] willChangeSong];
-	[self song]->DeleteMeasures(fSelStart, fSelEnd);
+	[self song]->DeleteMeasures(fSelStart, fSelEnd, [sender tag]);
 	[[self document] didChangeSong];
 	[self setNeedsDisplay:YES];
 }

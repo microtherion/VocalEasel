@@ -352,7 +352,7 @@ struct VLSong {
 	VLSong	CopyMeasures(size_t beginMeasure, size_t endMeasure);
 	void	PasteMeasures(size_t beginMeasure, const VLSong & measures, 
 						  int mode = kInsert);
-	void	DeleteMeasures(size_t beginMeasure, size_t endMeasure);
+	void	DeleteMeasures(size_t beginMeasure, size_t endMeasure, int mode = kInsert);
 
 	size_t	CountMeasures() const { return fMeasures.size(); }
 	size_t	EmptyEnding() const;
