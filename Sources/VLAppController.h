@@ -11,16 +11,18 @@
 #import <Cocoa/Cocoa.h>
 
 @interface VLAppController : NSObject {
-	IBOutlet id		lilypondPath;
+	IBOutlet id			lilypondPath;
+	IBOutlet id			mirrorWin;
 
-	NSString *		toolPath;
-	NSString *		appPath;
+	NSString *			toolPath;
+	NSString *			appPath;
 }
 
 - (IBAction) playNewPitch:(id)sender;
 - (IBAction) selectLilypondPath:(id)sender;
 - (IBAction) goToHelpPage:(id)sender;							 
 - (IBAction) goToHelpURL:(id)sender;							 
+- (IBAction) showMirror:(id)sender;
 
 @end
 

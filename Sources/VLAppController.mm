@@ -315,5 +315,10 @@
 	}
 	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:helpString]];
 }
+
+- (IBAction) showMirror:(id)sender
+{
+	[mirrorWin showWindow:sender];
+}
 						   
 @end
