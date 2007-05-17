@@ -1126,6 +1126,8 @@ void VLSong::ExtendNote(size_t measure, VLFraction at)
 					k = fMeasures[++measure].fMelody.begin();
 				}
 			}
+			if (measure+1 == fMeasures.size())
+				AddMeasure();
 		}
 		break;
 	} 
