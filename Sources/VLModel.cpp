@@ -240,12 +240,24 @@ void VLNote::MMAName(std::string & name, VLFraction at, VLFraction dur, VLFracti
 		bool	   grouped = dur==nextDur ||
 			(prevPart!=0 ? dur==prevPart : dur==prevDur);
 		prop.PartialNote(at, dur, grouped, &part);
+		const char * durName;
 		for (int d=0; sMMADur[d].fName; ++d)
 			if (part == sMMADur[d].fVal) {
-				if (name.size())
-					name += '+';
-				name += sMMADur[d].fName;
+				durName = sMMADur[d].fName;
+				break;
 			}
+		if (!strcmp(durName, "82")) {
+			//
+			// Distinguish 2nd pair of swing 8ths from regular triplet
+			//
+			const VLFraction kBeat(1, prop.fTime.fDenom);
+			VLFraction withinBeat = at % kBeat;
+			if (withinBeat != 2*kBeat/3)
+				durName = "3";
+		}
+		if (name.size())
+			name += '+';
+		name       += durName;
 		prevPart	= part;
 		dur		   -= part;
 		at  	   += part;
