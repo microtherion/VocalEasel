@@ -1,0 +1,1289 @@
+2007-05-16 06:47 +0000 [r144]  Matthias Neeracher
+
+	* English.lproj/VLMirrorWindow.nib/designable.nib (added),
+	  Sources/VLMirrorWindow.h (added), Sources/VLAppController.h,
+	  Sources/VLMirrorWindow.mm (added),
+	  English.lproj/MainMenu.nib/keyedobjects.nib, Resources/Mirror.qtz
+	  (added), Sources/VLAppController.mm,
+	  English.lproj/MainMenu.nib/designable.nib,
+	  VocalEasel.xcodeproj/project.pbxproj,
+	  English.lproj/VLMirrorWindow.nib (added),
+	  Resources/Help/edit.html, Resources/Help/play.html,
+	  English.lproj/VLMirrorWindow.nib/keyedobjects.nib (added): Add
+	  mirror window
+
+2007-05-09 06:15 +0000 [r143]  Matthias Neeracher
+
+	* scripts/svn2log.py (added): Add svn2log tool
+
+2007-05-09 05:02 +0000 [r142]  Matthias Neeracher
+
+	* htdocs/index.html: State OS version
+
+2007-05-07 04:01 +0000 [r141]  Matthias Neeracher
+
+	* English.lproj/MainMenu.nib/keyedobjects.nib,
+	  English.lproj/MainMenu.nib/designable.nib, Sources/VLModel.cpp,
+	  Sources/VLSheetViewSelection.mm, Sources/VLModel.h: Fix bugs in
+	  Delete, add Delete Melody
+
+2007-05-07 03:38 +0000 [r140]  Matthias Neeracher
+
+	* Sources/VLModel.cpp: Fix crash in MMA conversion
+
+2007-05-06 06:59 +0000 [r139]  Matthias Neeracher
+
+	* Sources/VLModel.cpp, Sources/VLXMLDocument.mm: Fix and repair
+	  incorrect tie information
+
+2007-05-06 05:55 +0000 [r138]  Matthias Neeracher
+
+	* Sources/VLXMLDocument.mm: Added properties file
+
+2007-05-06 05:21 +0000 [r137]  Matthias Neeracher
+
+	* Sources/VLModel.cpp: Fix low MMA pitches
+
+2007-05-06 05:07 +0000 [r136]  Matthias Neeracher
+
+	* Sources/VLModel.cpp, Sources/VLDocument.mm, Sources/VLModel.h:
+	  Implement division/time change
+
+2007-05-05 06:00 +0000 [r135]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm: Eliminate spurious measure selection
+
+2007-05-05 05:42 +0000 [r134]  Matthias Neeracher
+
+	* Sources/VLSheetViewChords.mm, Sources/VLModel.cpp: Fix crashes in
+	  out-of-range clicks
+
+2007-05-04 05:41 +0000 [r133]  Matthias Neeracher
+
+	* Sources/VLSheetViewChords.mm: Chord deletion is a song change
+
+2007-05-04 05:38 +0000 [r132]  Matthias Neeracher
+
+	* Sources/VLModel.cpp, Sources/VLModel.h: Handle pickup notes
+
+2007-05-04 05:26 +0000 [r131]  Matthias Neeracher
+
+	* Sources/VLModel.cpp: Fix bug in lily representation of tied
+	  triplets
+
+2007-05-04 05:21 +0000 [r130]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Sources/VLModel.cpp, Sources/VLModel.h, Sources/VLXMLDocument.mm:
+	  Automatically resize song
+
+2007-05-02 05:28 +0000 [r129]  Matthias Neeracher
+
+	* Sources/VLGrooveController.mm, Tools/rebuildGrooves: Preserve
+	  ordering of grooves within a style
+
+2007-05-02 04:43 +0000 [r127-128]  Matthias Neeracher
+
+	* Resources/Info.plist: Starting 1.0a3
+
+	* htdocs/index.html: Clarified binary distribution
+
+2007-05-02 02:39 +0000 [r125]  Matthias Neeracher
+
+	* Tools/mmaWrapper: Need to run login shell for full path
+
+2007-04-30 07:06 +0000 [r124]  Matthias Neeracher
+
+	* Sources/VLAppController.h,
+	  English.lproj/MainMenu.nib/keyedobjects.nib,
+	  Sources/VLAppController.mm,
+	  English.lproj/MainMenu.nib/designable.nib,
+	  VocalEasel.xcodeproj/project.pbxproj, Resources/Help/license.html
+	  (added): Add license menu item
+
+2007-04-30 06:30 +0000 [r123]  Matthias Neeracher
+
+	* htdocs/index.html (added), htdocs (added), scripts (added),
+	  htdocs/vlapp.png (added), scripts/push_htdocs (added),
+	  Resources/Help/index.html: Add simple SourceForge web site and
+	  support tools
+
+2007-04-30 05:56 +0000 [r122]  Matthias Neeracher
+
+	* Resources/Info.plist, Sources/VLAppController.h,
+	  English.lproj/MainMenu.nib/info.nib (removed),
+	  Resources/Help/print.html (added),
+	  English.lproj/MainMenu.nib/classes.nib (removed), Resources/Help
+	  (added), English.lproj/MainMenu.nib/designable.nib (added),
+	  VocalEasel.xcodeproj/project.pbxproj, Resources/Help/bugs.html
+	  (added), Resources/Help/vlapp.png (added),
+	  Resources/Help/play.html (added), Resources/Help/index.html
+	  (added), Resources/Help/about.html (added),
+	  English.lproj/MainMenu.nib/keyedobjects.nib,
+	  Sources/VLAppController.mm, Resources/Help/edit.html (added): Add
+	  online help
+
+2007-04-29 06:47 +0000 [r121]  Matthias Neeracher
+
+	* mma/docs/html/lib/stdlib/countryblues.html,
+	  mma/docs/html/lib/stdlib/son.html, mma/docs/html/ref/node8.html,
+	  mma/docs/html/ref/img1.png, mma/text/CHANGES-1.0 (added),
+	  mma/docs/html/lib/stdlib/rock-128.html,
+	  mma/docs/html/ref/img5.png, mma/docs/html/ref/mupex/chord43.png,
+	  mma/docs/html/ref/img9.png,
+	  mma/docs/html/lib/stdlib/calypso.html,
+	  mma/lib/yamaha/western.mma, mma/lib/stdlib/ballad128.mma (added),
+	  mma/lib/yamaha/mambo.mma,
+	  mma/docs/html/lib/yamaha/quando-g.s280.html, mma/egs/README,
+	  mma/docs/html/ref/img22.png, mma/MMA/parse.py,
+	  mma/docs/html/lib/stdlib/bigband.html, mma/egs/tutorial/README,
+	  mma/docs/html/ref/img26.png (added), mma/text/TIMIDITY (added),
+	  mma/docs/html/lib/stdlib/bossanova.html,
+	  mma/docs/html/ref/mupex/soloeg.png, mma/docs/html/tut/node4.html,
+	  mma/docs/html/lib/stdlib/rockballad.html,
+	  mma/docs/html/ref/node5.html,
+	  mma/docs/html/lib/stdlib/foxtrot.html,
+	  mma/egs/lyrics/twinkle3.mid, mma/egs/tutorial/deep-river.mma,
+	  mma/MMA/patBass.py, mma/docs/html/lib/stdlib/blues.html,
+	  mma/MMA/patArpeggio.py, mma/docs/html/lib/stdlib/dixiemarch.html,
+	  mma/lib/stdlib/8beat.mma, mma/lib/yamaha/.mmaDB,
+	  mma/docs/html/lib/stdlib/rhumba.html, mma/egs/misc/cascade.mid,
+	  mma/MMA/gbl.py, mma/docs/html/ref/mupex/fermata.png,
+	  mma/docs/html/ref/node18.html,
+	  mma/docs/html/lib/stdlib/desert.html,
+	  mma/docs/html/ref/mupex/tilde2.png,
+	  mma/docs/html/lib/stdlib/jazzguitar.html (added),
+	  mma/docs/html/lib/stdlib/softrock.html,
+	  mma/docs/html/tut/node1.html, mma/MMA/patAria.py (added),
+	  mma/docs/html/ref/node2.html, mma/docs/html/tut/index.html,
+	  mma/MMA/midi.py, mma/docs/html/tut/mma-tutorial.html,
+	  mma/docs/html/lib/stdlib/dixie.html,
+	  mma/docs/html/lib/stdlib/8beat.html, mma/text/ANNOUNCE,
+	  mma/docs/html/lib/stdlib/polka.html,
+	  mma/docs/html/lib/stdlib/merengue.html,
+	  mma/docs/html/lib/stdlib/tango.html, mma/egs/tutorial/fella2.mid,
+	  mma/egs/tutorial/fella1.mma, mma/MMA/notelen.py,
+	  mma/docs/html/ref/node15.html, mma/MMA/chordtable.py,
+	  mma/docs/html/ref/node27.html,
+	  mma/docs/html/lib/stdlib/modernjazz.html,
+	  mma/docs/html/lib/index.html,
+	  mma/docs/html/lib/stdlib/bluegrass.html,
+	  mma/docs/html/lib/stdlib/frenchwaltz.html, mma/MMA/harmony.py,
+	  mma/lib/stdlib/ballad.mma,
+	  mma/docs/html/lib/stdlib/softshoe.html, mma/MMA/pat.py,
+	  mma/lib/stdlib/.mmaDB, mma/docs/html/ref/node12.html,
+	  mma/docs/html/ref/mupex/cmajor.png, mma/egs/misc/grooves.mid,
+	  mma/docs/html/ref/node24.html, mma/docs/html/ref/img10.png,
+	  mma/docs/html/lib/stdlib/countrywaltz.html,
+	  mma/docs/html/ref/mupex/bassb8.png, mma/docs/html/ref/img14.png,
+	  mma/docs/html/ref/img18.png, mma/docs/html/lib/stdlib/march.html,
+	  mma/docs/html/ref/img2.png, mma/MMA/docs.py,
+	  mma/docs/html/ref/mupex/tilde.png,
+	  mma/docs/html/ref/mupex/trip3.png, mma/docs/html/ref/img6.png,
+	  mma/MMA/patScale.py, mma/docs/html/lib/stdlib/slowcountry.html,
+	  mma/MMA/midiM.py, mma/mma.py, mma/docs/html/ref/node21.html,
+	  mma/util/timsplit.py (added), mma/lib/stdlib/shuffleboggie.mma
+	  (added), mma/docs/html/lib/stdlib/50srock.html,
+	  mma/docs/html/ref/img23.png, mma/util/README.timsplit (added),
+	  mma/docs/html/ref/img27.png (added),
+	  mma/docs/html/lib/stdlib/folk.html, mma/util/mup2mma.py (added),
+	  mma/docs/html/lib/stdlib/boggiewoggie.html,
+	  mma/lib/stdlib/bigband.mma, mma/docs/html/lib/stdlib/waltz.html,
+	  mma/docs/html/ref/node9.html, mma/MMA/common.py,
+	  mma/docs/html/lib/stdlib/metronome.html, mma/MMA/alloc.py,
+	  mma/MMA/translate.py, mma/egs/aria/girl.mid,
+	  mma/lib/stdlib/lighttango.mma,
+	  mma/docs/html/ref/mupex/swingdrum8.png,
+	  mma/docs/html/ref/node30.html (added), mma/cp-install,
+	  mma/docs/html/lib/kara/Kfunk1.html, mma/MMA/patSolo.py,
+	  mma/lib/stdlib/modernjazz.mma, mma/egs/aria/aria.txt,
+	  mma/docs/html/tut/node5.html,
+	  mma/docs/html/lib/stdlib/basicrock.html,
+	  mma/docs/html/ref/node6.html, mma/MMA/midiC.py,
+	  mma/lib/stdlib/frenchwaltz.mma, mma/egs/aria (added),
+	  mma/docs/html/lib/stdlib/lullaby.html (added),
+	  mma/egs/tutorial/fella2.mma, mma/docs/html/lib/stdlib/ska.html,
+	  mma/docs/html/lib/yamaha/w-rock.html,
+	  mma/docs/html/lib/stdlib/bolero.html, mma/egs/lyrics/twinkle.mid,
+	  mma/lib/stdlib/slowcountry.mma, mma/docs/html/ref/node19.html,
+	  mma/ln-install, mma/docs/html/tut/node2.html,
+	  mma/docs/html/ref/node3.html, mma/MMA/lyric.py,
+	  mma/docs/html/lib/stdlib/zydeco.html,
+	  mma/docs/html/tut/mup/bass.png,
+	  mma/docs/html/lib/stdlib/popballad.html, mma/util/mmatabs.py
+	  (added), mma/text/INSTALL, mma/lib/stdlib/softshoe.mma,
+	  mma/docs/html/lib/stdlib/broadway.html,
+	  mma/docs/html/lib/stdlib/countryswing.html,
+	  mma/docs/html/tut/mup/piano.png,
+	  mma/docs/html/lib/stdlib/vienesewaltz.html,
+	  mma/docs/html/ref/node16.html, mma/lib/stdlib/chacha.mma,
+	  mma/MMA/mdefine.py, mma/docs/html/ref/mupex/repeat.png,
+	  mma/docs/html/mma.html, mma/docs/html/ref/img11.png,
+	  mma/MMA/midiIn.py, mma/docs/html/ref/node28.html,
+	  mma/docs/html/lib/stdlib/slowbolero.html,
+	  mma/docs/html/ref/img15.png, mma/MMA/miditables.py (added),
+	  mma/docs/html/ref/img19.png, mma/text/README, mma/includes/aria
+	  (added), mma/docs/html/ref/img3.png,
+	  mma/lib/stdlib/bossanova.mma,
+	  mma/docs/html/lib/stdlib/chacha.html, mma/docs/html/ref/img7.png,
+	  mma/docs/html/lib/stdlib/quickstep.html,
+	  mma/docs/html/lib/stdlib/ballad128.html (added),
+	  mma/docs/html/lib/yamaha/mambo.html, mma/docs/html/lib/yamaha
+	  (added), mma/lib/README, mma/docs/html/ref/node13.html,
+	  mma/docs/html/lib/stdlib/lfusion.html,
+	  mma/docs/html/ref/node25.html, mma/docs/html/ref/img20.png,
+	  mma/MMA/auto.py, mma/MMA/patDrum.py, mma/docs/html/ref/img24.png,
+	  mma/docs/html/lib/stdlib/swing.html,
+	  mma/docs/html/lib/stdlib/guitarballad.html,
+	  mma/docs/html/lib/stdlib/jive.html, mma/docs/html/ref/mma.html,
+	  mma/docs/html/lib/kara/twi.html, mma/egs/lyrics/twinkle1.mid,
+	  mma/lib/stdlib/rockballad.mma, mma/egs/aria/girl.mma,
+	  mma/docs/html/ref/mupex/swingdrum8-3.png,
+	  mma/docs/html/ref/node10.html,
+	  mma/docs/html/lib/stdlib/hillcountry.html,
+	  mma/docs/html/ref/node22.html, mma/egs/simple/bill-bailey.mid,
+	  mma/docs/html/ref/mupex/swingconv.png, mma/egs/aria/barb.mid,
+	  mma/docs/html/lib/stdlib/slowjazz.html,
+	  mma/docs/html/ref/mupex/arp4s.png,
+	  mma/docs/html/tut/mup/drums.png, mma/util/mklibdoc.py,
+	  mma/egs/midi-inc/frankie.mid,
+	  mma/docs/html/lib/stdlib/easyswing.html, mma/MMA/macro.py,
+	  mma/lib/yamaha (added), mma/docs/html/tut/mup/deep.png,
+	  mma/egs/misc/volumes.mid,
+	  mma/docs/html/lib/stdlib/metronome3.html,
+	  mma/lib/stdlib/beguine.mma, mma/docs/html/tut/mup/fella.png,
+	  mma/docs/html/tut/node6.html, mma/docs/html/ref/node7.html,
+	  mma/lib/stdlib/popballad.mma,
+	  mma/docs/html/lib/stdlib/shuffleboggie.html (added),
+	  mma/util/mma-renum.py (added), mma/egs/simple/marine-hymn.mid,
+	  mma/MMA/patWalk.py, mma/docs/html/lib/stdlib/ballad.html,
+	  mma/docs/html/ref/img12.png, mma/egs/rndset/rndchords.mid,
+	  mma/docs/html/ref/img16.png, mma/MMA/file.py,
+	  mma/lib/yamaha/w-rock.mma, mma/MMA/chords.py,
+	  mma/docs/html/tut/node3.html, mma/egs/misc/extended-voice.mid,
+	  mma/docs/html/ref/node4.html, mma/docs/html/ref/mupex/trip1.png,
+	  mma/text/TODO, mma/docs/html/ref/img4.png,
+	  mma/docs/html/lib/yamaha/western.html,
+	  mma/docs/html/ref/img8.png, mma/lib/stdlib/lullaby.mma (added),
+	  mma/docs/html/ref/node17.html, mma/MMA/volume.py,
+	  mma/docs/html/ref/img21.png, mma/docs/html/ref/node29.html,
+	  mma/docs/html/ref/img25.png, mma/docs/html/ref/node1.html,
+	  mma/docs/html/ref/index.html, mma/MMA/main.py,
+	  mma/egs/lyrics/twinkle2.mid,
+	  mma/docs/html/ref/mupex/fermata2.png,
+	  mma/egs/tutorial/deep-river.mid,
+	  mma/docs/html/lib/stdlib/slowblues.html, mma/MMA/patChord.py,
+	  mma/docs/html/ref/node14.html, mma/egs/misc/macros.mid,
+	  mma/docs/html/ref/node26.html, mma/egs/rndset/tempo.mid,
+	  mma/egs/aria/barb.mma, mma/docs/html/lib/stdlib/samba.html,
+	  mma/egs/scales/scales.mid,
+	  mma/docs/html/lib/stdlib/fastblues.html,
+	  mma/egs/harmony/harmony.mid, mma/docs/html/lib/stdlib/mambo.html,
+	  mma/lib/yamaha/quando-g.s280.mma,
+	  mma/docs/html/lib/stdlib/rb.html, mma/lib/stdlib/jazzguitar.mma
+	  (added), mma/docs/html/lib/stdlib/jazz-54.html,
+	  mma/MMA/options.py, mma/egs/tutorial/fella1.mid,
+	  mma/util/README.mmatabs (added), mma/docs/html/ref/node11.html,
+	  mma/lib/yamaha/README, mma/docs/html/lib/stdlib/beguine.html,
+	  mma/docs/html/ref/node23.html, mma/text/CHANGES-1.0.rc1,
+	  mma/text/CHANGES-1.0.rc2 (added),
+	  mma/docs/html/lib/kara/K50s_rock.html,
+	  mma/docs/html/lib/stdlib/jazzwaltz.html,
+	  mma/docs/html/lib/stdlib/lighttango.html,
+	  mma/docs/html/lib/stdlib/pianoballad.html,
+	  mma/docs/html/ref/node20.html, mma/egs/riffs/riffs.mid,
+	  mma/docs/html/ref/img13.png,
+	  mma/docs/html/lib/stdlib/60srock.html,
+	  mma/docs/html/ref/img17.png, mma/egs/tutorial (added): merging
+	  mma-1.1
+
+2007-04-27 06:41 +0000 [r115]  Matthias Neeracher
+
+	* Sources/VLPDFWindow.mm, Sources/VLAppController.h,
+	  Sources/VLSheetView.mm, Sources/VLSheetViewChords.mm,
+	  Sources/VLPitchTransformer.h, Sources/VLModel.cpp,
+	  Sources/VLSheetViewNotes.mm, Sources/VLSoundSched.h,
+	  Sources/VLXMLDocument.h, Sources/VLSheetViewInternal.h,
+	  Sources/VLSheetWindow.h, Sources/VLPDFWindow.h,
+	  Sources/VLSheetView.h, Sources/VLMIDIDocument.mm,
+	  Sources/VLPDFView.h, Sources/VLAppController.mm,
+	  Sources/CoreAudioSDK/LICENSE (added), mma/COPYING (added),
+	  Sources/VLPDFDocument.h, Sources/VLSoundOut.cpp,
+	  Sources/VLSheetViewLyrics.mm, Sources/VLLilypondDocument.mm,
+	  Sources/VLPitchTransformer.mm, Sources/VLDocument.h,
+	  Sources/VLMIDIDocument.h, Sources/VLSheetWindow.mm,
+	  Sources/VLPDFView.mm, Sources/VLGrooveController.mm,
+	  Resources/Music/COPYING (added), Sources/VLSheetViewLyrics.h,
+	  Sources/VLLilypondDocument.h, Sources/VLPDFDocument.mm,
+	  Sources/VLMMADocument.mm, Sources/VLLogWindow.mm,
+	  Sources/VLSheetViewSelection.mm, Sources/VLKeyValueUndo.mm,
+	  Sources/VLModel.h, Sources/VLDocument.mm,
+	  Sources/VLGrooveController.h, Sources/VLSheetViewChords.h,
+	  LICENSE (added), Sources/VLMMADocument.h, Sources/VLLogWindow.h,
+	  Sources/VLSheetViewSelection.h, Sources/VLKeyValueUndo.h,
+	  README.rtf (added), Sources/VLSheetViewNotes.h,
+	  Sources/VLSoundOut.h, Sources/VLSoundSched.mm,
+	  Sources/VLXMLDocument.mm: README, licenses, uniform headers
+
+2007-04-27 04:08 +0000 [r114]  Matthias Neeracher
+
+	* Vocalese.xcodeproj (removed), Resources/Info.plist,
+	  VocalEasel.xcodeproj/project.pbxproj, Resources/vocalese.icns
+	  (removed), Resources/vlapp.icns (added),
+	  Sources/VocalEasel_Prefix.pch (added),
+	  Sources/Vocalese_Prefix.pch (removed), VocalEasel.xcodeproj
+	  (added): Finish renaming project
+
+2007-04-27 03:57 +0000 [r112-113]  Matthias Neeracher
+
+	* Sources/VLModel.cpp: Fix note extending
+
+	* Sources/VLModel.h, Sources/VLXMLDocument.mm: Clear song before
+	  loading
+
+2007-04-25 13:14 +0000 [r111]  Matthias Neeracher
+
+	* Sources/VLModel.cpp, Vocalese.xcodeproj/project.pbxproj: Don't
+	  count tied notes as syllables
+
+2007-04-25 05:12 +0000 [r109-110]  Matthias Neeracher
+
+	* Vocalese.xcodeproj/project.pbxproj, Sources/VLXMLDocument.mm:
+	  Don't need real DTD
+
+	* Sources/VLModel.cpp: Fix transposition
+
+2007-04-24 18:32 +0000 [r108]  Matthias Neeracher
+
+	* Sources/VLAppController.mm, Sources/VLGrooveController.mm,
+	  Sources/VLSheetViewSelection.mm,
+	  Vocalese.xcodeproj/project.pbxproj: Fix for Tiger build
+
+2007-04-23 05:46 +0000 [r107]  Matthias Neeracher
+
+	* Sources/VLGrooveController.h, Sources/VLSheetView.mm,
+	  Sources/VLGrooveController.mm, Sources/VLMMADocument.mm,
+	  Sources/VLModel.cpp, Sources/VLDocument.h,
+	  English.lproj/VLGroove.nib/keyedobjects.nib,
+	  English.lproj/VLGroove.nib/info.nib (removed),
+	  Sources/VLDocument.mm, Sources/VLModel.h,
+	  English.lproj/VLGroove.nib/designable.nib (added),
+	  English.lproj/VLGroove.nib/classes.nib (removed): Further refine
+	  groove selection
+
+2007-04-23 03:43 +0000 [r105-106]  Matthias Neeracher
+
+	* Sources/VLAppController.mm, Resources/installLilypond.scpt
+	  (added), Vocalese.xcodeproj/project.pbxproj,
+	  Resources/installPython.scpt (added), mma/mma.py: Prompt for
+	  installation of missing pieces
+
+	* English.lproj/InfoPlist.strings, English.lproj/Credits.rtf:
+	  Update credits
+
+2007-04-22 06:20 +0000 [r103-104]  Matthias Neeracher
+
+	* Sources/VLMMADocument.mm, Sources/VLModel.cpp,
+	  Sources/VLSheetViewNotes.mm, Sources/VLModel.h,
+	  Sources/VLXMLDocument.mm: Implement tied notes across all
+	  formats, fix some bugs
+
+	* Sources/VLSheetViewLyrics.mm: Better lyrics alignment
+
+2007-04-22 02:59 +0000 [r102]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Resources/Music/extendcursor.eps (added), Sources/VLModel.cpp,
+	  Sources/VLSheetViewNotes.mm, Sources/VLModel.h: Implement note
+	  extensions
+
+2007-04-21 23:00 +0000 [r101]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm: Extend pitch range
+
+2007-04-21 22:37 +0000 [r99-100]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm: Update after song change
+
+	* Sources/VLSheetViewNotes.mm, Sources/VLSheetViewInternal.h:
+	  Implement ledger lines
+
+2007-04-21 07:09 +0000 [r98]  Matthias Neeracher
+
+	* Sources/VLSheetWindow.mm, Sources/VLSheetView.h,
+	  Sources/VLSheetView.mm, Resources/display.tiff (added),
+	  Sources/VLModel.cpp, Vocalese.xcodeproj/project.pbxproj,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  English.lproj/VLDocument.nib/info.nib (removed),
+	  English.lproj/VLDocument.nib/designable.nib (added),
+	  English.lproj/VLDocument.nib/classes.nib (removed),
+	  Sources/VLModel.h, Sources/VLSheetViewInternal.h,
+	  Sources/VLSheetWindow.h: Flexible display options (# of
+	  ledgers/lyrics)
+
+2007-04-20 05:33 +0000 [r97]  Matthias Neeracher
+
+	* English.lproj/VLDocument.nib/info.nib,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  Sources/VLDocument.mm: Fix reentrant close
+
+2007-04-19 18:23 +0000 [r96]  Matthias Neeracher
+
+	* Sources/VLMIDIDocument.mm, Sources/VLSheetView.mm,
+	  Sources/VLPDFDocument.mm, English.lproj/VLDocument.nib/info.nib,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  Sources/VLKeyValueUndo.mm, Sources/VLDocument.mm: Only remove
+	  specific notifications (duh!)
+
+2007-04-18 08:25 +0000 [r95]  Matthias Neeracher
+
+	* Sources/VLDocument.h, Sources/VLDocument.mm: Implement printing
+
+2007-04-18 07:05 +0000 [r94]  Matthias Neeracher
+
+	* English.lproj/InfoPlist.strings, Sources/VLSheetWindow.mm,
+	  Sources/VLMIDIDocument.mm, Resources/Info.plist,
+	  Sources/VLPDFDocument.h (added), Sources/VLPDFDocument.mm
+	  (added), Sources/VLMMADocument.mm,
+	  Vocalese.xcodeproj/project.pbxproj,
+	  English.lproj/VLDocument.nib/info.nib,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  English.lproj/VLDocument.nib/classes.nib, Sources/VLDocument.h,
+	  Sources/VLDocument.mm, Sources/VLSheetWindow.h,
+	  Sources/VLMIDIDocument.h: Create temp files on demand, show
+	  progress animation
+
+2007-04-18 05:28 +0000 [r93]  Matthias Neeracher
+
+	* Sources/VLMIDIDocument.mm, Sources/VLDocument.mm: Show log on
+	  error only
+
+2007-04-16 05:35 +0000 [r90]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm, Sources/VLKeyValueUndo.mm,
+	  Sources/VLDocument.h, Sources/VLDocument.mm: Properly clean up
+	  observers
+
+2007-04-16 04:54 +0000 [r89]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm: Support undo for
+	  grooves
+
+2007-04-16 04:47 +0000 [r88]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm: Draw everything after coordinate recalc
+
+2007-04-15 05:22 +0000 [r87]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLGrooveController.h (added),
+	  Sources/VLSheetView.mm, Sources/VLGrooveController.mm (added),
+	  Vocalese.xcodeproj/project.pbxproj,
+	  English.lproj/VLDocument.nib/info.nib,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  English.lproj/VLGroove.nib (added),
+	  English.lproj/VLDocument.nib/classes.nib,
+	  English.lproj/VLGroove.nib/info.nib (added),
+	  English.lproj/VLGroove.nib/keyedobjects.nib (added),
+	  Tools/rebuildGrooves (added),
+	  English.lproj/VLGroove.nib/classes.nib (added),
+	  Sources/VLXMLDocument.mm: Implemented groove selection sheet
+
+2007-04-13 04:26 +0000 [r86]  Matthias Neeracher
+
+	* Sources/VLSheetViewLyrics.h, Sources/VLModel.cpp,
+	  Sources/VLSheetViewLyrics.mm, Sources/VLModel.h: Much more
+	  convenient lyrics editing
+
+2007-01-21 11:34 +0000 [r82-85]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, English.lproj/MainMenu.nib/info.nib,
+	  English.lproj/MainMenu.nib/keyedobjects.nib,
+	  Sources/VLSheetView.mm, English.lproj/MainMenu.nib/classes.nib,
+	  Resources/Music/coda.eps (added),
+	  Sources/VLSheetViewSelection.mm,
+	  Vocalese.xcodeproj/project.pbxproj,
+	  Sources/VLSheetViewInternal.h: UI for codas
+
+	* Sources/VLDocument.h, Sources/VLDocument.mm: Close virgin windows
+	  on open
+
+	* Sources/VLModel.cpp, Sources/VLModel.h: Model for codas;
+	  IsNonEmpty
+
+	* Sources/VLXMLDocument.mm: Represent codas (incorrectly)
+
+2007-01-12 09:04 +0000 [r77-81]  Matthias Neeracher
+
+	* Sources/VLSheetViewSelection.mm: Pin fCursorMeasure to song size
+
+	* Sources/VLSheetView.mm: Recalculate dimensions on resize
+
+	* Sources/VLXMLDocument.mm: Fix adding measures, loading rests
+
+	* Sources/VLMIDIDocument.mm, Sources/VLDocument.h,
+	  Sources/VLDocument.mm: Added changedFileWrapper to avoid annoying
+	  warnings
+
+	* Sources/VLModel.cpp: Allow nested repeats
+
+2007-01-02 07:09 +0000 [r72-75]  Matthias Neeracher
+
+	* English.lproj/MainMenu.nib/keyedobjects.nib, Sources/VLModel.cpp,
+	  Sources/VLSheetViewSelection.mm, Sources/VLModel.h: Implement
+	  cut/copy/paste/delete
+
+	* Vocalese.xcodeproj/project.pbxproj: Add Stop Toolbar Item
+
+	* Sources/VLMMADocument.mm: Tweak solo voice
+
+	* Sources/VLSheetWindow.mm, Sources/VLSheetWindow.h: Add Stop
+	  Toolbar Item
+
+2007-01-02 07:01 +0000 [r71]  Matthias Neeracher
+
+	* Resources/stop.tiff (added), Sources/VLSoundOut.cpp,
+	  English.lproj/VLDocument.nib/info.nib,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  English.lproj/VLDocument.nib/classes.nib, Sources/VLDocument.mm,
+	  Sources/VLSoundOut.h: Add Stop Toolbar Item
+
+2007-01-01 05:02 +0000 [r69-70]  Matthias Neeracher
+
+	* Sources/VLModel.cpp, Sources/VLSheetViewNotes.mm,
+	  Sources/VLModel.h: Fix triplet handling
+
+	* Sources/VLXMLDocument.mm: Fix Ab -> G#
+
+2006-12-31 10:31 +0000 [r67-68]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm, Sources/VLMMADocument.mm,
+	  Sources/VLModel.cpp, Sources/VLModel.h, Sources/VLXMLDocument.mm:
+	  Load / save / translate repeats & endings
+
+	* English.lproj/VLDocument.nib/info.nib,
+	  English.lproj/VLDocument.nib/keyedobjects.nib: Make sheets
+	  non-resizeable
+
+2006-12-30 09:57 +0000 [r65-66]  Matthias Neeracher
+
+	* English.lproj/MainMenu.nib/info.nib, Sources/VLSheetView.mm,
+	  English.lproj/MainMenu.nib/classes.nib,
+	  Sources/VLSheetViewChords.mm, Sources/VLSheetViewSelection.mm
+	  (added), Sources/VLModel.cpp,
+	  English.lproj/VLDocument.nib/info.nib,
+	  English.lproj/VLDocument.nib/classes.nib,
+	  Sources/VLSheetViewNotes.mm, Sources/VLDocument.mm,
+	  Sources/VLModel.h, Sources/VLSheetView.h,
+	  English.lproj/MainMenu.nib/keyedobjects.nib,
+	  Sources/VLSheetViewSelection.h (added),
+	  Vocalese.xcodeproj/project.pbxproj, Sources/VLSheetViewLyrics.mm,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  Sources/VLDocument.h: Model, input, display repeats & endings
+
+	* Sources/VLSoundOut.cpp: Extra error logging
+
+2006-12-28 05:03 +0000 [r64]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Sources/VLSheetViewInternal.h: Implement measure selection
+
+2006-12-04 07:04 +0000 [r63]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm, Sources/VLSheetViewChords.mm,
+	  Sources/VLSheetViewLyrics.h, Sources/VLKeyValueUndo.h (added),
+	  Sources/VLMMADocument.mm, Sources/VLModel.cpp,
+	  Sources/VLSheetViewLyrics.mm, Vocalese.xcodeproj/project.pbxproj,
+	  Sources/VLKeyValueUndo.mm (added), Sources/VLDocument.h,
+	  Sources/VLSheetViewNotes.mm, Sources/VLDocument.mm,
+	  Sources/VLModel.h: Added undo support
+
+2006-12-02 23:05 +0000 [r62]  Matthias Neeracher
+
+	* Sources/VLSheetWindow.mm, Sources/VLSheetView.h,
+	  Sources/VLSheetView.mm,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  English.lproj/VLDocument.nib/classes.nib,
+	  English.lproj/VLPDFWindow.nib/info.nib,
+	  English.lproj/VLPDFWindow.nib/keyedobjects.nib,
+	  Sources/VLSheetWindow.h,
+	  English.lproj/VLPDFWindow.nib/classes.nib: Make sheet window
+	  scalable
+
+2006-12-02 09:02 +0000 [r61]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Sources/VLSheetViewLyrics.h, Sources/VLModel.cpp,
+	  Sources/VLSheetViewLyrics.mm, Sources/VLModel.h: Edit lyrics
+
+2006-12-02 03:35 +0000 [r60]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm, Sources/VLSheetViewLyrics.h (added),
+	  Sources/VLModel.cpp, Sources/VLSheetViewLyrics.mm (added),
+	  Vocalese.xcodeproj/project.pbxproj, Sources/VLModel.h,
+	  Sources/VLSheetViewInternal.h: Display lyrics
+
+2006-11-27 07:30 +0000 [r59]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm, Vocalese.xcodeproj/project.pbxproj,
+	  English.lproj/VLDocument.nib/info.nib,
+	  English.lproj/VLDocument.nib/keyedobjects.nib: Change tempo /
+	  groove
+
+2006-11-27 07:14 +0000 [r58]  Matthias Neeracher
+
+	* Vocalese.xcodeproj, English.lproj, /, mma/MMA: Set ignores
+
+2006-11-27 07:07 +0000 [r57]  Matthias Neeracher
+
+	* Sources/VLLilypondDocument.mm, Sources/VLModel.cpp,
+	  Sources/VLSheetViewNotes.mm, Sources/VLModel.h,
+	  Sources/VLXMLDocument.mm: Low level lyrics support
+
+2006-11-27 07:03 +0000 [r55-56]  Matthias Neeracher
+
+	* Tests/TVLSoundOut.cpp: Implement sound out to file
+
+	* Sources/CoreAudioSDK/CADebugMacros.cpp (added),
+	  Sources/CoreAudioSDK/CAConditionalMacros.h (added),
+	  Sources/CoreAudioSDK/CAMath.h (added),
+	  Sources/CoreAudioSDK/CADebugMacros.h (added),
+	  Sources/VLSoundOut.cpp, Sources/VLSoundOut.h: Implement sound out
+	  to file
+
+2006-11-27 06:58 +0000 [r54]  Matthias Neeracher
+
+	* Sources/VLMMADocument.mm: Delete copy & paste crud
+
+2006-11-17 08:57 +0000 [r53]  Matthias Neeracher
+
+	* Sources/VLDocument.h, Sources/VLDocument.mm,
+	  Sources/VLXMLDocument.mm: Preserve version control dictionaries
+	  on save
+
+2006-11-17 04:03 +0000 [r52]  Matthias Neeracher
+
+	* Sources/CoreAudioSDK (added),
+	  Sources/CoreAudioSDK/CAAudioFileFormats.cpp (added),
+	  Sources/CoreAudioSDK/AUOutputBL.cpp (added),
+	  Sources/CoreAudioSDK/CAStreamBasicDescription.cpp (added),
+	  Sources/CoreAudioSDK/CAAudioFileFormats.h (added),
+	  Sources/VLSoundOut.cpp, Vocalese.xcodeproj/project.pbxproj,
+	  Sources/CoreAudioSDK/AUOutputBL.h (added),
+	  Sources/CoreAudioSDK/CAStreamBasicDescription.h (added),
+	  Sources/VLSoundOut.h: Added unfinished audio code, switching
+	  machines
+
+2006-11-13 04:26 +0000 [r51]  Matthias Neeracher
+
+	* Sources/VLSheetWindow.mm, Sources/VLSoundOut.cpp,
+	  English.lproj/VLDocument.nib/info.nib,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  English.lproj/VLDocument.nib/classes.nib, Sources/VLDocument.mm,
+	  Sources/VLSheetWindow.h, Sources/VLSoundOut.h: Implement
+	  (Rudimentary) MIDI playing
+
+2006-11-12 11:37 +0000 [r50]  Matthias Neeracher
+
+	* English.lproj/InfoPlist.strings, Sources/VLMIDIDocument.mm
+	  (added), Resources/Info.plist, Sources/VLMMADocument.mm,
+	  Sources/VLModel.cpp, Vocalese.xcodeproj/project.pbxproj,
+	  Sources/VLDocument.h, Sources/VLDocument.mm, Tools/mmaWrapper,
+	  Sources/VLMIDIDocument.h (added): Implement MMA/MIDI output
+
+2006-11-11 05:30 +0000 [r49]  Matthias Neeracher
+
+	* Sources/VLModel.cpp, Tests/TVLChord.cpp: Fix chord issues
+
+2006-11-10 08:54 +0000 [r48]  Matthias Neeracher
+
+	* Sources/VLAppController.mm: More robust technique for reading
+	  from pipeline
+
+2006-11-10 08:09 +0000 [r45-47]  Matthias Neeracher
+
+	* Sources/VLPDFWindow.mm, Resources/lilyWrapper (removed),
+	  Sources/VLModel.cpp, Vocalese.xcodeproj/project.pbxproj,
+	  Sources/VLDocument.h, Tools/lilyWrapper (added),
+	  Sources/VLDocument.mm: Reorganized tools and paths
+
+	* mma/lib/stdlib/README (added),
+	  mma/docs/html/lib/stdlib/countryblues.html (added),
+	  mma/docs/html/lib/stdlib/son.html (added),
+	  mma/egs/misc/extended-voice.mma (added),
+	  mma/docs/html/ref/img1.png (added), mma/docs (added),
+	  mma/docs/html/ref/node8.html (added),
+	  mma/docs/html/lib/stdlib/rock-128.html (added),
+	  mma/docs/html/ref/img5.png (added), mma/lib/stdlib/zydeco.mma
+	  (added), mma/lib/stdlib/countryblues.mma (added),
+	  mma/docs/html/ref/mupex/chord43.png (added),
+	  mma/docs/html/lib/stdlib/calypso.html (added),
+	  mma/docs/html/ref/img9.png (added), mma/includes/reset.mma
+	  (added), mma/docs/html/tut/prev.png (added),
+	  mma/lib/stdlib/calypso.mma (added), mma/egs/README (added),
+	  mma/MMA/parse.py (added), mma/docs/html/ref/img22.png (added),
+	  mma/docs/html/lib/stdlib/bigband.html (added), mma/text/SYNTHS
+	  (added), mma/lib/stdlib/slowblues.mma (added),
+	  mma/docs/html/ref/mupex/soloeg.png (added),
+	  mma/docs/html/lib/stdlib/bossanova.html (added),
+	  mma/docs/html/tut/node4.html (added),
+	  mma/docs/html/lib/stdlib/rockballad.html (added),
+	  mma/docs/html/ref/node5.html (added), mma/egs/lyrics/twinkle3.mid
+	  (added), mma/egs/lyrics/twinkle2.mma (added),
+	  mma/docs/html/lib/stdlib/foxtrot.html (added), mma/docs/html
+	  (added), mma/MMA/patBass.py (added), mma/lib/stdlib/jazzwaltz.mma
+	  (added), mma/docs/html/lib/stdlib/blues.html (added),
+	  mma/lib/stdlib/rb.mma (added), mma/lib/stdlib/8beat.mma (added),
+	  mma/docs/html/lib/stdlib/dixiemarch.html (added),
+	  mma/MMA/patArpeggio.py (added),
+	  mma/docs/html/lib/stdlib/rhumba.html (added),
+	  mma/egs/misc/cascade.mid (added), mma/MMA/gbl.py (added),
+	  mma/egs/misc/macros.mma (added), mma/includes/stdpats34.mma
+	  (added), mma/docs/html/ref/mupex/fermata.png (added),
+	  mma/docs/html/ref/node18.html (added), mma/egs/rndset/tempo.mma
+	  (added), mma/egs/scales/scales.mma (added),
+	  mma/docs/html/lib/stdlib/desert.html (added),
+	  mma/docs/html/ref/mupex/tilde2.png (added),
+	  mma/egs/misc/macros-all.mma (added),
+	  mma/docs/html/lib/stdlib/softrock.html (added),
+	  mma/docs/html/ref/crossref.png (added),
+	  mma/docs/html/tut/node1.html (added), mma/egs/harmony/harmony.mma
+	  (added), mma/docs/html/ref/node2.html (added),
+	  mma/docs/html/tut/index.html (added), mma/MMA/midi.py (added),
+	  mma/text (added), mma/lib/stdlib/desert.mma (added),
+	  mma/docs/html/tut/mma-tutorial.html (added),
+	  mma/egs/midi-inc/drum.mid (added),
+	  mma/docs/html/lib/stdlib/dixie.html (added),
+	  mma/docs/html/lib/stdlib/8beat.html (added), mma/text/ANNOUNCE
+	  (added), mma/docs/html/lib/stdlib/polka.html (added),
+	  mma/docs/html/lib/stdlib/merengue.html (added),
+	  mma/docs/html/lib/stdlib/tango.html (added),
+	  mma/lib/stdlib/dixie.mma (added), mma/includes/README (added),
+	  mma/MMA/notelen.py (added), mma/lib/stdlib/metronome.mma (added),
+	  mma/text/CHANGES-beta (added), mma/docs/html/ref/node15.html
+	  (added), mma/MMA/chordtable.py (added),
+	  mma/lib/stdlib/quickstep.mma (added), mma/egs/misc (added),
+	  mma/docs/html/ref/node27.html (added),
+	  mma/docs/html/lib/stdlib/modernjazz.html (added),
+	  mma/docs/html/lib/index.html (added),
+	  mma/docs/html/lib/stdlib/bluegrass.html (added),
+	  mma/docs/html/lib/stdlib/frenchwaltz.html (added),
+	  mma/MMA/harmony.py (added), mma/lib/stdlib/ska.mma (added),
+	  mma/lib/stdlib/ballad.mma (added),
+	  mma/docs/html/lib/stdlib/softshoe.html (added),
+	  mma/docs/html/lib/stdlib (added), mma/lib/kara (added),
+	  mma/text/CONTRIB (added), mma/MMA/pat.py (added),
+	  mma/lib/stdlib/.mmaDB (added), mma/lib/stdlib/60srock.mma
+	  (added), mma/docs/html/ref/node12.html (added),
+	  mma/docs/html/ref/mupex/cmajor.png (added),
+	  mma/egs/misc/grooves.mid (added), mma/docs/html/ref/node24.html
+	  (added), mma/lib/stdlib/pianoballad.mma (added),
+	  mma/docs/html/ref/img10.png (added), mma/egs/riffs/riffs.mma
+	  (added), mma/lib/stdlib/easyswing.mma (added),
+	  mma/docs/html/ref/mupex/bassb8.png (added),
+	  mma/docs/html/lib/stdlib/countrywaltz.html (added),
+	  mma/docs/html/ref/img14.png (added), mma/util (added),
+	  mma/lib/stdlib/lfusion.mma (added),
+	  mma/docs/html/lib/stdlib/march.html (added),
+	  mma/docs/html/ref/img18.png (added), mma/lib/stdlib/swing.mma
+	  (added), mma/MMA/docs.py (added), mma/docs/html/ref/img2.png
+	  (added), mma/docs/html/ref/mupex/trip3.png (added),
+	  mma/docs/html/ref/mupex/tilde.png (added),
+	  mma/docs/html/ref/img6.png (added), mma/MMA/patScale.py (added),
+	  mma/docs/html/lib/stdlib/slowcountry.html (added),
+	  mma/MMA/midiM.py (added), mma/mma.py (added),
+	  mma/docs/html/ref/node21.html (added), mma/egs/midi-inc/README
+	  (added), mma/lib/stdlib/jazz-54.mma (added), mma/lib (added),
+	  mma/docs/html/ref/mma.css (added),
+	  mma/docs/html/lib/stdlib/50srock.html (added),
+	  mma/docs/html/ref/img23.png (added), mma/egs (added),
+	  mma/docs/html/lib/stdlib/folk.html (added),
+	  mma/lib/stdlib/slowjazz.mma (added),
+	  mma/docs/html/lib/stdlib/boggiewoggie.html (added),
+	  mma/lib/stdlib/bigband.mma (added), mma/lib/stdlib (added),
+	  mma/docs/html/lib/stdlib/waltz.html (added), mma/MMA/common.py
+	  (added), mma/docs/html/ref/node9.html (added),
+	  mma/lib/stdlib/mambo.mma (added),
+	  mma/docs/html/lib/stdlib/metronome.html (added), mma/MMA/alloc.py
+	  (added), mma/egs/lyrics/twinkle3.mma (added),
+	  mma/lib/stdlib/boggiewoggie.mma (added), mma/MMA/translate.py
+	  (added), mma/lib/stdlib/lighttango.mma (added),
+	  mma/docs/html/ref/mupex/swingdrum8.png (added),
+	  mma/includes/stdpats.mma (added), mma/egs/misc/cascade.mma
+	  (added), mma/cp-install (added), mma/lib/stdlib/vienesewaltz.mma
+	  (added), mma/MMA/patSolo.py (added),
+	  mma/docs/html/lib/kara/Kfunk1.html (added),
+	  mma/lib/stdlib/modernjazz.mma (added),
+	  mma/docs/html/tut/node5.html (added), mma/MMA/midiC.py (added),
+	  mma/docs/html/lib/stdlib/basicrock.html (added),
+	  mma/docs/html/ref/node6.html (added),
+	  mma/lib/stdlib/frenchwaltz.mma (added),
+	  mma/lib/stdlib/softrock.mma (added), mma/lib/stdlib/waltz.mma
+	  (added), mma/docs/html/lib/stdlib/ska.html (added),
+	  mma/lib/stdlib/foxtrot.mma (added),
+	  mma/lib/stdlib/slowcountry.mma (added), mma/docs/html/ref
+	  (added), mma/docs/html/lib/stdlib/bolero.html (added),
+	  mma/egs/lyrics/twinkle.mid (added), mma/docs/html/ref/next.png
+	  (added), mma/docs/html/ref/node19.html (added), mma/ln-install
+	  (added), mma/egs/mkall (added), mma/docs/html/tut/crossref.png
+	  (added), mma/docs/html/tut/node2.html (added),
+	  mma/docs/html/lib/stdlib/zydeco.html (added), mma/MMA/lyric.py
+	  (added), mma/docs/html/ref/node3.html (added),
+	  mma/docs/html/lib/stdlib/popballad.html (added),
+	  mma/docs/html/tut/mup/bass.png (added),
+	  mma/lib/stdlib/slowbolero.mma (added), mma/text/INSTALL (added),
+	  mma/lib/stdlib/softshoe.mma (added),
+	  mma/docs/html/lib/stdlib/broadway.html (added), mma (added),
+	  mma/docs/html/lib/stdlib/countryswing.html (added),
+	  mma/docs/html/tut/mup/piano.png (added),
+	  mma/docs/html/lib/stdlib/vienesewaltz.html (added),
+	  mma/egs/misc/grooves.mma (added), mma/lib/stdlib/chacha.mma
+	  (added), mma/egs/simple (added), mma/docs/html/ref/node16.html
+	  (added), mma/MMA/mdefine.py (added), mma/docs/html/ref/img11.png
+	  (added), mma/docs/html/mma.html (added),
+	  mma/docs/html/ref/mupex/repeat.png (added), mma/docs/html/tut/mup
+	  (added), mma/MMA/midiIn.py (added), mma/MMA (added),
+	  mma/docs/html/ref/node28.html (added),
+	  mma/lib/stdlib/hillcountry.mma (added),
+	  mma/docs/html/ref/img15.png (added),
+	  mma/docs/html/lib/stdlib/slowbolero.html (added), mma/text/README
+	  (added), mma/docs/html/ref/img19.png (added),
+	  mma/lib/stdlib/fastblues.mma (added), mma/docs/html/ref/img3.png
+	  (added), mma/text/FAQ (added), mma/lib/stdlib/folk.mma (added),
+	  mma/lib/stdlib/bossanova.mma (added),
+	  mma/docs/html/lib/stdlib/chacha.html (added),
+	  mma/docs/html/lib/stdlib/quickstep.html (added),
+	  mma/docs/html/ref/img7.png (added), mma/lib/stdlib/basicrock.mma
+	  (added), mma/lib/README (added), mma/docs/html/ref/node13.html
+	  (added), mma/docs/html/lib/stdlib/lfusion.html (added),
+	  mma/lib/stdlib/rock-128.mma (added),
+	  mma/docs/html/ref/node25.html (added),
+	  mma/docs/html/ref/img20.png (added), mma/MMA/auto.py (added),
+	  mma/docs/html/ref/img24.png (added),
+	  mma/docs/html/lib/stdlib/swing.html (added), mma/MMA/patDrum.py
+	  (added), mma/docs/html/ref/up.png (added), mma/docs/html/lib/kara
+	  (added), mma/lib/kara/README (added),
+	  mma/docs/html/lib/stdlib/guitarballad.html (added),
+	  mma/docs/html/lib/stdlib/jive.html (added),
+	  mma/docs/html/ref/mma.html (added), mma/lib/stdlib/50srock.mma
+	  (added), mma/docs/html/lib/kara/twi.html (added), mma/egs/riffs
+	  (added), mma/text/FAKEBOOKS (added),
+	  mma/lib/stdlib/metronome3.mma (added),
+	  mma/egs/lyrics/twinkle1.mid (added),
+	  mma/lib/stdlib/rockballad.mma (added),
+	  mma/docs/html/ref/mupex/swingdrum8-3.png (added),
+	  mma/text/SLASHCHORDS (added), mma/docs/html/ref/node10.html
+	  (added), mma/docs/html/lib/stdlib/hillcountry.html (added),
+	  mma/egs/simple/bill-bailey.mid (added),
+	  mma/docs/html/ref/node22.html (added),
+	  mma/docs/html/ref/mupex/swingconv.png (added),
+	  mma/lib/stdlib/merengue.mma (added), mma/egs/midi-inc (added),
+	  mma/docs/html/lib/stdlib/slowjazz.html (added),
+	  mma/egs/midi-inc/rec1.mid (added), mma/lib/stdlib/blues.mma
+	  (added), mma/lib/stdlib/rhumba.mma (added),
+	  mma/docs/html/logo.png (added), mma/docs/html/ref/next_g.png
+	  (added), mma/docs/html/ref/mupex/arp4s.png (added),
+	  mma/docs/html/tut/mup/drums.png (added), mma/util/mklibdoc.py
+	  (added), mma/lib/stdlib/jive.mma (added),
+	  mma/egs/midi-inc/frankie.mid (added),
+	  mma/docs/html/lib/stdlib/easyswing.html (added),
+	  mma/MMA/__init__.py (added), mma/MMA/macro.py (added),
+	  mma/docs/html/ref/mupex (added), mma/docs/html/tut/mup/deep.png
+	  (added), mma/egs/lyrics/twinkle.mma (added),
+	  mma/egs/misc/volumes.mid (added), mma/lib/stdlib/countryswing.mma
+	  (added), mma/egs/rndset (added), mma/docs/html/ref/prev_g.png
+	  (added), mma/lib/stdlib/dixiemarch.mma (added),
+	  mma/docs/html/lib/stdlib/metronome3.html (added),
+	  mma/lib/stdlib/beguine.mma (added),
+	  mma/docs/html/tut/mup/fella.png (added),
+	  mma/lib/stdlib/bolero.mma (added), mma/docs/html/tut/node6.html
+	  (added), mma/docs/html/ref/node7.html (added),
+	  mma/lib/stdlib/popballad.mma (added), mma/lib/stdlib/son.mma
+	  (added), mma/lib/kara/twi.mma (added),
+	  mma/egs/simple/marine-hymn.mid (added), mma/MMA/patWalk.py
+	  (added), mma/docs/html/lib/stdlib/ballad.html (added),
+	  mma/docs/html/ref/prev.png (added), mma/docs/html/tut (added),
+	  mma/docs/html/tut/next.png (added), mma/docs/html/ref/img12.png
+	  (added), mma/includes/stdpats54.mma (added),
+	  mma/egs/rndset/rndchords.mid (added), mma/docs/html/ref/img16.png
+	  (added), mma/MMA/file.py (added), mma/docs/html/tut/node3.html
+	  (added), mma/MMA/chords.py (added),
+	  mma/egs/misc/extended-voice.mid (added),
+	  mma/docs/html/ref/node4.html (added), mma/egs/scales (added),
+	  mma/docs/html/ref/mupex/trip1.png (added), mma/text/TODO (added),
+	  mma/lib/stdlib/march.mma (added), mma/docs/html/ref/img4.png
+	  (added), mma/lib/stdlib/guitarballad.mma (added),
+	  mma/lib/kara/K50s_rock.mma (added), mma/docs/html/ref/img8.png
+	  (added), Tools/mmaWrapper (added), mma/docs/html/ref/node17.html
+	  (added), mma/MMA/volume.py (added), mma/lib/stdlib/tango.mma
+	  (added), mma/docs/html/tut/mma-tutorial.css (added),
+	  mma/docs/html/ref/img21.png (added),
+	  mma/docs/html/ref/node29.html (added),
+	  mma/docs/html/ref/img25.png (added), mma/docs/html/ref/node1.html
+	  (added), mma/docs/html/ref/index.html (added),
+	  mma/includes/init.mma (added), mma/egs/lyrics (added),
+	  mma/lib/stdlib/samba.mma (added), mma/MMA/main.py (added),
+	  mma/lib/stdlib/countrywaltz.mma (added),
+	  mma/egs/lyrics/twinkle2.mid (added), mma/egs/lyrics/twinkle1.mma
+	  (added), mma/docs/html/ref/mupex/fermata2.png (added),
+	  mma/text/COPYING (added), mma/util/README.mklibdoc (added),
+	  mma/egs/misc/macros.mid (added), mma/docs/html/ref/node14.html
+	  (added), mma/MMA/patChord.py (added),
+	  mma/docs/html/lib/stdlib/slowblues.html (added),
+	  mma/egs/simple/bill-bailey.mma (added),
+	  mma/docs/html/ref/node26.html (added),
+	  mma/lib/stdlib/broadway.mma (added), mma/egs/rndset/tempo.mid
+	  (added), mma/docs/html/lib/stdlib/samba.html (added),
+	  mma/egs/scales/scales.mid (added), mma/egs/midi-inc/rec2.mid
+	  (added), mma/docs/html/lib/stdlib/fastblues.html (added),
+	  mma/docs/html/tut/up.png (added), mma/egs/harmony/harmony.mid
+	  (added), mma/docs/html/lib/stdlib/mambo.html (added),
+	  mma/lib/stdlib/bluegrass.mma (added),
+	  mma/docs/html/lib/stdlib/rb.html (added),
+	  mma/docs/html/lib/stdlib/jazz-54.html (added), mma/MMA/options.py
+	  (added), mma/egs/midi-inc/frankie.mma (added),
+	  mma/docs/html/ref/node11.html (added), mma/docs/html/lib (added),
+	  mma/docs/html/lib/stdlib/beguine.html (added),
+	  mma/docs/html/ref/node23.html (added), mma/includes (added),
+	  mma/lib/stdlib/polka.mma (added), mma/egs/misc/volumes.mma
+	  (added), mma/text/CHANGES-1.0.rc1 (added),
+	  mma/docs/html/tut/next_g.png (added),
+	  mma/docs/html/lib/kara/K50s_rock.html (added),
+	  mma/egs/misc/repeats.mma (added),
+	  mma/docs/html/lib/stdlib/jazzwaltz.html (added),
+	  mma/docs/html/lib/stdlib/lighttango.html (added),
+	  mma/docs/html/README (added), mma/egs/harmony (added),
+	  mma/docs/html/lib/stdlib/pianoballad.html (added),
+	  mma/docs/html/ref/node20.html (added),
+	  mma/egs/simple/marine-hymn.mma (added), mma/egs/riffs/riffs.mid
+	  (added), mma/docs/html/ref/img13.png (added),
+	  mma/egs/rndset/rndchords.mma (added),
+	  mma/docs/html/tut/prev_g.png (added),
+	  mma/docs/html/lib/stdlib/60srock.html (added),
+	  mma/docs/html/ref/img17.png (added): Added MMA
+
+	* Tools (added): Reorganized tools
+
+2006-11-06 15:49 +0000 [r44]  Matthias Neeracher
+
+	* English.lproj/MainMenu.nib/info.nib,
+	  English.lproj/MainMenu.nib/keyedobjects.nib,
+	  Sources/VLSheetView.mm, Sources/VLPDFView.mm,
+	  English.lproj/MainMenu.nib/classes.nib: Add zoom options
+
+2006-11-04 08:15 +0000 [r43]  Matthias Neeracher
+
+	* English.lproj/InfoPlist.strings, Resources/Info.plist,
+	  Sources/VLMMADocument.h (added), Sources/VLMMADocument.mm
+	  (added), Sources/VLModel.cpp, Vocalese.xcodeproj/project.pbxproj,
+	  Sources/VLDocument.h, Sources/VLDocument.mm, Sources/VLModel.h:
+	  Added MMA export
+
+2006-10-29 08:28 +0000 [r42]  Matthias Neeracher
+
+	* English.lproj/VLLogWindow.nib (added),
+	  English.lproj/VLLogWindow.nib/info.nib,
+	  English.lproj/VLLogWindow.nib/keyedobjects.nib,
+	  Resources/VLPDFWindow.nib (removed),
+	  Vocalese.xcodeproj/project.pbxproj, English.lproj/VLPDFWindow.nib
+	  (added), English.lproj/VLPDFWindow.nib/info.nib,
+	  English.lproj/VLPDFWindow.nib/keyedobjects.nib,
+	  English.lproj/VLPDFWindow.nib/classes.nib,
+	  Resources/VLLogWindow.nib (removed): Move stray nibs to proper
+	  location
+
+2006-10-29 08:21 +0000 [r41]  Matthias Neeracher
+
+	* Sources/VLAppController.mm: Lilypond path selection finally works
+
+2006-10-29 07:49 +0000 [r39-40]  Matthias Neeracher
+
+	* English.lproj/InfoPlist.strings, Sources/VLPDFWindow.mm,
+	  Resources/Info.plist, Sources/VLAppController.mm,
+	  Sources/VLLilypondDocument.h,
+	  Resources/VLPDFWindow.nib/keyedobjects.nib,
+	  Sources/VLLilypondDocument.mm, Sources/VLXMLDocument.h,
+	  Sources/VLDocument.mm, Sources/VLXMLDocument.mm: Switch to
+	  NSFileWrapper based documents
+
+	* Sources/VLSheetViewChords.mm, Sources/VLModel.cpp: Fix chord
+	  editing display
+
+2006-10-29 02:49 +0000 [r38]  Matthias Neeracher
+
+	* Sources/VLAppController.mm: Don't open untitled
+
+2006-10-28 09:18 +0000 [r37]  Matthias Neeracher
+
+	* Sources/VLSheetWindow.mm (added),
+	  Resources/VLLogWindow.nib/info.nib, Sources/VLPDFWindow.mm,
+	  Sources/VLSheetView.mm, English.lproj/MainMenu.nib/info.nib,
+	  Sources/VLSheetViewChords.mm,
+	  Resources/VLPDFWindow.nib/keyedobjects.nib,
+	  English.lproj/VLDocument.nib/info.nib,
+	  Sources/VLSheetViewNotes.mm,
+	  English.lproj/VLDocument.nib/classes.nib, Sources/VLSheetWindow.h
+	  (added), Sources/VLDocument.mm, Sources/VLModel.h,
+	  Sources/VLSheetView.h,
+	  Resources/VLLogWindow.nib/keyedobjects.nib,
+	  English.lproj/MainMenu.nib/keyedobjects.nib,
+	  Sources/VLAppController.mm, Sources/VLSheetViewChords.h,
+	  Resources/lilyWrapper (added),
+	  Resources/VLPDFWindow.nib/info.nib,
+	  Vocalese.xcodeproj/project.pbxproj,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  Resources/VLPDFWindow.nib/classes.nib, Sources/VLDocument.h,
+	  Sources/VLXMLDocument.mm: Implement toolbars, typesetting, titles
+
+2006-10-26 08:21 +0000 [r35-36]  Matthias Neeracher
+
+	* Sources/VLPDFWindow.mm (added),
+	  Resources/VLLogWindow.nib/info.nib (added),
+	  Resources/VLLogWindow.nib/classes.nib (added),
+	  Sources/VLPDFView.mm (added), Sources/VLLogWindow.mm (added),
+	  Resources/VLPDFWindow.nib/keyedobjects.nib (added),
+	  Resources/console.icns (added), Resources/run.icns (added),
+	  Resources/prevpage.tiff (added), Sources/VLPDFWindow.h (added),
+	  Resources/nextpage.tiff (added), Resources/zoomin.tiff (added),
+	  Resources/zoomout.tiff (added),
+	  Resources/VLLogWindow.nib/keyedobjects.nib (added),
+	  Sources/VLPDFView.h (added), Resources/music.tiff (added),
+	  Sources/VLLogWindow.h (added), Resources/VLPDFWindow.nib (added),
+	  Resources/VLPDFWindow.nib/info.nib (added),
+	  Vocalese.xcodeproj/project.pbxproj,
+	  Resources/VLPDFWindow.nib/classes.nib (added),
+	  Resources/VLLogWindow.nib (added): Added log and output windows
+
+	* Sources/VLAppController.h, English.lproj/MainMenu.nib/info.nib,
+	  English.lproj/MainMenu.nib/keyedobjects.nib,
+	  Sources/VLAppController.mm,
+	  English.lproj/MainMenu.nib/classes.nib,
+	  Resources/UserDefaults.plist: Handle lilypond path
+
+2006-10-24 07:15 +0000 [r34]  Matthias Neeracher
+
+	* Sources/VLAppController.h (added),
+	  English.lproj/MainMenu.nib/info.nib,
+	  English.lproj/MainMenu.nib/keyedobjects.nib,
+	  Sources/VLAppController.mm (added),
+	  English.lproj/MainMenu.nib/classes.nib,
+	  Sources/VLPitchTransformer.h (added), Sources/VLModel.cpp,
+	  Vocalese.xcodeproj/project.pbxproj, Sources/VLPitchTransformer.mm
+	  (added), Resources/UserDefaults.plist (added), Sources/VLModel.h:
+	  Implement preferences, user pitch range
+
+2006-10-23 07:42 +0000 [r32-33]  Matthias Neeracher
+
+	* Resources/Templates/default.lyt, Sources/VLLilypondDocument.mm,
+	  Sources/VLModel.cpp, Vocalese.xcodeproj/project.pbxproj,
+	  Sources/VLDocument.h, Sources/VLSheetViewNotes.mm,
+	  Tests/TVLLilypond.mm, Sources/VLDocument.mm, Sources/VLModel.h:
+	  Fully implement Lilypond export
+
+	* English.lproj/InfoPlist.strings, Resources/Info.plist,
+	  English.lproj/MainMenu.nib/info.nib,
+	  English.lproj/MainMenu.nib/keyedobjects.nib: Rename app to
+	  VocalEasel
+
+2006-10-23 02:55 +0000 [r31]  Matthias Neeracher
+
+	* Art/tripod.xcf (added), Resources/vocalese.icns: Designed new
+	  Tripod icon
+
+2006-10-23 01:46 +0000 [r30]  Matthias Neeracher
+
+	* Art/notes.tiff (added), Art (added), Art/vocalese.xcf (added):
+	  Added artwork
+
+2006-10-22 07:16 +0000 [r29]  Matthias Neeracher
+
+	* Resources/Info.plist, Resources/Templates/default.lyt (added),
+	  Sources/VLLilypondDocument.h (added),
+	  Sources/VLLilypondDocument.mm (added),
+	  Vocalese.xcodeproj/project.pbxproj, Resources/Templates (added),
+	  Sources/VLDocument.h, Sources/VLXMLDocument.h,
+	  Tests/TVLLilypond.mm (added), Sources/VLDocument.mm,
+	  Sources/VLXMLDocument.mm: Start lilypond generation code
+
+2006-10-22 05:00 +0000 [r28]  Matthias Neeracher
+
+	* Resources/Music/flatcursor.eps (added),
+	  Resources/Music/naturalcursor.eps (added),
+	  Resources/Music/killcursor.eps (added),
+	  Resources/Music/sharpcursor.eps (added): Add accidental cursors
+
+2006-10-21 09:26 +0000 [r24-27]  Matthias Neeracher
+
+	* Sources/VLSoundOut.cpp: Fix merge bug
+
+	* Sources/VLSheetViewInternal.h: Added accidental dimensions
+
+	* Sources/VLModel.cpp, Tests/TVLChord.cpp, Sources/VLModel.h: Added
+	  lilypond names
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Sources/VLSheetViewNotes.mm: Properly handle accidentals
+
+2006-10-16 09:01 +0000 [r22-23]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Vocalese.xcodeproj/project.pbxproj, Sources/VLSheetViewNotes.h,
+	  Sources/VLSheetViewNotes.mm, Resources/Music/restcursor.eps
+	  (added): Introduce rest cursor, improve cursor tracking
+
+	* Sources/VLSoundOut.cpp: Use MIDI Sequences
+
+2006-10-14 10:10 +0000 [r19-21]  Matthias Neeracher
+
+	* Resources/Info.plist, Sources/VLSheetViewChords.mm,
+	  English.lproj/VLDocument.nib/info.nib,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  English.lproj/VLDocument.nib/classes.nib,
+	  Sources/VLSheetViewNotes.mm, Sources/VLDocument.mm,
+	  Sources/VLXMLDocument.mm: Implemen loading, update management
+
+	* Sources/VLSheetView.mm, Sources/VLModel.cpp, Sources/VLModel.h:
+	  Transpose songs
+
+	* Vocalese.xcodeproj/project.pbxproj: Added app and document icons
+
+2006-10-14 09:27 +0000 [r17]  Matthias Neeracher
+
+	* Resources/vlsong.icns (added), Resources/vocalese.icns (added):
+	  Added Icons
+
+2006-10-13 08:10 +0000 [r15-16]  Matthias Neeracher
+
+	* Sources/VLXMLDocument.h (added), Sources/VLXMLDocument.mm
+	  (added): Write documents, read attributes
+
+	* Resources/Info.plist, Sources/VLSheetView.mm,
+	  Vocalese.xcodeproj/neeri.mode1 (removed),
+	  Vocalese.xcodeproj/project.pbxproj,
+	  Vocalese.xcodeproj/neeri.pbxuser (removed),
+	  Vocalese.xcodeproj/neeri.mode1v3 (removed): Fix pitch for mouse
+	  clicks
+
+2006-10-09 07:28 +0000 [r14]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Sources/VLSheetViewChords.mm, Vocalese.xcodeproj/neeri.pbxuser,
+	  Vocalese.xcodeproj/neeri.mode1v3: Improve chord highlighting
+
+2006-10-08 05:57 +0000 [r12-13]  Matthias Neeracher
+
+	* Sources/VLSoundSched.h (added), Sources/VLSoundSched.mm (added):
+	  Nonblocking sound
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Sources/VLSheetViewChords.h, Sources/main.m,
+	  Sources/VLSheetViewChords.mm, Sources/VLSoundOut.cpp,
+	  Vocalese.xcodeproj/neeri.pbxuser,
+	  Vocalese.xcodeproj/project.pbxproj,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  Sources/VLDocument.h, Sources/VLDocument.mm,
+	  Sources/VLSoundOut.h, Vocalese.xcodeproj/neeri.mode1v3: Highlight
+	  chords (badly), nonblocking sound
+
+2006-10-03 17:52 +0000 [r11]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Sources/VLSheetViewChords.h, Sources/VLSheetViewChords.mm,
+	  Vocalese.xcodeproj/neeri.pbxuser,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  English.lproj/VLDocument.nib/classes.nib, Sources/VLDocument.h,
+	  Sources/VLDocument.mm, Vocalese.xcodeproj/neeri.mode1v3: Chord
+	  editing mostly works again
+
+2006-10-02 08:32 +0000 [r10]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Sources/VLSheetViewChords.h, Sources/VLSheetViewChords.mm,
+	  Vocalese.xcodeproj/neeri.pbxuser, Sources/VLSheetViewNotes.h,
+	  Sources/VLSheetViewNotes.mm, Sources/VLModel.h,
+	  Sources/VLSheetViewInternal.h, Vocalese.xcodeproj/neeri.mode1v3:
+	  Draw by system, reorganize event handling
+
+2006-10-02 06:07 +0000 [r9]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Sources/VLSheetViewChords.mm, Vocalese.xcodeproj/neeri.pbxuser,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  English.lproj/VLDocument.nib/classes.nib,
+	  Sources/VLSheetViewNotes.mm, Vocalese.xcodeproj/neeri.mode1v3:
+	  Rename instance variables of VLSheetView
+
+2006-10-02 05:29 +0000 [r8]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Sources/VLSheetViewChords.mm, Sources/VLModel.cpp,
+	  Vocalese.xcodeproj/neeri.pbxuser,
+	  English.lproj/VLDocument.nib/info.nib,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  Sources/VLSheetViewNotes.mm, Sources/VLModel.h,
+	  Sources/VLSheetViewInternal.h, Vocalese.xcodeproj/neeri.mode1v3:
+	  Switch to multi-line layout
+
+2006-09-12 07:55 +0000 [r3]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Sources/VLSheetViewChords.h, Sources/VLSheetViewChords.mm,
+	  Sources/VLModel.cpp, Vocalese.xcodeproj/neeri.pbxuser,
+	  Vocalese.xcodeproj/project.pbxproj,
+	  English.lproj/VLDocument.nib/info.nib,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  English.lproj/VLDocument.nib/classes.nib, Sources/VLModel.h,
+	  Vocalese.xcodeproj/neeri.mode1v3: Start implementing field editor
+	  for chords
+
+2006-09-11 02:57 +0000 [r2]  Matthias Neeracher
+
+	* English.lproj/VLDocument~.nib (removed): Removed backup nib
+
+2006-09-11 02:49 +0000 [r1]  Matthias Neeracher
+
+	* Vocalese.xcodeproj (added), English.lproj/MainMenu.nib (added),
+	  Tests/TVLEdit.cpp (added), Resources/Music/eighth-flag.eps
+	  (added), / (added), Sources/VLSheetView.mm (added),
+	  Resources/Music/sixteenth-flag.eps (added),
+	  English.lproj/MainMenu.nib/classes.nib (added),
+	  Resources/Music/thirtysecondth-flag.eps (added), Tests (added),
+	  English.lproj/VLDocument~.nib (added),
+	  Sources/VLSheetViewChords.mm (added),
+	  Vocalese.xcodeproj/neeri.mode1 (added),
+	  Resources/Music/half-rest.eps (added), English.lproj/Credits.rtf
+	  (added), English.lproj/VLDocument~.nib/info.nib (added),
+	  Sources/VLModel.cpp (added), Resources/Music/flat.eps (added),
+	  English.lproj/VLDocument~.nib/classes.nib (added),
+	  Sources/VLSheetViewNotes.mm (added),
+	  Resources/Music/whole-rest.eps (added),
+	  Sources/Vocalese_Prefix.pch (added),
+	  Sources/VLSheetViewInternal.h (added),
+	  English.lproj/InfoPlist.strings (added),
+	  Resources/Music/g-clef.eps (added), Sources/VLSheetView.h
+	  (added), Resources/Music/quarter-rest.eps (added),
+	  Resources/Music/half-notehead.eps (added),
+	  Resources/Music/whole-notehead.eps (added),
+	  Resources/Music/notecursor.eps (added),
+	  English.lproj/VLDocument~.nib/keyedobjects.nib (added),
+	  Resources/Music/natural.eps (added), Sources/VLSoundOut.cpp
+	  (added), Sources/VLDocument.h (added), Tests/TVLSoundOut.cpp
+	  (added), Resources/Music/sharp.eps (added), Resources/Info.plist
+	  (added), English.lproj/MainMenu.nib/info.nib (added),
+	  Sources/main.m (added), Resources/Music/eighth-rest.eps (added),
+	  English.lproj/VLDocument.nib (added),
+	  Resources/Music/sixteenth-rest.eps (added),
+	  Resources/Music/thirtysecondth-rest.eps (added),
+	  Resources/Music/notehead.eps (added),
+	  English.lproj/VLDocument.nib/info.nib (added), Tests/TVLChord.cpp
+	  (added), English.lproj/VLDocument.nib/classes.nib (added),
+	  Resources (added), Sources/VLDocument.mm (added),
+	  Sources/VLModel.h (added), Vocalese.xcodeproj/neeri.mode1v3
+	  (added), English.lproj (added),
+	  English.lproj/MainMenu.nib/keyedobjects.nib (added),
+	  Sources/VLSheetViewChords.h (added), Sources (added),
+	  Vocalese.xcodeproj/neeri.pbxuser (added),
+	  Vocalese.xcodeproj/project.pbxproj (added),
+	  English.lproj/VLDocument.nib/keyedobjects.nib (added),
+	  Sources/VLSheetViewNotes.h (added), Resources/Music (added),
+	  Sources/VLSoundOut.h (added): Imported into SVN
+

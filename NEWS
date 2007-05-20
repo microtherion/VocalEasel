@@ -1,0 +1,17 @@
+19May07		VocalEasel 1.0a3
+
+ - Fixed numerous bugs
+ - Cleaned up file format so information that is outside the scope of MusicXML is
+    now stored in a separate Properties file.
+ - Implemented meter and division changes, although duration conversions are still
+    somewhat flaky at times.
+ - Automatically treat the first measure as a pickup measure if it contains no chords.
+ - Songs are now automatically resized when you add or delete notes or chords.
+ - Grooves are now dislayed in a more logical order.
+ - Add a "mirror" window, allowing you to check your vocal/microphone technique if
+    your mac is equipped with camera.
+
+01May07		VocalEasel 1.0a2 
+
+  - First public release
+
