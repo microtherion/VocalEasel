@@ -742,12 +742,16 @@ int8_t sStepToPitch[] = {
 	)
 		[vcsWrapper retain];
 	NSFileWrapper * prop = [wrappers objectForKey:@"Properties"];
-	if (prop)
+	if (prop) {
+		NSUndoManager * undoMgr = [self undoManager];
+		[undoMgr disableUndoRegistration];
 		[self setValuesForKeysWithDictionary:
 				  [NSPropertyListSerialization 
 					  propertyListFromData:[prop regularFileContents]
 					  mutabilityOption:NSPropertyListImmutable
 					  format:nil errorDescription:nil]];
+		[undoMgr enableUndoRegistration];
+	}
 	return [self readFromXMLData:
 					 [[wrappers objectForKey:@"Song"] regularFileContents]	
 				 error:outError];
