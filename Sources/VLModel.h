@@ -132,20 +132,28 @@ struct VLNote {
 		kTiedWithNext	= 1,
 		kTiedWithPrev	= 2
 	};
-
-	VLNote() : fPitch(kNoPitch) {}
-	VLNote(VLFraction dur, int8_t pitch) 
-		: fDuration(dur), fPitch(pitch), fTied(kNotTied)
-	{}
+	//
+	// Hint at visual representation (Computed in DecomposeNotes)
+	//
+	uint8_t 	fVisual;
+	enum {
+		kWhole		= 0,
+		kHalf		= 1,
+		kQuarter	= 2,
+		kEighth		= 3,
+		k16th		= 4,
+		k32nd		= 5,
+		
+		kNoteHead	= 0x07,
+		kTriplet	= 0x80
+	};
+	VLNote(VLFraction dur=0, int pitch=kNoPitch);
 	VLNote(std::string name);
-
 	void Name(std::string & name, bool useSharps = false) const;
 	void LilypondName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, bool & triplet, bool & pickup, const VLProperties & prop) const;
 	void MMAName(std::string & name, VLFraction at, VLFraction dur, VLFraction prevDur, VLFraction nextDur, const VLProperties & prop) const;
-};
-
-struct VLRest : VLNote {
-	VLRest(VLFraction duration) : VLNote(duration, kNoPitch) {}
+	void MakeRepresentable();
+	void AlignToGrid(VLFraction at, VLFraction grid);
 };
 
 struct VLChord : VLNote {
@@ -199,7 +207,7 @@ struct VLChord : VLNote {
 	};
 	int8_t		fRootPitch;	// kNoPitch == no root
 	
-	VLChord() {}
+	VLChord(VLFraction dur=0, int pitch=kNoPitch, int rootPitch=kNoPitch);
 	VLChord(std::string name);
 	void	Name(std::string & base, std::string & ext, std::string & root, bool useSharps = false) const;
 	void 	LilypondName(std::string & name, bool useSharps = false) const;
@@ -228,9 +236,8 @@ struct VLProperties {
 };
 
 struct VLLyricsNote : VLNote {
-	VLLyricsNote() {}
-	explicit VLLyricsNote(const VLNote & note) 
-     	       { *static_cast<VLNote *>(this) = note; }
+	VLLyricsNote(const VLNote & note);
+	VLLyricsNote(VLFraction dur=0, int pitch = kNoPitch);
 
 	std::vector<VLSyllable>	fLyrics;
 };
@@ -250,6 +257,8 @@ struct VLMeasure {
 
 	bool IsEmpty() const;
 	bool NoChords() const;
+
+	void DecomposeNotes(const VLProperties & prop, VLNoteList & decomposed) const;
 };
 
 struct VLRepeat {

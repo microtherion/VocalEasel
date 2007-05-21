@@ -38,7 +38,7 @@ std::ostream & operator<<(std::ostream & s, VLFraction f)
 		s << whole;
 		f -= whole;
 		if (f.fNum)
-			s << int(f.fNum) << '/' << int(f.fDenom);
+			s << '.' << int(f.fNum) << '/' << int(f.fDenom);
 	} else if (f.fNum) {
 		s << int(f.fNum) << '/' << int(f.fDenom);
 	} else {
@@ -65,49 +65,43 @@ void PrintName(const VLChord & chord)
 	}
 }
 
-template <class C> class Printer {
-	VLProperties *	fProp;
-	VLFraction      fAt;
-public:
-	Printer(VLProperties * prop) : fProp(prop) {}
-	
-	void operator()(const C& obj) {
-		PrintName(obj);
-
-		std::cout << '@';
-		for (VLFraction d = obj.fDuration; d > 0; ) {
-			VLFraction p;
-			fProp->PartialNote(fAt, d, &p);
-			if (d < obj.fDuration)
-				std::cout << '+';
-			std::cout << p;
-			d	-= p;
-			fAt += p;
-		}
-		std::cout << ' ';
-	}
-};
-
-void PrintMeasure(const VLMeasure & measure)
+void ChordPrinter(const VLChord & chord)
 {
-	std::for_each(measure.fChords.begin(), measure.fChords.end(), 
-				  Printer<VLChord>(measure.fProperties));
+	PrintName(chord);
+	if (chord.fDuration != VLFraction(1,4))
+		std::cout << " * " << chord.fDuration;
+	std::cout << ' ';
+}
+
+void NotePrinter(const VLLyricsNote & note)
+{
+	if (note.fTied & VLNote::kTiedWithPrev)
+		std::cout << "~ ";
+	PrintName(note);
+	std::cout << ' ' << note.fDuration 
+			  << '[' << ((note.fVisual & VLNote::kTriplet) ? "T" : "")
+			  << (note.fVisual & VLNote::kNoteHead)["124863"] << "] ";
+}
+
+void PrintMeasure(const VLMeasure & measure, const VLProperties & prop)
+{
+	std::for_each(measure.fChords.begin(), measure.fChords.end(), ChordPrinter);
 	std::cout << std::endl;
-	std::for_each(measure.fMelody.begin(), measure.fMelody.end(), 
-				  Printer<VLNote>(measure.fProperties));
+	VLNoteList decomposed;
+	measure.DecomposeNotes(prop, decomposed);
+	std::for_each(decomposed.begin(), decomposed.end(), NotePrinter);
 	std::cout << std::endl << std::endl;	
 }
 
 void PrintSong(const VLSong & song)
 {
-	std::for_each(song.fMeasures.begin(), song.fMeasures.end(), PrintMeasure);
+	for (size_t i=0; i<song.CountMeasures()-song.EmptyEnding(); ++i)
+		PrintMeasure(song.fMeasures[i], song.fProperties[song.fMeasures[i].fPropIdx]);
 }
 
 int main(int, char *const [])
 {
 	VLSong song;
-
-	song.fMeasures.resize(4);
 
 	char	command;
 	while (std::cin >> command) {
@@ -117,7 +111,7 @@ int main(int, char *const [])
 		switch (command) {
 		case '+':
 			std::cin >> name >> measure >> at;
-			song.AddNote(name, measure, at);
+			song.AddNote(VLNote(name), measure, at);
 			
 			PrintSong(song);
 			break;

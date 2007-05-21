@@ -154,6 +154,11 @@ VLNote::VLNote(std::string name)
 	fPitch = kNoPitch; // Failed to parse completely
 }	
 
+VLNote::VLNote(VLFraction dur, int pitch)
+	: fDuration(dur), fPitch(pitch), fTied(0), fVisual(0)
+{
+}
+
 void VLNote::Name(std::string & name, bool useSharps) const
 {
 	name = PitchName(fPitch, useSharps);
@@ -274,6 +279,53 @@ void VLNote::MMAName(std::string & name, VLFraction at, VLFraction dur, VLFracti
 		name += '~';
 }
 
+void VLNote::MakeRepresentable()
+{
+	if (fDuration > 1)
+		fDuration = 1;
+	fVisual	= kWhole;
+	VLFraction part(1,1);
+	VLFraction triplet(2,3);
+	//
+	// Power of 2 denominators are not triplets
+	//
+	bool 	   nonTriplet(!(fDuration.fDenom & (fDuration.fDenom-1)));
+	while (part.fDenom < 64) {
+		if (fDuration >= part) {
+			fDuration = part;
+			return;
+		} else if (!nonTriplet && fDuration >= triplet) {
+			fDuration = triplet;
+			fVisual	 |= kTriplet;
+			return;
+		}
+		part	/= 2;
+		triplet /= 2;
+		++fVisual;
+	}
+	fprintf(stderr, "Encountered preposterously brief note: %d/%d\n",
+			fDuration.fNum, fDuration.fDenom);
+	abort();
+}
+
+void VLNote::AlignToGrid(VLFraction at, VLFraction grid)
+{
+	if (at+fDuration > grid) {	
+		fDuration	= grid-at;
+		MakeRepresentable();
+	}
+}
+
+VLLyricsNote::VLLyricsNote(const VLNote & note)
+	: VLNote(note)
+{ 
+}
+
+VLLyricsNote::VLLyricsNote(VLFraction dur, int pitch)
+	: VLNote(dur, pitch)
+{
+} 
+
 struct VLChordModifier {
 	const char *	fName;
 	uint32_t		fAddSteps;
@@ -312,6 +364,11 @@ static const VLChordModifier kModifiers[] = {
 	{"2", _ kmMaj2nd, _ kmMaj3rd},
 	{NULL, 0, 0}
 };
+
+VLChord::VLChord(VLFraction dur, int pitch, int rootPitch)
+	: VLNote(dur, pitch), fSteps(0), fRootPitch(kNoPitch)
+{
+}
 
 VLChord::VLChord(std::string name)
 {
@@ -846,6 +903,141 @@ bool VLMeasure::NoChords() const
 		&& fChords.front().fPitch == VLNote::kNoPitch;
 }
 
+void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decomposed) const
+{
+	decomposed.clear();
+
+	const VLFraction kQuarterDur(1,4);
+	const VLFraction kEighthLoc(1,8);
+	const VLFraction kQuarTripLoc(1,6);
+
+	VLFraction 	at(0);
+	VLNoteList::const_iterator 	i 	= fMelody.begin();
+	VLNoteList::const_iterator 	e 	= fMelody.end();
+	int			prevTriplets	    = 0;
+	int			prevVisual;
+	VLFraction  prevTripDur;
+
+	while (i!=e) {	
+		VLNoteList::const_iterator 	n 	= i;
+		++n;
+		
+		VLLyricsNote c	= *i;	// Current note, remaining duration
+		VLLyricsNote p  = c;	// Next partial note
+		do {
+			//
+			// Start with longest possible note
+			//
+			p.MakeRepresentable(); 
+			//
+			// Prefer further triplets
+			//
+			if (prevTriplets) {
+				if (p.fDuration >= 2*prevTripDur) {
+					p.fDuration = 2*prevTripDur;
+					if (prevTriplets == 1) {
+						p.fVisual   = prevVisual-1;
+						prevTriplets = 2; // 1/8th, 1/4th triplet or similar
+					} else {
+						p.fDuration = prevTripDur; // 1/8th, 1/8th, 1/4th
+						p.fVisual   = prevVisual;
+					}
+					goto haveDuration;
+				} else if (p.fDuration >= prevTripDur) {
+					p.fDuration	= prevTripDur;
+					p.fVisual   = prevVisual;
+					goto haveDuration;
+				} else if (p.fDuration >= prevTripDur/2) {
+					p.fDuration = prevTripDur/2;
+					p.fVisual   = prevVisual+1; 
+					prevTripDur	/= 2;
+					if (prevTriplets == 1) 
+						prevTriplets = 2;	// 1/4th, 1/8th
+					else 
+						prevTriplets = 1; 	// 1/4th, 1/4th, 1/8th
+					goto haveDuration;
+				}
+				prevTriplets = 0;
+			}
+			if (at.fDenom > 4) { 
+				//
+				// Break up notes not starting on quarter beat
+				//  - Never cross middle of measure
+				//
+				VLFraction middle;
+				if (prop.fTime.fNum & 1) // Treat 5/4 as 3+2, not 2+3
+					middle = VLFraction((prop.fTime.fNum+1)/2, prop.fTime.fDenom);
+				else
+					middle = prop.fTime / 2;
+				if (at < middle) 
+					p.AlignToGrid(at, middle);
+				VLFraction inBeat = at % kQuarterDur;
+				if ((inBeat == kEighthLoc || inBeat == kQuarTripLoc)
+				 && p.fDuration == kQuarterDur
+				)
+					; // Allow syncopated quarters
+				else
+					p.AlignToGrid(inBeat, kQuarterDur); // Align all others
+			}
+			if (p.fVisual & VLNote::kTriplet) {
+				//
+				// Distinguish swing 8ths/16ths from triplets
+				//
+				VLFraction swung(1, prop.fDivisions < 6 ? 8 : 16);
+				VLFraction grid(2*swung);
+				if (p.fDuration == 4*swung/3 && (at % grid == 0)) {
+					if (p.fDuration == c.fDuration && n!=e 
+					 && (n->fDuration == p.fDuration 
+					 || (n->fDuration == 2*p.fDuration))
+					) {
+						; // Triplet, not swing note
+					} else {
+						//
+						// First swing note (4th triplet -> 8th)
+						//
+						p.fVisual = (p.fVisual+1) & VLNote::kNoteHead;
+					}
+				} else if (p.fDuration == 2*swung/3 
+				 && ((at+p.fDuration) % grid == 0)
+				) {
+					//
+					// Second swing note (8th triplet -> 8th)
+					//
+					p.fVisual &= VLNote::kNoteHead;
+				} else if (p.fDuration != c.fDuration 
+                      && 2*p.fDuration != c.fDuration
+				) {
+					//
+					// Get rid of awkward triplets
+					//
+					p.fDuration *= VLFraction(3,4);
+					p.fVisual    = (p.fVisual+1) & VLNote::kNoteHead;
+				}
+			}
+		haveDuration:
+			if (p.fVisual & VLNote::kTriplet) 
+				if (prevTriplets = (prevTriplets+1)%3) {
+					prevTripDur = p.fDuration;
+					prevVisual  = p.fVisual;
+				}
+			p.fTied &= VLNote::kTiedWithPrev;
+			if (p.fDuration == c.fDuration) 
+				p.fTied |= c.fTied & VLNote::kTiedWithNext;
+			else
+				p.fTied |= VLNote::kTiedWithNext;
+			if (p.fPitch == VLNote::kNoPitch)
+				p.fTied = VLNote::kNotTied;
+			decomposed.push_back(p);
+			at			+= p.fDuration;
+			c.fDuration	-= p.fDuration;
+			p.fDuration  = c.fDuration;
+			p.fTied |= VLNote::kTiedWithPrev;
+			p.fLyrics.clear();
+		} while (c.fDuration > 0);
+		i = n;
+	}
+}
+
 VLSong::VLSong(bool initialize)
 {
 	if (!initialize)
@@ -865,9 +1057,8 @@ VLSong::VLSong(bool initialize)
 void VLSong::AddMeasure()
 {
 	VLFraction		dur  = fProperties.front().fTime;
-	VLLyricsNote 	rest = VLLyricsNote(VLRest(dur));
-	VLChord 		rchord;
-	rchord.fDuration = dur;
+	VLLyricsNote 	rest(dur);
+	VLChord 		rchord(dur);
 	VLMeasure meas;
 	
 	meas.fChords.push_back(rchord);
@@ -1357,9 +1548,8 @@ void VLSong::ChangeTime(VLFraction newTime)
 	VLProperties & prop = fProperties.front();
 	if (prop.fTime == newTime)
 		return; // No change
-	VLChord 		rchord;
-	rchord.fDuration	= newTime-prop.fTime;
-	VLLyricsNote rnote  = VLLyricsNote(VLRest(newTime-prop.fTime));
+	VLChord			rchord(newTime-prop.fTime);
+	VLLyricsNote	rnote(newTime-prop.fTime);
 	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
 		if (newTime < prop.fTime) {
 			VLChordList::iterator i = fMeasures[measure].fChords.begin();
@@ -2255,10 +2445,8 @@ void VLSong::PasteMeasures(size_t beginMeasure, const VLSong & measures, int mod
 			VLMeasure 	rest;
 			rest.fPropIdx	= fMeasures.back().fPropIdx;
 			VLFraction	dur	= fProperties[rest.fPropIdx].fTime;
-			rest.fMelody.push_back(VLLyricsNote(VLRest(dur)));
-			VLChord		rchord;
-			rchord.fDuration= dur;
-			rest.fChords.push_back(rchord);
+			rest.fMelody.push_back(VLLyricsNote(dur));
+			rest.fChords.push_back(VLChord(dur));
 
 			fMeasures.insert(fMeasures.end(), nextMeasure-CountMeasures(), rest);
 		}
@@ -2276,7 +2464,7 @@ void VLSong::PasteMeasures(size_t beginMeasure, const VLSong & measures, int mod
 void VLSong::DeleteMeasures(size_t beginMeasure, size_t endMeasure, int mode)
 {
 	if (mode == kOverwriteMelody) {
-		VLLyricsNote rest(VLRest(fProperties.front().fTime));
+		VLLyricsNote rest(fProperties.front().fTime);
 		for (size_t m=beginMeasure; m<endMeasure; ++m) {
 			fMeasures[m].fMelody.clear();
 			fMeasures[m].fMelody.push_back(rest);

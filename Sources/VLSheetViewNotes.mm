@@ -134,7 +134,7 @@
 	}
 }
 
-- (void) drawNote:(VLFraction)dur at:(NSPoint)p 
+- (void) drawNote:(int)visual at:(NSPoint)p 
 	   accidental:(VLMusicElement)accidental tied:(BOOL)tied
 {
 	NSPoint s = p;
@@ -147,11 +147,11 @@
 	// Draw note head
 	//
 	NSImage * head;
-	switch (dur.fDenom) {
-	case 1:
+	switch (visual & VLNote::kNoteHead) {
+	case VLNote::kWhole:
 		head = [self musicElement:kMusicWholeNote];
 		break;
-	case 2:
+	case VLNote::kHalf:
 		head = [self musicElement:kMusicHalfNote];
 		s.x -= 1.0f;
 		break;
@@ -190,19 +190,19 @@
 	//
 	//
 	//
-	if (dur.fDenom > 1) {
+	if (visual > 0) {
 		NSBezierPath * bz = [NSBezierPath bezierPath];		
 		NSPoint s1 = NSMakePoint(s.x, s.y+kStemH);
 		NSImage * flag = nil;	
-		switch (dur.fDenom) {
-		case 8:
+		switch (visual) {
+		case VLNote::kEighth:
 			flag = [self musicElement:kMusicEighthFlag];
 			break;
-		case 16:
+		case VLNote::k16th:
 			flag = [self musicElement:kMusicSixteenthFlag];
 			s1.y += 5.0f;
 			break;
-		case 32:
+		case VLNote::k32nd:
 			flag = [self musicElement:kMusicThirtysecondthFlag];
 			s1.y += 13.0f;
 			break;
@@ -239,34 +239,34 @@
 	fLastNoteCenter	= c;
 }
 
-- (void) drawRest:(VLFraction)dur at:(NSPoint)p
+- (void) drawRest:(int)visual at:(NSPoint)p
 {
 	//
 	// Draw rest
 	//
 	NSImage * head = nil;
-	switch (dur.fDenom) {
-	case 1:
+	switch (visual) {
+	case VLNote::kWhole:
 		head = [self musicElement:kMusicWholeRest];
 		p.y	+= kWholeRestY;
 		break;
-	case 2:
+	case VLNote::kHalf:
 		head = [self musicElement:kMusicHalfRest];
 		p.y	+= kHalfRestY;
 		break;
-	case 4:
+	case VLNote::kQuarter:
 		head = [self musicElement:kMusicQuarterRest];
 		p.x -= kNoteX;
 		break;
-	case 8:
+	case VLNote::kEighth:
 		head = [self musicElement:kMusicEighthRest];
 		p.x -= kNoteX;
 		break;
-	case 16:
+	case VLNote::k16th:
 		head = [self musicElement:kMusicSixteenthRest];
 		p.x -= kNoteX;
 		break;
-	case 32:
+	case VLNote::k32nd:
 		head = [self musicElement:kMusicThirtysecondthRest];
 		p.x -= kNoteX;
 		break;
@@ -287,63 +287,48 @@
 		int	measIdx = m+system*fMeasPerSystem;
 		if (measIdx >= song->CountMeasures())
 			break;
-		const VLMeasure		measure = song->fMeasures[measIdx];
-		const VLNoteList &	melody	= measure.fMelody;
+		const VLMeasure	&	measure = song->fMeasures[measIdx];
+		VLNoteList 			melody;
+		measure.DecomposeNotes(song->fProperties[measure.fPropIdx], melody);
 		VLFraction 			at(0);
-		VLFraction 			prevDur(0);
-		bool				triplet = false;
 		for (VLNoteList::const_iterator note = melody.begin(); 
 			 note != melody.end(); 
 			 ++note
 		) {
-			VLFraction 	dur 	= note->fDuration;
-			VLFraction  nextDur(0);
-			VLNoteList::const_iterator next = note;
-			if (++next != melody.end())
-				nextDur = next->fDuration;
-			BOOL       	first	= !m || !(note->fTied & VLNote::kTiedWithPrev);
-			int			pitch	= note->fPitch;
-			while (dur > 0) {
-				VLFraction partialDur; // Actual value of note drawn
-				VLFraction noteDur; 	// Visual value of note
-				prop.PartialNote(at, dur, dur==prevDur || dur==nextDur, 
-								 &partialDur);
-				prop.VisualNote(at, partialDur, triplet, &noteDur, &triplet);
-				prevDur	= partialDur;
-				if (pitch != VLNote::kNoPitch) {
-					[self drawLedgerLinesWithPitch:pitch 
-						  at:NSMakePoint([self noteXInMeasure:m at:at], kSystemY)];
-					VLMusicElement		accidental;
-					NSPoint pos = 
-						NSMakePoint([self noteXInMeasure:m at:at],
-									kSystemY+[self noteYWithPitch:pitch 
-												   accidental:&accidental]);
-					VLMusicElement 	acc = accidental;
-					int				step= [self stepWithPitch:pitch];
-					if (acc == accidentals[step])
-						acc = kMusicNothing; 	// Don't repeat accidentals
-					else if (acc == kMusicNothing) 
-						if (accidentals[step] == kMusicNatural) // Resume signature
-							acc = prop.fKey < 0 ? kMusicFlat : kMusicSharp;
-						else 
-							acc = kMusicNatural;
-					[self drawNote:noteDur 
-						  at: pos
-						  accidental: acc
-						  tied:!first];
-					accidentals[step] = accidental;
-				} else {
-					VLMusicElement		accidental;
-					NSPoint pos = 
-						NSMakePoint([self noteXInMeasure:m at:at],
-									kSystemY+[self noteYWithPitch:65 
-												   accidental:&accidental]);
-					[self drawRest:noteDur at: pos];
-				}
-				dur	   -= partialDur;
-				at	   += partialDur;
-				first	= NO;
+			BOOL	tied  = (note != melody.begin() || m) 
+				&& note->fTied & VLNote::kTiedWithPrev;
+			int		pitch = note->fPitch;
+			if (pitch != VLNote::kNoPitch) {
+				[self drawLedgerLinesWithPitch:pitch 
+					  at:NSMakePoint([self noteXInMeasure:m at:at], kSystemY)];
+				VLMusicElement		accidental;
+				NSPoint pos = 
+					NSMakePoint([self noteXInMeasure:m at:at],
+								kSystemY+[self noteYWithPitch:pitch 
+											   accidental:&accidental]);
+				VLMusicElement 	acc = accidental;
+				int				step= [self stepWithPitch:pitch];
+				if (acc == accidentals[step])
+					acc = kMusicNothing; 	// Don't repeat accidentals
+				else if (acc == kMusicNothing) 
+					if (accidentals[step] == kMusicNatural) // Resume signature
+						acc = prop.fKey < 0 ? kMusicFlat : kMusicSharp;
+					else 
+						acc = kMusicNatural;
+				[self drawNote:note->fVisual & VLNote::kNoteHead
+					  at: pos
+					  accidental: acc
+					  tied:tied];
+				accidentals[step] = accidental;
+			} else {
+				VLMusicElement		accidental;
+				NSPoint pos = 
+					NSMakePoint([self noteXInMeasure:m at:at],
+								kSystemY+[self noteYWithPitch:65 
+											   accidental:&accidental]);
+				[self drawRest:note->fVisual & VLNote::kNoteHead at: pos];
 			}
+			at	   += note->fDuration;
 		}
 	}
 	if (fCursorPitch != VLNote::kNoPitch && fCursorMeasure/fMeasPerSystem == system)
