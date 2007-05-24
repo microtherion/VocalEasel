@@ -9,6 +9,7 @@
 //
 
 #import "VLLilypondDocument.h"
+#import "VLLilypondWriter.h"
 
 @interface NSMutableString (VLLilypond)
 
@@ -115,6 +116,8 @@ static const char * sKeyNames[] = {
 - (NSData *)lilypondDataWithError:(NSError **)outError
 {
 	const VLProperties & 	prop = song->fProperties.front();
+	VLLilypondWriter        writer;
+	writer.Visit(*song);
 	NSBundle *	 			bndl = [NSBundle mainBundle];
 	NSString * 				tmpl = 
 		[bndl pathForResource:lilypondTemplate
@@ -130,12 +133,10 @@ static const char * sKeyNames[] = {
 			[bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
 	[ly substituteMacro:@"PAPERSIZE" withValue:@"letter"];
 	[ly substituteMacro:@"FORMATTING" withValue:@"ragged-last-bottom = ##f"];
-	std::string			lys;
-	song->LilypondChords(lys);
 	[ly substituteMacro:@"VLVERSION" withValue:
 			[bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
 	[ly substituteMacro:@"CHORDS" withValue: 
-			[NSString stringWithUTF8String:lys.c_str()]];
+			[NSString stringWithUTF8String:writer.Chords().c_str()]];
 	[ly substituteMacro:@"TIME" withValue:
 			[NSString stringWithFormat:@"%d/%d",
 					  prop.fTime.fNum, prop.fTime.fDenom]];
@@ -144,14 +145,12 @@ static const char * sKeyNames[] = {
 					sKeyNames[prop.fKey+kMajorOffset]]
 		: [NSString stringWithFormat:@"%s \\minor", 
 					sKeyNames[prop.fKey+kMinorOffset]]];
-	song->LilypondNotes(lys);
 	[ly substituteMacro:@"NOTES" withValue: 
-			[NSString stringWithUTF8String:lys.c_str()]];
+			[NSString stringWithUTF8String:writer.Melody().c_str()]];
 	if (size_t stanzas = song->CountStanzas())
-		for (size_t s=0; s++<stanzas; ) {
-			song->LilypondStanza(lys, s);
+		for (size_t s=0; s<stanzas; ++s) {
 			[ly substituteMacro:@"LYRICS" withValue:
-					[NSString stringWithUTF8String:lys.c_str()]
+					[NSString stringWithUTF8String:writer.Lyrics(s).c_str()]
 				repeat: s<stanzas];
 		}
 	[ly purgeMacros];

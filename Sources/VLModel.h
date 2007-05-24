@@ -150,7 +150,6 @@ struct VLNote {
 	VLNote(VLFraction dur=0, int pitch=kNoPitch);
 	VLNote(std::string name);
 	void Name(std::string & name, bool useSharps = false) const;
-	void LilypondName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, bool & triplet, bool & pickup, const VLProperties & prop) const;
 	void MMAName(std::string & name, VLFraction at, VLFraction dur, VLFraction prevDur, VLFraction nextDur, const VLProperties & prop) const;
 	void MakeRepresentable();
 	void AlignToGrid(VLFraction at, VLFraction grid);
@@ -210,7 +209,6 @@ struct VLChord : VLNote {
 	VLChord(VLFraction dur=0, int pitch=kNoPitch, int rootPitch=kNoPitch);
 	VLChord(std::string name);
 	void	Name(std::string & base, std::string & ext, std::string & root, bool useSharps = false) const;
-	void 	LilypondName(std::string & name, bool useSharps = false) const;
 	bool 	MMAName(std::string & name, bool useSharps, bool initial) const;
 };
 
@@ -274,7 +272,8 @@ struct VLRepeat {
 	std::vector<Ending>	fEndings;
 };
 
-struct VLSong {
+class VLSong {
+public:
 	VLSong(bool initialize = true);
 	void swap(VLSong & other);
 	void clear();
@@ -368,12 +367,26 @@ struct VLSong {
 	size_t  CountStanzas() const;
 	size_t	CountTopLedgers() const;
 	size_t	CountBotLedgers() const;
-	void	LilypondNotes(std::string & notes) const;
-	void	LilypondChords(std::string & chords) const;
-	void 	LilypondStanza(std::string & lyrics, size_t stanza) const;
 	VLFract TiedDuration(size_t measure);
 private:
 	void	AddMeasure();
+};
+
+class VLSongVisitor {
+public:
+	virtual ~VLSongVisitor();
+
+	virtual void Visit(VLSong & song) 										{}
+	virtual void VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas) {}
+	virtual void VisitNote(VLLyricsNote & n)								{}
+	virtual void VisitChord(VLChord & c)									{}
+protected:
+	VLSongVisitor() {}
+
+	void VisitMeasures(VLSong & song, bool performanceOrder);
+	void VisitNotes(VLMeasure & measure, const VLProperties & prop, 
+					bool decomposed);
+	void VisitChords(VLMeasure & measure);
 };
 
 // Local Variables:

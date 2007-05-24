@@ -92,19 +92,6 @@ static std::string	PitchName(int8_t pitch, bool useSharps)
 			+ std::string(kVLFlatStr);
 }
 
-static std::string	LilypondPitchName(int8_t pitch, bool useSharps)
-{
-	if (pitch == VLNote::kNoPitch)
-		return "r";
-	pitch %= 12;
-	if (kScale[pitch] != ' ')
-		return kScale[pitch] + std::string();
-	else if (useSharps)
-		return kScale[pitch-1] + std::string("is");
-	else
-		return kScale[pitch+1] + std::string("es");
-}
-
 static std::string MMAPitchName(int8_t pitch, bool useSharps)
 {
 	if (pitch == VLNote::kNoPitch)
@@ -162,50 +149,6 @@ VLNote::VLNote(VLFraction dur, int pitch)
 void VLNote::Name(std::string & name, bool useSharps) const
 {
 	name = PitchName(fPitch, useSharps);
-}
-
-void VLNote::LilypondName(std::string & name, VLFraction at, VLFraction prevDur, VLFraction nextDur, bool & triplet, bool & pickup, const VLProperties & prop) const
-{
-	std::string n = LilypondPitchName(fPitch, prop.fKey >= 0);
-	if (fPitch != kNoPitch) {
-		for (int ticks = (fPitch-kMiddleC+kOctave)/kOctave; ticks>0; --ticks)
-			n += '\'';
-		for (int commas = (kMiddleC-kOctave-fPitch)/kOctave; commas>0; --commas)
-			n += ',';
-		pickup = false;
-	} else if (pickup) {
-		n = "s";
-	}
-
-	std::vector<std::string> 	durations;
-	VLFraction					prevPart(0);
-	for (VLFraction dur = fDuration; dur.fNum; ) {
-		char duration[32];
-		VLFraction part, visual;
-		bool	   grouped = dur==nextDur ||
-			(prevPart!=0 ? dur==prevPart : dur==prevDur);
-		prop.PartialNote(at, dur, grouped, &part);
-		prop.VisualNote(at, part, triplet, &visual, &triplet);
-		if (!triplet && fPitch != kNoPitch && part == dur && 2*visual == prevPart) {
-			durations.pop_back();
-			sprintf(duration, "%s%d.", n.c_str(), visual.fDenom/2);
-		} else if (triplet) {
-			sprintf(duration, "\\times 2/3 { %s%d }", n.c_str(), visual.fDenom);
-		} else {
-			sprintf(duration, "%s%d", n.c_str(), visual.fDenom);
-		}
-		durations.push_back(duration);
-		prevPart	= part;
-		at         += part;
-		dur        -= part;
-	}
-	for (size_t i=0; i<durations.size(); ++i) {
-		if (i && fPitch != kNoPitch)
-			name += " ~ ";
-		name += durations[i];
-	}
-	if (fTied & kTiedWithNext)
-		name += " ~";
 }
 
 static struct {
@@ -528,109 +471,6 @@ void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bo
 	//
 	if (fRootPitch != kNoPitch)
 		root = PitchName(fRootPitch, useSharps);
-}
-
-static const char * kLilypondStepNames[] = {
-	"", "", "sus2", "", "", "sus", "5-", "", "5+", "6", "7", "7+", "",
-	"9-", "9", "9+", "", "11", "11+", "", "13-", "13"
-};
-
-void VLChord::LilypondName(std::string & name, bool useSharps) const
-{
-	name = LilypondPitchName(fPitch, useSharps);
-	char duration[16];
-	if (fDuration.fNum == 1 && !(fDuration.fDenom & (fDuration.fDenom-1))) // Power of two
-		sprintf(duration, "%d", fDuration.fDenom);
-	else
-		sprintf(duration, "1*%d/%d", fDuration.fNum, fDuration.fDenom);
-	name += std::string(duration);
-	if (fPitch == kNoPitch)
-		return;
-
-	std::string ext;
-	uint32_t steps = fSteps;
-	//
-	// m / dim
-	//
-	if (steps & kmMin3rd)
-		if (steps & (kmDim5th|kmDim7th) 
-		 && !(steps & (km5th|kmMin7th|kmMaj7th|kmMin9th|kmMaj9th|km11th|kmAug11th|kmMin13th|kmMaj13th))
-		) {
-			ext = "dim";
-			steps|= (steps & kmDim7th) << 1;
-			steps&=	~(kmMin3rd|kmDim5th|kmDim7th);
-		} else {
-			ext = "m";
-			steps&= ~kmMin3rd;
-		}
-	steps &= ~(kmUnison | km5th);
-	//
-	// Maj
-	//
-	if (steps & kmMaj7th) {
-		if (ext.size())
-			ext += '.';
-		ext += "maj"; 
-		if (steps & kmMaj9th) {
-			ext += "9";	
-			steps &= ~kmMaj9th;
-		} else
-			ext += "7";
-		steps&= ~kmMaj7th;
-	}
-	//
-	// Sus
-	//
-	if (steps & (kmMaj2nd|km4th)) {
-		if (ext.size())
-			ext += '.';
-		ext += "sus";
-		if (steps & kmMaj2nd)
-			ext += "2";
-		else
-			ext += "4";
-		steps&= ~(kmMaj2nd|km4th);
-	}
-	//
-	// 6/9
-	//
-	if ((steps & (kmDim7th|kmMaj9th)) == (kmDim7th|kmMaj9th)) {
-		if (ext.size() && !isalpha(ext[ext.size()-1]))
-			ext += '.';
-		ext += "6.9";
-		steps&= ~(kmDim7th|kmMaj9th);
-	}
-	//
-	// Other extensions. Only the highest unaltered extension is listed.
-	//
-	if (uint32_t unaltered = steps & (kmMin7th | kmMaj9th | km11th | kmMaj13th)) {
-		steps			  &= ~unaltered;
-	
-		for (int step = kMaj13th; step > kDim7th; --step)
-			if (unaltered & (1 << step)) {
-				std::string sn = kLilypondStepNames[step];
-				if (ext.size() && !isalpha(ext[ext.size()-1]) && sn.size())
-					ext += '.';
-				ext += sn;
-				break;
-			}
-	}
-	for (int step = kMin2nd; steps; ++step) 
-		if (steps & (1 << step)) {
-			std::string sn = kLilypondStepNames[step];
-			if (ext.size() && !isalpha(ext[ext.size()-1]) && sn.size())
-				ext += '.';
-			ext   += sn;
-			steps &= ~(1 << step);
-		}
-	
-	if (ext.size())
-		name += ':' + ext;
-	//
-	// Root
-	//
-	if (fRootPitch != kNoPitch)
-		name += "/+" + LilypondPitchName(fRootPitch, useSharps);
 }
 
 //
@@ -1678,152 +1518,6 @@ size_t VLSong::CountBotLedgers() const
 		return 0;
 }
 
-void VLSong::LilypondNotes(std::string & notes) const
-{
-	notes 					= "";
-	std::string indent 		= "";
-	size_t		seenEnding 	= 0;
-	int			numEndings	= 0;
-	size_t		endMeasure  = fMeasures.size()-EmptyEnding();
-	bool		pickup		= fMeasures[0].NoChords();
-	for (size_t measure=0; measure<endMeasure; ++measure) {
-		VLNoteList::const_iterator i 	= fMeasures[measure].fMelody.begin();
-		VLNoteList::const_iterator e 	= fMeasures[measure].fMelody.end();
-		VLFraction 				   at(0);
-
-		int		times;
-		size_t	volta;
-		bool	repeat;
-		
-		if (DoesBeginRepeat(measure, &times)) {
-			char volta[8];
-			sprintf(volta, "%d", times);
-			notes 	    = notes + "\\repeat volta "+volta+" {\n";
-			indent 		= "    ";
-			seenEnding 	= 0;
-			numEndings	= 0;
-		}
-		if (DoesEndRepeat(measure)) {
-			notes += "}\n";
-			indent = "";
-		}
-		if (DoesBeginEnding(measure, &repeat, &volta)) {
-			notes += seenEnding ? "}{\n" : "} \\alternative {{\n";
-			notes += "    \\set Score.repeatCommands = #'((volta \"";
-			const char * comma = "";
-			for (int r=0; r<8; ++r)
-				if (volta & (1<<r)) {
-					char volta[8];
-					sprintf(volta, "%s%d.", comma, r+1);
-					comma	= ", ";
-					notes += volta;
-				}
-			notes = notes + "\")" + (repeat ? "" : " end-repeat") + ")\n";
-			seenEnding	|= volta;
-			++numEndings;
-		} else if (DoesEndEnding(measure)) {
-			notes += "}}\n";
-			indent = "";
-		}
-		notes += indent;
-		if (fCoda == measure)
-			notes += "\\break \\mark \\markup { \\musicglyph #\"scripts.coda\" }\n"
-				+ indent;
-		VLFraction prevDur(0);
-		bool triplet = false;
-		for (; i!=e; ++i) {
-			std::string note;
-			VLNoteList::const_iterator n = i;
-			VLFraction nextDur(0);
-			if (++n != e)
-				nextDur = n->fDuration;
-			i->LilypondName(note, at, prevDur, nextDur, triplet, pickup, fProperties[fMeasures[measure].fPropIdx]);
-			prevDur	= i->fDuration;
-			at 	   += i->fDuration;
-			notes  += note+" ";
-		}
-		//
-		// Consolidate triplets
-		//
-		size_t trip;
-		while ((trip = notes.find("} \\times 2/3 { ")) != std::string::npos)
-			notes.erase(trip, 15);
-		while ((trip = notes.find("} ~ \\times 2/3 { ")) != std::string::npos)
-			notes.replace(trip, 17, "~ ", 2);
-		// 
-		// Swap ties into correct order
-		//
-		while ((trip = notes.find("} ~")) != std::string::npos)
-			notes.replace(trip, 3, "~ } ", 4);
-			
-		if (fGoToCoda == measure+1)
-			notes += "\n"
-				+ indent 
-				+ "\\mark \\markup { \\musicglyph #\"scripts.coda\" } |";
-		else
-			notes += '|';
-		if (!(measure % 4)) {
-			char measNo[8];
-			sprintf(measNo, " %% %d", measure+1);
-			notes += measNo;
-		}
-		if (measure < fMeasures.size()-1)
-			notes += '\n';
-	}
-}
-
-void VLSong::LilypondChords(std::string & chords) const
-{
-	chords = "";
-	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
-		bool useSharps	= fProperties[fMeasures[measure].fPropIdx].fKey>=0;
-		VLChordList::const_iterator i	= fMeasures[measure].fChords.begin();
-		VLChordList::const_iterator e	= fMeasures[measure].fChords.end();
-
-		for (; i!=e; ++i) {
-			std::string chord;
-			i->LilypondName(chord, useSharps);
-			chords += chord+" ";
-		}
-		if (!(measure % 4)) {
-			char measNo[8];
-			sprintf(measNo, " %% %d", measure+1);
-			chords += measNo;
-		}
-		if (measure < fMeasures.size()-1)
-			chords += '\n';
-	}
-}
-
-void VLSong::LilypondStanza(std::string & lyrics, size_t stanza) const
-{
-	lyrics = "";
-	std::string sep;
-	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
-		VLNoteList::const_iterator i 	= fMeasures[measure].fMelody.begin();
-		VLNoteList::const_iterator e 	= fMeasures[measure].fMelody.end();
-		VLFraction 				   at(0);
-
-		for (; i!=e; ++i) {
-			if (i->fPitch == VLNote::kNoPitch 
-			 || (i->fTied & VLNote::kTiedWithPrev)
-			) {
-				continue; // Rest or continuation note, skip
-			} else if (i->fLyrics.size() < stanza || !i->fLyrics[stanza-1]) {
-				lyrics += sep + "\\skip1";
-			} else {
-				lyrics += sep + i->fLyrics[stanza-1].fText;
-				if (i->fLyrics[stanza-1].fKind & VLSyllable::kHasNext)
-					lyrics += " --";
-			}
-			sep = " ";
-		}
-		if ((measure % 4) == 3) {
-			sep		= "\n";
-		}
-	}	
-}
-
 bool VLSong::FindWord(size_t stanza, size_t & measure, VLFraction & at)
 {
 	at += VLFraction(1,64);
@@ -2534,3 +2228,58 @@ VLFract VLSong::TiedDuration(size_t measure)
 	}
 	return total;
 }
+
+VLSongVisitor::~VLSongVisitor()
+{
+}
+
+void VLSongVisitor::VisitMeasures(VLSong & song, bool performanceOrder)
+{
+	if (performanceOrder) {
+		VLSong::iterator e = song.end();
+		
+		for (VLSong::iterator m=song.begin(); m!=e; ++m) {
+			VLMeasure 	& meas = song.fMeasures[*m];
+			VLProperties& prop = song.fProperties[meas.fPropIdx];
+			VisitMeasure(*m, prop, meas);
+		}
+	} else {
+		size_t  e = song.CountMeasures() - song.EmptyEnding();
+
+		for (size_t m=0; m!=e; ++m) {
+			VLMeasure 	& meas = song.fMeasures[m];
+			VLProperties& prop = song.fProperties[meas.fPropIdx];
+			VisitMeasure(m, prop, meas);
+		}
+	}
+}
+
+void VLSongVisitor::VisitNotes(VLMeasure & measure, const VLProperties & prop, 
+							   bool decomposed)
+{
+	VLNoteList				decomp;
+	VLNoteList::iterator	n;
+	VLNoteList::iterator	e;
+
+	if (decomposed) {	
+		measure.DecomposeNotes(prop, decomp);
+		n = decomp.begin();
+		e = decomp.end();
+	} else {
+		n = measure.fMelody.begin();
+		e = measure.fMelody.end();
+	}
+
+	for (; n!=e; ++n)
+		VisitNote(*n);
+}
+
+void VLSongVisitor::VisitChords(VLMeasure & measure)
+{
+	VLChordList::iterator	c = measure.fChords.begin();
+	VLChordList::iterator	e = measure.fChords.end();
+
+	for (; c!=e; ++c)
+		VisitChord(*c);
+}
+
