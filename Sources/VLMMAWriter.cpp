@@ -37,28 +37,23 @@ void VLMMAWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 	//
 	// Generate melody and account for ties
 	//
-	bool setLastDur = false;
 	fAccum.clear();
-	fTied	= meas.fMelody.front().fTied & VLNote::kTiedWithPrev;
-	if (fTied && meas.fMelody.size() == 1) {
-		VisitNotes(meas, p, true);
-		if (meas.fMelody.back().fTied & VLNote::kTiedWithNext) {
-			fAccum = "~<>~;";
-		} else {
-			fAccum = "~<>;";
-		}
-	} else {
-		VisitNotes(meas, p, true);
-		if (meas.fMelody.back().fTied & VLNote::kTiedWithNext) {
-			fAccum.replace(fAccum.find_last_of(';'), 0, "~", 1);
-			setLastDur = true;
-		}
+	bool tiedWithPrev = (meas.fMelody.front().fTied & VLNote::kTiedWithPrev)
+		|| fSong->DoesTieWithPrevRepeat(m);
+	bool tiedWithNext = (meas.fMelody.back().fTied & VLNote::kTiedWithNext)
+		|| fSong->DoesTieWithNextRepeat(m);
+	fTied	= tiedWithPrev;
+	VisitNotes(meas, p, true);
+	if (fTied || fAccum == "~") {
+		fAccum = tiedWithNext ? "~<>~;" : "~<>;";
+	} else if (tiedWithNext) {
+		fAccum.replace(fAccum.find_last_of(';'), 0, "~", 1);
     }
 	
 	std::string melody = fAccum;
 
 	fMeasures	+= chords+"\t{ " + melody + " }\n";
-	if (setLastDur)
+	if (!fTied && tiedWithNext)
 		fLastDur = fMeasures.find_last_of("123468");
 }
 
@@ -123,18 +118,19 @@ void VLMMAWriter::VisitNote(VLLyricsNote & n)
 		} else if (n.fDuration.fDenom == 24) {
 			dur = "6"; // 16th note triplet
 		}
-	if (n.fTied & VLNote::kTiedWithPrev) {
-		if (fTied) {
-			fMeasures.replace(fLastDur+1, 0, '+'+dur);
-			if (!(n.fTied & VLNote::kTiedWithNext))
-				fAccum += "~";
-		} else {
-			size_t d = fAccum.find_last_of("123468");
-			fAccum.replace(d+1, 0, '+'+dur);
+	if (fTied) {
+		fMeasures.replace(fLastDur+1, 0, '+'+dur);
+		fLastDur += 1+dur.size();
+		if (!(n.fTied & VLNote::kTiedWithNext)) {
+			fAccum += "~";
+			fTied   = false;
 		}
 		return;
+	} else if (n.fTied & VLNote::kTiedWithPrev) {
+		size_t d = fAccum.find_last_of("123468");
+		fAccum.replace(d+1, 0, '+'+dur);
+		return;
 	}
-	fTied = false;
 	if (fAccum.size() > 1)
 		fAccum += ' ';
 	fAccum += dur+MMAPitchName(n.fPitch, fUseSharps, true)+MMAOctave(n.fPitch)+';';

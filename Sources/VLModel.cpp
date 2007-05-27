@@ -1360,21 +1360,22 @@ void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string w
 
 void VLSong::AddRepeat(size_t beginMeasure, size_t endMeasure, int times)
 {
-	for (size_t r=0; r<fRepeats.size(); ++r)
-		if (fRepeats[r].fEndings[0].fBegin == beginMeasure
-		 && fRepeats[r].fEndings[0].fEnd >= endMeasure
+	for (size_t r=0; r<fRepeats.size(); ++r) {
+		VLRepeat & rp = fRepeats[r];
+		if (rp.fEndings[0].fBegin == beginMeasure
+		 && rp.fEndings[0].fEnd >= endMeasure
 		) 
-			if (fRepeats[r].fEndings[0].fEnd == endMeasure) {
+			if (rp.fEndings[0].fEnd == endMeasure) {
 				//
 				// Exact match, just change times
 				//
-				size_t mask = ((1<<times)-1) ^ ((1<<fRepeats[r].fTimes)-1);
-				if (fRepeats[r].fTimes < times) 
-					fRepeats[r].fEndings[0].fVolta |= mask;
-				else if (fRepeats[r].fTimes > times) 
-					for (size_t e=0; e<fRepeats[r].fEndings.size(); ++e)
-						fRepeats[r].fEndings[e].fVolta &= ~mask;
-				fRepeats[r].fTimes = times; 
+				size_t mask = ((1<<times)-1) ^ ((1<<rp.fTimes)-1);
+				if (rp.fTimes < times) 
+					rp.fEndings[0].fVolta |= mask;
+				else if (rp.fTimes > times) 
+					for (size_t e=0; e<rp.fEndings.size(); ++e)
+						rp.fEndings[e].fVolta &= ~mask;
+				rp.fTimes = times; 
 
 				return;
 			} else {
@@ -1382,6 +1383,7 @@ void VLSong::AddRepeat(size_t beginMeasure, size_t endMeasure, int times)
 			
 				break;
 			}
+	}
 	
 	VLRepeat	rep;
 
@@ -1393,82 +1395,87 @@ void VLSong::AddRepeat(size_t beginMeasure, size_t endMeasure, int times)
 
 void VLSong::DelRepeat(size_t beginMeasure, size_t endMeasure)
 {
-	for (size_t r=0; r<fRepeats.size(); ++r)
-		if (fRepeats[r].fEndings[0].fBegin == beginMeasure
-		 && fRepeats[r].fEndings[0].fEnd >= endMeasure
+	for (size_t r=0; r<fRepeats.size(); ++r) {
+		VLRepeat & rp	= fRepeats[r];
+		if (rp.fEndings[0].fBegin == beginMeasure
+		 && rp.fEndings[0].fEnd >= endMeasure
 		) {
 			fRepeats.erase(fRepeats.begin()+r);
 			
 			break;
 		}
+	}
 }
 
 void VLSong::AddEnding(size_t beginMeasure, size_t endMeasure, size_t volta)
 {
-	for (size_t r=0; r<fRepeats.size(); ++r)
-		if (fRepeats[r].fEndings[0].fBegin < beginMeasure
-		 && fRepeats[r].fEndings[0].fEnd >= beginMeasure
+	for (size_t r=0; r<fRepeats.size(); ++r) {
+		VLRepeat & rp	= fRepeats[r];
+		if (rp.fEndings[0].fBegin < beginMeasure
+		 && rp.fEndings[0].fEnd >= beginMeasure
 		) {
-			VLRepeat & repeat = fRepeats[r];
-			for (size_t e=1; e<repeat.fEndings.size(); ++e)
-				if (repeat.fEndings[e].fBegin == beginMeasure
-				 && repeat.fEndings[e].fEnd	== endMeasure
+			for (size_t e=1; e<rp.fEndings.size(); ++e)
+				if (rp.fEndings[e].fBegin == beginMeasure
+				 && rp.fEndings[e].fEnd	== endMeasure
 				) {
 					//
 					// Found it, just edit volta
 					//
-					repeat.fEndings[0].fVolta |= repeat.fEndings[e].fVolta;
-					volta &= repeat.fEndings[0].fVolta;
-					repeat.fEndings[0].fVolta &= ~volta;
-					repeat.fEndings[e].fVolta  = volta;
+					rp.fEndings[0].fVolta |= rp.fEndings[e].fVolta;
+					volta &= rp.fEndings[0].fVolta;
+					rp.fEndings[0].fVolta &= ~volta;
+					rp.fEndings[e].fVolta  = volta;
 
 					return;
 				}
 			//
 			// Not found, add new ending
 			//		    
-			volta &= fRepeats[r].fEndings[0].fVolta;
-			fRepeats[r].fEndings[0].fVolta &= ~volta;
-			fRepeats[r].fEndings[0].fEnd 	= 
-				std::max<int8_t>(fRepeats[r].fEndings[0].fEnd, endMeasure);
-			fRepeats[r].fEndings.push_back(
+			volta &= rp.fEndings[0].fVolta;
+			rp.fEndings[0].fVolta &= ~volta;
+			rp.fEndings[0].fEnd 	= 
+				std::max<int8_t>(rp.fEndings[0].fEnd, endMeasure);
+			rp.fEndings.push_back(
                 VLRepeat::Ending(beginMeasure, endMeasure, volta));
 			
 			return;
 		}
+	}
 }
 
 void VLSong::DelEnding(size_t beginMeasure, size_t endMeasure)
 {
-	for (size_t r=0; r<fRepeats.size(); ++r)
-		if (fRepeats[r].fEndings[0].fBegin <= beginMeasure
-		 && fRepeats[r].fEndings[0].fEnd > beginMeasure
+	for (size_t r=0; r<fRepeats.size(); ++r) {
+		VLRepeat & rp	= fRepeats[r];
+		if (rp.fEndings[0].fBegin <= beginMeasure
+		 && rp.fEndings[0].fEnd > beginMeasure
 		) 
-			for (size_t e=1; e<fRepeats[r].fEndings.size(); ++e)
-				if (fRepeats[r].fEndings[e].fBegin == beginMeasure) {
-					fRepeats[r].fEndings[0].fVolta |= fRepeats[r].fEndings[e].fVolta;
-					if (e > 1 && e == fRepeats[r].fEndings.size()-1) 
-						fRepeats[r].fEndings[0].fEnd = fRepeats[r].fEndings[e].fBegin;
-					fRepeats[r].fEndings.erase(fRepeats[r].fEndings.begin()+e);
+			for (size_t e=1; e<rp.fEndings.size(); ++e)
+				if (rp.fEndings[e].fBegin == beginMeasure) {
+					rp.fEndings[0].fVolta |= rp.fEndings[e].fVolta;
+					if (e > 1 && e == rp.fEndings.size()-1) 
+						rp.fEndings[0].fEnd = rp.fEndings[e].fBegin;
+					rp.fEndings.erase(rp.fEndings.begin()+e);
 				}
+	}
 }
 
 bool VLSong::CanBeRepeat(size_t beginMeasure, size_t endMeasure, int * times)
 {
-	for (size_t r=0; r<fRepeats.size(); ++r) {
-		const VLRepeat & rep = fRepeats[r];
-		if (rep.fEndings[0].fBegin == beginMeasure) {
+	for (size_t r=0; r<fRepeats.size(); ++r) { 
+		VLRepeat & rp	= fRepeats[r];
+		if (rp.fEndings[0].fBegin == beginMeasure) {
 			//
 			// Look for exact match & return
 			//
 			if (times)
-				*times = fRepeats[r].fTimes;
-			if (rep.fEndings[0].fEnd == endMeasure) 
+				*times = rp.fTimes;
+			if (rp.fEndings[0].fEnd == endMeasure) 
 				return true;
-			if (rep.fEndings.size() > 1) {
-				if (rep.fEndings[1].fBegin == endMeasure)
+			if (rp.fEndings.size() > 1) {
+				if (rp.fEndings[1].fBegin == endMeasure)
 					return true;
-				if (rep.fEndings[1].fEnd == endMeasure)
+				if (rp.fEndings[1].fEnd == endMeasure)
 					return true;
 			}
 		}
@@ -1476,23 +1483,23 @@ bool VLSong::CanBeRepeat(size_t beginMeasure, size_t endMeasure, int * times)
 		// Inclusions and surroundings are OK. Beginnings may match, but
 		// endings must not.
 		//
-		if (rep.fEndings[0].fBegin >= beginMeasure 
-		 && rep.fEndings[0].fEnd < endMeasure
+		if (rp.fEndings[0].fBegin >= beginMeasure 
+		 && rp.fEndings[0].fEnd < endMeasure
 		)
 			continue;
-		if (rep.fEndings[0].fBegin <= beginMeasure
-		 && rep.fEndings[0].fEnd > endMeasure
+		if (rp.fEndings[0].fBegin <= beginMeasure
+		 && rp.fEndings[0].fEnd > endMeasure
 		)
 			continue;
 		//
 		// Look for overlap and reject
 		//
-		if (fRepeats[r].fEndings[0].fBegin >= beginMeasure 
-         && fRepeats[r].fEndings[0].fBegin < endMeasure
+		if (rp.fEndings[0].fBegin >= beginMeasure 
+         && rp.fEndings[0].fBegin < endMeasure
 		)
 			return false; 
-		if (fRepeats[r].fEndings[0].fEnd > beginMeasure 
-         && fRepeats[r].fEndings[0].fEnd <= endMeasure
+		if (rp.fEndings[0].fEnd > beginMeasure 
+         && rp.fEndings[0].fEnd <= endMeasure
 		)
 			return false; 
 	}
@@ -1507,19 +1514,18 @@ bool VLSong::CanBeRepeat(size_t beginMeasure, size_t endMeasure, int * times)
 bool VLSong::CanBeEnding(size_t beginMeasure, size_t endMeasure, 
 						 size_t * volta, size_t * voltaOK)
 {
-	for (size_t r=0; r<fRepeats.size(); ++r) 
-		if (beginMeasure > fRepeats[r].fEndings[0].fBegin
-		 && beginMeasure <= fRepeats[r].fEndings[0].fEnd
+	for (size_t r=0; r<fRepeats.size(); ++r)  {
+		VLRepeat & rp	= fRepeats[r];
+		if (beginMeasure > rp.fEndings[0].fBegin
+		 && beginMeasure <= rp.fEndings[0].fEnd
 		) {
 			//
 			// Found right repeat
 			//
-			VLRepeat & repeat = fRepeats[r];
-
 			//
 			// Append new repeat, or carve out from ending
 			//
-			if (beginMeasure == repeat.fEndings[0].fEnd) {
+			if (beginMeasure == rp.fEndings[0].fEnd) {
 				for (size_t r2=0; r2<fRepeats.size(); ++r2)
 					if (r2 != r 
 					 && fRepeats[r2].fEndings[0].fBegin >= beginMeasure
@@ -1527,89 +1533,96 @@ bool VLSong::CanBeEnding(size_t beginMeasure, size_t endMeasure,
 					)
 						return false; // Overlap
 				if (volta)
-					*volta = repeat.fEndings[0].fVolta;
+					*volta = rp.fEndings[0].fVolta;
 				if (voltaOK)
-					*voltaOK = repeat.fEndings[0].fVolta;
+					*voltaOK = rp.fEndings[0].fVolta;
 				
 				return true;				
-			} else if (repeat.fEndings.size() == 1 
-			  && endMeasure >= repeat.fEndings[0].fEnd
+			} else if (rp.fEndings.size() == 1 
+			  && endMeasure >= rp.fEndings[0].fEnd
 			) {
 				if (volta)
-					*volta = repeat.fEndings[0].fVolta;
+					*volta = rp.fEndings[0].fVolta;
 				if (voltaOK)
-					*voltaOK = repeat.fEndings[0].fVolta;
+					*voltaOK = rp.fEndings[0].fVolta;
 				
 				return true;
 			}
 			//
 			// Otherwise must match existing
 			//
-			for (size_t e=1; e<repeat.fEndings.size(); ++e)
-				if (beginMeasure == repeat.fEndings[e].fBegin
-				 && endMeasure == repeat.fEndings[e].fEnd
+			for (size_t e=1; e<rp.fEndings.size(); ++e)
+				if (beginMeasure == rp.fEndings[e].fBegin
+				 && endMeasure == rp.fEndings[e].fEnd
 				) {
 					if (volta)
-						*volta = repeat.fEndings[e].fVolta;
+						*volta = rp.fEndings[e].fVolta;
 					if (voltaOK)
-						*voltaOK = repeat.fEndings[e].fVolta 
-							     | repeat.fEndings[0].fVolta;
+						*voltaOK = rp.fEndings[e].fVolta 
+							     | rp.fEndings[0].fVolta;
 					return true;
 				}
 			return false;
 		}
+	}
 	return false;
 }
 
 bool VLSong::DoesBeginRepeat(size_t measure, int * times) const
 {
-	for (size_t r=0; r<fRepeats.size(); ++r)
-		if (fRepeats[r].fEndings[0].fBegin == measure) {
+	for (size_t r=0; r<fRepeats.size(); ++r) {
+		const VLRepeat & rp	= fRepeats[r];
+		if (rp.fEndings[0].fBegin == measure) {
 			if (times)
-				*times = fRepeats[r].fTimes;
+				*times = rp.fTimes;
 
 			return true;
 		}
+	}
 	return false;
 }
 
 bool VLSong::DoesEndRepeat(size_t measure, int * times) const
 {
-	for (size_t r=0; r<fRepeats.size(); ++r)
-		if (fRepeats[r].fEndings[0].fEnd == measure 
-		 && fRepeats[r].fEndings.size() == 1
+	for (size_t r=0; r<fRepeats.size(); ++r) {
+		const VLRepeat & rp	= fRepeats[r];
+		if (rp.fEndings[0].fEnd == measure 
+		 && rp.fEndings.size() == 1
 		) {
 			if (times)
-				*times = fRepeats[r].fTimes;
+				*times = rp.fTimes;
 
 			return true;
 		}
+	}
 	return false;	
 }
 
 bool VLSong::DoesBeginEnding(size_t measure, bool * repeat, size_t * volta) const
 {
-	for (size_t r=0; r<fRepeats.size(); ++r)
-		if (fRepeats[r].fEndings[0].fEnd >= measure 
-		 && fRepeats[r].fEndings.size() > 1
+	for (size_t r=0; r<fRepeats.size(); ++r) {
+		const VLRepeat & rp	= fRepeats[r];
+		if (rp.fEndings[0].fBegin < measure
+		 && rp.fEndings[0].fEnd >= measure 
+		 && rp.fEndings.size() > 1
 		) {
-			size_t v = (1<<fRepeats[r].fTimes)-1;
-			for (size_t e=1; e<fRepeats[r].fEndings.size(); ++e)
-				if (fRepeats[r].fEndings[e].fBegin == measure) {
+			size_t v = (1<<rp.fTimes)-1;
+			for (size_t e=1; e<rp.fEndings.size(); ++e)
+				if (rp.fEndings[e].fBegin == measure) {
 					if (repeat)
-						if (e == fRepeats[r].fEndings.size()-1 
-						 && fRepeats[r].fEndings[e].fVolta == v
+						if (e == rp.fEndings.size()-1 
+						 && rp.fEndings[e].fVolta == v
 						)
 							*repeat = false; // Not after last alternative
 						else
 							*repeat = true;
 					if (volta)
-						*volta = fRepeats[r].fEndings[e].fVolta;
+						*volta = rp.fEndings[e].fVolta;
 
 					return true;
 				} else
-					v &= ~fRepeats[r].fEndings[e].fVolta;
-			if (v && fRepeats[r].fEndings[0].fEnd == measure) {
+					v &= ~rp.fEndings[e].fVolta;
+			if (v && rp.fEndings[0].fEnd == measure) {
 				//
 				// Implied ending for all not mentioned
 				//	
@@ -1621,31 +1634,34 @@ bool VLSong::DoesBeginEnding(size_t measure, bool * repeat, size_t * volta) cons
 				return true;
 			}
 		}
+	}
 	return false;	
 }
 
 bool VLSong::DoesEndEnding(size_t measure, bool * repeat, size_t * volta) const
 {
-	for (size_t r=0; r<fRepeats.size(); ++r)
-		if (fRepeats[r].fEndings[0].fEnd+1 >= measure 
-		 && fRepeats[r].fEndings.size() > 1
+	for (size_t r=0; r<fRepeats.size(); ++r) {
+		const VLRepeat & rp	= fRepeats[r];
+		if (rp.fEndings[0].fBegin < measure
+		 && rp.fEndings[0].fEnd+1 >= measure 
+		 && rp.fEndings.size() > 1
 		) {
-			size_t v = (1<<fRepeats[r].fTimes)-1;
-			for (size_t e=1; e<fRepeats[r].fEndings.size(); ++e)
-				if (fRepeats[r].fEndings[e].fEnd == measure) {
+			size_t v = (1<<rp.fTimes)-1;
+			for (size_t e=1; e<rp.fEndings.size(); ++e)
+				if (rp.fEndings[e].fEnd == measure) {
 					if (repeat)
-						if (e == fRepeats[r].fEndings.size()-1 
-						 && fRepeats[r].fEndings[e].fVolta == v
+						if (e == rp.fEndings.size()-1 
+						 && rp.fEndings[e].fVolta == v
 						)
 							*repeat = false; // Not after last alternative
 						else
 							*repeat = true;
 					if (volta)
-						*volta = fRepeats[r].fEndings[e].fVolta;
+						*volta = rp.fEndings[e].fVolta;
 					return true;
 				} else
-					v &= ~fRepeats[r].fEndings[e].fVolta;
-			if (v && fRepeats[r].fEndings[0].fEnd+1 == measure) {
+					v &= ~rp.fEndings[e].fVolta;
+			if (v && rp.fEndings[0].fEnd+1 == measure) {
 				//
 				// Implied ending for all not mentioned
 				//
@@ -1657,6 +1673,56 @@ bool VLSong::DoesEndEnding(size_t measure, bool * repeat, size_t * volta) const
 				return true;
 			}
 		}
+	}
+	return false;	
+}
+
+bool VLSong::DoesTieWithPrevRepeat(size_t measure) const
+{
+	if (fMeasures[measure].fMelody.front().fPitch == VLNote::kNoPitch)
+		return false; // Rests don't tie
+	for (size_t r=0; r<fRepeats.size(); ++r) {
+		const VLRepeat & rp	= fRepeats[r];
+		if (rp.fEndings[0].fBegin < measure 
+         && rp.fEndings[0].fEnd >= measure 
+		 && rp.fEndings.size() > 1
+		) {
+			size_t v 				= (1<<rp.fTimes)-1;
+			int8_t firstEnding 		= rp.fEndings[0].fEnd;
+			bool   doesStartEnding  = false;
+			for (size_t e=1; e<rp.fEndings.size(); ++e) {
+				firstEnding = std::min(firstEnding, rp.fEndings[e].fBegin);
+				if (rp.fEndings[e].fBegin == measure) 
+					doesStartEnding =  true;
+				else
+					v &= ~rp.fEndings[e].fVolta;
+			}
+			if (doesStartEnding || (v && rp.fEndings[0].fEnd == measure))
+				return fMeasures[firstEnding-1].fMelody.back().fTied
+					& VLNote::kTiedWithNext;
+		}
+	}
+	return false;	
+}
+
+bool VLSong::DoesTieWithNextRepeat(size_t measure) const
+{
+	if (fMeasures[measure].fMelody.back().fPitch == VLNote::kNoPitch)
+		return false; // Rests don't tie
+	for (size_t r=0; r<fRepeats.size(); ++r) {
+		const VLRepeat & rp	= fRepeats[r];
+		if (rp.fEndings[0].fBegin < measure
+		 && rp.fEndings[0].fEnd >= measure 
+		 && rp.fEndings.size() > 1
+		) {
+			for (size_t e=1; e<rp.fEndings.size(); ++e) {
+				if (rp.fEndings[e].fEnd == measure+1) 
+					return !(rp.fEndings[e].fVolta & (1<<(rp.fTimes-1)))
+					  && (fMeasures[rp.fEndings[0].fBegin].fMelody.front().fTied
+						  & VLNote::kTiedWithPrev);
+			}
+		}
+	}
 	return false;	
 }
 
@@ -1742,18 +1808,19 @@ VLSong VLSong::CopyMeasures(size_t beginMeasure, size_t endMeasure)
 		for (size_t i=0; i<subSong.fMeasures.size(); ++i)
 			subSong.fMeasures[i].fPropIdx	-= firstProp;
 
-	for (size_t r=0; r<fRepeats.size(); ++r) 
-		if (fRepeats[r].fEndings[0].fBegin >= beginMeasure 
-         && fRepeats[r].fEndings[0].fEnd   <= endMeasure
+	for (size_t r=0; r<fRepeats.size(); ++r) {
+		VLRepeat & rp	= fRepeats[r];
+		if (rp.fEndings[0].fBegin >= beginMeasure 
+         && rp.fEndings[0].fEnd   <= endMeasure
 		) {
-			VLRepeat repeat = fRepeats[r];
-			for (size_t e=0; e<repeat.fEndings.size(); ++e) {
-				repeat.fEndings[e].fBegin	-= beginMeasure;
-				repeat.fEndings[e].fEnd		-= endMeasure;
+			for (size_t e=0; e<rp.fEndings.size(); ++e) {
+				rp.fEndings[e].fBegin	-= beginMeasure;
+				rp.fEndings[e].fEnd		-= endMeasure;
 			}
-			subSong.fRepeats.push_back(repeat);
+			subSong.fRepeats.push_back(rp);
 		}
-
+	}
+	
 	return subSong;
 }
 

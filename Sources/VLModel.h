@@ -130,7 +130,7 @@ struct VLNote {
 	enum {
 		kNotTied		= 0,
 		kTiedWithNext	= 1,
-		kTiedWithPrev	= 2
+		kTiedWithPrev	= 2,
 	};
 	//
 	// Hint at visual representation (Computed in DecomposeNotes)
@@ -332,6 +332,8 @@ public:
 	bool DoesEndRepeat(size_t measure, int * times = 0) const;
 	bool DoesBeginEnding(size_t measure, bool * repeat = 0, size_t * volta = 0) const;
 	bool DoesEndEnding(size_t measure, bool * repeat = 0, size_t * volta = 0) const;
+	bool DoesTieWithPrevRepeat(size_t measure) const;
+	bool DoesTieWithNextRepeat(size_t measure) const;
 	bool IsNonEmpty() const;
 	void ChangeKey(int newKey, bool newMode, bool transpose);
 	void ChangeDivisions(int newDivisions);
