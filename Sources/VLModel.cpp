@@ -1729,8 +1729,12 @@ bool VLSong::DoesTieWithNextRepeat(size_t measure) const
 VLSong::iterator::iterator(const VLSong & song, bool end)
 	: fSong(song)
 {
-	fMeasure	= end ? fSong.CountMeasures()-fSong.EmptyEnding() : 0;
-	AdjustStatus();
+	if (end) {
+		fMeasure	= fSong.CountMeasures()-fSong.EmptyEnding();
+	} else {
+		fMeasure	= 0;
+		AdjustStatus();
+	}
 }
 
 VLSong::iterator & VLSong::iterator::operator++()
