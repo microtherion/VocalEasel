@@ -150,7 +150,6 @@ struct VLNote {
 	VLNote(VLFraction dur=0, int pitch=kNoPitch);
 	VLNote(std::string name);
 	void Name(std::string & name, bool useSharps = false) const;
-	void MMAName(std::string & name, VLFraction at, VLFraction dur, VLFraction prevDur, VLFraction nextDur, const VLProperties & prop) const;
 	void MakeRepresentable();
 	void AlignToGrid(VLFraction at, VLFraction grid);
 };
@@ -209,7 +208,6 @@ struct VLChord : VLNote {
 	VLChord(VLFraction dur=0, int pitch=kNoPitch, int rootPitch=kNoPitch);
 	VLChord(std::string name);
 	void	Name(std::string & base, std::string & ext, std::string & root, bool useSharps = false) const;
-	bool 	MMAName(std::string & name, bool useSharps, bool initial) const;
 };
 
 struct VLChordModifier {
@@ -223,15 +221,6 @@ struct VLProperties {
 	int8_t		fKey;		// Circle of fifths from C, >0 sharps, <0 flats
 	int8_t		fMode;		// 1 = major -1 = minor
 	int8_t		fDivisions;	// Number of divisions per quarter note
-	
-	//
-	// Subdivide a note and adjust for swing
-	//
-	void PartialNote(VLFraction at, VLFraction totalDuration, bool grouped, VLFraction * noteDuration) const;  
-	//
-	// Determine visual representation of note head
-	//
-	void VisualNote(VLFraction at, VLFraction actualDur, bool prevTriplet, VLFraction *visualDur, bool * triplet) const;
 
 	bool operator==(const VLProperties & other)
 	{ return fTime == other.fTime && fKey == other.fKey && fMode == other.fMode
@@ -255,9 +244,6 @@ struct VLMeasure {
 	VLNoteList 	fMelody;
 
 	VLMeasure();
-
-	void MMANotes(std::string & notes, const VLProperties & prop, VLFraction extra) const;
-	void MMAChords(std::string & chords, const VLProperties & prop, bool initial) const;
 
 	bool IsEmpty() const;
 	bool NoChords() const;
