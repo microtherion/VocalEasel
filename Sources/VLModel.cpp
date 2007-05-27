@@ -237,7 +237,7 @@ void VLNote::MakeRepresentable()
 		if (fDuration >= part) {
 			fDuration = part;
 			return;
-		} else if (!nonTriplet && fDuration >= triplet) {
+		} else if (fVisual > kWhole && !nonTriplet && fDuration >= triplet) {
 			fDuration = triplet;
 			fVisual	 |= kTriplet;
 			return;
@@ -268,12 +268,6 @@ VLLyricsNote::VLLyricsNote(VLFraction dur, int pitch)
 	: VLNote(dur, pitch)
 {
 } 
-
-struct VLChordModifier {
-	const char *	fName;
-	uint32_t		fAddSteps;
-	uint32_t		fDelSteps;
-};
 
 #define _ VLChord::
 

@@ -35,6 +35,7 @@
 		952DCD78096BBB11001C2316 /* VLSheetViewChords.mm in Sources */ = {isa = PBXBuildFile; fileRef = 952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */; };
 		9530A7020BD9E16700635FEC /* display.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 9530A7010BD9E16700635FEC /* display.tiff */; };
 		953722670AE9F0E100B6E483 /* VLLilypondDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */; };
+		9545C5C30C092F4600251547 /* VLMMAWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9545C5C10C092F4600251547 /* VLMMAWriter.cpp */; };
 		95498DBD0AE3812F006B5F81 /* VLSoundSched.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */; };
 		954BBD860AEDDE5300BBFD5F /* VLAppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954BBD850AEDDE5300BBFD5F /* VLAppController.mm */; };
 		954BBD9A0AEDE81500BBFD5F /* VLPitchTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954BBD990AEDE81500BBFD5F /* VLPitchTransformer.mm */; };
@@ -166,6 +167,8 @@
 		9530A7010BD9E16700635FEC /* display.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = display.tiff; path = Resources/display.tiff; sourceTree = "<group>"; };
 		953722650AE9F0E100B6E483 /* VLLilypondDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLLilypondDocument.h; path = Sources/VLLilypondDocument.h; sourceTree = "<group>"; };
 		953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLLilypondDocument.mm; path = Sources/VLLilypondDocument.mm; sourceTree = "<group>"; };
+		9545C5C10C092F4600251547 /* VLMMAWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = VLMMAWriter.cpp; path = Sources/VLMMAWriter.cpp; sourceTree = "<group>"; };
+		9545C5C20C092F4600251547 /* VLMMAWriter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLMMAWriter.h; path = Sources/VLMMAWriter.h; sourceTree = "<group>"; };
 		95498DBB0AE3812F006B5F81 /* VLSoundSched.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSoundSched.h; path = Sources/VLSoundSched.h; sourceTree = "<group>"; };
 		95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSoundSched.mm; path = Sources/VLSoundSched.mm; sourceTree = "<group>"; };
 		954BBD840AEDDE5300BBFD5F /* VLAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLAppController.h; path = Sources/VLAppController.h; sourceTree = "<group>"; };
@@ -342,6 +345,8 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				9545C5C10C092F4600251547 /* VLMMAWriter.cpp */,
+				9545C5C20C092F4600251547 /* VLMMAWriter.h */,
 				955DA2940C0551EC008F73B8 /* VLLilypondWriter.cpp */,
 				955DA2950C0551EC008F73B8 /* VLLilypondWriter.h */,
 				95A55C520BD5E5760068A203 /* VLPDFDocument.h */,
@@ -688,6 +693,7 @@
 				95A55C540BD5E5770068A203 /* VLPDFDocument.mm in Sources */,
 				95784D870BFAD795009ABEA4 /* VLMirrorWindow.mm in Sources */,
 				955DA2960C0551EC008F73B8 /* VLLilypondWriter.cpp in Sources */,
+				9545C5C30C092F4600251547 /* VLMMAWriter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

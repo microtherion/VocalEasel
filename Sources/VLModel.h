@@ -212,6 +212,12 @@ struct VLChord : VLNote {
 	bool 	MMAName(std::string & name, bool useSharps, bool initial) const;
 };
 
+struct VLChordModifier {
+	const char *	fName;
+	uint32_t		fAddSteps;
+	uint32_t		fDelSteps;
+};
+
 struct VLProperties {
 	VLFraction	fTime;		// Time (non-normalized)
 	int8_t		fKey;		// Circle of fifths from C, >0 sharps, <0 flats
