@@ -148,6 +148,43 @@ static std::string	LilypondPitchName(int8_t pitch, bool useSharps)
 		return kScale[pitch+1] + std::string("es");
 }
 
+static std::string EscapeSyllable(std::string syll)
+{
+	for (size_t i=0; i<syll.size(); ++i)
+		if (isalpha(syll[i]))
+			continue;
+		else 
+			switch (syll[i]) {
+			case '-':
+			case ':':
+			case '.':
+			case ',':
+			case ';':
+			case '\'':
+			case '_':
+				continue;
+			default:
+				goto escape;
+			}
+	//
+	// Purely alphabetic syllable, no need to escape.
+	//
+	return syll;
+
+ escape:
+	size_t q=0;
+	while ((q = syll.find_first_of('"', q)) != std::string::npos) {
+		syll.replace(q, 1, "\\\"", 2);
+		q += 2;
+	}
+	q = 0;
+	while ((q = syll.find_first_of('_', q)) != std::string::npos) {
+		syll.replace(q, 1, "\"_\"", 3);
+		q += 3;
+	}
+	return '"'+syll+'"';
+}
+
 void VLLilypondWriter::VisitNote(VLLyricsNote & n)							   
 {
 	std::string nm = LilypondPitchName(n.fPitch, fUseSharps);
@@ -182,7 +219,7 @@ void VLLilypondWriter::VisitNote(VLLyricsNote & n)
 			if (n.fLyrics.size() <= i || !n.fLyrics[i]) {
 				fL[i] += " \\skip1";
 			} else {
-				fL[i] += ' ' + n.fLyrics[i].fText;
+				fL[i] += ' ' + EscapeSyllable(n.fLyrics[i].fText);
 				if (n.fLyrics[i].fKind & VLSyllable::kHasNext)
 					fL[i] += " --";
 			}
