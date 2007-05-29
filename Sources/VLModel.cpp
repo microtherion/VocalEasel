@@ -477,8 +477,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 				VLFraction grid(2*swung);
 				if (p.fDuration == 4*swung/3 && (at % grid == 0)) {
 					if (p.fDuration == c.fDuration && n!=e 
-					 && (n->fDuration == p.fDuration 
-					 || (n->fDuration == 2*p.fDuration))
+					 && n->fDuration == p.fDuration
 					) {
 						; // Triplet, not swing note
 					} else {
@@ -494,8 +493,9 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 					// Second swing note (8th triplet -> 8th)
 					//
 					p.fVisual &= VLNote::kNoteHead;
-				} else if (p.fDuration != c.fDuration 
-                      && 2*p.fDuration != c.fDuration
+				} else if ((at % p.fDuration != 0)
+				  || (p.fDuration != c.fDuration 
+				   && 2*p.fDuration != c.fDuration)
 				) {
 					//
 					// Get rid of awkward triplets
