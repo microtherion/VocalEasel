@@ -23,7 +23,7 @@
 %
 vlMaj = \markup {\smaller \whiteTriangleMarkup}
 vlSus = \markup {\fontsize #-4.0 "sus"}
-vlSusKern = \markup {\hspace #-1.0 \vlSus}
+vlSusKern = \markup {\hspace #-0.5 \vlSus}
 vlSharp = #(alteration->text-accidental-markup SHARP)
 vlFlat = #(markup #:hspace 0.2 (alteration->text-accidental-markup FLAT))
 
@@ -72,7 +72,9 @@ vlExceptions = #(append
 
 \score {
   <<
-    \context ChordNames \chords { \override ChordName #'font-size = #6
+    \context ChordNames \chords { 
+        \override ChordName #'font-family = #'BitstreamVeraSansMono
+        \override ChordName #'font-size = #6
     	\set chordNameExceptions = #vlExceptions
 	\set chordNameSeparator = ""
 	\set chordRootNamer = #note-name->markup
