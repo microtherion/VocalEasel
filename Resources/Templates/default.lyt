@@ -17,10 +17,67 @@
 }
 
 #(set-global-staff-size <{STAFFSIZE}>)
+%
+% Rather than write a principled formatting procedure, we just define special cases for
+% all the chords we're interested in.
+%
+vlMaj = \markup {\smaller \whiteTriangleMarkup}
+vlSus = \markup {\fontsize #-4.0 "sus"}
+vlSusKern = \markup {\hspace #-1.0 \vlSus}
+vlSharp = #(alteration->text-accidental-markup SHARP)
+vlFlat = #(markup #:hspace 0.2 (alteration->text-accidental-markup FLAT))
+
+#(define-markup-command (vlStack layout props top bottom) (markup? markup?)
+   "Stack two accidentals"
+   (interpret-markup layout props
+    (markup #:raise 3.0 #:fontsize -5.0 #:column (#:with-dimensions '(0 . 3) '(0 . 5) top bottom))))
+#(define-public (vlBassNamer pitch) 
+  "Return pitch markup for PITCH."
+  (markup #:sub #:line (#:raise 1.0 "/" (note-name->markup pitch))))
+
+vlExceptionMusic =  {
+    <c e g bes d' a'>1-\markup { \super "13" } 
+    <c e g a d'>1-\markup { \super "6/9" }
+    <c es g a d'>1-\markup { "m" \super "6/9" }
+    <c e g b d' a'>1-\markup { \super {\vlMaj "13"} }
+    <c es ges bes d'>1-\markup { "m" \super { "9" \vlFlat "5" } }
+    <c es ges bes d' f'>1-\markup { "m" \super { "11" \vlFlat "5" } }
+    <c f g>1-\markup { \vlSus} 
+    <c f g bes>1-\markup { \super "7" \vlSusKern } 
+    <c f g d'>1-\markup { \super "9" \vlSusKern }  
+    <c f g a'>1-\markup { \super "13" \vlSusKern } 
+    <c f g bes des'>1-\markup { \super "7" \vlSusKern \super {\vlFlat "9"}} 
+    <c f g des' a'>1-\markup { \super "13" \vlSusKern \super {\vlFlat "9"}} 
+    <c e g b fis'>-\markup { \super {\vlMaj \vlSharp "11" } }
+    <c e g b d' fis'>-\markup { \super {\vlMaj "9" \vlSharp "11" } }
+    <c e g b d' fis' a'>-\markup { \super {\vlMaj "13" \vlSharp "11" } }
+    <c e ges bes d'>1-\markup { \super { "9" \vlFlat "5" } }
+    <c e ges bes d' a'>1-\markup { \super { "13" \vlFlat "5" } }
+    <c e g bes des' a'>1-\markup { \super { "13" \vlFlat "9" } }
+    <c e g bes d' fis' a'>1-\markup { \super { "13" \vlSharp "11" } }
+    <c e gis bes d'>1-\markup { \super { "9" \vlSharp "5" } }
+    <c e ges bes des'>1-\markup { \super "7" \vlStack \line {\vlFlat "9"} \line {\vlFlat "5"}}
+    <c e gis bes des'>1-\markup { \super "7" \vlStack \line {\vlFlat "9"} \line {\vlSharp "5"}}
+    <c e ges bes dis'>1-\markup { \super "7" \vlStack \line {\vlSharp "9"} \line {\vlFlat "5"}}
+    <c e gis bes dis'>1-\markup { \super "7" \vlStack \line {\vlSharp "9"} \line {\vlSharp "5"}}
+    <c e g bes fis'>1-\markup { \super { "7" \vlSharp "11" } }
+    <c e g bes d' fis'>1-\markup { \super { "9" \vlSharp "11" } }
+    <c e g bes des' fis'>1-\markup { \super  "7" \vlStack \line {\vlSharp "11"} \line {\vlFlat "9"}}
+    <c e g bes dis' fis'>1-\markup { \super  "7" \vlStack \line {\vlSharp "11"} \line {\vlSharp "9"}}
+}
+
+vlExceptions = #(append
+		 (sequential-music-to-chord-exceptions vlExceptionMusic #t)
+		 ignatzekExceptions)
 
 \score {
   <<
     \context ChordNames \chords { \override ChordName #'font-size = #6
+    	\set chordNameExceptions = #vlExceptions
+	\set chordNameSeparator = ""
+	\set chordRootNamer = #note-name->markup
+	\set chordNoteNamer = #vlBassNamer
+	\set majorSevenSymbol = \vlMaj
         <{CHORDS}>
     }
     \context Voice = "mel" {

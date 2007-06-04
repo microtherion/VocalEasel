@@ -263,14 +263,13 @@ void VLLilypondWriter::VisitChord(VLChord & c)
 	// Maj
 	//
 	if (steps & VLChord::kmMaj7th) {
-		if (ext.size())
-			ext += '.';
-		ext += "maj"; 
+		bool hasMinor = ext.size();
+		ext += hasMinor ? "7+" : "maj"; 
 		if (steps & VLChord::kmMaj9th) {
-			ext += "9";	
+			ext += hasMinor ? ".9" : "9";	
 			steps &= ~VLChord::kmMaj9th;
 		} else
-			ext += "7";
+			ext += hasMinor ? "" : "7";
 		steps&= ~VLChord::kmMaj7th;
 	}
 	//
