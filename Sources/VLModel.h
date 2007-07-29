@@ -335,7 +335,7 @@ public:
 	bool DoesTieWithPrevRepeat(size_t measure) const;
 	bool DoesTieWithNextRepeat(size_t measure) const;
 	bool IsNonEmpty() const;
-	void ChangeKey(int newKey, bool newMode, bool transpose);
+	void ChangeKey(int newKey, int newMode, bool transpose);
 	void ChangeDivisions(int newDivisions);
 	void ChangeTime(VLFraction newTime);
 

@@ -863,7 +863,7 @@ static void TransposePinned(int8_t & pitch, int semi)
 		pitch 		  = octave+pitchInOctave;
 }
 
-void VLSong::ChangeKey(int newKey, bool newMode, bool transpose)
+void VLSong::ChangeKey(int newKey, int newMode, bool transpose)
 {
 	VLProperties & prop = fProperties.front();
 	int semi 	= 7*(newKey-prop.fKey) % 12;
