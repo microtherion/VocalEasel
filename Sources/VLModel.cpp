@@ -706,6 +706,26 @@ void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
 				i->fDuration	= at-t;
 				i = fMeasures[measure].fMelody.insert(++i, note);
 			}
+			if (i->fPitch == VLNote::kNoPitch) {
+				//
+				// Merge with adjacent rests
+				//
+				if (i != fMeasures[measure].fMelody.begin()) {
+					VLNoteList::iterator j = i;
+					--j;
+					if (j->fPitch == VLNote::kNoPitch) {
+						j->fDuration += i->fDuration;
+						fMeasures[measure].fMelody.erase(i);
+						i = j;
+					}
+				}
+				VLNoteList::iterator j = i;
+				++j;
+				if (j != fMeasures[measure].fMelody.end() && j->fPitch == VLNote::kNoPitch) {
+					i->fDuration += j->fDuration;
+					fMeasures[measure].fMelody.erase(j);
+				}
+			}
 			break; // Exit here
 		}
 		t = tEnd;
@@ -750,11 +770,17 @@ void VLSong::DelNote(size_t measure, VLFraction at)
 				fMeasures[measure].fMelody.erase(i);
 			} else {
 				//
-				// Turn into rest
+				// Merge with next if it's a rest, otherwise, just turn into rest
 				//
+				VLNoteList::iterator j = i;
+				++j;
+				if (j != fMeasures[measure].fMelody.end() && j->fPitch == VLNote::kNoPitch) {	
+					i->fDuration += j->fDuration;
+					fMeasures[measure].fMelody.erase(j);
+				}
 				i->fPitch	= VLNote::kNoPitch;
-				i->fTied	= 0;
-			}
+				i->fTied	= 0;				
+			} 
 			break;
 		}
 		VLFraction tEnd = t+i->fDuration;
