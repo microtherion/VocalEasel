@@ -9,6 +9,7 @@
 //
 
 #import "VLPListDocument.h"
+#import "VLModel.h"
 
 //
 // To convert from and to complex file formats, we use ruby scripts operating
@@ -21,7 +22,7 @@
 
 class VLPlistVisitor : public VLSongVisitor {
 public:
-	VLPListVisitor(NSDictionary * plist, bool performanceOrder)
+	VLPlistVisitor(NSMutableDictionary * plist, bool performanceOrder)
 		: fPlist(plist), fPerfOrder(performanceOrder) {}
 
 	virtual void Visit(VLSong & song);
@@ -29,14 +30,67 @@ protected:
 	virtual void VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas);
 	virtual void VisitNote(VLLyricsNote & n);
 	virtual void VisitChord(VLChord & c);
+	
+	NSArray *		EncodeProperties(const std::vector<VLProperties> & properties);
+	NSDictionary *	EncodeProperties(const VLProperties & properties);
+	NSArray *		EncodeRepeats(const std::vector<VLRepeat> & repeats);
+	NSDictionary *	EncodeRepeat(const VLRepeat & repeat);
 
-	NSDictionary *	fPlist;
-	NSMutableArray *fMeasures;
-	NSMutableArray *fNotes;
-	NSMutableArray *fChords;
-	bool			fPerfOrder;
-	const VLSong *	fSong;
+	NSMutableDictionary *	fPlist;
+	NSMutableArray *		fMeasures;
+	NSMutableArray *		fNotes;
+	NSMutableArray *		fChords;
+	bool					fPerfOrder;
+	const VLSong *			fSong;
 };
+
+NSArray * VLPlistVisitor::EncodeProperties(const std::vector<VLProperties> & properties)
+{
+	NSMutableArray * pa = [NSMutableArray arrayWithCapacity:properties.size()];
+
+	for (std::vector<VLProperties>::const_iterator i = properties.begin();
+		 i != properties.end(); ++i)
+		[pa addObject:EncodeProperties(*i)];
+
+	return pa;
+}
+
+NSDictionary * VLPlistVisitor::EncodeProperties(const VLProperties & properties)
+{
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+			[NSNumber numberWithInt: properties.fTime.fNum], @"timeNum",	 
+			[NSNumber numberWithInt: properties.fTime.fDenom], @"timeDenom",
+			[NSNumber numberWithInt: properties.fKey], @"key",
+			[NSNumber numberWithInt: properties.fMode], @"mode",
+			[NSNumber numberWithInt: properties.fDivisions], @"divisions"];
+}
+
+NSArray * VLPlistVisitor::EncodeRepeats(const std::vector<VLRepeat> & repeats)
+{
+	NSMutableArray * ra = [NSMutableArray arrayWithCapacity:repeats.size()];
+
+	for (std::vector<VLRepeat>::const_iterator i = repeats.begin();
+		 i != repeats.end(); ++i)
+		[ra addObject:EncodeRepeat(*i)];
+
+	return ra;
+}
+
+NSDictionary * VLPlistVisitor::EncodeRepeat(const VLRepeat & repeat)
+{
+	NSMutableArray * ea = [NSMutableArray arrayWithCapacity:repeat.fEndings.size()];
+
+	for (std::vector<VLRepeat::Ending>::const_iterator i = repeat.fEndings.begin();
+		 i != repeat.fEndings.end(); ++i)
+		[ea addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+			[NSNumber numberWithInt: i->fBegin], @"begin",
+			[NSNumber numberWithInt: i->fEnd], @"end",
+			[NSNumber numberWithInt: i->fVolta], @"volta"]];
+	
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+			[NSNumber numberWithInt: repeat.fTimes], @"times",
+			ea, @"endings"];			 
+}
 
 void VLPlistVisitor::Visit(VLSong & song)
 {
@@ -58,7 +112,7 @@ void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 	VisitChords(meas);
 
 	NSDictionary * md = 
-		[NSDictionary dictionaryWithValuesAndKeys:
+		[NSDictionary dictionaryWithObjectsAndKeys:
 		 [NSNumber numberWithInt:m], @"measure",
 		 [NSNumber numberWithInt:meas.fPropIdx], @"properties",
 		 fNotes, @"melody",
@@ -69,7 +123,7 @@ void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 void VLPlistVisitor::VisitNote(VLLyricsNote & n)
 {
 	NSDictionary * nd =
-		[NSDictionary dictionaryWithValuesAndKeys:
+		[NSDictionary dictionaryWithObjectsAndKeys:
 		 [NSNumber numberWithInt:n.fDuration.fNum], @"durNum",
 		 [NSNumber numberWithInt:n.fDuration.fDenom], @"durDenom",
 		 [NSNumber numberWithInt:n.fPitch], @"pitch",
@@ -81,12 +135,12 @@ void VLPlistVisitor::VisitNote(VLLyricsNote & n)
 void VLPlistVisitor::VisitChord(VLChord & c)
 {
 	NSDictionary * cd = 
-		[NSDictionary dictionaryWithValuesAndKeys:
-		 [NSNumber numberWithInt:n.fDuration.fNum], @"durNum",
-		 [NSNumber numberWithInt:n.fDuration.fDenom], @"durDenom",
-		 [NSNumber numberWithInt:n.fPitch], @"pitch",
-		 [NSNumber numberWithInt:n.fSteps], @"steps",
-		 [NSNumber numberWithInt:n.fRootPitch], @"root"];
+		[NSDictionary dictionaryWithObjectsAndKeys:
+		 [NSNumber numberWithInt:c.fDuration.fNum], @"durNum",
+		 [NSNumber numberWithInt:c.fDuration.fDenom], @"durDenom",
+		 [NSNumber numberWithInt:c.fPitch], @"pitch",
+		 [NSNumber numberWithInt:c.fSteps], @"steps",
+		 [NSNumber numberWithInt:c.fRootPitch], @"root"];
 	[fChords addObject: cd];
 }
 
@@ -115,10 +169,12 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 
 - (BOOL)readFromPlist:(id)plist error:(NSError **)outError
 {
+	return NO;
 }
 
-(NSData *)runFilter:(NSString *)filterName withContents:(NSData *)contents
+- (NSData *)runFilter:(NSString *)filterName withContents:(NSData *)contents
 {
+	return nil;
 }
 
 - (NSFileWrapper *)fileWrapperWithFilter:(NSString *)filterName
@@ -126,7 +182,7 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 {
 	NSBundle * 	mainBundle = [NSBundle mainBundle];
 	BOOL 	 	perfOrder  = [mainBundle pathForResource:filterName	
-							  ofType:@"pwriter" inDirectory:@"Filters"];
+							  ofType:@"pwriter" inDirectory:@"Filters"] != nil;
 	filterName = [filterName stringByAppendingPathExtension:
 				  perfOrder ? @"pwriter" : @"writer"];
 	NSData * inData = [self plistInPerformanceOrder:perfOrder];
@@ -140,6 +196,7 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 				 withFilter:(NSString *)filterName
 					  error:(NSError **)outError
 {
+	return NO;
 }
 
 @end

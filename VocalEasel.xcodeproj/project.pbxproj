@@ -47,6 +47,7 @@
 		955E59610957C1400045FDA5 /* TVLChord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E59600957C1400045FDA5 /* TVLChord.cpp */; };
 		955E59640957C15A0045FDA5 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		95784D870BFAD795009ABEA4 /* VLMirrorWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95784D860BFAD795009ABEA4 /* VLMirrorWindow.mm */; };
+		9588363C0C6F9C7D004B4162 /* VLPListDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9588363B0C6F9C7D004B4162 /* VLPListDocument.mm */; };
 		95932B91096527700008B0DB /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB3095FD34F00434E43 /* AudioUnit.framework */; };
 		95932B92096527710008B0DB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB2095FD34F00434E43 /* AudioToolbox.framework */; };
 		9593E4E80AE0ED1F00035816 /* vlsong.icns in Resources */ = {isa = PBXBuildFile; fileRef = 9593E4E60AE0ED1F00035816 /* vlsong.icns */; };
@@ -190,6 +191,8 @@
 		955E59600957C1400045FDA5 /* TVLChord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TVLChord.cpp; path = Tests/TVLChord.cpp; sourceTree = "<group>"; };
 		95784D850BFAD795009ABEA4 /* VLMirrorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLMirrorWindow.h; path = Sources/VLMirrorWindow.h; sourceTree = "<group>"; };
 		95784D860BFAD795009ABEA4 /* VLMirrorWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLMirrorWindow.mm; path = Sources/VLMirrorWindow.mm; sourceTree = "<group>"; };
+		9588363A0C6F9C7D004B4162 /* VLPListDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLPListDocument.h; path = Sources/VLPListDocument.h; sourceTree = "<group>"; };
+		9588363B0C6F9C7D004B4162 /* VLPListDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPListDocument.mm; path = Sources/VLPListDocument.mm; sourceTree = "<group>"; };
 		9593E4E60AE0ED1F00035816 /* vlsong.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = vlsong.icns; path = Resources/vlsong.icns; sourceTree = "<group>"; };
 		9593E4E70AE0ED1F00035816 /* vlapp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = vlapp.icns; path = Resources/vlapp.icns; sourceTree = "<group>"; };
 		959408A0096922CA007CCCF8 /* TVLEdit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLEdit; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -345,6 +348,8 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				9588363A0C6F9C7D004B4162 /* VLPListDocument.h */,
+				9588363B0C6F9C7D004B4162 /* VLPListDocument.mm */,
 				9545C5C10C092F4600251547 /* VLMMAWriter.cpp */,
 				9545C5C20C092F4600251547 /* VLMMAWriter.h */,
 				955DA2940C0551EC008F73B8 /* VLLilypondWriter.cpp */,
@@ -693,6 +698,7 @@
 				95784D870BFAD795009ABEA4 /* VLMirrorWindow.mm in Sources */,
 				955DA2960C0551EC008F73B8 /* VLLilypondWriter.cpp in Sources */,
 				9545C5C30C092F4600251547 /* VLMMAWriter.cpp in Sources */,
+				9588363C0C6F9C7D004B4162 /* VLPListDocument.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -773,7 +779,7 @@
 		95D7BF750AA699C600D5E02C /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				USER_HEADER_SEARCH_PATHS = "Sources/**";
 			};
 			name = Development;
@@ -781,14 +787,14 @@
 		95D7BF760AA699C600D5E02C /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Deployment;
 		};
 		95D7BF770AA699C600D5E02C /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Default;
 		};
