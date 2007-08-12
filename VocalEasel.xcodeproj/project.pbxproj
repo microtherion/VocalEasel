@@ -48,6 +48,7 @@
 		955E59640957C15A0045FDA5 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		95784D870BFAD795009ABEA4 /* VLMirrorWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95784D860BFAD795009ABEA4 /* VLMirrorWindow.mm */; };
 		9588363C0C6F9C7D004B4162 /* VLPListDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9588363B0C6F9C7D004B4162 /* VLPListDocument.mm */; };
+		9588365C0C6FABBA004B4162 /* VLDebugFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9588365A0C6FABBA004B4162 /* VLDebugFlags.cpp */; };
 		95932B91096527700008B0DB /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB3095FD34F00434E43 /* AudioUnit.framework */; };
 		95932B92096527710008B0DB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB2095FD34F00434E43 /* AudioToolbox.framework */; };
 		9593E4E80AE0ED1F00035816 /* vlsong.icns in Resources */ = {isa = PBXBuildFile; fileRef = 9593E4E60AE0ED1F00035816 /* vlsong.icns */; };
@@ -193,6 +194,8 @@
 		95784D860BFAD795009ABEA4 /* VLMirrorWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLMirrorWindow.mm; path = Sources/VLMirrorWindow.mm; sourceTree = "<group>"; };
 		9588363A0C6F9C7D004B4162 /* VLPListDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLPListDocument.h; path = Sources/VLPListDocument.h; sourceTree = "<group>"; };
 		9588363B0C6F9C7D004B4162 /* VLPListDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPListDocument.mm; path = Sources/VLPListDocument.mm; sourceTree = "<group>"; };
+		9588365A0C6FABBA004B4162 /* VLDebugFlags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VLDebugFlags.cpp; path = Sources/VLDebugFlags.cpp; sourceTree = "<group>"; };
+		9588365B0C6FABBA004B4162 /* VLDebugFlags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLDebugFlags.h; path = Sources/VLDebugFlags.h; sourceTree = "<group>"; };
 		9593E4E60AE0ED1F00035816 /* vlsong.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = vlsong.icns; path = Resources/vlsong.icns; sourceTree = "<group>"; };
 		9593E4E70AE0ED1F00035816 /* vlapp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = vlapp.icns; path = Resources/vlapp.icns; sourceTree = "<group>"; };
 		959408A0096922CA007CCCF8 /* TVLEdit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLEdit; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -348,6 +351,8 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				9588365A0C6FABBA004B4162 /* VLDebugFlags.cpp */,
+				9588365B0C6FABBA004B4162 /* VLDebugFlags.h */,
 				9588363A0C6F9C7D004B4162 /* VLPListDocument.h */,
 				9588363B0C6F9C7D004B4162 /* VLPListDocument.mm */,
 				9545C5C10C092F4600251547 /* VLMMAWriter.cpp */,
@@ -699,6 +704,7 @@
 				955DA2960C0551EC008F73B8 /* VLLilypondWriter.cpp in Sources */,
 				9545C5C30C092F4600251547 /* VLMMAWriter.cpp in Sources */,
 				9588363C0C6F9C7D004B4162 /* VLPListDocument.mm in Sources */,
+				9588365C0C6FABBA004B4162 /* VLDebugFlags.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,6 +13,7 @@
 @interface VLAppController : NSObject {
 	IBOutlet id			lilypondPath;
 	IBOutlet id			mirrorWin;
+	IBOutlet id			debugMenu;
 
 	NSString *			toolPath;
 	NSString *			appPath;

@@ -62,7 +62,8 @@ NSDictionary * VLPlistVisitor::EncodeProperties(const VLProperties & properties)
 			[NSNumber numberWithInt: properties.fTime.fDenom], @"timeDenom",
 			[NSNumber numberWithInt: properties.fKey], @"key",
 			[NSNumber numberWithInt: properties.fMode], @"mode",
-			[NSNumber numberWithInt: properties.fDivisions], @"divisions"];
+			[NSNumber numberWithInt: properties.fDivisions], @"divisions",
+			nil];
 }
 
 NSArray * VLPlistVisitor::EncodeRepeats(const std::vector<VLRepeat> & repeats)
@@ -85,11 +86,13 @@ NSDictionary * VLPlistVisitor::EncodeRepeat(const VLRepeat & repeat)
 		[ea addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 			[NSNumber numberWithInt: i->fBegin], @"begin",
 			[NSNumber numberWithInt: i->fEnd], @"end",
-			[NSNumber numberWithInt: i->fVolta], @"volta"]];
+			[NSNumber numberWithInt: i->fVolta], @"volta",
+			nil]];
 	
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			[NSNumber numberWithInt: repeat.fTimes], @"times",
-			ea, @"endings"];			 
+			ea, @"endings",	
+			nil];			 
 }
 
 void VLPlistVisitor::Visit(VLSong & song)
@@ -115,8 +118,8 @@ void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 		[NSDictionary dictionaryWithObjectsAndKeys:
 		 [NSNumber numberWithInt:m], @"measure",
 		 [NSNumber numberWithInt:meas.fPropIdx], @"properties",
-		 fNotes, @"melody",
-		 fChords, @"chords"];
+		 fNotes, @"melody", fChords, @"chords",
+		 nil];
 	[fMeasures addObject:md];
 }
 
@@ -128,7 +131,8 @@ void VLPlistVisitor::VisitNote(VLLyricsNote & n)
 		 [NSNumber numberWithInt:n.fDuration.fDenom], @"durDenom",
 		 [NSNumber numberWithInt:n.fPitch], @"pitch",
 		 [NSNumber numberWithInt:n.fTied], @"tied",
-		 [NSNumber numberWithInt:n.fVisual], @"visual"];
+		 [NSNumber numberWithInt:n.fVisual], @"visual",
+		 nil];
 	[fNotes addObject:nd];
 }
 
@@ -140,7 +144,8 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 		 [NSNumber numberWithInt:c.fDuration.fDenom], @"durDenom",
 		 [NSNumber numberWithInt:c.fPitch], @"pitch",
 		 [NSNumber numberWithInt:c.fSteps], @"steps",
-		 [NSNumber numberWithInt:c.fRootPitch], @"root"];
+		 [NSNumber numberWithInt:c.fRootPitch], @"root",
+		 nil];
 	[fChords addObject: cd];
 }
 
@@ -165,6 +170,11 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 	songWriter.Visit(*song);
 
 	return plist;
+}
+
+- (IBAction)dump:(id)sender
+{
+	NSLog(@"%@\n", [self plistInPerformanceOrder:NO]);
 }
 
 - (BOOL)readFromPlist:(id)plist error:(NSError **)outError

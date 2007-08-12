@@ -11,6 +11,7 @@
 #import "VLAppController.h"
 #import "VLPitchTransformer.h"
 #import "VLSoundOut.h"
+#import "VLDebugFlags.h"
 
 #import <Carbon/Carbon.h>
 
@@ -53,6 +54,8 @@
 
 + (void)initialize
 {
+	VLDebugFlags::Update();
+
 	[self setupDefaults];
 	[self setupTransformers];
 }
@@ -178,6 +181,12 @@
 		[defaults setObject:toolPath forKey:@"VLLilypondPath"];
 	}
 	[lilypondPath selectItemWithTag:wantTool ? 0 : 1];	
+
+	if (VLDebugFlags::ShowDebugMenu()) {
+		NSMenuItem * debug = [debugMenu itemAtIndex:0];
+		[debugMenu removeItem:debug];
+		[[NSApp mainMenu] addItem:debug];
+	}
 }
 
 - (BOOL)promptForSoftwareInstallation:(NSString *)label

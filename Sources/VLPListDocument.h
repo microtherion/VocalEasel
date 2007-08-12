@@ -27,4 +27,6 @@
 				 withFilter:(NSString *)filterName
 					  error:(NSError **)outError;
 
+- (IBAction) dump:(id)sender;
+
 @end
