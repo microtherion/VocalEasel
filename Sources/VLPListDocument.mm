@@ -125,6 +125,15 @@ void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 
 void VLPlistVisitor::VisitNote(VLLyricsNote & n)
 {
+	NSMutableArray * ly = [NSMutableArray arrayWithCapacity:0];
+	for (size_t i = 0; i<n.fLyrics.size(); ++i)
+		[ly addObject:n.fLyrics[i].fText.size() 
+		  ? [NSDictionary dictionaryWithObjectsAndKeys:
+			 [NSString stringWithUTF8String:n.fLyrics[i].fText.c_str()], @"text",
+			 [NSNumber numberWithInt:n.fLyrics[i].fKind], @"kind",
+			 nil]
+		  : [NSDictionary dictionary]];
+		  
 	NSDictionary * nd =
 		[NSDictionary dictionaryWithObjectsAndKeys:
 		 [NSNumber numberWithInt:n.fDuration.fNum], @"durNum",
@@ -132,6 +141,7 @@ void VLPlistVisitor::VisitNote(VLLyricsNote & n)
 		 [NSNumber numberWithInt:n.fPitch], @"pitch",
 		 [NSNumber numberWithInt:n.fTied], @"tied",
 		 [NSNumber numberWithInt:n.fVisual], @"visual",
+		 ly, @"lyrics",
 		 nil];
 	[fNotes addObject:nd];
 }
@@ -155,11 +165,7 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 		[NSMutableDictionary dictionaryWithCapacity:20];
 	[plist setObject:songComposer forKey:@"composer"];
 	[plist setObject:songLyricist forKey:@"lyricist"];
-	[plist setObject:
-			   [[NSDate date] 
-				   descriptionWithCalendarFormat:@"%Y-%m-%d"
-				   timeZone:nil locale:nil]
-		   forKey:@"saved"];
+	[plist setObject:[NSDate date] forKey:@"saved"];
 	[plist setObject:
 			   [NSString stringWithFormat:@"VocalEasel %@",
 						 [[NSBundle mainBundle] 
@@ -173,8 +179,13 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 }
 
 - (IBAction)dump:(id)sender
-{
-	NSLog(@"%@\n", [self plistInPerformanceOrder:NO]);
+{	
+	id plist = [self plistInPerformanceOrder:NO];
+	if ([sender tag]) 
+		plist = [[[NSString alloc] initWithData:
+			[NSPropertyListSerialization dataFromPropertyList:plist format:NSPropertyListXMLFormat_v1_0 errorDescription:nil]
+				encoding:NSUTF8StringEncoding] autorelease];
+	NSLog(@"%@\n", plist);
 }
 
 - (BOOL)readFromPlist:(id)plist error:(NSError **)outError
