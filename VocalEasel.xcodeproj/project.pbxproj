@@ -58,7 +58,6 @@
 		959420EB0B44E769006BC62C /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 954DD4DA0B44E6000056C504 /* MainMenu.nib */; };
 		959420EC0B44E77A006BC62C /* VLDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = 954DD4DF0B44E61E0056C504 /* VLDocument.nib */; };
 		9599ED960B73185800A6A2F7 /* VLGroove.nib in Resources */ = {isa = PBXBuildFile; fileRef = 9599ED940B73185800A6A2F7 /* VLGroove.nib */; };
-		9599ED9C0B731CC500A6A2F7 /* VLGrooveController.h in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 9599ED9A0B731CC500A6A2F7 /* VLGrooveController.h */; };
 		9599ED9D0B731CC500A6A2F7 /* VLGrooveController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9599ED9B0B731CC500A6A2F7 /* VLGrooveController.mm */; };
 		95A1C37C0AF1D4370076597D /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A1C37B0AF1D4370076597D /* Quartz.framework */; };
 		95A1C3860AF2ACE20076597D /* VLSheetWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */; };
@@ -82,6 +81,9 @@
 		95E04DCE0AEB4D9B006F30A0 /* Templates in Resources */ = {isa = PBXBuildFile; fileRef = 95E04DCA0AEB4D9B006F30A0 /* Templates */; };
 		95E299C00B2006F5001977D2 /* VLSheetViewLyrics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95E299BE0B2006F5001977D2 /* VLSheetViewLyrics.mm */; };
 		95EDA5AB0B06DE47004D8D6E /* VLMIDIDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95EDA5A90B06DE46004D8D6E /* VLMIDIDocument.mm */; };
+		95EF921A0C786CB90093E5F4 /* plistReader.rb in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95EF92120C786B2C0093E5F4 /* plistReader.rb */; };
+		95EF921B0C786CB90093E5F4 /* plistWriter.rb in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95EF92130C786B2C0093E5F4 /* plistWriter.rb */; };
+		95EF92290C78E94E0093E5F4 /* VLMusicXMLType.writer in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95EF92270C78E9390093E5F4 /* VLMusicXMLType.writer */; };
 		95F5F50F0ADCC433003980B2 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
 		95F820AB0AF884A30010963D /* VLMMADocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F820AA0AF884A30010963D /* VLMMADocument.mm */; };
 		95FC668F0AF0A08C003D9C11 /* VLLogWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95FC668E0AF0A08C003D9C11 /* VLLogWindow.mm */; };
@@ -108,7 +110,6 @@
 				95C461FE0B04432700649F92 /* MMA in Copy MMA Library */,
 				95C461C40B043E8900649F92 /* includes in Copy MMA Library */,
 				95C461C50B043E8900649F92 /* lib in Copy MMA Library */,
-				9599ED9C0B731CC500A6A2F7 /* VLGrooveController.h in Copy MMA Library */,
 			);
 			name = "Copy MMA Library";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -125,6 +126,19 @@
 				95C461D80B0440A300649F92 /* mma.py in Copy Tools */,
 			);
 			name = "Copy Tools";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95EF92190C786BAD0093E5F4 /* Copy Filters */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Filters;
+			dstSubfolderSpec = 7;
+			files = (
+				95EF921A0C786CB90093E5F4 /* plistReader.rb in Copy Filters */,
+				95EF921B0C786CB90093E5F4 /* plistWriter.rb in Copy Filters */,
+				95EF92290C78E94E0093E5F4 /* VLMusicXMLType.writer in Copy Filters */,
+			);
+			name = "Copy Filters";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -228,6 +242,9 @@
 		95E299BE0B2006F5001977D2 /* VLSheetViewLyrics.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetViewLyrics.mm; path = Sources/VLSheetViewLyrics.mm; sourceTree = "<group>"; };
 		95EDA5A80B06DE46004D8D6E /* VLMIDIDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLMIDIDocument.h; path = Sources/VLMIDIDocument.h; sourceTree = "<group>"; };
 		95EDA5A90B06DE46004D8D6E /* VLMIDIDocument.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLMIDIDocument.mm; path = Sources/VLMIDIDocument.mm; sourceTree = "<group>"; };
+		95EF92120C786B2C0093E5F4 /* plistReader.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = plistReader.rb; sourceTree = "<group>"; };
+		95EF92130C786B2C0093E5F4 /* plistWriter.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = plistWriter.rb; sourceTree = "<group>"; };
+		95EF92270C78E9390093E5F4 /* VLMusicXMLType.writer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = VLMusicXMLType.writer; sourceTree = "<group>"; };
 		95F5F50D0ADCC433003980B2 /* VLXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLXMLDocument.h; path = Sources/VLXMLDocument.h; sourceTree = "<group>"; };
 		95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLXMLDocument.mm; path = Sources/VLXMLDocument.mm; sourceTree = "<group>"; };
 		95F820A90AF884A30010963D /* VLMMADocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLMMADocument.h; path = Sources/VLMMADocument.h; sourceTree = "<group>"; };
@@ -339,6 +356,7 @@
 				9546A1090B08B47A0028503B /* CoreAudio SDK Sources */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
 				95C461D40B04403600649F92 /* Tools */,
+				95EF92110C786B2C0093E5F4 /* Filters */,
 				95C461DC0B0442EB00649F92 /* MMA */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
 				955E59560957C0C50045FDA5 /* Tests */,
@@ -509,6 +527,16 @@
 			name = MMA;
 			sourceTree = "<group>";
 		};
+		95EF92110C786B2C0093E5F4 /* Filters */ = {
+			isa = PBXGroup;
+			children = (
+				95EF92270C78E9390093E5F4 /* VLMusicXMLType.writer */,
+				95EF92120C786B2C0093E5F4 /* plistReader.rb */,
+				95EF92130C786B2C0093E5F4 /* plistWriter.rb */,
+			);
+			path = Filters;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -521,6 +549,7 @@
 				8D15AC330486D014006FF6A4 /* Frameworks */,
 				95C461630B043DCA00649F92 /* Copy MMA Library */,
 				95C461D70B04409F00649F92 /* Copy Tools */,
+				95EF92190C786BAD0093E5F4 /* Copy Filters */,
 				95C462020B04475300649F92 /* ShellScript */,
 			);
 			buildRules = (

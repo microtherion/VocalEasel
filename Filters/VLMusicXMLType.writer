@@ -1,0 +1,93 @@
+#!/usr/bin/ruby
+#
+# VLMusicXMLType.write - Translate plist into MusicXML
+#
+
+require File.dirname($0)+'plistReader'
+require 'rexml/document'
+
+INPUT = readPlist($stdin)
+
+def _work
+  work = REXML::Element.new('work')
+    title = REXML::Element.new('work-title')
+    title.add_text(INPUT['title'])
+  work.add_element(title)
+
+  return work
+end
+
+def _identification
+  ident = REXML::Element.new('identification')
+    composer = REXML::Element.new('creator')
+    composer.add_attribute('type', 'composer')
+    composer.add_text(INPUT['composer'])
+  ident.add_element(composer)
+    poet = REXML::Element.new('creator')
+    poet.add_attribute('type', 'poet')
+    poet.add_text(INPUT['lyricist'])
+  ident.add_element(lyricist)
+    encoding = REXML::Element.new('encoding')
+      date = REXML::Element.new('encoding-date')
+      date.add_text(INPUT['saved'].strftime("%Y-%m-%d")
+    encoding.add_element(date)
+      software = REXML::Element.new('software')
+      software.add_text(INPUT['software'])
+    encoding.add_element(software)
+  ident.add_element(encoding)
+
+  return ident
+end
+
+def _part_list
+  part_list = REXML::Element.new('part-list')
+    chords = REXML::Element.new('score-part')
+    chords.add_attribute('id', 'HARM')
+      chords_name = REXML::Element.new('part-name')
+      chords_name.add_text('Chords')
+    chords.add_element(chords_name)
+  part_list.add_element(chords)
+    melody = REXML::Element.new('score-part')
+    melody.add_attribute('id', 'MELO')
+      melody_name = REXML::Element.new('part-name')
+      melody_name.add_text('Melody')
+    melody.add_element(melody_name)
+  part_list.add_element(melody)
+
+  return part_list
+end
+
+def _chords
+  chords = REXML::Element.new('part')
+  chords.add_attribute('id', 'HARM')
+  
+  return chords
+end
+
+def _melody
+  melody = REXML::Element.new('part')
+  melody.add_attribute('id', 'MELO')
+  
+  return melody
+end
+
+def _score  
+  score = REXML::Element.new('score-partwise')
+  score.add_attribute('version', '1.1')
+  score.add_element(_work)
+  score.add_element(_identification)
+  score.add_element(_part_list)
+  score.add_element(_chords)
+  score.add_element(_melody)
+
+  return score
+end
+
+xml  = REXML::Document.new 
+xml.add REXML::XMLDecl.new('1.0', 'UTF-8')
+xml.add REXML::DocType.new(['score-partwise', 'PUBLIC',
+	 '"-//Recordare//DTD MusicXML 1.1 Partwise//EN"',
+	 '"http://www.musicxml.org/dtds/partwise.dtd"'])
+xml.add_element(_score)
+xml.write($stdout, 0)
+

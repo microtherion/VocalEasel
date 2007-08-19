@@ -64,5 +64,5 @@ def writePlist(destination, object)
   contents.add_element(_encodePlist(object))
 
   doc.add_element(contents)
-  doc.write(destination, 4)
+  doc.write(destination, 0)
 end
