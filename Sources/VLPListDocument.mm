@@ -198,7 +198,38 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 
 - (NSData *)runFilter:(NSString *)filterName withContents:(NSData *)contents
 {
-	return nil;
+	NSString * filterPath = [[NSBundle mainBundle] pathForResource:filterName
+												   ofType:nil
+												   inDirectory:@"Filters"];
+	NSPipe * filterInput  = [NSPipe pipe];
+	NSPipe * filterOutput = [NSPipe pipe];
+	NSPipe * filterError  = [NSPipe pipe];
+
+	NSTask * filterTask	= [[NSTask alloc] init];
+	[filterTask setLaunchPath:filterPath];
+	[filterTask setStandardInput:filterInput];
+	[filterTask setStandardOutput:filterOutput];
+	[filterTask setStandardError:filterError];
+	[filterTask launch];
+
+	NSFileHandle * inputHandle = [filterInput fileHandleForWriting];
+	[inputHandle writeData:contents];
+	[inputHandle closeFile];
+
+	NSFileHandle * outputHandle = [filterOutput fileHandleForReading];
+	NSData * 	   output		= [outputHandle readDataToEndOfFile];
+ 	
+	NSFileHandle * errorHandle  = [filterError fileHandleForReading];
+	NSData * 	   error		= [errorHandle readDataToEndOfFile];
+ 	
+	[filterTask waitUntilExit];
+	[filterTask release];
+
+	if ([error length])
+		[NSException raise:NSInvalidArgumentException 
+					 format:@"Filter %@: %@", filterName, error];
+
+	return output;
 }
 
 - (NSFileWrapper *)fileWrapperWithFilter:(NSString *)filterName
@@ -209,7 +240,11 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 							  ofType:@"pwriter" inDirectory:@"Filters"] != nil;
 	filterName = [filterName stringByAppendingPathExtension:
 				  perfOrder ? @"pwriter" : @"writer"];
-	NSData * inData = [self plistInPerformanceOrder:perfOrder];
+	id 		 inPlist= [self plistInPerformanceOrder:perfOrder];
+	NSData * inData = 
+		[NSPropertyListSerialization dataFromPropertyList:inPlist
+									 format:NSPropertyListXMLFormat_v1_0 
+									 errorDescription:nil];
 	NSData * outData= [self runFilter:filterName withContents:inData];
 	
 	return [[[NSFileWrapper alloc] initRegularFileWithContents:outData]
@@ -220,7 +255,19 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 				 withFilter:(NSString *)filterName
 					  error:(NSError **)outError
 {
-	return NO;
+	filterName = [filterName stringByAppendingPathExtension:@"reader"];
+
+	NSData * inData 	= [wrapper regularFileContents];
+	NSData * outData	= [self runFilter:filterName withContents:inData];
+	NSString*errString;
+	id       outPlist	= 
+		[NSPropertyListSerialization propertyListFromData:outData
+									 mutabilityOption:NSPropertyListImmutable
+									 format:NULL errorDescription:&errString];
+	if (!outPlist) 
+		return NO;
+	else 
+		return [self readFromPlist:outPlist error:outError];
 }
 
 @end
