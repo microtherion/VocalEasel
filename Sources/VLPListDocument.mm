@@ -33,8 +33,6 @@ protected:
 	
 	NSArray *		EncodeProperties(const std::vector<VLProperties> & properties);
 	NSDictionary *	EncodeProperties(const VLProperties & properties);
-	NSArray *		EncodeRepeats(const std::vector<VLRepeat> & repeats);
-	NSDictionary *	EncodeRepeat(const VLRepeat & repeat);
 
 	NSMutableDictionary *	fPlist;
 	NSMutableArray *		fMeasures;
@@ -66,35 +64,6 @@ NSDictionary * VLPlistVisitor::EncodeProperties(const VLProperties & properties)
 			nil];
 }
 
-NSArray * VLPlistVisitor::EncodeRepeats(const std::vector<VLRepeat> & repeats)
-{
-	NSMutableArray * ra = [NSMutableArray arrayWithCapacity:repeats.size()];
-
-	for (std::vector<VLRepeat>::const_iterator i = repeats.begin();
-		 i != repeats.end(); ++i)
-		[ra addObject:EncodeRepeat(*i)];
-
-	return ra;
-}
-
-NSDictionary * VLPlistVisitor::EncodeRepeat(const VLRepeat & repeat)
-{
-	NSMutableArray * ea = [NSMutableArray arrayWithCapacity:repeat.fEndings.size()];
-
-	for (std::vector<VLRepeat::Ending>::const_iterator i = repeat.fEndings.begin();
-		 i != repeat.fEndings.end(); ++i)
-		[ea addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-			[NSNumber numberWithInt: i->fBegin], @"begin",
-			[NSNumber numberWithInt: i->fEnd], @"end",
-			[NSNumber numberWithInt: i->fVolta], @"volta",
-			nil]];
-	
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-			[NSNumber numberWithInt: repeat.fTimes], @"times",
-			ea, @"endings",	
-			nil];			 
-}
-
 void VLPlistVisitor::Visit(VLSong & song)
 {
 	fSong = &song;
@@ -102,7 +71,6 @@ void VLPlistVisitor::Visit(VLSong & song)
 	VisitMeasures(song, fPerfOrder);
 
 	[fPlist setObject:EncodeProperties(song.fProperties) forKey:@"properties"];
-	[fPlist setObject:EncodeRepeats(song.fRepeats) forKey:@"repeats"];
 	[fPlist setObject:fMeasures forKey:@"measures"];
 }
 
@@ -114,12 +82,39 @@ void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 	VisitNotes(meas, p, true);
 	VisitChords(meas);
 
-	NSDictionary * md = 
-		[NSDictionary dictionaryWithObjectsAndKeys:
+	NSMutableDictionary * md = 
+		[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		 [NSNumber numberWithInt:m], @"measure",
 		 [NSNumber numberWithInt:meas.fPropIdx], @"properties",
 		 fNotes, @"melody", fChords, @"chords",
 		 nil];
+	int		times;
+	bool 	last;
+	size_t	volta;
+	if (fSong->DoesBeginRepeat(m, &times)) 
+		[md setObject:
+		       [NSDictionary dictionaryWithObjectsAndKeys:
+				[NSNumber numberWithInt:times], @"times", nil]
+			forKey: @"begin-repeat"];
+	if (fSong->DoesBeginEnding(m, &last, &volta)) 
+		[md setObject:
+		       [NSDictionary dictionaryWithObjectsAndKeys:
+				[NSNumber numberWithBool:!last], @"last",
+				[NSNumber numberWithInt:volta], @"volta",
+				nil]
+			forKey: @"begin-ending"];
+	if (fSong->DoesEndRepeat(m+1, &times)) 
+		[md setObject:
+		       [NSDictionary dictionaryWithObjectsAndKeys:
+				[NSNumber numberWithInt:times], @"times", nil]
+			forKey: @"end-repeat"];
+	if (fSong->DoesEndEnding(m, &last, &volta)) 
+		[md setObject:
+		       [NSDictionary dictionaryWithObjectsAndKeys:
+				[NSNumber numberWithBool:!last], @"last",
+				[NSNumber numberWithInt:volta], @"volta",
+				nil]
+			forKey: @"end-ending"];
 	[fMeasures addObject:md];
 }
 
@@ -162,18 +157,16 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 - (id)plistInPerformanceOrder:(BOOL)performanceOrder
 {
 	NSMutableDictionary *	plist = 
-		[NSMutableDictionary dictionaryWithCapacity:20];
-	[plist setObject:songTitle forKey:@"title"];
-	[plist setObject:songGroove forKey:@"groove"];
-	[plist setObject:songTempo forKey:@"tempo"];
-	[plist setObject:songComposer forKey:@"composer"];
-	[plist setObject:songLyricist forKey:@"lyricist"];
-	[plist setObject:[NSDate date] forKey:@"saved"];
-	[plist setObject:
-			   [NSString stringWithFormat:@"VocalEasel %@",
-						 [[NSBundle mainBundle] 
-							 objectForInfoDictionaryKey:@"CFBundleVersion"]]
-		   forKey:@"software"];
+		[NSMutableDictionary dictionaryWithObjectsAndKeys:
+		 songTitle, @"title", 
+		 songGroove, @"groove", songTempo, @"tempo",
+		 songComposer, @"composer", songLyricist, @"lyricist",
+		 [NSDate date], @"saved",
+		 [NSString stringWithFormat:@"VocalEasel %@",
+				   [[NSBundle mainBundle] 
+					   objectForInfoDictionaryKey:@"CFBundleVersion"]],
+		 @"software",
+		 nil];
 
 	VLPlistVisitor	songWriter(plist, performanceOrder);
 	songWriter.Visit(*song);

@@ -61,6 +61,9 @@ def _chords
   chords = REXML::Element.new('part')
   chords.add_attribute('id', 'HARM')
   
+  INPUT['measures'].each do |meas|
+  end
+
   return chords
 end
 
@@ -91,3 +94,6 @@ xml.add REXML::DocType.new(['score-partwise', 'PUBLIC',
 xml.add_element(_score)
 xml.write($stdout, 0)
 
+# Local Variables:
+# mode:ruby
+# End:
