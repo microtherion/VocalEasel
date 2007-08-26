@@ -6,6 +6,7 @@ require 'rexml/document'
 require 'rexml/streamlistener'
 require 'base64'
 require 'date'
+require 'time'
 
 class PlistListener
   include REXML::StreamListener

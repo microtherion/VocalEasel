@@ -3,10 +3,14 @@
 # VLMusicXMLType.write - Translate plist into MusicXML
 #
 
-require File.dirname($0)+'plistReader'
+require File.dirname($0)+'/plistReader'
+require File.dirname($0)+'/vl'
 require 'rexml/document'
 
 INPUT = readPlist($stdin)
+
+$USE_FLATS = false
+$DIVISIONS = 3
 
 def _work
   work = REXML::Element.new('work')
@@ -26,10 +30,10 @@ def _identification
     poet = REXML::Element.new('creator')
     poet.add_attribute('type', 'poet')
     poet.add_text(INPUT['lyricist'])
-  ident.add_element(lyricist)
+  ident.add_element(poet)
     encoding = REXML::Element.new('encoding')
       date = REXML::Element.new('encoding-date')
-      date.add_text(INPUT['saved'].strftime("%Y-%m-%d")
+      date.add_text(INPUT['saved'].strftime("%Y-%m-%d"))
     encoding.add_element(date)
       software = REXML::Element.new('software')
       software.add_text(INPUT['software'])
@@ -57,20 +61,175 @@ def _part_list
   return part_list
 end
 
+def _attributes(prop)
+  $USE_FLATS = prop['key'] < 0
+  $DIVISIONS = prop['divisions']
+  attr = REXML::Element.new('attributes')
+    div = REXML::Element.new('divisions')
+    div.add_text(prop['divisions'].to_s)
+  attr.add_element(div)
+    key = REXML::Element.new('key')
+      fifths = REXML::Element.new('fifths')
+      fifths.add_text(prop['key'].to_s)
+    key.add_element(fifths)
+      mode = REXML::Element.new('mode')
+      mode.add_text(prop['mode'] > 0 ? "major" : "minor")
+    key.add_element(mode)
+  attr.add_element(key)
+    time = REXML::Element.new('time')
+      beats = REXML::Element.new('beats')
+      beats.add_text(prop['timeNum'].to_s)
+    time.add_element(beats)
+      beatType = REXML::Element.new('beat-type')
+      beatType.add_text(prop['timeDenom'].to_s)
+    time.add_element(beatType)
+  attr.add_element(time)
+    clef = REXML::Element.new('clef')
+      sign = REXML::Element.new('sign')
+      sign.add_text('G')
+    clef.add_element(sign)
+      line = REXML::Element.new('line')
+      line.add_text('2')
+    clef.add_element(line)
+  attr.add_element(clef)
+
+  return attr
+end
+
+STEPS = 'C DbD EbE F GbG AbA BbB '
+
+def _note(pitch, dur, tied=0)
+  note = REXML::Element.new('note')
+  if pitch == VL::NoPitch
+    note.add_element(REXML::Element.new('rest'))
+  else
+    oct  = pitch/12 - 1
+    stp  = 2*(pitch%12)
+    step = STEPS[stp]
+    alt  = STEPS[stp+1] == ?b
+    if alt
+      if $USE_FLATS
+        alt = "-1"
+      else
+        step = step == ?A ? ?G : step-1
+        alt  = "1"
+      end
+    end
+    if (tied & VL::InChord) != 0
+      note.add_element 'chord'
+    end
+    pitch= REXML::Element.new('pitch')
+      st = REXML::Element.new('step')
+      st.add_text(step.chr)
+    pitch.add_element(st)
+    if alt
+      a = REXML::Element.new('alter')
+      a.add_text(alt)
+      pitch.add_element(a)
+    end
+      o = REXML::Element.new('octave')
+      o.add_text(oct.to_s)
+    pitch.add_element(o)
+    note.add_element(pitch)
+  end
+  d = REXML::Element.new('duration')
+    d.add_text(dur.to_s)
+  note.add_element(d)
+  if (tied & VL::TiedWithPrev) != 0
+    t = REXML::Element.new('tie')
+    t.add_attribute('type', 'stop')
+    note.add_element(t)
+  end
+  if (tied & VL::TiedWithNext) != 0
+    t = REXML::Element.new('tie')
+    t.add_attribute('type', 'start')
+    note.add_element(t)
+  end
+    voice = REXML::Element.new('voice')
+    voice.add_text("1")
+  note.add_element(voice)
+
+  return note
+end
+  
 def _chords
   chords = REXML::Element.new('part')
   chords.add_attribute('id', 'HARM')
   
+  lastProp = -1
+  measNum  = 0
   INPUT['measures'].each do |meas|
+    measNum += 1
+    m = REXML::Element.new('measure')
+    m.add_attribute('number', measNum.to_s);
+    if meas['properties'] != lastProp
+      lastProp = meas['properties']
+      m.add_element(_attributes(INPUT['properties'][lastProp]))
+    end
+    meas['chords'].each do |chord|
+      dur = (chord['durNum'] * $DIVISIONS * 4) / chord['durDenom']
+      if chord['pitch'] == VL::NoPitch
+        m.add_element _note(VL::NoPitch, dur)
+      else
+        seenNote = 0
+        if chord['root'] != VL::NoPitch
+          m.add_element _note(chord['root'], dur)
+          seenNote = VL::InChord
+        end
+        pitch = chord['pitch']
+        steps = chord['steps']
+        (0..25).each do |step|
+          if (steps & (1<<step)) != 0
+            m.add_element _note(pitch+step, dur, seenNote)
+            seenNote = VL::InChord
+          end
+        end
+      end
+    end
+    chords.add_element(m)
   end
 
   return chords
 end
 
+SYLLABLE = %w[single begin end middle]
+
 def _melody
   melody = REXML::Element.new('part')
   melody.add_attribute('id', 'MELO')
   
+  lastProp = -1
+  measNum  = 0
+  INPUT['measures'].each do |meas|
+    measNum += 1
+    m = REXML::Element.new('measure')
+    m.add_attribute('number', measNum.to_s);
+    if meas['properties'] != lastProp
+      lastProp = meas['properties']
+      m.add_element(_attributes(INPUT['properties'][lastProp]))
+    end
+    meas['melody'].each do |note|
+      dur = (note['durNum'] * $DIVISIONS * 4) / note['durDenom']
+      n   = _note(note['pitch'], dur, note['tied'])
+      stanza = 1
+      note['lyrics'].each do |syll|
+        if syll['text']
+          lyr = REXML::Element.new('lyric')
+          lyr.add_attribute('number', stanza.to_s)
+            sy = REXML::Element.new('syllabic')
+            sy.add_text(SYLLABLE[syll['kind']])
+          lyr.add_element(sy)
+            tx = REXML::Element.new('text')
+            tx.add_text(syll['text'])
+          lyr.add_element(tx)
+          n.add_element(lyr)
+        end
+      end
+      m.add_element(n)
+    end
+    melody.add_element(m)
+  end
+
   return melody
 end
 
