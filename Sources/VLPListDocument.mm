@@ -181,16 +181,180 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 - (IBAction)dump:(id)sender
 {	
 	id plist = [self plistInPerformanceOrder:NO];
-	if ([sender tag]) 
+	switch ([sender tag]) {
+	case 0:
+		//
+		// Dump as plist
+		//
+		NSLog(@"\n%@\n", plist);
+		break;
+	case 1:
+		//
+		// Dump as XML
+		//
 		plist = [[[NSString alloc] initWithData:
-			[NSPropertyListSerialization dataFromPropertyList:plist format:NSPropertyListXMLFormat_v1_0 errorDescription:nil]
-				encoding:NSUTF8StringEncoding] autorelease];
-	NSLog(@"%@\n", plist);
+					 [NSPropertyListSerialization dataFromPropertyList:plist 
+												  format:NSPropertyListXMLFormat_v1_0 errorDescription:nil]
+								   encoding:NSUTF8StringEncoding] autorelease];
+		NSLog(@"\n%@\n", plist);
+		break;	
+	case 2:
+		//
+		// Dump after roundtrip
+		//
+		[self readFromPlist:plist error:nil];
+		plist = [self plistInPerformanceOrder:NO];
+		NSLog(@"\n%@\n", plist);
+		break;
+	}
+}
+
+- (void)readMelody:(NSArray *)melody inMeasure:(size_t)measNo
+{
+	VLFraction	at(0);
+
+	for (NSEnumerator * ne 	  = [melody objectEnumerator];
+		 NSDictionary * ndict = [ne nextObject];
+	) {	
+		VLLyricsNote note;
+		note.fDuration.fNum		= [[ndict objectForKey:@"durNum"] intValue];
+		note.fDuration.fDenom	= [[ndict objectForKey:@"durDenom"] intValue];
+		note.fPitch				= [[ndict objectForKey:@"pitch"] intValue];	
+		note.fTied				= [[ndict objectForKey:@"tied"] intValue];	
+
+		for (NSEnumerator * le 	  = [[ndict objectForKey:@"lyrics"] objectEnumerator];
+			 NSDictionary * ldict = [le nextObject];
+		) {	
+			VLSyllable syll;
+
+			if (NSString * t = [ldict objectForKey:@"text"])
+				syll.fText = [t UTF8String];
+
+			syll.fKind = [[ldict objectForKey:@"kind"] intValue];
+
+			note.fLyrics.push_back(syll);
+		}
+
+		song->AddNote(note, measNo, at);
+		
+		at += note.fDuration;
+	}
+}
+
+- (void)readChords:(NSArray *)chords inMeasure:(size_t)measNo
+{
+	VLFraction	at(0);
+
+	for (NSEnumerator * ce 	  = [chords objectEnumerator];
+		 NSDictionary * cdict = [ce nextObject];
+	) {	
+		VLChord chord;
+		chord.fDuration.fNum	= [[cdict objectForKey:@"durNum"] intValue];
+		chord.fDuration.fDenom	= [[cdict objectForKey:@"durDenom"] intValue];
+		chord.fPitch			= [[cdict objectForKey:@"pitch"] intValue];	
+		chord.fRootPitch		= [[cdict objectForKey:@"root"] intValue];	
+		chord.fSteps			= [[cdict objectForKey:@"steps"] intValue];	
+
+		song->AddChord(chord, measNo, at);
+		
+		at += chord.fDuration;
+	}
+}
+
+- (void)readMeasuresFromPlist:(NSArray *)measures
+{
+	std::vector<size_t>	repeatStack;
+
+	size_t measNo = 0;
+	for (NSEnumerator * me 	  = [measures objectEnumerator];
+		 NSDictionary * mdict = [me nextObject];
+		 ++measNo
+	) {
+		if (NSNumber * mNo = [mdict objectForKey:@"measure"])
+			measNo = static_cast<size_t>([mNo intValue]);
+
+		[self readMelody:[mdict objectForKey:@"melody"] inMeasure:measNo];
+		[self readChords:[mdict objectForKey:@"melody"] inMeasure:measNo];
+
+		if ([[mdict objectForKey:@"tocoda"] boolValue])
+			song->fGoToCoda = measNo;
+		if ([[mdict objectForKey:@"coda"] boolValue])
+			song->fCoda = measNo;			
+		if (NSDictionary * beginRep = [mdict objectForKey:@"begin-repeat"]) {
+			VLRepeat 			rep;
+			VLRepeat::Ending	ending(measNo, measNo, 0);
+
+			rep.fTimes	= [[beginRep objectForKey:@"times"] intValue];
+			rep.fEndings.push_back(ending);
+
+			repeatStack.push_back(song->fRepeats.size());
+			song->fRepeats.push_back(rep);
+		}
+		if (NSDictionary * beginEnd = [mdict objectForKey:@"begin-ending"]) {
+			VLRepeat & 			rep = song->fRepeats[repeatStack.back()];
+			VLRepeat::Ending	ending(measNo, measNo, 0);
+
+			ending.fVolta	= [[beginEnd objectForKey:@"volta"] intValue];
+			rep.fEndings.push_back(ending);
+		}
+		if (NSDictionary * endEnd = [mdict objectForKey:@"end-ending"]) {
+			VLRepeat & 			rep 	= song->fRepeats[repeatStack.back()];
+			VLRepeat::Ending &	ending 	= rep.fEndings.back();
+
+			ending.fEnd = measNo+1;
+			if (NSNumber * volta = [endEnd objectForKey:@"volta"])
+				ending.fVolta = [volta intValue];
+			while ((((1<<rep.fTimes) - 1) & ending.fVolta) < ending.fVolta)
+				++rep.fTimes;
+			if ([[endEnd objectForKey:@"last"] boolValue]) {
+				rep.fEndings[0].fEnd = measNo+1;
+				repeatStack.pop_back();
+			}
+		}
+		if (NSDictionary * endRep = [mdict objectForKey:@"end-repeat"]) {
+			VLRepeat & 			rep = song->fRepeats[repeatStack.back()];
+
+			if (NSNumber * times = [endRep objectForKey:@"times"])
+				rep.fTimes = [times intValue];
+
+			rep.fEndings[0].fEnd 	= measNo+1;
+			rep.fEndings[0].fVolta	= (1<<rep.fTimes)-1;
+
+			repeatStack.pop_back();
+		}
+	}
+}
+
+- (void)readPropertiesFromPlist:(NSArray *)properties
+{
+	for (NSEnumerator * pe = [properties objectEnumerator];
+		 NSDictionary * pdict = [pe nextObject];
+	) {
+		VLProperties prop;
+
+		prop.fTime.fNum		= [[pdict objectForKey:@"timeNum"] intValue];
+		prop.fTime.fDenom	= [[pdict objectForKey:@"timeDenom"] intValue];
+		prop.fKey			= [[pdict objectForKey:@"key"] intValue];
+		prop.fMode			= [[pdict objectForKey:@"mode"] intValue];
+		prop.fDivisions		= [[pdict objectForKey:@"divisions"] intValue];
+
+		song->fProperties.push_back(prop);
+	}
 }
 
 - (BOOL)readFromPlist:(id)plist error:(NSError **)outError
 {
-	return NO;
+	song->clear();
+
+	[self setValue:[plist objectForKey:@"title"] forKey:@"songTitle"];
+	[self setValue:[plist objectForKey:@"composer"] forKey:@"songComposer"];
+	[self setValue:[plist objectForKey:@"lyricist"] forKey:@"songLyricist"];
+	[self setValue:[plist objectForKey:@"groove"] forKey:@"songGroove"];
+	[self setValue:[plist objectForKey:@"tempo"] forKey:@"songTempo"];
+	[self readPropertiesFromPlist:[plist objectForKey:@"properties"]];
+	[self readMeasuresFromPlist:[plist objectForKey:@"measures"]];
+
+	return YES;
 }
 
 - (NSData *)runFilter:(NSString *)filterName withContents:(NSData *)contents
