@@ -12,31 +12,32 @@ INPUT = readPlist($stdin)
 $USE_FLATS = false
 $DIVISIONS = 3
 
+def newTextElement(name, text)
+  elt = REXML::Element.new(name)
+  elt.add_text(text.to_s)
+
+  return elt
+end
+
 def _work
   work = REXML::Element.new('work')
-    title = REXML::Element.new('work-title')
-    title.add_text(INPUT['title'])
-  work.add_element(title)
+  work.add_element newTextElement('work-title', INPUT['title'])
 
   return work
 end
 
 def _identification
   ident = REXML::Element.new('identification')
-    composer = REXML::Element.new('creator')
+    composer = newTextElement('creator', INPUT['composer'])
     composer.add_attribute('type', 'composer')
-    composer.add_text(INPUT['composer'])
   ident.add_element(composer)
-    poet = REXML::Element.new('creator')
+    poet = newTextElement('creator', INPUT['lyricist'])
     poet.add_attribute('type', 'poet')
-    poet.add_text(INPUT['lyricist'])
   ident.add_element(poet)
     encoding = REXML::Element.new('encoding')
-      date = REXML::Element.new('encoding-date')
-      date.add_text(INPUT['saved'].strftime("%Y-%m-%d"))
+      date = newTextElement('encoding-date', INPUT['saved'].strftime("%Y-%m-%d"))
     encoding.add_element(date)
-      software = REXML::Element.new('software')
-      software.add_text(INPUT['software'])
+      software = newTextElement('software', INPUT['software'])
     encoding.add_element(software)
   ident.add_element(encoding)
 
@@ -47,15 +48,11 @@ def _part_list
   part_list = REXML::Element.new('part-list')
     chords = REXML::Element.new('score-part')
     chords.add_attribute('id', 'HARM')
-      chords_name = REXML::Element.new('part-name')
-      chords_name.add_text('Chords')
-    chords.add_element(chords_name)
+    chords.add_element newTextElement('part-name', 'Chords')
   part_list.add_element(chords)
     melody = REXML::Element.new('score-part')
     melody.add_attribute('id', 'MELO')
-      melody_name = REXML::Element.new('part-name')
-      melody_name.add_text('Melody')
-    melody.add_element(melody_name)
+    melody.add_element newTextElement('part-name', 'Melody')
   part_list.add_element(melody)
 
   return part_list
@@ -65,32 +62,18 @@ def _attributes(prop)
   $USE_FLATS = prop['key'] < 0
   $DIVISIONS = prop['divisions']
   attr = REXML::Element.new('attributes')
-    div = REXML::Element.new('divisions')
-    div.add_text(prop['divisions'].to_s)
-  attr.add_element(div)
+  attr.add_element newTextElement('divisions', prop['divisions'])
     key = REXML::Element.new('key')
-      fifths = REXML::Element.new('fifths')
-      fifths.add_text(prop['key'].to_s)
-    key.add_element(fifths)
-      mode = REXML::Element.new('mode')
-      mode.add_text(prop['mode'] > 0 ? "major" : "minor")
-    key.add_element(mode)
+    key.add_element newTextElement('fifths', prop['key'])
+    key.add_element newTextElement('mode', prop['mode'] > 0 ? "major" : "minor")
   attr.add_element(key)
     time = REXML::Element.new('time')
-      beats = REXML::Element.new('beats')
-      beats.add_text(prop['timeNum'].to_s)
-    time.add_element(beats)
-      beatType = REXML::Element.new('beat-type')
-      beatType.add_text(prop['timeDenom'].to_s)
-    time.add_element(beatType)
+    time.add_element newTextElement('beats', prop['timeNum'])
+    time.add_element newTextElement('beat-type', prop['timeDenom'])
   attr.add_element(time)
     clef = REXML::Element.new('clef')
-      sign = REXML::Element.new('sign')
-      sign.add_text('G')
-    clef.add_element(sign)
-      line = REXML::Element.new('line')
-      line.add_text('2')
-    clef.add_element(line)
+    clef.add_element newTextElement('sign', 'G')
+    clef.add_element newTextElement('line', 2)
   attr.add_element(clef)
 
   return attr
@@ -109,45 +92,31 @@ def _note(pitch, dur, tied=0)
     alt  = STEPS[stp+1] == ?b
     if alt
       if $USE_FLATS
-        alt = "-1"
+        alt = -1
       else
         step = step == ?A ? ?G : step-1
-        alt  = "1"
+        alt  = 1
       end
     end
     if (tied & VL::InChord) != 0
       note.add_element 'chord'
     end
     pitch= REXML::Element.new('pitch')
-      st = REXML::Element.new('step')
-      st.add_text(step.chr)
-    pitch.add_element(st)
+    pitch.add_element newTextElement('step', step.chr)
     if alt
-      a = REXML::Element.new('alter')
-      a.add_text(alt)
-      pitch.add_element(a)
+      pitch.add_element newTextElement('alter', alt)
     end
-      o = REXML::Element.new('octave')
-      o.add_text(oct.to_s)
-    pitch.add_element(o)
+    pitch.add_element newTextElement('octave', oct)
     note.add_element(pitch)
   end
-  d = REXML::Element.new('duration')
-    d.add_text(dur.to_s)
-  note.add_element(d)
+  note.add_element newTextElement('duration', dur)
   if (tied & VL::TiedWithPrev) != 0
-    t = REXML::Element.new('tie')
-    t.add_attribute('type', 'stop')
-    note.add_element(t)
+    note.add_element 'tie', {'type' => 'stop' }
   end
   if (tied & VL::TiedWithNext) != 0
-    t = REXML::Element.new('tie')
-    t.add_attribute('type', 'start')
-    note.add_element(t)
+    note.add_element 'tie', {'type' => 'start' }
   end
-    voice = REXML::Element.new('voice')
-    voice.add_text("1")
-  note.add_element(voice)
+  note.add_element newTextElement('voice', 1)
 
   return note
 end
@@ -200,6 +169,14 @@ def _melody
   
   lastProp = -1
   measNum  = 0
+  repeat   = [0]
+  INPUT['measures'].each do |meas|
+    r = 0
+    r |= 1 if meas['begin-repeat']
+    r |= 2 if meas['end-repeat']
+    repeat.push r
+  end
+  repeat.push 0
   INPUT['measures'].each do |meas|
     measNum += 1
     m = REXML::Element.new('measure')
@@ -207,6 +184,34 @@ def _melody
     if meas['properties'] != lastProp
       lastProp = meas['properties']
       m.add_element(_attributes(INPUT['properties'][lastProp]))
+    end
+    if meas['coda']
+      m.add_element 'sound', {'coda' => 'A'}
+    end
+    if meas['begin-repeat']
+      barline = REXML::Element.new('barline')
+      barline.add_attribute('location', 'left')
+      barline.add_element newTextElement('bar-style', 
+                 (repeat[measNum-1] & 2) != 0 ? 'heavy-heavy' : 'heavy-light')
+      barline.add_element 'repeat', {'direction' => 'forward'}
+      m.add_element(barline)
+    end
+    if ending = meas['begin-ending']
+      barline = REXML::Element.new('barline')
+      barline.add_attribute('location', 'left')
+      volta = ending['volta']
+      num   = nil
+      (0..7).each do |i|
+        if (volta & (1<<i)) != 0
+          if num
+            num += ",#{i+1}"
+          else
+            num = (i+1).to_s
+          end
+        end
+      end
+      barline.add_element 'ending', {'type' => 'start', 'number' => num}
+      m.add_element(barline)
     end
     meas['melody'].each do |note|
       dur = (note['durNum'] * $DIVISIONS * 4) / note['durDenom']
@@ -216,16 +221,44 @@ def _melody
         if syll['text']
           lyr = REXML::Element.new('lyric')
           lyr.add_attribute('number', stanza.to_s)
-            sy = REXML::Element.new('syllabic')
-            sy.add_text(SYLLABLE[syll['kind']])
-          lyr.add_element(sy)
-            tx = REXML::Element.new('text')
-            tx.add_text(syll['text'])
-          lyr.add_element(tx)
+          lyr.add_element newTextElement('syllabic', SYLLABLE[syll['kind']])
+          lyr.add_element newTextElement('text', syll['text'])
           n.add_element(lyr)
         end
       end
       m.add_element(n)
+    end
+    if r = meas['end-repeat']
+      barline = REXML::Element.new('barline')
+      barline.add_attribute('location', 'right')
+      barline.add_element newTextElement('bar-style', 
+                 (repeat[measNum+1] & 1) != 0 ? 'heavy-heavy' : 'light-heavy')
+      barline.add_element 'repeat', {'direction' => 'backward', 'times' => r['times'].to_s}
+      m.add_element(barline)      
+    end
+    if ending = meas['end-ending']
+      barline = REXML::Element.new('barline')
+      barline.add_attribute('location', 'right')
+      barline.add_element newTextElement('bar-style', 
+                 (repeat[measNum+1] & 1) != 0 ? 'heavy-heavy' : 'light-heavy')
+      barline.add_element 'repeat', {'direction' => 'backward'}
+      volta = ending['volta']
+      num   = nil
+      (0..7).each do |i|
+        if (volta & (1<<i)) != 0
+          if num
+            num += ",#{i+1}"
+          else
+            num = (i+1).to_s
+          end
+        end
+      end
+      type = ending['last'] ? "discontinue" : "stop"
+      barline.add_element 'ending', {'type', type, 'number', num}
+      m.add_element(barline)      
+    end
+    if meas['tocoda']
+      m.add_element 'sound', {'tocoda' => 'A'}
     end
     melody.add_element(m)
   end

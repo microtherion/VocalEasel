@@ -108,13 +108,17 @@ void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 		       [NSDictionary dictionaryWithObjectsAndKeys:
 				[NSNumber numberWithInt:times], @"times", nil]
 			forKey: @"end-repeat"];
-	if (fSong->DoesEndEnding(m, &last, &volta)) 
+	if (fSong->DoesEndEnding(m+1, &last, &volta)) 
 		[md setObject:
 		       [NSDictionary dictionaryWithObjectsAndKeys:
 				[NSNumber numberWithBool:!last], @"last",
 				[NSNumber numberWithInt:volta], @"volta",
 				nil]
 			forKey: @"end-ending"];
+	if (fSong->fGoToCoda == m)
+		[md setObject:[NSNumber numberWithBool:YES] forKey:@"tocoda"];
+	if (fSong->fCoda == m)
+		[md setObject:[NSNumber numberWithBool:YES] forKey:@"coda"];
 	[fMeasures addObject:md];
 }
 
