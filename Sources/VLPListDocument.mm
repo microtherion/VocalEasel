@@ -211,7 +211,9 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 
 - (void)readMelody:(NSArray *)melody inMeasure:(size_t)measNo
 {
-	VLFraction	at(0);
+	VLFraction		at(0);
+	VLFraction		tiedStart(0);
+	VLLyricsNote	tiedNote;
 
 	for (NSEnumerator * ne 	  = [melody objectEnumerator];
 		 NSDictionary * ndict = [ne nextObject];
@@ -220,24 +222,45 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 		note.fDuration.fNum		= [[ndict objectForKey:@"durNum"] intValue];
 		note.fDuration.fDenom	= [[ndict objectForKey:@"durDenom"] intValue];
 		note.fPitch				= [[ndict objectForKey:@"pitch"] intValue];	
-		note.fTied				= [[ndict objectForKey:@"tied"] intValue];	
-
-		for (NSEnumerator * le 	  = [[ndict objectForKey:@"lyrics"] objectEnumerator];
-			 NSDictionary * ldict = [le nextObject];
-		) {	
-			VLSyllable syll;
-
-			if (NSString * t = [ldict objectForKey:@"text"])
-				syll.fText = [t UTF8String];
-
-			syll.fKind = [[ldict objectForKey:@"kind"] intValue];
-
-			note.fLyrics.push_back(syll);
-		}
-
-		song->AddNote(note, measNo, at);
+		note.fTied				= 0;
 		
-		at += note.fDuration;
+		if ([[ndict objectForKey:@"tied"] intValue] & VLNote::kTiedWithPrev) {
+			if (at != 0) {
+				//
+				// Extend preceding note
+				//
+				tiedNote.fDuration	+= note.fDuration;
+				song->DelNote(measNo, tiedStart);
+				song->AddNote(tiedNote, measNo, tiedStart);
+				
+				goto advanceAt;
+			} else {
+				//
+				// Extend previous measure
+				//
+				note.fTied |= VLNote::kTiedWithPrev;
+			}
+		} else {
+			for (NSEnumerator * le 	  = [[ndict objectForKey:@"lyrics"] objectEnumerator];
+				 NSDictionary * ldict = [le nextObject];
+			) {	
+				VLSyllable syll;
+
+				if (NSString * t = [ldict objectForKey:@"text"])
+					syll.fText = [t UTF8String];
+
+				syll.fKind = [[ldict objectForKey:@"kind"] intValue];
+
+				note.fLyrics.push_back(syll);
+			}
+		}
+		
+		tiedStart	= at;
+		tiedNote	= note;
+		
+		song->AddNote(note, measNo, at);
+advanceAt:
+		at += note.fDuration;		
 	}
 }
 
@@ -274,7 +297,7 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 			measNo = static_cast<size_t>([mNo intValue]);
 
 		[self readMelody:[mdict objectForKey:@"melody"] inMeasure:measNo];
-		[self readChords:[mdict objectForKey:@"melody"] inMeasure:measNo];
+		[self readChords:[mdict objectForKey:@"chords"] inMeasure:measNo];
 
 		if ([[mdict objectForKey:@"tocoda"] boolValue])
 			song->fGoToCoda = measNo;
@@ -327,6 +350,7 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 
 - (void)readPropertiesFromPlist:(NSArray *)properties
 {
+	song->fProperties.clear();
 	for (NSEnumerator * pe = [properties objectEnumerator];
 		 NSDictionary * pdict = [pe nextObject];
 	) {
