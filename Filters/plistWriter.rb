@@ -47,7 +47,7 @@ def _encodePlist(object)
       e.add_element(_encodePlist(elt))
     end
   else
-    raise "plistWriter can't encode objects of type `#{object.class}'[#{object.class.id}]"
+    raise "plistWriter can't encode objects of type `#{object.class}'"
   end
 
   return e

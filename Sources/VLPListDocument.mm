@@ -219,8 +219,10 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 		 NSDictionary * ndict = [ne nextObject];
 	) {	
 		VLLyricsNote note;
-		note.fDuration.fNum		= [[ndict objectForKey:@"durNum"] intValue];
-		note.fDuration.fDenom	= [[ndict objectForKey:@"durDenom"] intValue];
+		note.fDuration = 
+			VLFraction([[ndict objectForKey:@"durNum"] intValue],
+					   [[ndict objectForKey:@"durDenom"] intValue],
+					   true);
 		note.fPitch				= [[ndict objectForKey:@"pitch"] intValue];	
 		note.fTied				= 0;
 		
@@ -272,8 +274,10 @@ advanceAt:
 		 NSDictionary * cdict = [ce nextObject];
 	) {	
 		VLChord chord;
-		chord.fDuration.fNum	= [[cdict objectForKey:@"durNum"] intValue];
-		chord.fDuration.fDenom	= [[cdict objectForKey:@"durDenom"] intValue];
+		chord.fDuration = 
+			VLFraction([[ndict objectForKey:@"durNum"] intValue],
+					   [[ndict objectForKey:@"durDenom"] intValue],
+					   true);
 		chord.fPitch			= [[cdict objectForKey:@"pitch"] intValue];	
 		chord.fRootPitch		= [[cdict objectForKey:@"root"] intValue];	
 		chord.fSteps			= [[cdict objectForKey:@"steps"] intValue];	
@@ -356,8 +360,10 @@ advanceAt:
 	) {
 		VLProperties prop;
 
-		prop.fTime.fNum		= [[pdict objectForKey:@"timeNum"] intValue];
-		prop.fTime.fDenom	= [[pdict objectForKey:@"timeDenom"] intValue];
+		prop.fTime = 
+			VLFraction([[ndict objectForKey:@"timeNum"] intValue],
+					   [[ndict objectForKey:@"timeDenom"] intValue],
+					   false);
 		prop.fKey			= [[pdict objectForKey:@"key"] intValue];
 		prop.fMode			= [[pdict objectForKey:@"mode"] intValue];
 		prop.fDivisions		= [[pdict objectForKey:@"divisions"] intValue];

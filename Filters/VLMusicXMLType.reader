@@ -1,0 +1,172 @@
+#!/usr/bin/ruby
+#
+# VLMusicXMLType.reader - Create plist from MusicXML
+#
+
+require File.dirname($0)+'/plistWriter'
+require File.dirname($0)+'/vl'
+require 'rexml/document'
+
+XML    = REXML::Document.new $stdin
+ROOT   = XML.root
+OUTPUT = {}
+
+if ROOT.name == "score-timewise"
+  $stderr.puts "Can't read timewise MusicXML files yet"
+  exit 1
+end
+
+def textOrNot(elt)
+  return elt ? elt.text : ""
+end
+
+OUTPUT['title']    = 
+  textOrNot ROOT.elements['./work/work-title']
+OUTPUT['composer'] = 
+  textOrNot ROOT.elements['./identification/creator[@type="composer"]']
+OUTPUT['lyricist'] = 
+  textOrNot ROOT.elements['./identification/creator[@type="poet"]']
+OUTPUT['groove'] = 
+  textOrNot ROOT.elements['./identification/miscellaneous-field[@name="VocalEasel-groove"]']
+
+CHORDS    = ROOT.elements['./part[@id="HARM"]']
+MELODY    = ROOT.elements['./part[@id="MELO"]']
+PROP      = {}
+$LASTPROP = nil
+
+OUTPUT['measures']   = []
+OUTPUT['properties'] = []
+
+def updateProp(meas)
+  if attr = meas.elements['./attributes']
+    if div = attr.elements['./divisions']
+      PROP['divisions'] = div.text.to_i
+    end
+    if key = attr.elements['./key/fifths']
+      PROP['key'] = key.text.to_i
+    end
+    if mode = attr.elements['./key/mode']
+      PROP['mode'] = mode.text == 'minor' ? -1 : 1
+    end
+    if timeNum = attr.elements['./time/beats']
+      PROP['timeNum'] = timeNum.text.to_i
+    end
+    if timeDenom = attr.elements['./time/beat-type']
+      PROP['timeDenom'] = timeDenom.text.to_i
+    end
+  end
+end
+
+PITCH = {
+  'C' => 0,
+  'D' => 2,
+  'E' => 4,
+  'F' => 5,
+  'G' => 7,
+  'A' => 9,
+  'B' => 11
+}
+
+def parseNote(note)
+  n = {}
+  if note.elements['./rest']
+    n['pitch'] = -128
+  else
+    step       = note.elements['./pitch/step']
+    alter      = note.elements['./pitch/alter']
+    octave     = note.elements['./pitch/octave']
+    n['pitch'] = (step ? PITCH[step.text] : 0) +
+      (alter ? alter.text.to_i : 0) +
+      (octave ? octave.text.to_i+1 : 0)*12
+  end
+  if dur = note.elements['./duration']
+    n['durNum']   = dur.text.to_i
+    n['durDenom'] = PROP['divisions']*4
+  end
+  if note.elements['./tie']
+    n['tied'] = 0
+    if note.elements['./tie[@type="start"]']
+      n['tied'] |= VL::TiedWithNext
+    end
+    if note.elements['./tie[@type="stop"]']
+      n['tied'] |= VL::TiedWithPrev
+    end
+  end
+  return n
+end
+
+def makeChord(root, steps, num, denom)
+  chord = {}
+  chord['root']     = root
+  chord['durNum']   = num
+  chord['durDenom'] = denom
+  st = steps.sort
+  pitch = st[0] || -128
+  steps = 0
+  st.each do |step|
+    steps |= 1<<(step-pitch)
+  end
+  chord['pitch']    = pitch
+  chord['steps']    = steps
+
+  return chord
+end
+
+CHORDS.elements.each('measure') do |meas|
+  updateProp meas
+  chords = []
+  root = -128
+  steps= []
+  num  = nil
+  denom= nil
+  meas.elements.each('note') do |note|
+    if !note.elements['./chord'] && num
+      chords.push makeChord(root, steps, num, denom)
+      root = -128
+      steps= []
+      num  = nil
+      denom= nil
+    end
+    note   = parseNote(note)
+    num  ||= note['durNum']
+    denom||= note['durDenom']
+    if note['pitch'] < 60
+      root = note['pitch']
+    else
+      steps.push note['pitch']
+    end
+  end
+  chords.push makeChord(root, steps, num, denom) if num
+  measNo = meas.attributes['number'].to_i-1
+  OUTPUT['measures'][measNo] = {
+    'measure'    => measNo,
+    'properties' => 0,
+    'chords'     => chords,
+    'melody'     => []
+  }
+end
+
+MELODY.elements.each('measure') do |meas|
+  updateProp meas
+  if PROP != $LASTPROP
+    OUTPUT['properties'].push PROP
+    $LASTPROP = PROP
+  end
+  melody = []
+  meas.elements.each('note') do |note|
+    melody.push parseNote(note)
+  end
+  measNo = meas.attributes['number'].to_i-1
+  OUTPUT['measures'][measNo] ||= {
+    'measure'=> measNo,
+    'chords' => []
+  }
+  OUTPUT['measures'][measNo]['properties'] = OUTPUT['properties'].length-1
+  OUTPUT['measures'][measNo]['melody']     = melody
+end
+
+writePlist($stdout, OUTPUT)
+
+# Local Variables:
+# mode:ruby
+# End:
