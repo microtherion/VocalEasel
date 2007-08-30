@@ -7,6 +7,7 @@ require File.dirname($0)+'/plistWriter'
 require File.dirname($0)+'/vl'
 require 'rexml/document'
 require 'rexml/streamlistener'
+require 'time'
 
 OUTPUT = {'measures' => []}
 
@@ -58,6 +59,12 @@ class MusicXMLListener
         @kind = 'textProp'
         @key  = 'groove'
       end
+    when 'encoding-date' then
+      @kind = 'dateProp'
+      @key  = 'saved'
+    when 'software' then
+      @kind = 'textProp'
+      @key  = 'software'
     when 'part' then
       @part   = attrs['id'] || ""
       @prop   = {}
@@ -176,6 +183,8 @@ class MusicXMLListener
       case @kind
       when 'textProp' then
         OUTPUT[@key] = @text
+      when 'dateProp' then
+        OUTPUT[@key] = Time.parse(@text)
       when 'prop' then
         @prop[@key] = @text.to_i
       when 'mode' then
