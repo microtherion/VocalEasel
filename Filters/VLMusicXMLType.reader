@@ -7,6 +7,14 @@ require File.dirname($0)+'/plistWriter'
 require File.dirname($0)+'/vl'
 require 'rexml/document'
 
+module REXML
+  class XPathParser
+    def get_namespace(node, prefix)
+      return ''
+    end
+  end
+end
+
 XML    = REXML::Document.new $stdin
 ROOT   = XML.root
 OUTPUT = {}
@@ -111,7 +119,7 @@ def makeChord(root, steps, num, denom)
 
   return chord
 end
-
+ 
 CHORDS.elements.each('measure') do |meas|
   updateProp meas
   chords = []
