@@ -18,6 +18,10 @@ end
 def _encodePlist(object)
   e = nil
   case object 
+  when false then
+    e = REXML::Element.new("false")
+  when true then
+    e = REXML::Element.new("true")
   when String then
     e = REXML::Element.new("string")
     e.add_text(object)
@@ -40,11 +44,11 @@ def _encodePlist(object)
     end
   when Hash then
     e = REXML::Element.new("dict")
-    object.each do |key,elt|
+    object.keys.sort.each do |key|
       k = REXML::Element.new("key")
       k.add_text(key)
       e.add_element(k)
-      e.add_element(_encodePlist(elt))
+      e.add_element(_encodePlist(object[key]))
     end
   else
     raise "plistWriter can't encode objects of type `#{object.class}'"
