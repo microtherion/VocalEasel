@@ -225,6 +225,7 @@ def _melody
           lyr.add_element newTextElement('text', syll['text'])
           n.add_element(lyr)
         end
+        stanza += 1
       end
       m.add_element(n)
     end
