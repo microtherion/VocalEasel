@@ -6,64 +6,9 @@
 require File.dirname($0)+'/plistWriter'
 require File.dirname($0)+'/vl'
 require 'rexml/document'
+require 'rexml/streamlistener'
 
-module REXML
-  class XPathParser
-    def get_namespace(node, prefix)
-      return ''
-    end
-  end
-end
-
-XML    = REXML::Document.new $stdin
-ROOT   = XML.root
-OUTPUT = {}
-
-if ROOT.name == "score-timewise"
-  $stderr.puts "Can't read timewise MusicXML files yet"
-  exit 1
-end
-
-def textOrNot(elt)
-  return elt ? elt.text : ""
-end
-
-OUTPUT['title']    = 
-  textOrNot ROOT.elements['./work/work-title']
-OUTPUT['composer'] = 
-  textOrNot ROOT.elements['./identification/creator[@type="composer"]']
-OUTPUT['lyricist'] = 
-  textOrNot ROOT.elements['./identification/creator[@type="poet"]']
-OUTPUT['groove'] = 
-  textOrNot ROOT.elements['./identification/miscellaneous-field[@name="VocalEasel-groove"]']
-
-CHORDS    = ROOT.elements['./part[@id="HARM"]']
-MELODY    = ROOT.elements['./part[@id="MELO"]']
-PROP      = {}
-$LASTPROP = nil
-
-OUTPUT['measures']   = []
-OUTPUT['properties'] = []
-
-def updateProp(meas)
-  if attr = meas.elements['./attributes']
-    if div = attr.elements['./divisions']
-      PROP['divisions'] = div.text.to_i
-    end
-    if key = attr.elements['./key/fifths']
-      PROP['key'] = key.text.to_i
-    end
-    if mode = attr.elements['./key/mode']
-      PROP['mode'] = mode.text == 'minor' ? -1 : 1
-    end
-    if timeNum = attr.elements['./time/beats']
-      PROP['timeNum'] = timeNum.text.to_i
-    end
-    if timeDenom = attr.elements['./time/beat-type']
-      PROP['timeDenom'] = timeDenom.text.to_i
-    end
-  end
-end
+OUTPUT = {'measures' => []}
 
 PITCH = {
   'C' => 0,
@@ -75,104 +20,234 @@ PITCH = {
   'B' => 11
 }
 
-def parseNote(note)
-  n = {}
-  if note.elements['./rest']
-    n['pitch'] = -128
-  else
-    step       = note.elements['./pitch/step']
-    alter      = note.elements['./pitch/alter']
-    octave     = note.elements['./pitch/octave']
-    n['pitch'] = (step ? PITCH[step.text] : 0) +
-      (alter ? alter.text.to_i : 0) +
-      (octave ? octave.text.to_i+1 : 0)*12
-  end
-  if dur = note.elements['./duration']
-    n['durNum']   = dur.text.to_i
-    n['durDenom'] = PROP['divisions']*4
-  end
-  if note.elements['./tie']
-    n['tied'] = 0
-    if note.elements['./tie[@type="start"]']
-      n['tied'] |= VL::TiedWithNext
-    end
-    if note.elements['./tie[@type="stop"]']
-      n['tied'] |= VL::TiedWithPrev
-    end
-  end
-  return n
-end
+SYLL = {
+  'single' => 0,
+  'begin'  => 1,
+  'end'    => 2,
+  'middle' => 3
+}
 
-def makeChord(root, steps, num, denom)
-  chord = {}
-  chord['root']     = root
-  chord['durNum']   = num
-  chord['durDenom'] = denom
-  st = steps.sort
-  pitch = st[0] || -128
-  steps = 0
-  st.each do |step|
-    steps |= 1<<(step-pitch)
-  end
-  chord['pitch']    = pitch
-  chord['steps']    = steps
+class MusicXMLListener
+  include REXML::StreamListener
 
-  return chord
-end
- 
-CHORDS.elements.each('measure') do |meas|
-  updateProp meas
-  chords = []
-  root = -128
-  steps= []
-  num  = nil
-  denom= nil
-  meas.elements.each('note') do |note|
-    if !note.elements['./chord'] && num
-      chords.push makeChord(root, steps, num, denom)
-      root = -128
-      steps= []
-      num  = nil
-      denom= nil
+  def initialize
+    @text = ""
+  end
+
+  def tag_start(tag, attrs)
+    @kind = nil  # Ignore all tags not recognized here
+    @text = ""
+    case tag
+    when 'score-timewise' then
+      $stderr.puts "Can't read timewise MusicXML files yet"
+      exit 1
+    when 'work-title' then
+      @kind = 'textProp'
+      @key  = 'title'
+    when 'creator' then
+      case attrs['type']
+      when 'composer' then
+        @kind = 'textProp'
+        @key  = 'composer'
+      when 'poet' then
+        @kind = 'textProp'
+        @key  = 'lyricist'
+      end
+    when 'miscellaneous-field' then
+      if attrs['name'] == 'VocalEasel-groove'
+        @kind = 'textProp'
+        @key  = 'groove'
+      end
+    when 'part' then
+      @part   = attrs['id'] || ""
+      @prop   = {}
+      @props  = []
+      @measNo = -1
+    when 'measure' then
+      @notes= []
+      @chord= false
+      if a = attrs['number']
+        @measNo = a.to_i-1
+      else
+        @measNo += 1
+      end
+      unless @meas = OUTPUT['measures'][@measNo] 
+        @meas = OUTPUT['measures'][@measNo] = {
+          'measure'    => @measNo,
+          'properties' => 0,
+          'chords'     => [],
+          'melody'     => []
+        }
+      end
+    when 'barline' then
+      @times     = nil
+      @type      = nil
+      @number    = ""
+    when 'repeat' then
+      if attrs['direction'] == 'backward' && attrs['times']
+        @times = attrs['times'].to_i
+      elsif attrs['direction'] == 'forward'
+        @times = 0
+      end
+    when 'ending' then
+      @type      = attrs['type']
+      @number    = attrs['number']
+    when 'sound' then
+      if attrs['tocoda']
+        @meas['tocoda'] = true
+      elsif attrs['coda']
+        @meas['coda'] = true
+      end
+    when 'divisions' then
+      @kind = 'prop'
+      @key  = 'divisions'
+    when 'fifths' then
+      @kind = 'prop'
+      @key  = 'key'
+    when 'beats' then
+      @kind = 'prop'
+      @key  = 'timeNum'
+    when 'beat-type' then
+      @kind = 'prop'
+      @key  = 'timeDenom'
+    when 'note' then
+      @note = { 'pitch' => 0, 'durNum' => 0, 'durDenom' => 0 }
+    when 'rest' then
+      @note['pitch'] = -128
+    when 'mode', 'step', 'alter', 'octave', 'duration', 'syllabic', 'text' then
+      @kind = tag
+    when 'tie' then
+      @note['tied'] ||= 0
+      case attrs['type']
+      when 'start' then
+        @note['tied'] |= VL::TiedWithNext
+      when 'stop' then
+        @note['tied'] |= VL::TiedWithPrev
+      end
+    when 'lyric' then
+      num = (attrs['number'] || "1").to_i-1
+      @note['lyrics'] ||= []
+      @note['lyrics'][num] = @lyric = {}
+    when 'chord' then
+      @chord = true
     end
-    note   = parseNote(note)
-    num  ||= note['durNum']
-    denom||= note['durDenom']
-    if note['pitch'] < 60
-      root = note['pitch']
+  end
+
+  def text(text)
+    @text += text
+  end
+
+  def makeChords(chords)
+    chords.each do |chord|
+      chord['root'] = -128
+      st = [*chord['pitch']].sort
+      pitch = st[0] 
+      if pitch > 0 && pitch < 60
+        chord['root'] = st.shift
+        pitch         = st[0] || -128
+      end
+      steps = 0
+      if pitch > 0
+        st.each do |step|
+          steps |= 1<<(step-pitch)
+        end
+      end
+      chord['steps'] = steps
+      chord['pitch'] = pitch
+    end
+
+    return chords
+  end
+
+  def makeVolta(number)
+    volta = 0
+    number.split(/,\s*/).each do |v|
+      volta |= 1<<(v.to_i-1)
+    end
+
+    return volta
+  end
+
+  def tag_end(tag)
+    #
+    # Interesting text nodes have @kind set
+    #
+    if @kind
+      case @kind
+      when 'textProp' then
+        OUTPUT[@key] = @text
+      when 'prop' then
+        @prop[@key] = @text.to_i
+      when 'mode' then
+        @prop['mode'] = @text == 'minor' ? -1 : 1
+      when 'step' then
+        @note['pitch'] += PITCH[@text]
+      when 'alter' then
+        @note['pitch'] += @text.to_i
+      when 'octave' then
+        @note['pitch'] += (@text.to_i+1)*12
+      when 'duration' then
+        @note['durNum']   = @text.to_i
+        @note['durDenom'] = @prop['divisions']*4
+      when 'syllabic' then
+        @lyric['kind'] = SYLL[@text]
+      when 'text' then
+        @lyric['text'] = @text
+      end
+      @kind = nil
     else
-      steps.push note['pitch']
+      #
+      # Structures are distinguished by tag
+      #
+      case tag
+      when 'attributes' then
+        if @prop != @props.last
+          @props.push(@prop)
+        end
+      when 'note' then
+        if @chord
+          note = @notes.last
+          note['pitch'] = [*note['pitch']] << @note['pitch']
+          @chord = false
+        else
+          @notes.push(@note)
+        end
+      when 'barline' then
+        case @type
+        when 'start' then
+          @meas['begin-ending'] = { 
+            'volta' => makeVolta(@number)
+          }
+        when 'stop', 'discontinue' then
+          @meas['end-ending'] = { 
+            'volta' => makeVolta(@number),
+            'last'  => @type == 'discontinue'
+          }
+        else
+          if @times > 0
+            @meas['end-repeat'] = {
+              'times' => @times
+            }
+          elsif @times == 0
+            @meas['begin-repeat'] = {}
+          end
+        end
+      when 'measure' then
+        @meas['properties'] = @props.length-1 unless @props.empty?
+        if @part == 'HARM'
+          @meas['chords'] = makeChords(@notes)
+        else
+          @meas['melody'] = @notes
+        end
+      when 'part' then
+        OUTPUT['properties'] = @props unless @part == 'HARM'
+      end
     end
   end
-  chords.push makeChord(root, steps, num, denom) if num
-  measNo = meas.attributes['number'].to_i-1
-  OUTPUT['measures'][measNo] = {
-    'measure'    => measNo,
-    'properties' => 0,
-    'chords'     => chords,
-    'melody'     => []
-  }
 end
 
-MELODY.elements.each('measure') do |meas|
-  updateProp meas
-  if PROP != $LASTPROP
-    OUTPUT['properties'].push PROP
-    $LASTPROP = PROP
-  end
-  melody = []
-  meas.elements.each('note') do |note|
-    melody.push parseNote(note)
-  end
-  measNo = meas.attributes['number'].to_i-1
-  OUTPUT['measures'][measNo] ||= {
-    'measure'=> measNo,
-    'chords' => []
-  }
-  OUTPUT['measures'][measNo]['properties'] = OUTPUT['properties'].length-1
-  OUTPUT['measures'][measNo]['melody']     = melody
-end
-
+listener = MusicXMLListener.new
+REXML::Document.parse_stream($stdin, listener)
 writePlist($stdout, OUTPUT)
 
 # Local Variables:
