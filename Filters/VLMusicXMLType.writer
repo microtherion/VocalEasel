@@ -35,10 +35,14 @@ def _identification
     poet.add_attribute('type', 'poet')
   ident.add_element(poet)
     encoding = REXML::Element.new('encoding')
-      date = newTextElement('encoding-date', INPUT['saved'].strftime("%Y-%m-%d"))
-    encoding.add_element(date)
-      software = newTextElement('software', INPUT['software'])
-    encoding.add_element(software)
+    if INPUT['saved']
+      date = newTextElement('encoding-date', INPUT['saved'].strftime("%Y-%m-%d")) 
+      encoding.add_element(date)
+    end
+    if INPUT['software']
+      software = newTextElement('software', INPUT['software']) if INPUT['software']
+      encoding.add_element(software)
+    end
   ident.add_element(encoding)
 
   return ident
@@ -215,7 +219,7 @@ def _melody
     end
     meas['melody'].each do |note|
       dur = (note['durNum'] * $DIVISIONS * 4) / note['durDenom']
-      n   = _note(note['pitch'], dur, note['tied'])
+      n   = _note(note['pitch'], dur, note['tied'] || 0)
       stanza = 1
       note['lyrics'].each do |syll|
         if syll['text']
@@ -226,7 +230,7 @@ def _melody
           n.add_element(lyr)
         end
         stanza += 1
-      end
+      end if note['lyrics']
       m.add_element(n)
     end
     if r = meas['end-repeat']

@@ -47,7 +47,7 @@ class PlistListener
   def text(text)
     case @kind
     when "string", "key" then
-      @obj = text
+      @obj += text
     when "data" then
       @obj = Base64.decode(text)
     when "date" then
