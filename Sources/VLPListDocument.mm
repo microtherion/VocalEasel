@@ -115,7 +115,7 @@ void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 				[NSNumber numberWithInt:volta], @"volta",
 				nil]
 			forKey: @"end-ending"];
-	if (fSong->fGoToCoda == m)
+	if (fSong->fGoToCoda == m+1)
 		[md setObject:[NSNumber numberWithBool:YES] forKey:@"tocoda"];
 	if (fSong->fCoda == m)
 		[md setObject:[NSNumber numberWithBool:YES] forKey:@"coda"];
@@ -275,8 +275,8 @@ advanceAt:
 	) {	
 		VLChord chord;
 		chord.fDuration = 
-			VLFraction([[ndict objectForKey:@"durNum"] intValue],
-					   [[ndict objectForKey:@"durDenom"] intValue],
+			VLFraction([[cdict objectForKey:@"durNum"] intValue],
+					   [[cdict objectForKey:@"durDenom"] intValue],
 					   true);
 		chord.fPitch			= [[cdict objectForKey:@"pitch"] intValue];	
 		chord.fRootPitch		= [[cdict objectForKey:@"root"] intValue];	
@@ -304,7 +304,7 @@ advanceAt:
 		[self readChords:[mdict objectForKey:@"chords"] inMeasure:measNo];
 
 		if ([[mdict objectForKey:@"tocoda"] boolValue])
-			song->fGoToCoda = measNo;
+			song->fGoToCoda = measNo+1;
 		if ([[mdict objectForKey:@"coda"] boolValue])
 			song->fCoda = measNo;			
 		if (NSDictionary * beginRep = [mdict objectForKey:@"begin-repeat"]) {
@@ -361,8 +361,8 @@ advanceAt:
 		VLProperties prop;
 
 		prop.fTime = 
-			VLFraction([[ndict objectForKey:@"timeNum"] intValue],
-					   [[ndict objectForKey:@"timeDenom"] intValue],
+			VLFraction([[pdict objectForKey:@"timeNum"] intValue],
+					   [[pdict objectForKey:@"timeDenom"] intValue],
 					   false);
 		prop.fKey			= [[pdict objectForKey:@"key"] intValue];
 		prop.fMode			= [[pdict objectForKey:@"mode"] intValue];
@@ -372,17 +372,27 @@ advanceAt:
 	}
 }
 
+- (void)setValueFromPlist:(id)plist plistKey:(NSString *)plistKey forKey:(NSString *)key
+{
+	id value = [plist objectForKey:plistKey];
+	if (value)
+		[self setValue:value forKey:key];
+}
+
 - (BOOL)readFromPlist:(id)plist error:(NSError **)outError
 {
+	NSUndoManager * undoMgr = [self undoManager];
+	[undoMgr disableUndoRegistration];
 	song->clear();
 
-	[self setValue:[plist objectForKey:@"title"] forKey:@"songTitle"];
-	[self setValue:[plist objectForKey:@"composer"] forKey:@"songComposer"];
-	[self setValue:[plist objectForKey:@"lyricist"] forKey:@"songLyricist"];
-	[self setValue:[plist objectForKey:@"groove"] forKey:@"songGroove"];
-	[self setValue:[plist objectForKey:@"tempo"] forKey:@"songTempo"];
+	[self setValueFromPlist:plist plistKey:@"title" forKey:@"songTitle"];
+	[self setValueFromPlist:plist plistKey:@"composer" forKey:@"songComposer"];
+	[self setValueFromPlist:plist plistKey:@"lyricist" forKey:@"songLyricist"];
+	[self setValueFromPlist:plist plistKey:@"groove" forKey:@"songGroove"];
+	[self setValueFromPlist:plist plistKey:@"tempo" forKey:@"songTempo"];
 	[self readPropertiesFromPlist:[plist objectForKey:@"properties"]];
 	[self readMeasuresFromPlist:[plist objectForKey:@"measures"]];
+	[undoMgr enableUndoRegistration];
 
 	return YES;
 }

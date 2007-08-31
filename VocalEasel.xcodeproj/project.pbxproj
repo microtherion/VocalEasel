@@ -47,6 +47,8 @@
 		955E59610957C1400045FDA5 /* TVLChord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E59600957C1400045FDA5 /* TVLChord.cpp */; };
 		955E59640957C15A0045FDA5 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		95784D870BFAD795009ABEA4 /* VLMirrorWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95784D860BFAD795009ABEA4 /* VLMirrorWindow.mm */; };
+		95795CE60C88B25D00E4A21F /* vl.rb in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95795CE40C88B25D00E4A21F /* vl.rb */; };
+		95795CE70C88B25D00E4A21F /* VLMusicXMLType.reader in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95795CE50C88B25D00E4A21F /* VLMusicXMLType.reader */; };
 		9588363C0C6F9C7D004B4162 /* VLPListDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9588363B0C6F9C7D004B4162 /* VLPListDocument.mm */; };
 		9588365C0C6FABBA004B4162 /* VLDebugFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9588365A0C6FABBA004B4162 /* VLDebugFlags.cpp */; };
 		95932B91096527700008B0DB /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB3095FD34F00434E43 /* AudioUnit.framework */; };
@@ -134,6 +136,8 @@
 			dstPath = Filters;
 			dstSubfolderSpec = 7;
 			files = (
+				95795CE60C88B25D00E4A21F /* vl.rb in Copy Filters */,
+				95795CE70C88B25D00E4A21F /* VLMusicXMLType.reader in Copy Filters */,
 				95EF921A0C786CB90093E5F4 /* plistReader.rb in Copy Filters */,
 				95EF921B0C786CB90093E5F4 /* plistWriter.rb in Copy Filters */,
 				95EF92290C78E94E0093E5F4 /* VLMusicXMLType.writer in Copy Filters */,
@@ -206,6 +210,8 @@
 		955E59600957C1400045FDA5 /* TVLChord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TVLChord.cpp; path = Tests/TVLChord.cpp; sourceTree = "<group>"; };
 		95784D850BFAD795009ABEA4 /* VLMirrorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLMirrorWindow.h; path = Sources/VLMirrorWindow.h; sourceTree = "<group>"; };
 		95784D860BFAD795009ABEA4 /* VLMirrorWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLMirrorWindow.mm; path = Sources/VLMirrorWindow.mm; sourceTree = "<group>"; };
+		95795CE40C88B25D00E4A21F /* vl.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = vl.rb; sourceTree = "<group>"; };
+		95795CE50C88B25D00E4A21F /* VLMusicXMLType.reader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = VLMusicXMLType.reader; sourceTree = "<group>"; };
 		9588363A0C6F9C7D004B4162 /* VLPListDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLPListDocument.h; path = Sources/VLPListDocument.h; sourceTree = "<group>"; };
 		9588363B0C6F9C7D004B4162 /* VLPListDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPListDocument.mm; path = Sources/VLPListDocument.mm; sourceTree = "<group>"; };
 		9588365A0C6FABBA004B4162 /* VLDebugFlags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VLDebugFlags.cpp; path = Sources/VLDebugFlags.cpp; sourceTree = "<group>"; };
@@ -530,6 +536,8 @@
 		95EF92110C786B2C0093E5F4 /* Filters */ = {
 			isa = PBXGroup;
 			children = (
+				95795CE40C88B25D00E4A21F /* vl.rb */,
+				95795CE50C88B25D00E4A21F /* VLMusicXMLType.reader */,
 				95EF92270C78E9390093E5F4 /* VLMusicXMLType.writer */,
 				95EF92120C786B2C0093E5F4 /* plistReader.rb */,
 				95EF92130C786B2C0093E5F4 /* plistWriter.rb */,
