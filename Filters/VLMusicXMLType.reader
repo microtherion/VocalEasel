@@ -28,6 +28,75 @@ SYLL = {
   'middle' => 3
 }
 
+CHORD = {
+  #
+  # Triads
+  #
+  'major'              => VL::Chord::Maj,
+  'minor'              => VL::Chord::Min,
+  'augmented'          => VL::Chord::Aug,
+  'diminished'         => VL::Chord::Dim,
+  #
+  # 7ths
+  #
+  'dominant'           => VL::Chord::Dom7,
+  'major-seventh'      => VL::Chord::Maj7,
+  'minor-seventh'      => VL::Chord::Min7,
+  'diminished-seventh' => VL::Chord::Dim7,
+  'augmented-seventh'  => VL::Chord::Aug7,
+  'half-diminished'    => VL::Chord::M7b5,
+  'major-minor'        => VL::Chord::MMin7,
+  #
+  # 6ths
+  #
+  'major-sixth'        => VL::Chord::Maj6,
+  'minor-sixth'        => VL::Chord::Min6,
+  #
+  # 9ths
+  #
+  'dominant-ninth'     => VL::Chord::Dom9,
+  'major-ninth'        => VL::Chord::Maj9,
+  'minor-ninth'        => VL::Chord::Min9,
+  #
+  # 11ths
+  #
+  'dominant-11th'      => VL::Chord::Dom11,
+  'major-11th'         => VL::Chord::Maj11,
+  'minor-11th'         => VL::Chord::Min11,
+  #
+  # 13ths
+  #
+  'dominant-13th'      => VL::Chord::Dom13,
+  'major-13th'         => VL::Chord::Maj13,
+  'minor-13th'         => VL::Chord::Min13,
+  #
+  # Suspended
+  #
+  'suspended-second'   => VL::Chord::Sus2,
+  'suspended-fourth'   => VL::Chord::Sus4,
+  #
+  # Varia
+  #
+  'other'              => VL::Unison,
+  'none'               => 0
+}
+
+DEGREE = [
+  [VL::Unison, VL::Unison],
+  [VL::Min2nd+VL::Maj2nd, VL::Maj2nd],
+  [VL::Min3rd+VL::Maj3rd, VL::Maj3rd],
+  [VL::Fourth, VL::Fourth],
+  [VL::Fifth, VL::Fifth],
+  [VL::Aug5th+VL::Dim7th, VL::Dim7th],
+  [VL::Min7th+VL::Maj7th, VL::Min7th],
+  [VL::Octave, VL::Octave],
+  [VL::Min9th+VL::Maj9th, VL::Maj9th],
+  [VL::Aug9th+VL::Dim11th, VL::Dim11th],
+  [VL::Eleventh, VL::Eleventh],
+  [VL::Aug11th+VL::Dim13th, VL::Dim13th],
+  [VL::Min13th+VL::Maj13th, VL::Maj13th]
+];
+
 class MusicXMLListener
   include REXML::StreamListener
 
@@ -72,7 +141,9 @@ class MusicXMLListener
       @measNo = -1
     when 'measure' then
       @notes= []
+      @harm = []
       @chord= false
+      @at   = 0
       if a = attrs['number']
         @measNo = a.to_i-1
       else
@@ -117,11 +188,21 @@ class MusicXMLListener
     when 'beat-type' then
       @kind = 'prop'
       @key  = 'timeDenom'
+    when 'harmony' then
+      @note = { 'pitch' => VL::NoPitch, 'steps' => 0, 'root' => VL::NoPitch,
+                'at' => @at }
+    when 'degree' then
+      @degree_value = 0
+      @degree_alter = 0
+      @degree_type  = "alter"
     when 'note' then
       @note = { 'pitch' => 0, 'durNum' => 0, 'durDenom' => 0 }
     when 'rest' then
-      @note['pitch'] = -128
-    when 'mode', 'step', 'alter', 'octave', 'duration', 'syllabic', 'text' then
+      @note['pitch'] = VL::NoPitch
+    when 'mode', 'step', 'alter', 'octave', 'duration', 'syllabic', 'text',
+         'root-step', 'root-alter', 'bass-step', 'bass-alter', 'kind',
+         'degree-value', 'degree-alter', 'degree-type'
+    then
       @kind = tag
     when 'tie' then
       @note['tied'] ||= 0
@@ -146,12 +227,12 @@ class MusicXMLListener
 
   def makeChords(chords)
     chords.each do |chord|
-      chord['root'] = -128
+      chord['root'] = VL::NoPitch
       st = [*chord['pitch']].sort
       pitch = st[0] 
       if pitch > 0 && pitch < 60
         chord['root'] = st.shift
-        pitch         = st[0] || -128
+        pitch         = st[0] || VL::NoPitch
       end
       steps = 0
       if pitch > 0
@@ -161,6 +242,24 @@ class MusicXMLListener
       end
       chord['steps'] = steps
       chord['pitch'] = pitch
+    end
+
+    return chords
+  end
+
+  def makeHarmChords(harm)
+    chords = []
+    durDenom = @prop['divisions']*4
+    if harm[0]['at'] > 0
+      chords.push({'pitch' => VL::NoPitch, 'steps' => 0, 'root' => VL::NoPitch,
+                   'durNum' => harm[0]['at'], 'durDenom' => durDenom})
+    end
+    (0..harm.length-1).each do |i|
+      chord = harm[i]
+      nextAt = i+1 < harm.length ? harm[i+1]['at'] : @at
+      chord['durNum']   = nextAt - chord.delete('at')
+      chord['durDenom'] = durDenom
+      chords.push(chord)
     end
 
     return chords
@@ -184,20 +283,38 @@ class MusicXMLListener
       when 'textProp' then
         OUTPUT[@key] = @text
       when 'dateProp' then
-        OUTPUT[@key] = Time.parse(@text)
+		begin 
+			OUTPUT[@key] = Time.parse(@text)
+		rescue
+			OUTPUT[@key] = Time.now
+		end
       when 'prop' then
         @prop[@key] = @text.to_i
       when 'mode' then
         @prop['mode'] = @text == 'minor' ? -1 : 1
       when 'step' then
         @note['pitch'] += PITCH[@text]
-      when 'alter' then
+      when 'alter', 'root-alter' then
         @note['pitch'] += @text.to_i
       when 'octave' then
         @note['pitch'] += (@text.to_i+1)*12
       when 'duration' then
         @note['durNum']   = @text.to_i
         @note['durDenom'] = @prop['divisions']*4
+      when 'root-step' then
+        @note['pitch'] = PITCH[@text]
+      when 'bass-step' then
+        @note['root'] = PITCH[@text]
+      when 'bass-alter' then
+        @note['root'] += @text.to_i
+      when 'kind' then
+        @note['steps'] = CHORD[@text]
+      when 'degree-value' then
+        @degree_value = @text.to_i-1
+      when 'degree-alter' then
+        @degree_alter = @text.to_i
+      when 'degree-type' then
+        @degree_type = @text
       when 'syllabic' then
         @lyric['kind'] = SYLL[@text]
       when 'text' then
@@ -220,7 +337,35 @@ class MusicXMLListener
           @chord = false
         else
           @notes.push(@note)
+          @at += @note['durNum']
         end
+      when 'degree' then
+        oldSteps = @note['steps']
+        oldValue = @degree_value
+        case @degree_type 
+        when 'subtract' then
+          @note['steps'] &= ~DEGREE[@degree_value][0]
+        when 'add' then
+          @degree_value = DEGREE[@degree_value][1]
+          if @degree_alter < 0
+            @degree_value >>= -@degree_alter
+          elsif @degree_alter > 0
+            @degree_value <<= @degree_alter
+          end
+          @note['steps'] |= @degree_value
+        when 'alter' then
+          @degree_value = @note['steps'] & DEGREE[@degree_value][0]
+          @note['steps'] ^= @degree_value
+          if @degree_alter < 0
+            @degree_value >>= -@degree_alter
+          elsif @degree_alter > 0
+            @degree_value <<= @degree_alter
+          end
+          @note['steps'] |= @degree_value
+        end
+#        $stderr.puts "#{@degree_type} #{oldValue} #{@degree_alter} (#{oldSteps} -> #{@note['steps']})"
+      when 'harmony' then
+        @harm.push(@note)
       when 'barline' then
         case @type
         when 'start' then
@@ -233,12 +378,14 @@ class MusicXMLListener
             'last'  => @type == 'discontinue'
           }
         else
-          if @times > 0
-            @meas['end-repeat'] = {
-              'times' => @times
-            }
-          elsif @times == 0
-            @meas['begin-repeat'] = {}
+          if @times
+            if @times > 0
+              @meas['end-repeat'] = {
+                'times' => @times
+              }
+            else @times == 0
+              @meas['begin-repeat'] = {}
+            end
           end
         end
       when 'measure' then
@@ -247,6 +394,9 @@ class MusicXMLListener
           @meas['chords'] = makeChords(@notes)
         else
           @meas['melody'] = @notes
+          unless @harm.empty?
+            @meas['chords'] = makeHarmChords(@harm)
+          end
         end
       when 'part' then
         OUTPUT['properties'] = @props unless @part == 'HARM'
