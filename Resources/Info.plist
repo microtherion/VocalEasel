@@ -29,7 +29,6 @@
 			<array>
 				<string>VLPDFType</string>
 				<string>VLMIDIType</string>
-				<string>VLMusicXMLType</string>
 				<string>VLLilypondType</string>
 				<string>VLMMAType</string>
 			</array>
@@ -59,14 +58,20 @@
 			<array>
 				<string>xml</string>
 			</array>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>application/vnd.recordare.musicxml+xml</string>
+			</array>
 			<key>CFBundleTypeName</key>
 			<string>VLMusicXMLType</string>
 			<key>CFBundleTypeRole</key>
-			<string>None</string>
+			<string>Editor</string>
 			<key>LSTypeIsPackage</key>
 			<false/>
+			<key>NSDocumentClass</key>
+			<string>VLDocument</string>
 			<key>NSPersistentStoreTypeKey</key>
-			<string>Binary</string>
+			<string>XML</string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeExtensions</key>
