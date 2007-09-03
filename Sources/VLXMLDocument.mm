@@ -75,8 +75,14 @@
 		}
 		return [self readFromFileWrapper:[wrappers objectForKey:@"Song"] withFilter:@"VLMusicXMLType"	
 					 error:outError];
-	} else
-		return [self readFromFileWrapper:wrapper withFilter:@"VLMusicXMLType" error:outError];	
+	} else {
+		if ([self readFromFileWrapper:wrapper withFilter:@"VLMusicXMLType" error:outError]) {
+			[self setFileURL:nil];
+			
+			return YES;
+		} else
+			return NO;
+	}
 }
 
 @end
