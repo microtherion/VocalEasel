@@ -426,9 +426,12 @@ advanceAt:
 	[filterTask waitUntilExit];
 	[filterTask release];
 
-	if ([error length])
+	if ([error length]) {
+		NSString * errStr = [[[NSString alloc] initWithData:error 
+			encoding:NSUTF8StringEncoding] autorelease];
 		[NSException raise:NSInvalidArgumentException 
-					 format:@"Filter %@: %@", filterName, error];
+					 format:@"Filter %@: %@", filterName, errStr];
+	}
 
 	return output;
 }
