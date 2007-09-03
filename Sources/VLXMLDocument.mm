@@ -56,24 +56,27 @@
 
 - (BOOL)readFromXMLFileWrapper:(NSFileWrapper *)wrapper error:(NSError **)outError
 {
-	NSDictionary * wrappers = [wrapper fileWrappers];
-	if ((vcsWrapper = [wrappers objectForKey:@"CVS"])
-     || (vcsWrapper = [wrappers objectForKey:@".svn"])
-	)
-		[vcsWrapper retain];
-	NSFileWrapper * prop = [wrappers objectForKey:@"Properties"];
-	if (prop) {
-		NSUndoManager * undoMgr = [self undoManager];
-		[undoMgr disableUndoRegistration];
-		[self setValuesForKeysWithDictionary:
-				  [NSPropertyListSerialization 
-					  propertyListFromData:[prop regularFileContents]
-					  mutabilityOption:NSPropertyListImmutable
-					  format:nil errorDescription:nil]];
-		[undoMgr enableUndoRegistration];
-	}
-	return [self readFromFileWrapper:[wrappers objectForKey:@"Song"] withFilter:@"VLMusicXMLType"	
-				 error:outError];
+	if ([wrapper isDirectory]) {
+		NSDictionary * wrappers = [wrapper fileWrappers];
+		if ((vcsWrapper = [wrappers objectForKey:@"CVS"])
+		 || (vcsWrapper = [wrappers objectForKey:@".svn"])
+		)
+			[vcsWrapper retain];
+		NSFileWrapper * prop = [wrappers objectForKey:@"Properties"];
+		if (prop) {
+			NSUndoManager * undoMgr = [self undoManager];
+			[undoMgr disableUndoRegistration];
+			[self setValuesForKeysWithDictionary:
+					  [NSPropertyListSerialization 
+						  propertyListFromData:[prop regularFileContents]
+						  mutabilityOption:NSPropertyListImmutable
+						  format:nil errorDescription:nil]];
+			[undoMgr enableUndoRegistration];
+		}
+		return [self readFromFileWrapper:[wrappers objectForKey:@"Song"] withFilter:@"VLMusicXMLType"	
+					 error:outError];
+	} else
+		return [self readFromFileWrapper:wrapper withFilter:@"VLMusicXMLType" error:outError];	
 }
 
 @end
