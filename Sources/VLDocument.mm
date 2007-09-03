@@ -350,7 +350,7 @@
 			[[doc windowControllers] 
 				makeObjectsPerformSelector:@selector(close)];
 
-	if ([typeName isEqual:@"VLNativeType"]) {
+	if ([typeName isEqual:@"VLNativeType"] || [typeName isEqual:@"VLMusicXMLType"]) {
 		return [self readFromXMLFileWrapper:wrapper error:outError];
 	} else {
 		if (outError)
