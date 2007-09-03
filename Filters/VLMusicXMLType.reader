@@ -397,6 +397,21 @@ class MusicXMLListener
           unless @harm.empty?
             @meas['chords'] = makeHarmChords(@harm)
           end
+          if @measNo == 0
+            #
+            # If first measure is pickup, duration is shorter than time
+            #
+            denom   = @prop['divisions']*4
+            timeLen = denom*@prop['timeNum'] / @prop['timeDenom']
+            if @at < timeLen
+              @meas['melody'].unshift(
+                { 'pitch' => VL::NoPitch, 
+                  'durNum' => timeLen-@at, 'durDenom' => denom })
+              @meas['chords'].unshift(
+                { 'pitch' => VL::NoPitch, 'root' => VL::NoPitch, 'steps' => 0,
+                  'durNum' => timeLen-@at, 'durDenom' => denom }) unless @harm.empty?
+            end
+          end
         end
       when 'part' then
         OUTPUT['properties'] = @props unless @part == 'HARM'
