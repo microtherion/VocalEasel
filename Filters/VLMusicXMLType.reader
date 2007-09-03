@@ -176,6 +176,9 @@ class MusicXMLListener
       elsif attrs['coda']
         @meas['coda'] = true
       end
+      if attrs['tempo']
+        OUTPUT['tempo'] = attrs['tempo'].to_i
+      end
     when 'divisions' then
       @kind = 'prop'
       @key  = 'divisions'
