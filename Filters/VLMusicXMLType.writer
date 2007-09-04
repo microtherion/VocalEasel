@@ -50,13 +50,9 @@ end
 
 def _part_list
   part_list = REXML::Element.new('part-list')
-    chords = REXML::Element.new('score-part')
-    chords.add_attribute('id', 'HARM')
-    chords.add_element newTextElement('part-name', 'Chords')
-  part_list.add_element(chords)
     melody = REXML::Element.new('score-part')
     melody.add_attribute('id', 'MELO')
-    melody.add_element newTextElement('part-name', 'Melody')
+    melody.add_element newTextElement('part-name', 'Song')
   part_list.add_element(melody)
 
   return part_list
@@ -85,33 +81,43 @@ end
 
 STEPS = 'C DbD EbE F GbG AbA BbB '
 
+def _pitch(name, pitch, prefix="")
+  oct  = pitch/12 - 1
+  stp  = 2*(pitch%12)
+  step = STEPS[stp]
+  alt  = STEPS[stp+1] == ?b
+  if alt
+    if $USE_FLATS
+      alt = -1
+    else
+      step = step == ?A ? ?G : step-1
+      alt  = 1
+    end
+  end
+  if prefix.length > 0
+    prefix += "-"
+  end
+  pitch= REXML::Element.new(name)
+  pitch.add_element newTextElement(prefix+'step', step.chr)
+  if alt
+    pitch.add_element newTextElement(prefix+'alter', alt)
+  end
+  if prefix.length == 0
+    pitch.add_element newTextElement('octave', oct)
+  end
+
+  return pitch
+end
+
 def _note(pitch, dur, tied=0)
   note = REXML::Element.new('note')
   if pitch == VL::NoPitch
     note.add_element(REXML::Element.new('rest'))
   else
-    oct  = pitch/12 - 1
-    stp  = 2*(pitch%12)
-    step = STEPS[stp]
-    alt  = STEPS[stp+1] == ?b
-    if alt
-      if $USE_FLATS
-        alt = -1
-      else
-        step = step == ?A ? ?G : step-1
-        alt  = 1
-      end
-    end
     if (tied & VL::InChord) != 0
       note.add_element 'chord'
     end
-    pitch= REXML::Element.new('pitch')
-    pitch.add_element newTextElement('step', step.chr)
-    if alt
-      pitch.add_element newTextElement('alter', alt)
-    end
-    pitch.add_element newTextElement('octave', oct)
-    note.add_element(pitch)
+    note.add_element(_pitch('pitch', pitch))
   end
   note.add_element newTextElement('duration', dur)
   if (tied & VL::TiedWithPrev) != 0
@@ -124,45 +130,152 @@ def _note(pitch, dur, tied=0)
 
   return note
 end
-  
-def _chords
-  chords = REXML::Element.new('part')
-  chords.add_attribute('id', 'HARM')
-  
-  lastProp = -1
-  measNum  = 0
-  INPUT['measures'].each do |meas|
-    measNum += 1
-    m = REXML::Element.new('measure')
-    m.add_attribute('number', measNum.to_s);
-    if meas['properties'] != lastProp
-      lastProp = meas['properties']
-      m.add_element(_attributes(INPUT['properties'][lastProp]))
+
+CHORD = {
+  #
+  # Triads
+  #
+  'major'              => VL::Chord::Maj,
+  'minor'              => VL::Chord::Min,
+  'augmented'          => VL::Chord::Aug,
+  'diminished'         => VL::Chord::Dim,
+  #
+  # 7ths
+  #
+  'dominant'           => VL::Chord::Dom7,
+  'major-seventh'      => VL::Chord::Maj7,
+  'minor-seventh'      => VL::Chord::Min7,
+  'diminished-seventh' => VL::Chord::Dim7,
+  'augmented-seventh'  => VL::Chord::Aug7,
+  'half-diminished'    => VL::Chord::M7b5,
+  'major-minor'        => VL::Chord::MMin7,
+  #
+  # 6ths
+  #
+  'major-sixth'        => VL::Chord::Maj6,
+  'minor-sixth'        => VL::Chord::Min6,
+  #
+  # 9ths
+  #
+  'dominant-ninth'     => VL::Chord::Dom9,
+  'major-ninth'        => VL::Chord::Maj9,
+  'minor-ninth'        => VL::Chord::Min9,
+  #
+  # 11ths
+  #
+  'dominant-11th'      => VL::Chord::Dom11,
+  'major-11th'         => VL::Chord::Maj11,
+  'minor-11th'         => VL::Chord::Min11,
+  #
+  # 13ths
+  #
+  'dominant-13th'      => VL::Chord::Dom13,
+  'major-13th'         => VL::Chord::Maj13,
+  'minor-13th'         => VL::Chord::Min13,
+  #
+  # Suspended
+  #
+  'suspended-second'   => VL::Chord::Sus2,
+  'suspended-fourth'   => VL::Chord::Sus4,
+  #
+  # Varia
+  #
+  'other'              => VL::Unison,
+  'none'               => 0
+}
+
+#
+# This list differs a bit from the list in .reader, as we prefer 
+# certain degrees, i.e. #9 rather than b10
+#
+DEGREE = [
+  [VL::Unison, VL::Unison],
+  [VL::Min2nd+VL::Maj2nd, VL::Maj2nd],
+  [VL::Min3rd+VL::Maj3rd, VL::Maj3rd],
+  [VL::Fourth, VL::Fourth],
+  [VL::Dim5th+VL::Fifth+VL::Aug5th, VL::Fifth],
+  [VL::Dim7th, VL::Dim7th],
+  [VL::Min7th+VL::Maj7th, VL::Min7th],
+  [VL::Octave, VL::Octave],
+  [VL::Min9th+VL::Maj9th+VL::Aug9th, VL::Maj9th],
+  [0, VL::Dim11th],
+  [VL::Dim11th+VL::Eleventh+VL::Aug11th, VL::Eleventh],
+  [0, VL::Dim13th],
+  [VL::Dim13th+VL::Min13th+VL::Maj13th, VL::Maj13th]
+];
+
+def _chord(pitch, steps, root)
+  #
+  # Pick kind. sus takes precedence
+  #
+  if (steps & (VL::Min3rd|VL::Maj3rd)) == 0 and (steps & (VL::Maj2nd|VL::Fourth))!= 0
+    if (steps & VL::Fourth) != 0
+      kind = 'suspended-fourth'
+    else
+      kind = 'suspended-second'
     end
-    meas['chords'].each do |chord|
-      dur = (chord['durNum'] * $DIVISIONS * 4) / chord['durDenom']
-      if chord['pitch'] == VL::NoPitch
-        m.add_element _note(VL::NoPitch, dur)
-      else
-        seenNote = 0
-        if chord['root'] != VL::NoPitch
-          m.add_element _note(chord['root'], dur)
-          seenNote = VL::InChord
-        end
-        pitch = chord['pitch']
-        steps = chord['steps']
-        (0..25).each do |step|
-          if (steps & (1<<step)) != 0
-            m.add_element _note(pitch+step, dur, seenNote)
-            seenNote = VL::InChord
-          end
-        end
+  else
+    #
+    # It's hard to score alterations properly, so rank purely by correct steps
+    #
+    best = 0
+    kind = 'none'
+    CHORD.each do |k,mask|
+      mask &= steps
+      score = 0
+      while mask > 0
+        score += 1
+        mask  &= mask-1
+      end
+      if score > best
+        kind = k
+        best = score
       end
     end
-    chords.add_element(m)
+  end
+  harm = REXML::Element.new('harmony')
+  harm.add_element(_pitch('root', pitch, 'root'))
+  harm.add_element newTextElement('kind', kind)
+  if root != VL::NoPitch
+    harm.add_element(_pitch('bass', root, 'bass'))
+  end
+  needSteps = steps & ~CHORD[kind]
+  extraSteps= CHORD[kind] & ~steps
+  if (needSteps+extraSteps) > 0
+    DEGREE.each_index do |deg|
+      mask = DEGREE[deg][0]
+      type = nil
+      need = needSteps & mask
+      extra= extraSteps & mask
+      if need != 0
+        if extra != 0
+          type = 'alter'
+          alter= extra > need ? -1 : 1
+        else
+          type = 'add'
+          step = DEGREE[deg][1]
+          alter= step > need ? -1 : (step < need ? 1 : 0)
+        end
+      elsif extra != 0
+        type = 'subtract'
+        alter= 0
+      end
+      if type
+        degree = REXML::Element.new('degree')
+        degree.add_element newTextElement('degree-value', (deg+1).to_s)
+        degree.add_element newTextElement('degree-alter', alter.to_s)
+        degree.add_element newTextElement('degree-type', type)
+        harm.add_element(degree)
+
+        needSteps  &= ~need
+        extraSteps &= ~extra
+        
+        break if (needSteps+extraSteps) == 0
+      end
+    end
   end
 
-  return chords
+  return harm
 end
 
 SYLLABLE = %w[single begin end middle]
@@ -217,8 +330,33 @@ def _melody
       barline.add_element 'ending', {'type' => 'start', 'number' => num}
       m.add_element(barline)
     end
+    noteAt = 0
+    chordAt= 0
+    chords = meas['chords']
+    chordIx= 0
     meas['melody'].each do |note|
       dur = (note['durNum'] * $DIVISIONS * 4) / note['durDenom']
+      tempAt = noteAt
+      while chordIx < chords.length && chordAt < noteAt+dur
+        chord = chords[chordIx]
+        if chord['pitch'] != VL::NoPitch
+          if chordAt > tempAt
+            fw = REXML::Element.new('forward')
+            fw.add_element newTextElement('duration', (chordAt-tempAt).to_s)
+            m.add_element(fw)
+            tempAt = chordAt
+          end
+          m.add_element(_chord(chord['pitch'], chord['steps'], chord['root']))
+        end
+        chordAt += (chord['durNum'] * $DIVISIONS * 4) / chord['durDenom']
+        chordIx += 1
+      end
+      if tempAt > noteAt
+        bk = REXML::Element.new('backup')
+        bk.add_element newTextElement('duration', (tempAt-noteAt).to_s)
+        m.add_element(bk)
+        tempAt = noteAt        
+      end
       n   = _note(note['pitch'], dur, note['tied'] || 0)
       stanza = 1
       note['lyrics'].each do |syll|
@@ -231,6 +369,7 @@ def _melody
         end
         stanza += 1
       end if note['lyrics']
+      noteAt += dur
       m.add_element(n)
     end
     if r = meas['end-repeat']
@@ -246,7 +385,6 @@ def _melody
       barline.add_attribute('location', 'right')
       barline.add_element newTextElement('bar-style', 
                  (repeat[measNum+1] & 1) != 0 ? 'heavy-heavy' : 'light-heavy')
-      barline.add_element 'repeat', {'direction' => 'backward'}
       volta = ending['volta']
       num   = nil
       (0..7).each do |i|
@@ -260,6 +398,7 @@ def _melody
       end
       type = ending['last'] ? "discontinue" : "stop"
       barline.add_element 'ending', {'type', type, 'number', num}
+      barline.add_element 'repeat', {'direction' => 'backward'}
       m.add_element(barline)      
     end
     if meas['tocoda']
@@ -277,7 +416,6 @@ def _score
   score.add_element(_work)
   score.add_element(_identification)
   score.add_element(_part_list)
-  score.add_element(_chords)
   score.add_element(_melody)
 
   return score

@@ -108,39 +108,40 @@ class MusicXMLListener
     @kind = nil  # Ignore all tags not recognized here
     @text = ""
     case tag
-    when 'score-timewise' then
+    when 'score-timewise' 
       $stderr.puts "Can't read timewise MusicXML files yet"
       exit 1
-    when 'work-title' then
+    when 'work-title' 
       @kind = 'textProp'
       @key  = 'title'
-    when 'creator' then
+    when 'creator' 
       case attrs['type']
-      when 'composer' then
+      when 'composer' 
         @kind = 'textProp'
         @key  = 'composer'
-      when 'poet' then
+      when 'poet' 
         @kind = 'textProp'
         @key  = 'lyricist'
       end
-    when 'miscellaneous-field' then
+    when 'miscellaneous-field' 
       if attrs['name'] == 'VocalEasel-groove'
         @kind = 'textProp'
         @key  = 'groove'
       end
-    when 'encoding-date' then
+    when 'encoding-date' 
       @kind = 'dateProp'
       @key  = 'saved'
-    when 'software' then
+    when 'software' 
       @kind = 'textProp'
       @key  = 'software'
-    when 'part' then
+    when 'part' 
       @part   = attrs['id'] || ""
       @prop   = {}
       @props  = []
       @measNo = -1
-    when 'measure' then
+    when 'measure' 
       @notes= []
+      @note = nil
       @harm = []
       @chord= false
       @at   = 0
@@ -157,20 +158,20 @@ class MusicXMLListener
           'melody'     => []
         }
       end
-    when 'barline' then
+    when 'barline' 
       @times     = nil
       @type      = nil
       @number    = ""
-    when 'repeat' then
+    when 'repeat' 
       if attrs['direction'] == 'backward' && attrs['times']
         @times = attrs['times'].to_i
       elsif attrs['direction'] == 'forward'
         @times = 0
       end
-    when 'ending' then
+    when 'ending' 
       @type      = attrs['type']
       @number    = attrs['number']
-    when 'sound' then
+    when 'sound' 
       if attrs['tocoda']
         @meas['tocoda'] = true
       elsif attrs['coda']
@@ -179,47 +180,46 @@ class MusicXMLListener
       if attrs['tempo']
         OUTPUT['tempo'] = attrs['tempo'].to_i
       end
-    when 'divisions' then
+    when 'divisions' 
       @kind = 'prop'
       @key  = 'divisions'
-    when 'fifths' then
+    when 'fifths' 
       @kind = 'prop'
       @key  = 'key'
-    when 'beats' then
+    when 'beats' 
       @kind = 'prop'
       @key  = 'timeNum'
-    when 'beat-type' then
+    when 'beat-type' 
       @kind = 'prop'
       @key  = 'timeDenom'
-    when 'harmony' then
+    when 'harmony' 
       @note = { 'pitch' => VL::NoPitch, 'steps' => 0, 'root' => VL::NoPitch,
                 'at' => @at }
-    when 'degree' then
+    when 'degree' 
       @degree_value = 0
       @degree_alter = 0
       @degree_type  = "alter"
-    when 'note' then
+    when 'note' 
       @note = { 'pitch' => 0, 'durNum' => 0, 'durDenom' => 0 }
-    when 'rest' then
+    when 'rest' 
       @note['pitch'] = VL::NoPitch
     when 'mode', 'step', 'alter', 'octave', 'duration', 'syllabic', 'text',
          'root-step', 'root-alter', 'bass-step', 'bass-alter', 'kind',
          'degree-value', 'degree-alter', 'degree-type'
-    then
       @kind = tag
-    when 'tie' then
+    when 'tie' 
       @note['tied'] ||= 0
       case attrs['type']
-      when 'start' then
+      when 'start' 
         @note['tied'] |= VL::TiedWithNext
-      when 'stop' then
+      when 'stop' 
         @note['tied'] |= VL::TiedWithPrev
       end
-    when 'lyric' then
+    when 'lyric' 
       num = (attrs['number'] || "1").to_i-1
       @note['lyrics'] ||= []
       @note['lyrics'][num] = @lyric = {}
-    when 'chord' then
+    when 'chord' 
       @chord = true
     end
   end
@@ -283,44 +283,48 @@ class MusicXMLListener
     #
     if @kind
       case @kind
-      when 'textProp' then
+      when 'textProp' 
         OUTPUT[@key] = @text
-      when 'dateProp' then
+      when 'dateProp' 
 		begin 
 			OUTPUT[@key] = Time.parse(@text)
 		rescue
 			OUTPUT[@key] = Time.now
 		end
-      when 'prop' then
+      when 'prop' 
         @prop[@key] = @text.to_i
-      when 'mode' then
+      when 'mode' 
         @prop['mode'] = @text == 'minor' ? -1 : 1
-      when 'step' then
+      when 'step' 
         @note['pitch'] += PITCH[@text]
-      when 'alter', 'root-alter' then
+      when 'alter', 'root-alter' 
         @note['pitch'] += @text.to_i
-      when 'octave' then
+      when 'octave' 
         @note['pitch'] += (@text.to_i+1)*12
-      when 'duration' then
-        @note['durNum']   = @text.to_i
-        @note['durDenom'] = @prop['divisions']*4
-      when 'root-step' then
+      when 'duration' 
+        if @note
+          @note['durNum']   = @text.to_i
+          @note['durDenom'] = @prop['divisions']*4
+        else
+          @duration = @text.to_i
+        end
+      when 'root-step' 
         @note['pitch'] = PITCH[@text]
-      when 'bass-step' then
+      when 'bass-step' 
         @note['root'] = PITCH[@text]
-      when 'bass-alter' then
+      when 'bass-alter' 
         @note['root'] += @text.to_i
-      when 'kind' then
+      when 'kind' 
         @note['steps'] = CHORD[@text]
-      when 'degree-value' then
+      when 'degree-value' 
         @degree_value = @text.to_i-1
-      when 'degree-alter' then
+      when 'degree-alter' 
         @degree_alter = @text.to_i
-      when 'degree-type' then
+      when 'degree-type' 
         @degree_type = @text
-      when 'syllabic' then
+      when 'syllabic' 
         @lyric['kind'] = SYLL[@text]
-      when 'text' then
+      when 'text' 
         @lyric['text'] = @text
       end
       @kind = nil
@@ -329,11 +333,11 @@ class MusicXMLListener
       # Structures are distinguished by tag
       #
       case tag
-      when 'attributes' then
+      when 'attributes' 
         if @prop != @props.last
           @props.push(@prop)
         end
-      when 'note' then
+      when 'note' 
         if @chord
           note = @notes.last
           note['pitch'] = [*note['pitch']] << @note['pitch']
@@ -342,13 +346,18 @@ class MusicXMLListener
           @notes.push(@note)
           @at += @note['durNum']
         end
-      when 'degree' then
+        @note = nil
+      when 'forward'
+        @at += @duration
+      when 'backup'
+        @at -= @duration
+      when 'degree' 
         oldSteps = @note['steps']
         oldValue = @degree_value
         case @degree_type 
-        when 'subtract' then
+        when 'subtract' 
           @note['steps'] &= ~DEGREE[@degree_value][0]
-        when 'add' then
+        when 'add' 
           @degree_value = DEGREE[@degree_value][1]
           if @degree_alter < 0
             @degree_value >>= -@degree_alter
@@ -356,7 +365,7 @@ class MusicXMLListener
             @degree_value <<= @degree_alter
           end
           @note['steps'] |= @degree_value
-        when 'alter' then
+        when 'alter' 
           @degree_value = @note['steps'] & DEGREE[@degree_value][0]
           @note['steps'] ^= @degree_value
           if @degree_alter < 0
@@ -366,16 +375,16 @@ class MusicXMLListener
           end
           @note['steps'] |= @degree_value
         end
-#        $stderr.puts "#{@degree_type} #{oldValue} #{@degree_alter} (#{oldSteps} -> #{@note['steps']})"
-      when 'harmony' then
+      when 'harmony' 
         @harm.push(@note)
-      when 'barline' then
+        @note = nil
+      when 'barline' 
         case @type
-        when 'start' then
+        when 'start' 
           @meas['begin-ending'] = { 
             'volta' => makeVolta(@number)
           }
-        when 'stop', 'discontinue' then
+        when 'stop', 'discontinue' 
           @meas['end-ending'] = { 
             'volta' => makeVolta(@number),
             'last'  => @type == 'discontinue'
@@ -391,7 +400,7 @@ class MusicXMLListener
             end
           end
         end
-      when 'measure' then
+      when 'measure' 
         @meas['properties'] = @props.length-1 unless @props.empty?
         if @part == 'HARM'
           @meas['chords'] = makeChords(@notes)
@@ -416,7 +425,7 @@ class MusicXMLListener
             end
           end
         end
-      when 'part' then
+      when 'part' 
         OUTPUT['properties'] = @props unless @part == 'HARM'
       end
     end
