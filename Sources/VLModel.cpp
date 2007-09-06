@@ -547,6 +547,7 @@ VLSong::VLSong(bool initialize)
 void VLSong::AddMeasure()
 {
 	VLFraction		dur  = fProperties.front().fTime;
+	dur.Normalize();
 	VLLyricsNote 	rest(dur);
 	VLChord 		rchord(dur);
 	VLMeasure meas;

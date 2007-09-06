@@ -33,7 +33,7 @@ struct VLFraction : VLFract {
 	VLFraction & operator*=(VLFraction other);
 	VLFraction & operator/=(VLFraction other);
 	VLFraction & operator%=(VLFraction other);
-private:
+
 	VLFraction & Normalize();
 };
 
