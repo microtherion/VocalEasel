@@ -1,0 +1,232 @@
+#!/usr/bin/ruby
+#
+# VLLilypondType.reader - Import lilypond files
+#
+
+require File.dirname($0)+'/plistWriter'
+require File.dirname($0)+'/vl'
+
+OUTPUT = {'measures' => []}
+
+#
+# Lex
+#
+tokens = []
+$stdin.each do |line|
+  line.chomp!.sub!(/%.*/, "")
+  line.scan(/\G\s*(\{|\}|\(|\)|\||=|~|<<|>>|#'|#\(|##t|##f|\\\w+|\".*?\"|[-+\w\d.',:]+|.)/) do |token|
+    tokens.push(token[0])
+  end
+end
+#
+# Parse
+#
+nestLevel = 0
+block     = nil
+level     = -1
+stack     = []
+chords    = []
+notes     = []
+lyrics    = []
+lastDur   = 1
+
+$RELPITCH = 0
+
+PITCH = {
+  ?c => 0,
+  ?d => 2,
+  ?e => 4,
+  ?f => 5,
+  ?g => 7,
+  ?a => 9,
+  ?b => 11
+}
+
+def lyPitch(pitch, base=0)
+  if !pitch || pitch =~ /r/
+    return VL::NoPitch
+  end
+  p = PITCH[pitch[0]] || 0
+  if base > 0
+    p += base
+  elsif $RELPITCH > 0
+    while $RELPITCH-p > 5
+      p += 12
+    end
+    $RELPITCH = p
+  else
+    p += 60
+  end
+  pitch.scan(/'/) {|c| p += 12}
+  pitch.scan(/,/) {|c| p -= 12}
+  if pitch =~ /^[ea]s/
+    p -= 1
+    pitch[0..1] = ""
+  end
+  pitch.scan('is') { |x| p += 1 }
+  pitch.scan('es') { |x| p -= 1 }
+
+  return p
+end
+
+def lyDur(dur)
+  dur =~ /^(\d+)(?:\*(\d+).(\d+))?/
+  num = 1
+  den = $1.to_i
+  if $2 
+    num *= $2.to_i
+    den *= $3.to_i
+  end
+  return [num,den]
+end
+
+STEPS = {
+  ''     => VL::Chord::Maj,
+  'm'    => VL::Chord::Min,
+  'maj'  => VL::Chord::Maj7, 
+  'dim7' => VL::Chord::Dim7,
+  'dim'  => VL::Chord::Dim,
+  'aug'  => VL::Chord::Aug,
+  'sus4' => VL::Chord::Sus4,
+  'sus2' => VL::Chord::Sus2,
+  'sus'  => VL::Chord::Sus4
+}
+
+DEGREE = [
+  [VL::Unison, VL::Unison],
+  [VL::Min2nd+VL::Maj2nd, VL::Maj2nd],
+  [VL::Min3rd+VL::Maj3rd, VL::Maj3rd],
+  [VL::Fourth, VL::Fourth],
+  [VL::Fifth, VL::Fifth],
+  [VL::Aug5th+VL::Dim7th, VL::Dim7th],
+  [VL::Min7th+VL::Maj7th, VL::Min7th],
+  [VL::Octave, VL::Octave],
+  [VL::Min9th+VL::Maj9th, VL::Maj9th],
+  [VL::Aug9th+VL::Dim11th, VL::Dim11th],
+  [VL::Eleventh, VL::Eleventh],
+  [VL::Aug11th+VL::Dim13th, VL::Dim13th],
+  [VL::Min13th+VL::Maj13th, VL::Maj13th]
+];
+  
+def lySteps(steps)
+  steps =~ /^(|m|maj|dim7?|aug|sus[42]?)/
+  s     = STEPS[$1]
+  steps = $'
+  if !($1 =~ /\d/) && steps =~ /^(7|9|11|13)/
+    if !(s & VL::Maj7th)
+      s |= VL::Min7th
+    end
+    case $1
+    when '9'
+      s |= VL::Maj9th
+    when '11'
+      s |= VL::Maj9th+VL::Maj11th
+    when '13'
+      s |= VL::Maj9th+VL::Maj11th+VL::Maj13th
+    end
+    steps = $'
+  end
+  steps.scan(/(\^)?(\d+)([-+])?/) do |ext|
+    degree = DEGREE[$2.to_i-1]
+    if $1 == '^'
+      s &= ~degree[0]
+    else
+      step = degree[1]
+      if $3 == '+'
+        step <<= 1
+      elsif $3 == '-'
+        step >>= 1
+      end
+      s = (s & ~degree[0]) | step
+    end
+  end
+  return s
+end
+
+while tokens.length > 0
+  # puts "#{tokens.length}:#{nestLevel}[#{block}] #{tokens[0]} #{tokens[1]} #{tokens[2]}"
+  token = tokens.shift
+  #
+  # Title, composer, etc.
+  #
+  if tokens[0] == '='
+    case token
+    when 'title','composer','poet'
+      key   = token=='poet' ? 'lyricist' : token
+      value = tokens[1]
+      value.sub!(/"(.*)"/, '\1')
+    
+      OUTPUT[key] = value
+      tokens[0..1]= nil
+
+      redo
+    end
+  end
+
+  case block
+  when '\header', '\paper'
+    # Ignore 
+  when '\chords'
+    #
+    # Possibly chords
+    #
+    if token.downcase =~ %r{^
+                             (r |                # Rest
+                              [a-g](?:[ei]?s)?   # g, ges, fis, es, as 
+                              [',]*              # g'''
+                             ) 
+                             (\d+                # 1, 2, 4, 8, 16 ...
+                              (?:\*\d+/\d+)?     # *3/4
+                             )? 
+                             (?:\:([-+^:.a-z\d]+))? # :maj9.7-^2
+                             (?:/\+(             # /+
+                              [a-g](?:[ei]?s)?   # Root: a, bes, fis, as
+                             ))? 
+                          $}x
+      pitch   = lyPitch($1, 60)
+      dur     = $2 || lastDur
+      ext     = $3 ? lySteps($3) : 0
+      root    = lyPitch($4, 48)
+      lastDur = dur
+      d       = lyDur(dur)
+
+      chord = {'pitch' => pitch, 'root' => root, 'steps' => ext,
+               'durNum'=> d[0], 'durDenom' => d[1]}
+      p token, chord
+      chords.push(chord)
+      redo
+    end
+  else
+    #
+    # Possibly notes
+    #
+  end
+
+  #
+  # Nesting levels
+  #
+  case token
+  when '{', '<<'
+    nestLevel += 1
+  when '}', '>>'
+    nestLevel -= 1
+    if nestLevel <= level
+      if lv = stack.pop
+        block = lv[0]
+        level = lv[1]
+      else
+        block = nil
+        level = -1
+      end
+    end
+  when '\chords', '\header', '\paper'
+    block = token
+    level = nestLevel
+  end
+end
+
+writePlist($stdout, OUTPUT)
+
+# Local Variables:
+# mode:ruby
+# End:
