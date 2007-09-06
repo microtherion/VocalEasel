@@ -3,6 +3,8 @@
 # VLLilypondType.reader - Import lilypond files
 #
 
+DEBUG = false
+
 require File.dirname($0)+'/plistWriter'
 require File.dirname($0)+'/vl'
 
@@ -29,6 +31,12 @@ chords    = []
 notes     = []
 lyrics    = []
 lastDur   = 1
+divisions = 2
+tied      = false
+timeNum   = 4
+timeDenom = 4
+key       = 0
+mode      = 'minor'
 
 $RELPITCH = 0
 
@@ -42,12 +50,12 @@ PITCH = {
   ?b => 11
 }
 
-def lyPitch(pitch, base=0)
-  if !pitch || pitch =~ /r/
+def lyPitch(pitch, base=-1)
+  if !pitch || pitch =~ /[rs]/
     return VL::NoPitch
   end
   p = PITCH[pitch[0]] || 0
-  if base > 0
+  if base > -1
     p += base
   elsif $RELPITCH > 0
     while $RELPITCH-p > 5
@@ -107,7 +115,37 @@ DEGREE = [
   [VL::Aug11th+VL::Dim13th, VL::Dim13th],
   [VL::Min13th+VL::Maj13th, VL::Maj13th]
 ];
-  
+
+MAJORKEY = [
+  0,  # C 
+  -5, # Db
+  2,  # D
+  -3, # Eb
+  4,  # E
+  -1, # F
+  -6, # Gb
+  1,  # G
+  -4, # Ab
+  3,  # A
+  -2, # Bb
+  5,  # B
+];
+
+MINORKEY = [
+  -3, # Cm  -> Eb
+  4,  # Dbm -> E
+  -1, # Dm  -> F
+  -6, # Ebm -> Gb
+  1,  # Em  -> G
+  -4, # Fm  -> Ab
+  3,  # F#m -> A
+  -2, # Gm  -> Bb
+  5,  # G#m -> B
+  0,  # Am  -> C 
+  -5, # Bbm -> Db
+  2,  # Bm  -> D
+];
+
 def lySteps(steps)
   steps =~ /^(|m|maj|dim7?|aug|sus[42]?)/
   s     = STEPS[$1]
@@ -166,14 +204,13 @@ while tokens.length > 0
   case block
   when '\header', '\paper'
     # Ignore 
-  when '\chords'
+  when '\chords', '\chordmode'
     #
     # Possibly chords
     #
     if token.downcase =~ %r{^
-                             (r |                # Rest
+                             ([rs] |             # Rest
                               [a-g](?:[ei]?s)?   # g, ges, fis, es, as 
-                              [',]*              # g'''
                              ) 
                              (\d+                # 1, 2, 4, 8, 16 ...
                               (?:\*\d+/\d+)?     # *3/4
@@ -192,14 +229,41 @@ while tokens.length > 0
 
       chord = {'pitch' => pitch, 'root' => root, 'steps' => ext,
                'durNum'=> d[0], 'durDenom' => d[1]}
-      p token, chord
+      p token, chord if DEBUG
       chords.push(chord)
       redo
     end
-  else
+  when 'voice'
     #
     # Possibly notes
     #
+    if token.downcase =~ %r{^
+                             ([rs] |             # Rest
+                              [a-g](?:[ei]?s)?   # g, ges, fis, es, as 
+                              [',]*              # g'''
+                             ) 
+                             (\d+                # 1, 2, 4, 8, 16 ...
+                              (?:\*\d+/\d+)?     # *3/4
+                             )? 
+                          $}x
+      pitch   = lyPitch($1, 60)
+      dur     = $2 || lastDur
+      lastDur = dur
+      d       = lyDur(dur)
+
+      note = {'pitch' => pitch, 'durNum'=> d[0], 'durDenom' => d[1]}
+      note['tied'] = VL::TiedWithPrev if tied
+      p token, note if DEBUG
+      notes.push(note)
+      tied = false
+      redo
+    elsif token == '~' 
+      if note = notes.last
+        note['tied'] ||= 0
+        note['tied'] |= VL::TiedWithNext
+      end
+      tied = true
+    end
   end
 
   #
@@ -222,8 +286,42 @@ while tokens.length > 0
   when '\chords', '\header', '\paper'
     block = token
     level = nestLevel
+  when '\chordmode'
+    block = '\chords'
+    level = nestLevel
+  when '\relative'
+    $RELPITCH = 60
+    block     = 'voice'
+    level     = nestLevel
+  when '\time'
+    if tokens[0] =~ %r{(\d+)/(\d+)}
+      timeNum   = $1
+      timeDenom = $2
+      tokens[0..0] = nil
+    end
+    if block != 'voice'
+      block     = 'voice'
+      level     = nestLevel-1
+    end
+  when '\key'
+    p    = lyPitch(tokens[0], 0)
+    mode = tokens[1]
+    key  = mode == '\minor' ? MINORKEY[p] : MAJORKEY[p]
+    tokens[0..1] = nil
+    if block != 'voice'
+      block     = 'voice'
+      level     = nestLevel-1
+    end
   end
 end
+
+OUTPUT['properties'] = [{
+  'divisions' => divisions,
+  'key'       => key,
+  'mode'      => mode == '\minor' ? -1 : 1,
+  'timeNum'   => timeNum,
+  'timeDenom' => timeDenom
+}]                          
 
 writePlist($stdout, OUTPUT)
 

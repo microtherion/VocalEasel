@@ -29,6 +29,7 @@
 			<array>
 				<string>VLPDFType</string>
 				<string>VLMIDIType</string>
+				<string>VLMusicXMLType</string>
 				<string>VLLilypondType</string>
 				<string>VLMMAType</string>
 			</array>
