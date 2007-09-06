@@ -32,7 +32,7 @@ def _identification
     composer.add_attribute('type', 'composer')
   ident.add_element(composer)
     poet = newTextElement('creator', INPUT['lyricist'])
-    poet.add_attribute('type', 'poet')
+    poet.add_attribute('type', 'lyricist')
   ident.add_element(poet)
     encoding = REXML::Element.new('encoding')
     if INPUT['saved']
@@ -109,7 +109,9 @@ def _pitch(name, pitch, prefix="")
   return pitch
 end
 
-def _note(pitch, dur, tied=0)
+TYPE = %w[whole half quarter eighth 16th 32nd]
+
+def _note(pitch, dur, visual, tied)
   note = REXML::Element.new('note')
   if pitch == VL::NoPitch
     note.add_element(REXML::Element.new('rest'))
@@ -127,6 +129,7 @@ def _note(pitch, dur, tied=0)
     note.add_element 'tie', {'type' => 'start' }
   end
   note.add_element newTextElement('voice', 1)
+  note.add_element newTextElement('type', TYPE[visual & 7]) 
 
   return note
 end
@@ -221,11 +224,16 @@ def _chord(pitch, steps, root)
     best = 0
     kind = 'none'
     CHORD.each do |k,mask|
+      extra = mask & ~steps
       mask &= steps
       score = 0
       while mask > 0
-        score += 1
+        score += 10
         mask  &= mask-1
+      end
+      while extra > 0
+        score -= 1
+        extra &= extra-1
       end
       if score > best
         kind = k
@@ -357,7 +365,7 @@ def _melody
         m.add_element(bk)
         tempAt = noteAt        
       end
-      n   = _note(note['pitch'], dur, note['tied'] || 0)
+      n   = _note(note['pitch'], dur, note['visual'], note['tied'] || 0)
       stanza = 1
       note['lyrics'].each do |syll|
         if syll['text']

@@ -119,7 +119,7 @@ class MusicXMLListener
       when 'composer' 
         @kind = 'textProp'
         @key  = 'composer'
-      when 'poet' 
+      when 'poet', 'lyricist' 
         @kind = 'textProp'
         @key  = 'lyricist'
       end
