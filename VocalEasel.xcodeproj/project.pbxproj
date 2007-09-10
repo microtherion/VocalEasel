@@ -24,6 +24,7 @@
 		95049CF30BDC32EB0015EE6E /* installLilypond.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 95049CF20BDC32CD0015EE6E /* installLilypond.scpt */; };
 		95049D020BDC436A0015EE6E /* installPython.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 95049D010BDC43510015EE6E /* installPython.scpt */; };
 		950795E10B4A34D9008911A6 /* stop.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 950795E00B4A34D9008911A6 /* stop.tiff */; };
+		95140E3C0C944F7F00966576 /* VLLilypondType.reader in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95140E3B0C944F7F00966576 /* VLLilypondType.reader */; };
 		9524DAFB0BE569C50002AC03 /* Help in Resources */ = {isa = PBXBuildFile; fileRef = 9524DAF70BE569C50002AC03 /* Help */; };
 		9524DB390BE5CA070002AC03 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9524DB380BE5CA070002AC03 /* Carbon.framework */; };
 		952CBB9C095FD1CA00434E43 /* VLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */; };
@@ -136,6 +137,7 @@
 			dstPath = Filters;
 			dstSubfolderSpec = 7;
 			files = (
+				95140E3C0C944F7F00966576 /* VLLilypondType.reader in Copy Filters */,
 				95795CE60C88B25D00E4A21F /* vl.rb in Copy Filters */,
 				95795CE70C88B25D00E4A21F /* VLMusicXMLType.reader in Copy Filters */,
 				95EF921A0C786CB90093E5F4 /* plistReader.rb in Copy Filters */,
@@ -174,6 +176,7 @@
 		95049CF20BDC32CD0015EE6E /* installLilypond.scpt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.scpt; name = installLilypond.scpt; path = Resources/installLilypond.scpt; sourceTree = "<group>"; };
 		95049D010BDC43510015EE6E /* installPython.scpt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.scpt; name = installPython.scpt; path = Resources/installPython.scpt; sourceTree = "<group>"; };
 		950795E00B4A34D9008911A6 /* stop.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = stop.tiff; path = Resources/stop.tiff; sourceTree = "<group>"; };
+		95140E3B0C944F7F00966576 /* VLLilypondType.reader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = VLLilypondType.reader; sourceTree = "<group>"; };
 		9524DAF70BE569C50002AC03 /* Help */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Help; path = Resources/Help; sourceTree = "<group>"; };
 		9524DB380BE5CA070002AC03 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		952CBB98095FD19D00434E43 /* TVLSoundOut */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLSoundOut; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -539,6 +542,7 @@
 				95795CE40C88B25D00E4A21F /* vl.rb */,
 				95795CE50C88B25D00E4A21F /* VLMusicXMLType.reader */,
 				95EF92270C78E9390093E5F4 /* VLMusicXMLType.writer */,
+				95140E3B0C944F7F00966576 /* VLLilypondType.reader */,
 				95EF92120C786B2C0093E5F4 /* plistReader.rb */,
 				95EF92130C786B2C0093E5F4 /* plistWriter.rb */,
 			);

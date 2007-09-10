@@ -432,7 +432,7 @@ advanceAt:
 		[NSException raise:NSInvalidArgumentException 
 					 format:@"Filter %@: %@", filterName, errStr];
 	}
-
+	
 	return output;
 }
 
@@ -469,9 +469,9 @@ advanceAt:
 									 mutabilityOption:NSPropertyListImmutable
 									 format:NULL errorDescription:&errString];
 	if (!outPlist) 
-		return NO;
-	else 
-		return [self readFromPlist:outPlist error:outError];
+		[NSException raise:NSInvalidArgumentException 
+					 format:@"Plist %@: %@", filterName, errString];
+	return [self readFromPlist:outPlist error:outError];
 }
 
 @end

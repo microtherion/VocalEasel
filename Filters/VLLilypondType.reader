@@ -16,7 +16,7 @@ OUTPUT = {'measures' => []}
 tokens = []
 $stdin.each do |line|
   line.chomp!.sub!(/%.*/, "")
-  line.scan(/\G\s*(\{|\}|\(|\)|\||=|~|<<|>>|#'|#\(|##t|##f|\\\w+|\".*?\"|[-+\w\d.',:]+|.)/) do |token|
+  line.scan(%r$\G\s*(\{|\}|\(|\)|\||=|~|<<|>>|#'|#\(|##t|##f|\\\w+|\".*?\"|\w[-+\w\d.',:*/]+|.)$) do |token|
     tokens.push(token[0])
   end
 end
@@ -51,7 +51,7 @@ PITCH = {
 }
 
 def lyPitch(pitch, base=-1)
-  if !pitch || pitch =~ /[rs]/
+  if !pitch || pitch =~ /^[rs]/
     return VL::NoPitch
   end
   p = PITCH[pitch[0]] || 0
@@ -63,7 +63,7 @@ def lyPitch(pitch, base=-1)
     end
     $RELPITCH = p
   else
-    p += 60
+    p += 48
   end
   pitch.scan(/'/) {|c| p += 12}
   pitch.scan(/,/) {|c| p -= 12}
@@ -78,12 +78,18 @@ def lyPitch(pitch, base=-1)
 end
 
 def lyDur(dur)
-  dur =~ /^(\d+)(?:\*(\d+).(\d+))?/
+  dur =~ /^(\d+)(\.*)(?:\*(\d+).(\d+))?/
   num = 1
   den = $1.to_i
-  if $2 
-    num *= $2.to_i
-    den *= $3.to_i
+  if $2.length > 0
+    (0...$2.length).each do |x|
+      den = 2*den
+      num = 2*num+1
+    end
+  end
+  if $3 
+    num *= $3.to_i
+    den *= $4.to_i
   end
   return [num,den]
 end
@@ -147,20 +153,20 @@ MINORKEY = [
 ];
 
 def lySteps(steps)
-  steps =~ /^(|m|maj|dim7?|aug|sus[42]?)/
+  steps =~ /^(maj|dim7?|aug|sus[42]?|m|)/
   s     = STEPS[$1]
   steps = $'
-  if !($1 =~ /\d/) && steps =~ /^(7|9|11|13)/
-    if !(s & VL::Maj7th)
+  if !($1 =~ /\d$/) && steps =~ /^(7|9|11|13)/
+    if (s & VL::Maj7th) == 0
       s |= VL::Min7th
     end
     case $1
     when '9'
       s |= VL::Maj9th
     when '11'
-      s |= VL::Maj9th+VL::Maj11th
+      s |= VL::Maj9th+VL::Eleventh
     when '13'
-      s |= VL::Maj9th+VL::Maj11th+VL::Maj13th
+      s |= VL::Maj9th+VL::Eleventh+VL::Maj13th
     end
     steps = $'
   end
@@ -213,7 +219,7 @@ while tokens.length > 0
                               [a-g](?:[ei]?s)?   # g, ges, fis, es, as 
                              ) 
                              (\d+                # 1, 2, 4, 8, 16 ...
-                              (?:\*\d+/\d+)?     # *3/4
+                              \.*(?:\*\d+/\d+)?  # ., *3/4
                              )? 
                              (?:\:([-+^:.a-z\d]+))? # :maj9.7-^2
                              (?:/\+(             # /+
@@ -242,11 +248,11 @@ while tokens.length > 0
                               [a-g](?:[ei]?s)?   # g, ges, fis, es, as 
                               [',]*              # g'''
                              ) 
-                             (\d+                # 1, 2, 4, 8, 16 ...
+                             (\d+\.*             # 1, 2, 4, 8, 16 ...
                               (?:\*\d+/\d+)?     # *3/4
                              )? 
                           $}x
-      pitch   = lyPitch($1, 60)
+      pitch   = lyPitch($1)
       dur     = $2 || lastDur
       lastDur = dur
       d       = lyDur(dur)
@@ -295,8 +301,8 @@ while tokens.length > 0
     level     = nestLevel
   when '\time'
     if tokens[0] =~ %r{(\d+)/(\d+)}
-      timeNum   = $1
-      timeDenom = $2
+      timeNum   = $1.to_i
+      timeDenom = $2.to_i
       tokens[0..0] = nil
     end
     if block != 'voice'
@@ -315,6 +321,63 @@ while tokens.length > 0
   end
 end
 
+measureLen = VL::Fract.new(timeNum, timeDenom)
+
+#
+# Make measures
+#
+measCount= -1
+measures = []
+
+while notes.size > 0 || chords.size > 0
+  measCount         += 1
+  meas               = {}
+  meas['measure']    = measCount
+  meas['properties'] = 0
+  if chords.size > 0
+    mchords          = []
+    len              = VL::Fract.new(0, 1)
+    while len < measureLen && chords.size > 0
+      chord    = chords.shift
+      chordLen = VL::Fract.new(chord['durNum'], chord['durDenom'])
+      if len+chordLen > measureLen
+        remLen               = len+chordLen-measureLen
+        chordLen            -= remLen
+        remChord             = chord.dup
+        remChord['durNum']   = remLen.num
+        remChord['durDenom'] = remLen.denom
+        chords.unshift(remChord)
+      end
+      mchords.push(chord)
+      len += chordLen
+    end
+    meas['chords']   = mchords
+  end
+  if notes.size > 0
+    mnotes           = []
+    len              = VL::Fract.new(0, 1)
+    while len < measureLen && notes.size > 0
+      note    = notes.shift
+      noteLen = VL::Fract.new(note['durNum'], note['durDenom'])
+      if len+noteLen > measureLen
+        remLen              = len+noteLen-measureLen
+        noteLen            -= remLen
+        remNote             = note.dup
+        remNote['durNum']   = remLen.num
+        remNote['durDenom'] = remLen.denom
+        remNote['tied']     = (remNote['tied'] || 0) | VL::TiedWithPrev
+        note['tied']        = (note['tied'] || 0) | VL::TiedWithNext
+        notes.unshift(remNote)
+      end
+      mnotes.push(note)
+      len += noteLen
+    end
+    meas['melody']   = mnotes
+  end
+  measures.push(meas)
+end
+ 
+OUTPUT['measures'] = measures
 OUTPUT['properties'] = [{
   'divisions' => divisions,
   'key'       => key,

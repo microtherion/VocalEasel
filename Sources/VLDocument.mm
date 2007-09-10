@@ -14,6 +14,7 @@
 #import "VLMMADocument.h"
 #import "VLMIDIDocument.h"
 #import "VLPDFDocument.h"
+#import "VLPListDocument.h"
 #import "VLPDFWindow.h"
 #import "VLLogWindow.h"
 #import "VLSheetWindow.h"
@@ -352,6 +353,12 @@
 
 	if ([typeName isEqual:@"VLNativeType"] || [typeName isEqual:@"VLMusicXMLType"]) {
 		return [self readFromXMLFileWrapper:wrapper error:outError];
+	} else if ([typeName isEqual:@"VLLilypondType"]) {
+		if ([self readFromFileWrapper:wrapper withFilter:typeName error:outError]) {
+			[self setFileURL:nil];
+			return YES;
+		} else
+			return NO;
 	} else {
 		if (outError)
 			*outError = [NSError errorWithDomain:NSCocoaErrorDomain

@@ -79,4 +79,53 @@ class VL
     Sus4   = VL::Unison+VL::Fourth+VL::Fifth
     Sus2   = VL::Unison+VL::Maj2nd+VL::Fifth
   end
+
+  class Fract
+    include Comparable
+
+    def initialize(num, denom)
+      @num   = num
+      @denom = denom
+
+      normalize()
+    end
+
+    def num
+      return @num
+    end
+
+    def denom
+      return @denom
+    end
+
+    def _gcd(x, y)
+      while y != 0
+        x,y = [y, x % y]
+      end
+      
+      return x
+    end
+
+    def normalize
+      g       = _gcd(@num, @denom)
+      @num   /= g
+      @denom /= g
+    end
+
+    def -()
+      return Fract.new(-@num, @denom)
+    end
+
+    def +(other)
+      return Fract.new(@num*other.denom+other.num*@denom, @denom*other.denom)
+    end
+
+    def -(other)
+      return Fract.new(@num*other.denom-other.num*@denom, @denom*other.denom)
+    end
+
+    def <=>(other)
+      return @num*other.denom <=> other.num*@denom
+    end
+  end
 end
