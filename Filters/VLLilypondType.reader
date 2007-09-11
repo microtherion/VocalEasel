@@ -16,7 +16,7 @@ OUTPUT = {'measures' => []}
 tokens = []
 $stdin.each do |line|
   line.chomp!.sub!(/%.*/, "")
-  line.scan(%r$\G\s*(\{|\}|\(|\)|\||=|~|<<|>>|#'|#\(|##t|##f|\\\w+|\".*?\"|\w[-+\w\d.',:*/]+|.)$) do |token|
+  line.scan(%r$\G\s*(\{|\}|\(|\)|\||=|~|<<|>>|--|#'|#\(|##t|##f|\\\w+|\".*?\"|\w[-+\w\d.',:*/]+|.)$) do |token|
     tokens.push(token[0])
   end
 end
@@ -30,6 +30,7 @@ stack     = []
 chords    = []
 notes     = []
 lyrics    = []
+stanzas   = []
 lastDur   = 1
 divisions = 2
 tied      = false
@@ -37,6 +38,7 @@ timeNum   = 4
 timeDenom = 4
 key       = 0
 mode      = 'minor'
+lyricFlags= 0
 
 $RELPITCH = 0
 
@@ -61,12 +63,14 @@ def lyPitch(pitch, base=-1)
     while $RELPITCH-p > 5
       p += 12
     end
-    $RELPITCH = p
   else
     p += 48
   end
   pitch.scan(/'/) {|c| p += 12}
   pitch.scan(/,/) {|c| p -= 12}
+  if base == -1 && $RELPITCH > 0
+    $RELPITCH = p
+  end
   if pitch =~ /^[ea]s/
     p -= 1
     pitch[0..1] = ""
@@ -81,7 +85,7 @@ def lyDur(dur)
   dur =~ /^(\d+)(\.*)(?:\*(\d+).(\d+))?/
   num = 1
   den = $1.to_i
-  if $2.length > 0
+  if $2 
     (0...$2.length).each do |x|
       den = 2*den
       num = 2*num+1
@@ -270,6 +274,30 @@ while tokens.length > 0
       end
       tied = true
     end
+  when '\lyricmode'
+    if token == '--'
+      lyrics.last[1] |= VL::TiedWithNext if lyrics.size > 0
+      lyricFlags     = VL::TiedWithPrev
+    elsif token == '\skip'
+      p ["", 0] if DEBUG
+      lyrics.push ["", 0]
+      lyricFlags     = 0
+      if tokens[0] =~ /\d+/
+        tokens[0..0] = nil
+      end
+    elsif token =~ /\\skip\d+/
+      p ["", 0] if DEBUG
+      lyrics.push ["", 0]
+      lyricFlags     = 0
+    elsif token =~ /"(.*)"/
+      p [$1, lyricFlags] if DEBUG
+      lyrics.push [$1, lyricFlags]
+      lyricFlags     = 0      
+    elsif token =~ /^\w.*/
+      p [token, lyricFlags] if DEBUG
+      lyrics.push [token, lyricFlags]
+      lyricFlags     = 0
+    end
   end
 
   #
@@ -289,14 +317,27 @@ while tokens.length > 0
         level = -1
       end
     end
-  when '\chords', '\header', '\paper'
+  when '\chords', '\header', '\paper', '\lyricmode'
     block = token
     level = nestLevel
+    stanzas.push(lyrics= [])
   when '\chordmode'
     block = '\chords'
     level = nestLevel
+  when '\new'
+    if tokens[0] == "Lyrics"
+      block = '\lyricmode'
+      level = nestLevel
+      stanzas.push(lyrics= [])
+      tokens[0..0] = nil
+    end
   when '\relative'
-    $RELPITCH = 60
+    if tokens[0] =~ /[a-g](?:[ei]?s)?[',]*/
+      $RELPITCH = lyPitch(tokens[0], 48)
+      tokens[0..0] = nil
+    else
+      $RELPITCH = 60
+    end
     block     = 'voice'
     level     = nestLevel
   when '\time'
@@ -318,6 +359,9 @@ while tokens.length > 0
       block     = 'voice'
       level     = nestLevel-1
     end
+  when '\repeat'
+    tokens[0..1] = nil
+  when '\alternative'
   end
 end
 
@@ -368,6 +412,25 @@ while notes.size > 0 || chords.size > 0
         remNote['tied']     = (remNote['tied'] || 0) | VL::TiedWithPrev
         note['tied']        = (note['tied'] || 0) | VL::TiedWithNext
         notes.unshift(remNote)
+      end
+      if note['pitch'] != VL::NoPitch &&
+       (!note['tied'] || (note['tied'] & VL::TiedWithPrev) == 0)
+        ly     = []
+        stanza = 0
+        stanzas.each_index do |i|
+          lyrics = stanzas[i]
+          if lyrics.size > 0
+            stanza = i+1
+            syll   = lyrics.shift
+            ly.push({'text' => syll[0], 'kind' => syll[1]})
+          else
+            ly.push({'text' => '', 'kind' => 0})
+          end
+        end
+        if stanza < ly.size
+          ly[ly.size-stanza..-1] = nil
+        end
+        note['lyrics'] = ly if stanza > 0
       end
       mnotes.push(note)
       len += noteLen
