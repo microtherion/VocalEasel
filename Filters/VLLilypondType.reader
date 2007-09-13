@@ -27,6 +27,7 @@ nestLevel = 0
 block     = nil
 level     = -1
 stack     = []
+repeats   = []
 chords    = []
 notes     = []
 lyrics    = []
@@ -34,6 +35,7 @@ stanzas   = []
 lastDur   = 1
 divisions = 2
 tied      = false
+repeat    = 0
 timeNum   = 4
 timeDenom = 4
 key       = 0
@@ -192,7 +194,6 @@ def lySteps(steps)
 end
 
 while tokens.length > 0
-  # puts "#{tokens.length}:#{nestLevel}[#{block}] #{tokens[0]} #{tokens[1]} #{tokens[2]}"
   token = tokens.shift
   #
   # Title, composer, etc.
@@ -273,6 +274,22 @@ while tokens.length > 0
         note['tied'] |= VL::TiedWithNext
       end
       tied = true
+    elsif token == '\repeat' && (tokens[0] == 'volta' || tokens[0] == fold) &&
+        tokens[1] =~ /^\d+$/
+      stack.push([block, level, "repeat"])
+      level        = nestLevel
+      repeats.push(repeat)
+      repeat       = tokens[1].to_i
+      notes.push({'begin-repeat' => true, 'times' => repeat})
+      tokens[0..1] = nil
+      redo
+    elsif token == '\alternative'
+      inEndings = true
+      stack.push([block, level, "endings"])
+      level     = nestLevel+1
+      voltas    = 0
+      curVoltas = nil
+      notes.push({'begin-ending' => true})
     end
   when '\lyricmode'
     if token == '--'
@@ -312,26 +329,58 @@ while tokens.length > 0
       if lv = stack.pop
         block = lv[0]
         level = lv[1]
+        type  = lv[2]
       else
         block = nil
         level = -1
       end
+      if type == "repeat"
+        if tokens[0] != '\alternative'
+          notes.push({'end-repeat' => true})
+          repeat = repeats.pop
+        end
+      elsif type == "endings"
+        last = tokens[0] == '}'
+        if last
+          curVoltas = ((1<<repeat) - 1) & ~voltas
+        elsif !curVoltas
+          curVoltas = 1
+          while (voltas&curVoltas) != 0
+            curVoltas <<= 1
+          end
+        end
+        notes.push({'end-ending' => true, 'volta' => curVoltas, 
+                     'last'=>last})
+        voltas   |= curVoltas
+        curVoltas = 0
+        if last
+          repeat = repeats.pop
+        else
+          notes.push({'begin-ending' => true})
+          stack.push([block, level, "endings"])
+          level = nestLevel
+        end
+      end
     end
   when '\chords', '\header', '\paper', '\lyricmode'
+    stack.push([block, level, ""])
     block = token
     level = nestLevel
     stanzas.push(lyrics= [])
   when '\chordmode'
+    stack.push([block, level, ""])
     block = '\chords'
     level = nestLevel
   when '\new'
     if tokens[0] == "Lyrics"
+      stack.push([block, level, ""])
       block = '\lyricmode'
       level = nestLevel
       stanzas.push(lyrics= [])
       tokens[0..0] = nil
     end
   when '\relative'
+    stack.push([block, level, ""])
     if tokens[0] =~ /[a-g](?:[ei]?s)?[',]*/
       $RELPITCH = lyPitch(tokens[0], 48)
       tokens[0..0] = nil
@@ -347,6 +396,7 @@ while tokens.length > 0
       tokens[0..0] = nil
     end
     if block != 'voice'
+      stack.push([block, level, ""])
       block     = 'voice'
       level     = nestLevel-1
     end
@@ -356,6 +406,7 @@ while tokens.length > 0
     key  = mode == '\minor' ? MINORKEY[p] : MAJORKEY[p]
     tokens[0..1] = nil
     if block != 'voice'
+      stack.push([block, level, ""])
       block     = 'voice'
       level     = nestLevel-1
     end
@@ -373,11 +424,23 @@ measureLen = VL::Fract.new(timeNum, timeDenom)
 measCount= -1
 measures = []
 
+def peek(where, what)
+  return where.first && where.first[what] 
+end
+
 while notes.size > 0 || chords.size > 0
   measCount         += 1
   meas               = {}
   meas['measure']    = measCount
   meas['properties'] = 0
+  if peek(notes, 'begin-repeat')
+    rep = notes.shift
+    meas['begin-repeat'] = {'times' => rep['times']}
+  end
+  if peek(notes, 'begin-ending')
+    notes.shift
+    meas['begin-ending'] = {}
+  end
   if chords.size > 0
     mchords          = []
     len              = VL::Fract.new(0, 1)
@@ -436,6 +499,14 @@ while notes.size > 0 || chords.size > 0
       len += noteLen
     end
     meas['melody']   = mnotes
+  end
+  if peek(notes, 'end-ending')
+    ending = notes.shift
+    meas['end-ending'] = {'last' => ending['last'], 'volta' => ending['volta']}
+  end
+  if peek(notes, 'end-repeat')
+    notes.shift
+    meas['end-repeat'] = {}
   end
   measures.push(meas)
 end
