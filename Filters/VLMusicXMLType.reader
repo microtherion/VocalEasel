@@ -111,7 +111,7 @@ class MusicXMLListener
     when 'score-timewise' 
       $stderr.puts "Can't read timewise MusicXML files yet"
       exit 1
-    when 'work-title' 
+    when 'work-title', 'movement-title' 
       @kind = 'textProp'
       @key  = 'title'
     when 'creator' 
@@ -277,6 +277,17 @@ class MusicXMLListener
     return volta
   end
 
+  def saneDivisions(props)
+    #
+    # Dolet for Sibelius is using something like 768 divisions per quarter
+    #
+    props.each do |prop|
+      if prop['divisions'] > 12
+        prop['divisions'] = 2 # Should do this a lot smarter
+      end
+    end
+  end
+
   def tag_end(tag)
     #
     # Interesting text nodes have @kind set
@@ -426,7 +437,7 @@ class MusicXMLListener
           end
         end
       when 'part' 
-        OUTPUT['properties'] = @props unless @part == 'HARM'
+        OUTPUT['properties'] = saneDivisions(@props) unless @part == 'HARM'
       end
     end
   end
