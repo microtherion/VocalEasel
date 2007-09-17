@@ -353,7 +353,7 @@
 
 	if ([typeName isEqual:@"VLNativeType"] || [typeName isEqual:@"VLMusicXMLType"]) {
 		return [self readFromXMLFileWrapper:wrapper error:outError];
-	} else if ([typeName isEqual:@"VLLilypondType"]) {
+	} else if ([typeName isEqual:@"VLLilypondType"] || [typeName isEqual:@"VLBIABType"]) {
 		if ([self readFromFileWrapper:wrapper withFilter:typeName error:outError]) {
 			[self setFileURL:nil];
 			return YES;

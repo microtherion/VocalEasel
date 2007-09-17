@@ -27,6 +27,7 @@
 		95140E3C0C944F7F00966576 /* VLLilypondType.reader in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95140E3B0C944F7F00966576 /* VLLilypondType.reader */; };
 		9524DAFB0BE569C50002AC03 /* Help in Resources */ = {isa = PBXBuildFile; fileRef = 9524DAF70BE569C50002AC03 /* Help */; };
 		9524DB390BE5CA070002AC03 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9524DB380BE5CA070002AC03 /* Carbon.framework */; };
+		95297F310C9ADA33007EFD6B /* VLBIABType.reader in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95297F300C9ADA33007EFD6B /* VLBIABType.reader */; };
 		952CBB9C095FD1CA00434E43 /* VLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */; };
 		952CBB9D095FD1CA00434E43 /* VLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */; };
 		952CBB9F095FD1D900434E43 /* TVLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9E095FD1D900434E43 /* TVLSoundOut.cpp */; };
@@ -137,6 +138,7 @@
 			dstPath = Filters;
 			dstSubfolderSpec = 7;
 			files = (
+				95297F310C9ADA33007EFD6B /* VLBIABType.reader in Copy Filters */,
 				95140E3C0C944F7F00966576 /* VLLilypondType.reader in Copy Filters */,
 				95795CE60C88B25D00E4A21F /* vl.rb in Copy Filters */,
 				95795CE70C88B25D00E4A21F /* VLMusicXMLType.reader in Copy Filters */,
@@ -179,6 +181,7 @@
 		95140E3B0C944F7F00966576 /* VLLilypondType.reader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = VLLilypondType.reader; sourceTree = "<group>"; };
 		9524DAF70BE569C50002AC03 /* Help */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Help; path = Resources/Help; sourceTree = "<group>"; };
 		9524DB380BE5CA070002AC03 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		95297F300C9ADA33007EFD6B /* VLBIABType.reader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = VLBIABType.reader; sourceTree = "<group>"; };
 		952CBB98095FD19D00434E43 /* TVLSoundOut */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLSoundOut; sourceTree = BUILT_PRODUCTS_DIR; };
 		952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = VLSoundOut.cpp; path = Sources/VLSoundOut.cpp; sourceTree = "<group>"; };
 		952CBB9B095FD1CA00434E43 /* VLSoundOut.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSoundOut.h; path = Sources/VLSoundOut.h; sourceTree = "<group>"; };
@@ -541,6 +544,7 @@
 			children = (
 				95795CE40C88B25D00E4A21F /* vl.rb */,
 				95795CE50C88B25D00E4A21F /* VLMusicXMLType.reader */,
+				95297F300C9ADA33007EFD6B /* VLBIABType.reader */,
 				95EF92270C78E9390093E5F4 /* VLMusicXMLType.writer */,
 				95140E3B0C944F7F00966576 /* VLLilypondType.reader */,
 				95EF92120C786B2C0093E5F4 /* plistReader.rb */,

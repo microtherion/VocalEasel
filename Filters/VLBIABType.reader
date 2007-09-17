@@ -1,0 +1,361 @@
+#!/usr/bin/ruby
+#
+# VLBIABType.reader - Import Band-in-a-Box files
+#
+# Reverse engineering by Alf Warnock & Alain Brenzikofer
+#
+
+DEBUG = true
+
+require File.dirname($0)+'/plistWriter'
+require File.dirname($0)+'/vl'
+
+MEAS = []
+PROP = {
+  'divisions' => 3,
+  'key'       => 0,
+  'mode'      => 1,
+  'timeNum'   => 4,
+  'timeDenom' => 4
+}
+OUTPUT = {
+  'measures'  => MEAS,
+  'properties'=> [PROP]                          
+}
+
+GROOVE = ['Swing',	# Jazz Swing
+          nil,          # Country 12/8
+          'Country',	# Country 4/4
+          'BossaNova',	# Bossa Nova
+          nil,          # Ethnic
+          nil,          # Blues Shuffle
+          'Blues',	# Blues Straight
+          'Waltz',	# Waltz
+          'PopBallad',	# Pop Ballad
+          'Rock',	# should be Rock Shuffle 
+          'Rock',	# lite Rock
+          'Rock',	# medium Rock
+          'Rock',	# Heavy Rock
+          'Rock',	# Miami Rock
+          nil,          # Milly Pop
+          nil,          # Funk
+          'JazzWaltz',	# Jazz Waltz
+          'Rhumba',	# Rhumba
+          nil,          # Cha Cha
+          nil,          # Bouncy
+          nil,          # Irish
+          nil,          # Pop Ballad 12/8
+          nil,          # Country12/8 old
+          nil           # Reggae
+         ]
+
+KEY = [[ 0, 1], 
+       [ 0, 1], [-5, 1], [ 2, 1], [-3, 1], [ 4, 1], [-1, 1], 
+       [-6, 1], [ 1, 1], [-4, 1], [ 3, 1], [-2, 1], [ 5, 1], 
+       [ 7, 1], [ 9, 1], [ 6, 1], [ 8, 1], [10, 1],
+       [-3,-1], [ 4,-1], [-1,-1], [-6,-1], [ 1,-1], [-4,-1],
+       [ 3,-1], [-2,-1], [ 5,-1], [ 0,-1], [-5,-1], [ 2,-1],
+       [ 4,-1], [ 6,-1], [ 3,-1], [ 5,-1], [ 7,-1]]
+
+$stdin.read(1) # Skip 1 Byte
+titleLen = $stdin.read(1)[0]
+OUTPUT['title'] = $stdin.read(titleLen)
+
+$stdin.read(2) # Skip 2 Bytes
+gr               = $stdin.read(1)[0]
+OUTPUT['groove'] = GROOVE[gr] || "Swing"
+key = KEY[$stdin.read(1)[0]]
+PROP['key']      = key[0]
+PROP['mode']     = key[1]
+OUTPUT['tempo']  = $stdin.read(1)[0] 
+
+#
+# Style map - not processed yet
+#
+STYLES = []
+i=0
+while i < 256
+  st = $stdin.read(1)[0]
+  if st > 0
+    STYLES[i-1] = st
+    i          += 1
+  else
+    i          += $stdin.read(1)[0]
+  end
+end
+
+#
+# Chord extensions
+#
+EXT   = [
+  nil,    
+  VL::Chord::Maj,
+  VL::Chord::Maj,
+  VL::Unison | VL::Maj3rd | VL::Dim5th,
+  VL::Chord::Aug,
+  VL::Chord::Maj6,
+  VL::Chord::Maj7,
+  VL::Chord::Maj9,
+  VL::Chord::Maj9 | VL::Aug11th,
+  VL::Chord::Maj9 | VL::Aug11th | VL::Maj13th,
+  VL::Chord::Maj13, # 10
+  nil,    
+  VL::Chord::Aug,
+  VL::Chord::Aug | VL::Maj7th,
+  VL::Chord::Maj6 | VL::Maj9th,
+  VL::Chord::Sus2,
+  VL::Chord::Min,
+  VL::Unison | VL::Min3rd | VL::Aug5th,
+  VL::Chord::MMin7,
+  VL::Chord::Min7,
+  VL::Chord::Min9,                                               # 20
+  VL::Chord::Min11,
+  VL::Chord::Min13,
+  VL::Chord::Min6,
+  VL::Unison | VL::Min3rd | VL::Aug5th,
+  VL::Unison | VL::Min3rd | VL::Aug5th | VL::Min7th,
+  VL::Unison | VL::Min3rd | VL::Fifth  | VL::Dim7th | VL::Maj9th,
+  nil,    
+  nil,    
+  nil,    
+  nil,                                                           # 30
+  nil,    
+  VL::Chord::M7b5,
+  VL::Chord::Dim,
+  VL::Chord::M7b5 | VL::Maj9th,
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  VL::Unison | VL::Fifth,                                        # 40
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,                                                           # 50
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  VL::Chord::Aug7,
+  VL::Chord::Aug,
+  VL::Chord::Aug7 | VL::Maj9th | VL::Eleventh | VL::Maj13th,
+  nil,    
+  nil,                                                           # 60
+  nil,    
+  nil,    
+  nil,    
+  VL::Chord::Dom7,
+  VL::Chord::Dom13,
+  VL::Chord::Dom7 | VL::Min13th,
+  VL::Chord::Dom7 | VL::Aug11th,
+  nil,    
+  nil,    
+  VL::Chord::Dom9,                                               # 70 ???
+  nil,    
+  VL::Chord::Dom9 | VL::Min13th,
+  VL::Chord::Dom9 | VL::Aug11th,
+  VL::Chord::Dom9 | VL::Aug11th | VL::Maj13th,
+  nil,    
+  VL::Chord::Dom7 | VL::Min9th,
+  VL::Chord::Dom7 | VL::Min9th | VL::Maj13th,
+  nil,    
+  VL::Chord::Dom7 | VL::Min9th | VL::Aug11th,
+  nil,                                                           # 80
+  nil,    
+  VL::Chord::Dom7 | VL::Aug9th,
+  VL::Chord::Dom7 | VL::Aug9th | VL::Maj13th,
+  VL::Chord::Dom7 | VL::Aug9th | VL::Min13th,
+  VL::Chord::Dom9 | VL::Aug11th,
+  nil,    
+  nil,    
+  VL::Unison | VL::Maj3rd | VL::Dim5th | VL::Min7th,
+  VL::Unison | VL::Maj3rd | VL::Dim5th | VL::Min7th | VL::Maj13th,
+  nil,                                                           # 90
+  VL::Unison | VL::Maj3rd | VL::Dim5th | VL::Min7th | VL::Maj9th,
+  nil,    
+  VL::Unison | VL::Maj3rd | VL::Dim5th | VL::Min7th | VL::Min9th,
+  nil,    
+  nil,    
+  VL::Unison | VL::Maj3rd | VL::Dim5th | VL::Min7th | VL::Aug9th,
+  nil,    
+  nil,    
+  VL::Chord::Aug7,
+  nil,                                                           # 100
+  nil,    
+  nil,    
+  VL::Chord::Aug7 | VL::Maj9th,
+  nil,    
+  VL::Chord::Aug7 | VL::Min9th,
+  nil,    
+  nil,    
+  nil,    
+  VL::Chord::Aug7 | VL::Aug9th,
+  nil,                                                           # 110
+  nil,    
+  nil,    
+  VL::Unison | VL::Maj3rd | VL::Dim7th | VL::Min7th | VL::Min9th,
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,                                                           # 120
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  VL::Chord::Sus4 | VL::Min7th,
+  VL::Chord::Sus4 | VL::Min7th | VL::Maj9th | VL::Maj13th,
+  nil,                                                           # 130
+  nil,    
+  nil,    
+  nil,    
+  VL::Chord::Dom11,
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  VL::Chord::Sus4 | VL::Min7th | VL::Min9th,                     # 140
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  VL::Chord::Sus4 | VL::Min7th | VL::Aug9th,
+  nil,    
+  nil,    
+  nil,    
+  nil,                                                           # 150
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,                                                           # 160
+  nil,    
+  nil,    
+  VL::Unison | VL::Dim5th | VL::Aug5th,
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,                                                           # 170
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  nil,    
+  VL::Chord::Sus4,
+  nil,    
+  nil,    
+  nil,                                                           # 180
+  nil,    
+  nil,    
+  nil,    
+  VL::Chord::Sus4
+];
+
+STEPS = []
+i     = 1
+while i < 1021
+  ex = $stdin.read(1)[0]
+  if ex > 0
+    STEPS[i] = EXT[ex]
+    i       += 1
+  else
+    i       += $stdin.read(1)[0]
+  end
+end
+
+PITCHES = [0, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
+                  61,     63,         66,     68,     70]
+CHORDS  = []
+ROOTS   = []
+i       = 1
+while i < 1022
+  cr = $stdin.read(1)[0]
+  if cr > 0
+    CHORDS[i] = PITCHES[cr % 18]
+    if cr > 18
+      ROOTS[i] = PITCHES[(cr/18+cr%18) % 12]
+    end
+    i       += 1
+  else
+    i       += $stdin.read(1)[0]
+  end
+end
+
+$stdin.read(1) # Start measure
+numMeasures = $stdin.read(1)[0]
+numRepeats  = $stdin.read(1)[0]
+
+biab      = $stdin.read
+
+styleFile = nil
+if biab =~ /B.(.{1,8})\.STY/
+  styleFile = $1
+end
+noteCount = 0
+if biab =~ /\x00\xFF\x00\x0D(..)/
+  noteCount = $1.unpack('v')[0]
+end
+puts "Style #{styleFile}" if DEBUG
+RAWNOTES = []
+ONSETS   = [0,0,0,0,0,0,0,0,0,0,0,0]
+if biab.sub!(/.*?\xA0\xB0\xC1/, '')
+  (0...noteCount).each do |i|
+    onset, channel, pitch, velocity, duration = biab[i*12, 12].unpack('VCCCxV')
+    puts "O #{onset}; C #{channel}; P #{pitch}; V #{velocity}; D #{duration}" if DEBUG
+    if channel==176 or channel==179
+      pitch = -128
+    end
+    onset = (onset / 10.0).round
+    RAWNOTES.push([onset, pitch])
+    ONSETS[onset % 12] += 1
+  end
+end
+p ONSETS if DEBUG
+
+if ONSETS[1]+ONSETS[5]+ONSETS[7]+ONSETS[11] == 0
+  if ONSETS[3]+ONSETS[9] == 0
+    if ONSETS[2]+ONSETS[4]+ONSETS[8]+ONSETS[10] == 0
+      PROP['divisions'] = 2
+    elsif ONSETS[2]+ONSETS[6]+ONSETS[10] == 0
+      PROP['divisions'] = 3
+    else
+      PROP['divisions'] = 6
+    end
+  elsif ONSETS[2]+ONSETS[4]+ONSETS[8]+ONSETS[10] == 0
+    PROP['divisions'] = 4
+  else
+    PROP['divisions'] = 12
+  end
+else
+  PROP['divisions'] = 12
+end
+
+writePlist($stdout, OUTPUT)
+
+# Local Variables:
+# mode:ruby
+# End:

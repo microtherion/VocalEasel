@@ -9,6 +9,29 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
+				<string>SGU</string>
+				<string>SG1</string>
+				<string>MGU</string>
+				<string>MG1</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>VLBIABType</string>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>BIAB</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSTypeIsPackage</key>
+			<false/>
+			<key>NSDocumentClass</key>
+			<string>VLDocument</string>
+			<key>NSPersistentStoreTypeKey</key>
+			<string>Binary</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
 				<string>vlsong</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
