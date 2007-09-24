@@ -5,7 +5,7 @@
 # Reverse engineering by Alf Warnock & Alain Brenzikofer
 #
 
-DEBUG = true
+DEBUG = false
 
 require File.dirname($0)+'/plistWriter'
 require File.dirname($0)+'/vl'
@@ -23,31 +23,36 @@ OUTPUT = {
   'properties'=> [PROP]                          
 }
 
-GROOVE = ['Swing',	# Jazz Swing
-          nil,          # Country 12/8
-          'Country',	# Country 4/4
-          'BossaNova',	# Bossa Nova
-          nil,          # Ethnic
-          nil,          # Blues Shuffle
-          'Blues',	# Blues Straight
-          'Waltz',	# Waltz
-          'PopBallad',	# Pop Ballad
-          'Rock',	# should be Rock Shuffle 
-          'Rock',	# lite Rock
-          'Rock',	# medium Rock
-          'Rock',	# Heavy Rock
-          'Rock',	# Miami Rock
-          nil,          # Milly Pop
-          nil,          # Funk
-          'JazzWaltz',	# Jazz Waltz
-          'Rhumba',	# Rhumba
-          nil,          # Cha Cha
-          nil,          # Bouncy
-          nil,          # Irish
-          nil,          # Pop Ballad 12/8
-          nil,          # Country12/8 old
-          nil           # Reggae
+GROOVE = [['Swing'],	        # Jazz Swing
+          [nil, 12, 8],         # Country 12/8
+          ['Country'],	        # Country 4/4
+          ['BossaNova'],        # Bossa Nova
+          [nil],                # Ethnic
+          [nil],                # Blues Shuffle
+          ['Blues'],	        # Blues Straight
+          ['Waltz', 3, 4],	# Waltz
+          ['PopBallad'],	# Pop Ballad
+          ['Rock'],	        # should be Rock Shuffle 
+          ['Rock'],	        # lite Rock
+          ['Rock'],	        # medium Rock
+          ['Rock'],	        # Heavy Rock
+          ['Rock'],	        # Miami Rock
+          [nil],                # Milly Pop
+          [nil],                # Funk
+          ['JazzWaltz', 6, 8],	# Jazz Waltz
+          ['Rhumba'],	        # Rhumba
+          [nil],                # Cha Cha
+          [nil],                # Bouncy
+          [nil],                # Irish
+          [nil],                # Pop Ballad 12/8
+          [nil],                # Country12/8 old
+          [nil]                 # Reggae
          ]
+
+STY_GROOVE = {
+  '54_SWING' => ['Jazz54',    5, 4],
+  'AFRCUB68' => ['JazzWaltz', 6, 8]
+}
 
 KEY = [[ 0, 1], 
        [ 0, 1], [-5, 1], [ 2, 1], [-3, 1], [ 4, 1], [-1, 1], 
@@ -62,8 +67,8 @@ titleLen = $stdin.read(1)[0]
 OUTPUT['title'] = $stdin.read(titleLen)
 
 $stdin.read(2) # Skip 2 Bytes
-gr               = $stdin.read(1)[0]
-OUTPUT['groove'] = GROOVE[gr] || "Swing"
+gr               = $stdin.read(1)[0]-1
+groove           = GROOVE[gr] || ['Swing']
 key = KEY[$stdin.read(1)[0]]
 PROP['key']      = key[0]
 PROP['mode']     = key[1]
@@ -276,8 +281,8 @@ EXT   = [
 ];
 
 STEPS = []
-i     = 1
-while i < 1021
+i     = 0
+while i < 1020
   ex = $stdin.read(1)[0]
   if ex > 0
     STEPS[i] = EXT[ex]
@@ -291,8 +296,8 @@ PITCHES = [0, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
                   61,     63,         66,     68,     70]
 CHORDS  = []
 ROOTS   = []
-i       = 1
-while i < 1022
+i       = 0
+while i < 1021
   cr = $stdin.read(1)[0]
   if cr > 0
     CHORDS[i] = PITCHES[cr % 18]
@@ -316,10 +321,19 @@ if biab =~ /B.(.{1,8})\.STY/
   styleFile = $1
 end
 noteCount = 0
-if biab =~ /\x00\xFF\x00\x0D(..)/
+if biab =~ /\x00\xFF\x00(?:\x0D|\x0E)(..)/
   noteCount = $1.unpack('v')[0]
 end
+
+styleFile = File.basename(styleFile, '.STY')
 puts "Style #{styleFile}" if DEBUG
+groove = STY_GROOVE[styleFile] || groove
+OUTPUT['groove'] = groove[0] || 'Swing'
+if groove.size > 1
+  PROP['timeNum']   = groove[1]
+  PROP['timeDenom'] = groove[2]
+end
+
 RAWNOTES = []
 ONSETS   = [0,0,0,0,0,0,0,0,0,0,0,0]
 if biab.sub!(/.*?\xA0\xB0\xC1/, '')
@@ -327,14 +341,13 @@ if biab.sub!(/.*?\xA0\xB0\xC1/, '')
     onset, channel, pitch, velocity, duration = biab[i*12, 12].unpack('VCCCxV')
     puts "O #{onset}; C #{channel}; P #{pitch}; V #{velocity}; D #{duration}" if DEBUG
     if channel==176 or channel==179
-      pitch = -128
+      pitch = VL::NoPitch
     end
     onset = (onset / 10.0).round
     RAWNOTES.push([onset, pitch])
     ONSETS[onset % 12] += 1
   end
 end
-p ONSETS if DEBUG
 
 if ONSETS[1]+ONSETS[5]+ONSETS[7]+ONSETS[11] == 0
   if ONSETS[3]+ONSETS[9] == 0
@@ -352,6 +365,111 @@ if ONSETS[1]+ONSETS[5]+ONSETS[7]+ONSETS[11] == 0
   end
 else
   PROP['divisions'] = 12
+end
+
+p RAWNOTES, CHORDS, STEPS, ROOTS if DEBUG
+
+CHORDS.pop
+measLen        = VL::Fract.new(PROP['timeNum']*48, PROP['timeDenom']).num
+measNo         = 0
+nextMeas       = 0
+melo           = nil
+lastNote       = nil
+lastOnset      = 0
+while RAWNOTES.size > 0 || CHORDS.size > 0
+  if note = RAWNOTES.shift
+    if note[0] > nextMeas
+      #
+      # Create new note for rest
+      #
+      RAWNOTES.unshift(note)
+      if lastNote
+        lastNote['tied'] ||= 0
+        lastNote['tied']   = VL::TiedWithNext
+        RAWNOTES.unshift([nextMeas, lastNote['pitch'], true])
+      else
+        RAWNOTES.unshift([nextMeas, VL::NoPitch])
+      end
+      redo
+    elsif note[0] == nextMeas
+      #
+      # Start new measure
+      #
+      melo      = []
+      meas      = {'measure' => measNo, 'melody' => melo}
+      MEAS.push(meas)
+      measNo   += 1
+      nextMeas += measLen
+    end
+    if lastNote 
+      lastDur              = VL::Fract.new(note[0]-lastOnset, 48)
+      lastNote['durNum']   = lastDur.num
+      lastNote['durDenom'] = lastDur.denom
+    end
+    lastOnset = note[0]
+    lastNote  = {'pitch' => note[1], 'tied' => note[2] ? VL::TiedWithPrev : 0}
+    melo.push(lastNote)
+  else 
+    if lastNote
+      lastDur              = VL::Fract.new(nextMeas-lastOnset, 48)
+      lastNote['durNum']   = lastDur.num
+      lastNote['durDenom'] = lastDur.denom
+      lastNote             = nil
+    end
+    silence = {
+      'pitch' => VL::NoPitch, 
+      'durNum' => PROP['timeNum'], 'durDenom' => PROP['timeDenom']
+    }
+    meas      = {'measure' => measNo, 'melody' => [silence]}
+    MEAS.push(meas)
+    measNo   += 1
+    nextMeas += measLen
+  end
+  if measNo > 2 && CHORDS.size > 0 && !meas['chords']
+    meas['chords'] = chords = []
+    (0..3).each do |i|
+      pitch   = CHORDS.shift
+      steps   = STEPS.shift
+      root    = ROOTS.shift
+      pitch ||= VL::NoPitch
+      steps ||= 0
+      root  ||= VL::NoPitch
+      chords.push({'pitch' => pitch, 'steps' => steps, 'root' => root,
+                    'durNum' => 1, 'durDenom' => 4})
+    end
+    time = VL::Fract.new(PROP['timeNum'], PROP['timeDenom'])
+    if time > VL::Fract.new(4,4)
+      extra = time - VL::Fract.new(4,4)
+      chords.push({'pitch' => VL::NoPitch, 
+                    'durNum' => time.num, 'durDenom' => time.denom})
+    elsif time < VL::Fract.new(3,4)
+      chords.pop
+      chords.pop
+    elsif time < VL::Fract.new(4,4)
+      chords.pop
+    end
+  end
+end
+
+adjust = 0
+if MEAS.size > 1 && MEAS[0]['melody'].size == 1 &&
+    MEAS[0]['melody'][0]['pitch'] == VL::NoPitch
+  if MEAS.size > 2 && MEAS[1]['melody'].size == 1 &&
+      MEAS[1]['melody'][0]['pitch'] == VL::NoPitch
+    #
+    # No lead-in
+    #
+    MEAS.shift
+    MEAS.shift
+    adjust = 2
+  else
+    #
+    # 1 measure lead-in
+    #
+    MEAS.shift
+    adjust = 1
+  end
+  MEAS.each do |m| m['measure'] -= adjust end
 end
 
 writePlist($stdout, OUTPUT)
