@@ -350,6 +350,9 @@ advanceAt:
 			repeatStack.pop_back();
 		}
 	}
+	size_t empty = song->EmptyEnding();
+	while (empty-- > 1)
+		song->fMeasures.pop_back();
 }
 
 - (void)readPropertiesFromPlist:(NSArray *)properties
