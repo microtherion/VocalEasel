@@ -246,8 +246,7 @@ std::string NormalizeName(NSString* rawName)
 		) {
 			NSAttributedString * chordName 	= [self stringWithChord:*chord];
 			NSPoint				 chordLoc  	=
-				NSMakePoint(fClefKeyW+(m+at)*fMeasureW+0.5f*kNoteW, 
-							kSystemY+kChordY);
+				NSMakePoint([self noteXInMeasure:m at:at], kSystemY+kChordY);
 			[chordName drawAtPoint:chordLoc];
 			at += chord->fDuration;
 		}
