@@ -2,7 +2,7 @@
 #
 # VLBIABType.reader - Import Band-in-a-Box files
 #
-# Reverse engineering by Alf Warnock & Alain Brenzikofer
+# Based on reverse engineering work by Alf Warnock & Alain Brenzikofer
 #
 
 DEBUG = false
@@ -317,17 +317,19 @@ numRepeats  = $stdin.read(1)[0]
 biab      = $stdin.read
 
 styleFile = nil
-if biab =~ /B.(.{1,8})\.STY/
+if biab =~ /B.(.{1,8})\.STY/m
   styleFile = $1
 end
 noteCount = 0
-if biab =~ /\x00\xFF\x00(?:\x0D|\x0E)(..)/
+if biab =~ /\x00\xFF\x00(?:\x0D|\x0E|\x0F)(..)/m
   noteCount = $1.unpack('v')[0]
 end
 
-styleFile = File.basename(styleFile, '.STY')
-puts "Style #{styleFile}" if DEBUG
-groove = STY_GROOVE[styleFile] || groove
+if styleFile
+  styleFile = File.basename(styleFile, '.STY')
+  puts "Style #{styleFile}" if DEBUG
+  groove = STY_GROOVE[styleFile] || groove
+end
 OUTPUT['groove'] = groove[0] || 'Swing'
 if groove.size > 1
   PROP['timeNum']   = groove[1]
@@ -336,9 +338,11 @@ end
 
 RAWNOTES = []
 ONSETS   = [0,0,0,0,0,0,0,0,0,0,0,0]
-if biab.sub!(/.*?\xA0\xB0\xC1/, '')
+if biab.sub!(/^.*?\xA0\xB0\xC1/m, '')
+  noteCount = biab.length / 12 if noteCount == 0
   (0...noteCount).each do |i|
     onset, channel, pitch, velocity, duration = biab[i*12, 12].unpack('VCCCxV')
+    break if channel==0
     puts "O #{onset}; C #{channel}; P #{pitch}; V #{velocity}; D #{duration}" if DEBUG
     if channel==176 or channel==179
       pitch = VL::NoPitch
@@ -376,6 +380,7 @@ nextMeas       = 0
 melo           = nil
 lastNote       = nil
 lastOnset      = 0
+maxMeas        = 0
 while RAWNOTES.size > 0 || CHORDS.size > 0
   if note = RAWNOTES.shift
     if note[0] > nextMeas
@@ -409,6 +414,9 @@ while RAWNOTES.size > 0 || CHORDS.size > 0
     lastOnset = note[0]
     lastNote  = {'pitch' => note[1], 'tied' => note[2] ? VL::TiedWithPrev : 0}
     melo.push(lastNote)
+    if note[1] != VL::NoPitch
+      maxMeas = measNo-1
+    end
   else 
     if lastNote
       lastDur              = VL::Fract.new(nextMeas-lastOnset, 48)
@@ -427,7 +435,13 @@ while RAWNOTES.size > 0 || CHORDS.size > 0
   end
   if measNo > 2 && CHORDS.size > 0 && !meas['chords']
     meas['chords'] = chords = []
+    time = VL::Fract.new(PROP['timeNum'], PROP['timeDenom'])
     (0..3).each do |i|
+      if i==2 && time > VL::Fract.new(4,4)
+        extra = time - VL::Fract.new(4,4)
+        chords.push({'pitch' => VL::NoPitch, 
+                      'durNum' => extra.num, 'durDenom' => extra.denom})
+      end
       pitch   = CHORDS.shift
       steps   = STEPS.shift
       root    = ROOTS.shift
@@ -436,13 +450,11 @@ while RAWNOTES.size > 0 || CHORDS.size > 0
       root  ||= VL::NoPitch
       chords.push({'pitch' => pitch, 'steps' => steps, 'root' => root,
                     'durNum' => 1, 'durDenom' => 4})
+      if pitch != VL::NoPitch
+        maxMeas = measNo-1
+      end
     end
-    time = VL::Fract.new(PROP['timeNum'], PROP['timeDenom'])
-    if time > VL::Fract.new(4,4)
-      extra = time - VL::Fract.new(4,4)
-      chords.push({'pitch' => VL::NoPitch, 
-                    'durNum' => time.num, 'durDenom' => time.denom})
-    elsif time < VL::Fract.new(3,4)
+    if time < VL::Fract.new(3,4)
       chords.pop
       chords.pop
     elsif time < VL::Fract.new(4,4)
@@ -451,6 +463,7 @@ while RAWNOTES.size > 0 || CHORDS.size > 0
   end
 end
 
+MEAS[maxMeas+1..-1] = nil
 adjust = 0
 if MEAS.size > 1 && MEAS[0]['melody'].size == 1 &&
     MEAS[0]['melody'][0]['pitch'] == VL::NoPitch
