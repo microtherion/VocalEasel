@@ -473,9 +473,15 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 				//
 				// Distinguish swing 8ths/16ths from triplets
 				//
-				VLFraction swung(1, prop.fDivisions < 6 ? 8 : 16);
-				VLFraction grid(2*swung);
-				if (p.fDuration == 4*swung/3 && (at % grid == 0)) {
+				bool	   swing16 =  prop.fDivisions >= 6;
+				VLFraction sw6(1,6);
+				VLFraction sw12(1,12);
+				VLFraction sw24(1,24);
+				VLFraction grid4(1, 4);
+				VLFraction grid8(1, 8);
+				if ((p.fDuration == sw6 && (at % grid4 == 0)) 
+				 || (swing16 && p.fDuration == sw12 && (at % grid8 == 0))
+				) {
 					if (p.fDuration == c.fDuration && n!=e 
 					 && n->fDuration == p.fDuration
 					) {
@@ -486,8 +492,8 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 						//
 						p.fVisual = (p.fVisual+1) & VLNote::kNoteHead;
 					}
-				} else if (p.fDuration == 2*swung/3 
-				 && ((at+p.fDuration) % grid == 0)
+				} else if ((p.fDuration == sw12 && ((at+p.fDuration) % grid4 == 0))
+				 || (swing16 && p.fDuration == sw24 && ((at+p.fDuration) % grid8 == 0))
 				) {
 					//
 					// Second swing note (8th triplet -> 8th)
