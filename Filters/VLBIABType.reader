@@ -12,7 +12,6 @@ require File.dirname($0)+'/vl'
 
 MEAS = []
 PROP = {
-  'divisions' => 3,
   'key'       => 0,
   'mode'      => 1,
   'timeNum'   => 4,
@@ -337,7 +336,6 @@ if groove.size > 1
 end
 
 RAWNOTES = []
-ONSETS   = [0,0,0,0,0,0,0,0,0,0,0,0]
 if biab.sub!(/^.*?\xA0\xB0\xC1/m, '')
   noteCount = biab.length / 12 if noteCount == 0
   (0...noteCount).each do |i|
@@ -349,26 +347,7 @@ if biab.sub!(/^.*?\xA0\xB0\xC1/m, '')
     end
     onset = (onset / 10.0).round
     RAWNOTES.push([onset, pitch])
-    ONSETS[onset % 12] += 1
   end
-end
-
-if ONSETS[1]+ONSETS[5]+ONSETS[7]+ONSETS[11] == 0
-  if ONSETS[3]+ONSETS[9] == 0
-    if ONSETS[2]+ONSETS[4]+ONSETS[8]+ONSETS[10] == 0
-      PROP['divisions'] = 2
-    elsif ONSETS[2]+ONSETS[6]+ONSETS[10] == 0
-      PROP['divisions'] = 3
-    else
-      PROP['divisions'] = 6
-    end
-  elsif ONSETS[2]+ONSETS[4]+ONSETS[8]+ONSETS[10] == 0
-    PROP['divisions'] = 4
-  else
-    PROP['divisions'] = 12
-  end
-else
-  PROP['divisions'] = 12
 end
 
 p RAWNOTES, CHORDS, STEPS, ROOTS if DEBUG

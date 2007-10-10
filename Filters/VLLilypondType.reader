@@ -33,7 +33,6 @@ notes     = []
 lyrics    = []
 stanzas   = []
 lastDur   = 1
-divisions = 2
 tied      = false
 repeat    = 0
 timeNum   = 4
@@ -83,6 +82,9 @@ def lyPitch(pitch, base=-1)
   return p
 end
 
+$timesNum = 1
+$timesDen = 1
+
 def lyDur(dur)
   dur =~ /^(\d+)(\.*)(?:\*(\d+).(\d+))?/
   num = 1
@@ -97,7 +99,7 @@ def lyDur(dur)
     num *= $3.to_i
     den *= $4.to_i
   end
-  return [num,den]
+  return [num*$timesNum,den*$timesDen]
 end
 
 STEPS = {
@@ -226,7 +228,7 @@ while tokens.length > 0
                              (\d+                # 1, 2, 4, 8, 16 ...
                               \.*(?:\*\d+/\d+)?  # ., *3/4
                              )? 
-                             (?:\:([-+^:.a-z\d]+))? # :maj9.7-^2
+                             (?:\:([-+^:.a-z\d]+)?)? # :maj9.7-^2
                              (?:/\+(             # /+
                               [a-g](?:[ei]?s)?   # Root: a, bes, fis, as
                              ))? 
@@ -290,6 +292,11 @@ while tokens.length > 0
       voltas    = 0
       curVoltas = nil
       notes.push({'begin-ending' => true})
+    elsif token == '\times' && tokens[0] =~ %r|^(\d+)/(\d+)|
+      $timesNum = $1.to_i
+      $timesDen = $2.to_i
+      stack.push([block, level, "times"])
+      level    = nestLevel
     end
   when '\lyricmode'
     if token == '--'
@@ -360,6 +367,9 @@ while tokens.length > 0
           stack.push([block, level, "endings"])
           level = nestLevel
         end
+      elsif type == "times"
+        $timesNum = 1
+        $timesDen = 1
       end
     end
   when '\chords', '\header', '\paper', '\lyricmode'
@@ -513,7 +523,6 @@ end
  
 OUTPUT['measures'] = measures
 OUTPUT['properties'] = [{
-  'divisions' => divisions,
   'key'       => key,
   'mode'      => mode == '\minor' ? -1 : 1,
   'timeNum'   => timeNum,

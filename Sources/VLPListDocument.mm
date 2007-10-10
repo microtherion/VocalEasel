@@ -209,7 +209,7 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 	}
 }
 
-- (void)readMelody:(NSArray *)melody inMeasure:(size_t)measNo
+- (void)readMelody:(NSArray *)melody inMeasure:(size_t)measNo onsets:(int *)onsets
 {
 	VLFraction		at(0);
 	VLFraction		tiedStart(0);
@@ -261,6 +261,11 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 		tiedNote	= note;
 		
 		song->AddNote(note, measNo, at);
+
+		if (!(note.fTied & VLNote::kTiedWithPrev)) {
+			VLFraction inQuarter = at % VLFraction(1,4);
+			++onsets[inQuarter.fNum * 48 / inQuarter.fDenom];
+		}
 advanceAt:
 		at += note.fDuration;		
 	}
@@ -293,6 +298,7 @@ advanceAt:
 	std::vector<size_t>	repeatStack;
 
 	size_t measNo = 0;
+	int onsets[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	for (NSEnumerator * me 	  = [measures objectEnumerator];
 		 NSDictionary * mdict = [me nextObject];
 		 ++measNo
@@ -300,7 +306,7 @@ advanceAt:
 		if (NSNumber * mNo = [mdict objectForKey:@"measure"])
 			measNo = static_cast<size_t>([mNo intValue]);
 
-		[self readMelody:[mdict objectForKey:@"melody"] inMeasure:measNo];
+		[self readMelody:[mdict objectForKey:@"melody"] inMeasure:measNo onsets:onsets];
 		[self readChords:[mdict objectForKey:@"chords"] inMeasure:measNo];
 
 		if ([[mdict objectForKey:@"tocoda"] boolValue])
@@ -353,6 +359,22 @@ advanceAt:
 	size_t empty = song->EmptyEnding();
 	while (empty-- > 1)
 		song->fMeasures.pop_back();
+	if (!song->fProperties.back().fDivisions) {
+		if (!(onsets[1]+onsets[5]+onsets[7]+onsets[11]))
+			if (!(onsets[3]+onsets[9]))
+				if (!(onsets[2]+onsets[4]+onsets[8]+onsets[10]))
+					song->fProperties.back().fDivisions = 2;
+				else if (!(onsets[2]+onsets[6]+onsets[10]))
+					song->fProperties.back().fDivisions = 3;
+				else	
+					song->fProperties.back().fDivisions = 6;
+			else if (!(onsets[2]+onsets[4]+onsets[8]+onsets[10]))
+				song->fProperties.back().fDivisions = 4;
+			else	
+				song->fProperties.back().fDivisions = 12;
+		else	
+			song->fProperties.back().fDivisions = 12;
+	}
 }
 
 - (void)readPropertiesFromPlist:(NSArray *)properties
