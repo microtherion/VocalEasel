@@ -376,11 +376,13 @@ while tokens.length > 0
     stack.push([block, level, ""])
     block = token
     level = nestLevel
-    stanzas.push(lyrics= [])
+    stanzas.push(lyrics= []) if block == '\lyricmode'
   when '\chordmode'
     stack.push([block, level, ""])
     block = '\chords'
     level = nestLevel
+  when '\lyricsto'
+    tokens[0..3] = nil 
   when '\new'
     if tokens[0] == "Lyrics"
       stack.push([block, level, ""])
@@ -495,13 +497,13 @@ while notes.size > 0 || chords.size > 0
           if lyrics.size > 0
             stanza = i+1
             syll   = lyrics.shift
-            ly.push({'text' => syll[0], 'kind' => syll[1]})
+            ly.push({'text' => syll[0].gsub('_', ' '), 'kind' => syll[1]})
           else
             ly.push({'text' => '', 'kind' => 0})
           end
         end
         if stanza < ly.size
-          ly[ly.size-stanza..-1] = nil
+          ly[stanza..-1] = nil
         end
         note['lyrics'] = ly if stanza > 0
       end
