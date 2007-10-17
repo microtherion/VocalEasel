@@ -444,7 +444,7 @@ class MusicXMLListener
 end
 
 listener = MusicXMLListener.new
-REXML::Document.parse_stream($stdin, listener)
+REXML::Document.parse_stream(INFILE, listener)
 writePlist($stdout, OUTPUT)
 
 # Local Variables:

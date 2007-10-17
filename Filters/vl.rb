@@ -112,7 +112,7 @@ class VL
       @denom /= g
     end
 
-    def -()
+    def -@()
       return Fract.new(-@num, @denom)
     end
 
@@ -128,4 +128,10 @@ class VL
       return @num*other.denom <=> other.num*@denom
     end
   end
+end
+
+if ARGV.size > 0
+  INFILE = File.new(ARGV[0], "r")
+else
+  INFILE = $stdin
 end

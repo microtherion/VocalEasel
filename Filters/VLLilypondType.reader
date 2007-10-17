@@ -14,7 +14,7 @@ OUTPUT = {'measures' => []}
 # Lex
 #
 tokens = []
-$stdin.each do |line|
+INFILE.each do |line|
   line.chomp!.sub!(/%.*/, "")
   line.scan(%r$\G\s*(\{|\}|\(|\)|\||=|~|<<|>>|--|#'|#\(|##t|##f|\\\w+|\".*?\"|\w[-+\w\d.',:*/]+|.)$) do |token|
     tokens.push(token[0])

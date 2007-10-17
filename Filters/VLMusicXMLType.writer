@@ -7,7 +7,7 @@ require File.dirname($0)+'/plistReader'
 require File.dirname($0)+'/vl'
 require 'rexml/document'
 
-INPUT = readPlist($stdin)
+INPUT = readPlist(INFILE)
 
 $USE_FLATS = false
 $DIVISIONS = 3
