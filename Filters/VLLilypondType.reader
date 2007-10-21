@@ -62,6 +62,12 @@ def lyPitch(pitch, base=-1)
     p += base
   elsif $RELPITCH > 0
     while $RELPITCH-p > 5
+      if $RELPITCH-p == 6
+        #
+        # f -> b choose upward interval, b -> f choose downward
+        #
+        break if p%12 == PITCH[?f]
+      end
       p += 12
     end
   else
@@ -69,6 +75,7 @@ def lyPitch(pitch, base=-1)
   end
   pitch.scan(/'/) {|c| p += 12}
   pitch.scan(/,/) {|c| p -= 12}
+  puts "#{pitch}<>#{$RELPITCH} -> #{p}" if $DEBUG
   if base == -1 && $RELPITCH > 0
     $RELPITCH = p
   end
