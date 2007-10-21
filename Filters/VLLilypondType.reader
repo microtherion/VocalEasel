@@ -3,45 +3,20 @@
 # VLLilypondType.reader - Import lilypond files
 #
 
-DEBUG = false
-
 require File.dirname($0)+'/plistWriter'
 require File.dirname($0)+'/vl'
 
 OUTPUT = {'measures' => []}
-
-#
-# Lex
-#
-tokens = []
-INFILE.each do |line|
-  line.chomp!.sub!(/%.*/, "")
-  line.scan(%r$\G\s*(\{|\}|\(|\)|\||=|~|<<|>>|--|#'|#\(|##t|##f|\\\w+|\".*?\"|\w[-+\w\d.',:*/]+|.)$) do |token|
-    tokens.push(token[0])
-  end
-end
-#
-# Parse
-#
-nestLevel = 0
-block     = nil
-level     = -1
-stack     = []
-repeats   = []
-chords    = []
-notes     = []
-lyrics    = []
-stanzas   = []
-lastDur   = 1
-tied      = false
-repeat    = 0
-timeNum   = 4
-timeDenom = 4
-key       = 0
-mode      = 'minor'
-lyricFlags= 0
+CHORDS = []
+NOTES  = []
+STANZAS= []
+MEAS   = []
 
 $RELPITCH = 0
+$timeNum  = 4
+$timeDenom= 4
+$key      = 0
+$mode     = '\major'
 
 PITCH = {
   ?c => 0,
@@ -202,33 +177,58 @@ def lySteps(steps)
   return s
 end
 
-while tokens.length > 0
-  token = tokens.shift
+def parseLilypond
   #
-  # Title, composer, etc.
+  # Lex
   #
-  if tokens[0] == '='
-    case token
-    when 'title','composer','poet'
-      key   = token=='poet' ? 'lyricist' : token
-      value = tokens[1]
-      value.sub!(/"(.*)"/, '\1')
-    
-      OUTPUT[key] = value
-      tokens[0..1]= nil
-
-      redo
+  tokens = []
+  INFILE.each do |line|
+    line.chomp!.sub!(/%.*/, "")
+    line.scan(%r$\G\s*(\{|\}|\(|\)|\||=|~|<<|>>|--|#'|#\(|##t|##f|\\\w+|\".*?\"|\w[-+\w\d.',:*/]+|.)$) do |token|
+      tokens.push(token[0])
     end
   end
+  #
+  # Parse
+  #
+  nestLevel = 0
+  block     = nil
+  level     = -1
+  stack     = []
+  repeats   = []
+  lyrics    = []
+  lastDur   = 1
+  tied      = false
+  repeat    = 0
+  lyricFlags= 0
 
-  case block
-  when '\header', '\paper'
-    # Ignore 
-  when '\chords', '\chordmode'
+  while tokens.length > 0
+    token = tokens.shift
     #
-    # Possibly chords
+    # Title, composer, etc.
     #
-    if token.downcase =~ %r{^
+    if tokens[0] == '='
+      case token
+      when 'title','composer','poet'
+        key   = token=='poet' ? 'lyricist' : token
+        value = tokens[1]
+        value.sub!(/"(.*)"/, '\1')
+        
+        OUTPUT[key] = value
+        tokens[0..1]= nil
+        
+        redo
+      end
+    end
+    
+    case block
+    when '\header', '\paper'
+      # Ignore 
+    when '\chords', '\chordmode'
+      #
+      # Possibly chords
+      #
+      if token.downcase =~ %r{^
                              ([rs] |             # Rest
                               [a-g](?:[ei]?s)?   # g, ges, fis, es, as 
                              ) 
@@ -240,24 +240,24 @@ while tokens.length > 0
                               [a-g](?:[ei]?s)?   # Root: a, bes, fis, as
                              ))? 
                           $}x
-      pitch   = lyPitch($1, 60)
-      dur     = $2 || lastDur
-      ext     = $3 ? lySteps($3) : 0
-      root    = lyPitch($4, 48)
-      lastDur = dur
-      d       = lyDur(dur)
+        pitch   = lyPitch($1, 60)
+        dur     = $2 || lastDur
+        ext     = $3 ? lySteps($3) : 0
+        root    = lyPitch($4, 48)
+        lastDur = dur
+        d       = lyDur(dur)
 
-      chord = {'pitch' => pitch, 'root' => root, 'steps' => ext,
-               'durNum'=> d[0], 'durDenom' => d[1]}
-      p token, chord if DEBUG
-      chords.push(chord)
-      redo
-    end
-  when 'voice'
-    #
-    # Possibly notes
-    #
-    if token.downcase =~ %r{^
+        chord = {'pitch' => pitch, 'root' => root, 'steps' => ext,
+                 'durNum'=> d[0], 'durDenom' => d[1]}
+        p token, chord if $DEBUG
+        CHORDS.push(chord)
+        redo
+      end
+    when 'voice'
+      #
+      # Possibly notes
+      #
+      if token.downcase =~ %r{^
                              ([rs] |             # Rest
                               [a-g](?:[ei]?s)?   # g, ges, fis, es, as 
                               [',]*              # g'''
@@ -266,279 +266,288 @@ while tokens.length > 0
                               (?:\*\d+/\d+)?     # *3/4
                              )? 
                           $}x
-      pitch   = lyPitch($1)
-      dur     = $2 || lastDur
-      lastDur = dur
-      d       = lyDur(dur)
+        pitch   = lyPitch($1)
+        dur     = $2 || lastDur
+        lastDur = dur
+        d       = lyDur(dur)
 
-      note = {'pitch' => pitch, 'durNum'=> d[0], 'durDenom' => d[1]}
-      note['tied'] = VL::TiedWithPrev if tied
-      p token, note if DEBUG
-      notes.push(note)
-      tied = false
-      redo
-    elsif token == '~' 
-      if note = notes.last
-        note['tied'] ||= 0
-        note['tied'] |= VL::TiedWithNext
+        note = {'pitch' => pitch, 'durNum'=> d[0], 'durDenom' => d[1]}
+        note['tied'] = VL::TiedWithPrev if tied
+        p token, note if $DEBUG
+        NOTES.push(note)
+        tied = false
+        redo
+      elsif token == '~' 
+        if note = NOTES.last
+          note['tied'] ||= 0
+          note['tied'] |= VL::TiedWithNext
+        end
+        tied = true
+      elsif token == '\repeat' && (tokens[0] == 'volta' || tokens[0] == fold) &&
+          tokens[1] =~ /^\d+$/
+        stack.push([block, level, "repeat"])
+        level        = nestLevel
+        repeats.push(repeat)
+        repeat       = tokens[1].to_i
+        NOTES.push({'begin-repeat' => true, 'times' => repeat})
+        tokens[0..1] = nil
+        redo
+      elsif token == '\alternative'
+        inEndings = true
+        stack.push([block, level, "endings"])
+        level     = nestLevel+1
+        voltas    = 0
+        curVoltas = nil
+        NOTES.push({'begin-ending' => true})
+      elsif token == '\times' && tokens[0] =~ %r|^(\d+)/(\d+)|
+          $timesNum = $1.to_i
+        $timesDen = $2.to_i
+        stack.push([block, level, "times"])
+        level    = nestLevel
       end
-      tied = true
-    elsif token == '\repeat' && (tokens[0] == 'volta' || tokens[0] == fold) &&
-        tokens[1] =~ /^\d+$/
-      stack.push([block, level, "repeat"])
-      level        = nestLevel
-      repeats.push(repeat)
-      repeat       = tokens[1].to_i
-      notes.push({'begin-repeat' => true, 'times' => repeat})
-      tokens[0..1] = nil
-      redo
-    elsif token == '\alternative'
-      inEndings = true
-      stack.push([block, level, "endings"])
-      level     = nestLevel+1
-      voltas    = 0
-      curVoltas = nil
-      notes.push({'begin-ending' => true})
-    elsif token == '\times' && tokens[0] =~ %r|^(\d+)/(\d+)|
-      $timesNum = $1.to_i
-      $timesDen = $2.to_i
-      stack.push([block, level, "times"])
-      level    = nestLevel
+    when '\lyricmode'
+      if token == '--'
+        lyrics.last[1] |= VL::TiedWithNext if lyrics.size > 0
+        lyricFlags     = VL::TiedWithPrev
+      elsif token == '\skip'
+        p ["", 0] if $DEBUG
+        lyrics.push ["", 0]
+        lyricFlags     = 0
+        if tokens[0] =~ /\d+/
+          tokens[0..0] = nil
+        end
+      elsif token =~ /\\skip\d+/
+        p ["", 0] if $DEBUG
+        lyrics.push ["", 0]
+        lyricFlags     = 0
+      elsif token =~ /"(.*)"/
+        p [$1, lyricFlags] if $DEBUG
+        lyrics.push [$1, lyricFlags]
+        lyricFlags     = 0      
+      elsif token =~ /^\w.*/
+        p [token, lyricFlags] if $DEBUG
+        lyrics.push [token, lyricFlags]
+        lyricFlags     = 0
+      end
     end
-  when '\lyricmode'
-    if token == '--'
-      lyrics.last[1] |= VL::TiedWithNext if lyrics.size > 0
-      lyricFlags     = VL::TiedWithPrev
-    elsif token == '\skip'
-      p ["", 0] if DEBUG
-      lyrics.push ["", 0]
-      lyricFlags     = 0
-      if tokens[0] =~ /\d+/
+    
+    #
+    # Nesting levels
+    #
+    case token
+    when '{', '<<'
+      nestLevel += 1
+    when '}', '>>'
+      nestLevel -= 1
+      if nestLevel <= level
+        if lv = stack.pop
+          block = lv[0]
+          level = lv[1]
+          type  = lv[2]
+        else
+          block = nil
+          level = -1
+        end
+        if type == "repeat"
+          if tokens[0] != '\alternative'
+            NOTES.push({'end-repeat' => true})
+            repeat = repeats.pop
+          end
+        elsif type == "endings"
+          last = tokens[0] == '}'
+          if last
+            curVoltas = ((1<<repeat) - 1) & ~voltas
+          elsif !curVoltas
+            curVoltas = 1
+            while (voltas&curVoltas) != 0
+              curVoltas <<= 1
+            end
+          end
+          NOTES.push({'end-ending' => true, 'volta' => curVoltas, 
+                       'last'=>last})
+          voltas   |= curVoltas
+          curVoltas = 0
+          if last
+            repeat = repeats.pop
+          else
+            NOTES.push({'begin-ending' => true})
+            stack.push([block, level, "endings"])
+            level = nestLevel
+          end
+        elsif type == "times"
+          $timesNum = 1
+          $timesDen = 1
+        end
+      end
+    when '\chords', '\header', '\paper', '\lyricmode'
+      stack.push([block, level, ""])
+      block = token
+      level = nestLevel
+      STANZAS.push(lyrics= []) if block == '\lyricmode'
+    when '\chordmode'
+      stack.push([block, level, ""])
+      block = '\chords'
+      level = nestLevel
+    when '\lyricsto'
+      tokens[0..3] = nil 
+    when '\new'
+      if tokens[0] == "Lyrics"
+        stack.push([block, level, ""])
+        block = '\lyricmode'
+        level = nestLevel
+        STANZAS.push(lyrics= [])
         tokens[0..0] = nil
       end
-    elsif token =~ /\\skip\d+/
-      p ["", 0] if DEBUG
-      lyrics.push ["", 0]
-      lyricFlags     = 0
-    elsif token =~ /"(.*)"/
-      p [$1, lyricFlags] if DEBUG
-      lyrics.push [$1, lyricFlags]
-      lyricFlags     = 0      
-    elsif token =~ /^\w.*/
-      p [token, lyricFlags] if DEBUG
-      lyrics.push [token, lyricFlags]
-      lyricFlags     = 0
-    end
-  end
-
-  #
-  # Nesting levels
-  #
-  case token
-  when '{', '<<'
-    nestLevel += 1
-  when '}', '>>'
-    nestLevel -= 1
-    if nestLevel <= level
-      if lv = stack.pop
-        block = lv[0]
-        level = lv[1]
-        type  = lv[2]
+    when '\relative'
+      stack.push([block, level, ""])
+      if tokens[0] =~ /[a-g](?:[ei]?s)?[',]*/
+        $RELPITCH = lyPitch(tokens[0], 48)
+        tokens[0..0] = nil
       else
-        block = nil
-        level = -1
+        $RELPITCH = 60
       end
-      if type == "repeat"
-        if tokens[0] != '\alternative'
-          notes.push({'end-repeat' => true})
-          repeat = repeats.pop
-        end
-      elsif type == "endings"
-        last = tokens[0] == '}'
-        if last
-          curVoltas = ((1<<repeat) - 1) & ~voltas
-        elsif !curVoltas
-          curVoltas = 1
-          while (voltas&curVoltas) != 0
-            curVoltas <<= 1
-          end
-        end
-        notes.push({'end-ending' => true, 'volta' => curVoltas, 
-                     'last'=>last})
-        voltas   |= curVoltas
-        curVoltas = 0
-        if last
-          repeat = repeats.pop
-        else
-          notes.push({'begin-ending' => true})
-          stack.push([block, level, "endings"])
-          level = nestLevel
-        end
-      elsif type == "times"
-        $timesNum = 1
-        $timesDen = 1
+      block     = 'voice'
+      level     = nestLevel
+    when '\time'
+      if tokens[0] =~ %r{(\d+)/(\d+)}
+        $timeNum   = $1.to_i
+        $timeDenom = $2.to_i
+        tokens[0..0] = nil
       end
+      if block != 'voice'
+        stack.push([block, level, ""])
+        block     = 'voice'
+        level     = nestLevel-1
+      end
+    when '\key'
+      p    = lyPitch(tokens[0], 0)
+      $mode = tokens[1]
+      $key  = $mode == '\minor' ? MINORKEY[p] : MAJORKEY[p]
+      tokens[0..1] = nil
+      if block != 'voice'
+        stack.push([block, level, ""])
+        block     = 'voice'
+        level     = nestLevel-1
+      end
+    when '\repeat'
+      tokens[0..1] = nil
+    when '\alternative'
     end
-  when '\chords', '\header', '\paper', '\lyricmode'
-    stack.push([block, level, ""])
-    block = token
-    level = nestLevel
-    stanzas.push(lyrics= []) if block == '\lyricmode'
-  when '\chordmode'
-    stack.push([block, level, ""])
-    block = '\chords'
-    level = nestLevel
-  when '\lyricsto'
-    tokens[0..3] = nil 
-  when '\new'
-    if tokens[0] == "Lyrics"
-      stack.push([block, level, ""])
-      block = '\lyricmode'
-      level = nestLevel
-      stanzas.push(lyrics= [])
-      tokens[0..0] = nil
-    end
-  when '\relative'
-    stack.push([block, level, ""])
-    if tokens[0] =~ /[a-g](?:[ei]?s)?[',]*/
-      $RELPITCH = lyPitch(tokens[0], 48)
-      tokens[0..0] = nil
-    else
-      $RELPITCH = 60
-    end
-    block     = 'voice'
-    level     = nestLevel
-  when '\time'
-    if tokens[0] =~ %r{(\d+)/(\d+)}
-      timeNum   = $1.to_i
-      timeDenom = $2.to_i
-      tokens[0..0] = nil
-    end
-    if block != 'voice'
-      stack.push([block, level, ""])
-      block     = 'voice'
-      level     = nestLevel-1
-    end
-  when '\key'
-    p    = lyPitch(tokens[0], 0)
-    mode = tokens[1]
-    key  = mode == '\minor' ? MINORKEY[p] : MAJORKEY[p]
-    tokens[0..1] = nil
-    if block != 'voice'
-      stack.push([block, level, ""])
-      block     = 'voice'
-      level     = nestLevel-1
-    end
-  when '\repeat'
-    tokens[0..1] = nil
-  when '\alternative'
   end
 end
-
-measureLen = VL::Fract.new(timeNum, timeDenom)
-
-#
-# Make measures
-#
-measCount= -1
-measures = []
-
+  
 def peek(where, what)
   return where.first && where.first[what] 
 end
 
-while notes.size > 0 || chords.size > 0
-  measCount         += 1
-  meas               = {}
-  meas['measure']    = measCount
-  meas['properties'] = 0
-  if peek(notes, 'begin-repeat')
-    rep = notes.shift
-    meas['begin-repeat'] = {'times' => rep['times']}
-  end
-  if peek(notes, 'begin-ending')
-    notes.shift
-    meas['begin-ending'] = {}
-  end
-  if chords.size > 0
-    mchords          = []
-    len              = VL::Fract.new(0, 1)
-    while len < measureLen && chords.size > 0
-      chord    = chords.shift
-      chordLen = VL::Fract.new(chord['durNum'], chord['durDenom'])
-      if len+chordLen > measureLen
-        remLen               = len+chordLen-measureLen
-        chordLen            -= remLen
-        remChord             = chord.dup
-        remChord['durNum']   = remLen.num
-        remChord['durDenom'] = remLen.denom
-        chords.unshift(remChord)
-      end
-      mchords.push(chord)
-      len += chordLen
+def makeMeasures
+  measureLen = VL::Fract.new($timeNum, $timeDenom)
+
+  #
+  # Make measures
+  #
+  measCount= -1
+  
+  while NOTES.size > 0 || CHORDS.size > 0
+    measCount         += 1
+    meas               = {}
+    meas['measure']    = measCount
+    meas['properties'] = 0
+    if peek(NOTES, 'begin-repeat')
+      rep = NOTES.shift
+      meas['begin-repeat'] = {'times' => rep['times']}
     end
-    meas['chords']   = mchords
-  end
-  if notes.size > 0
-    mnotes           = []
-    len              = VL::Fract.new(0, 1)
-    while len < measureLen && notes.size > 0
-      note    = notes.shift
-      noteLen = VL::Fract.new(note['durNum'], note['durDenom'])
-      if len+noteLen > measureLen
-        remLen              = len+noteLen-measureLen
-        noteLen            -= remLen
-        remNote             = note.dup
-        remNote['durNum']   = remLen.num
-        remNote['durDenom'] = remLen.denom
-        remNote['tied']     = (remNote['tied'] || 0) | VL::TiedWithPrev
-        note['tied']        = (note['tied'] || 0) | VL::TiedWithNext
-        notes.unshift(remNote)
+    if peek(NOTES, 'begin-ending')
+      NOTES.shift
+      meas['begin-ending'] = {}
+    end
+    if CHORDS.size > 0
+      mchords          = []
+      len              = VL::Fract.new(0, 1)
+      while len < measureLen && CHORDS.size > 0
+        chord    = CHORDS.shift
+        chordLen = VL::Fract.new(chord['durNum'], chord['durDenom'])
+        if len+chordLen > measureLen
+          remLen               = len+chordLen-measureLen
+          chordLen            -= remLen
+          remChord             = chord.dup
+          remChord['durNum']   = remLen.num
+          remChord['durDenom'] = remLen.denom
+          CHORDS.unshift(remChord)
+        end
+        mchords.push(chord)
+        len += chordLen
       end
-      if note['pitch'] != VL::NoPitch &&
-       (!note['tied'] || (note['tied'] & VL::TiedWithPrev) == 0)
-        ly     = []
-        stanza = 0
-        stanzas.each_index do |i|
-          lyrics = stanzas[i]
-          if lyrics.size > 0
-            stanza = i+1
-            syll   = lyrics.shift
-            ly.push({'text' => syll[0].gsub('_', ' '), 'kind' => syll[1]})
-          else
-            ly.push({'text' => '', 'kind' => 0})
+      meas['chords']   = mchords
+    end
+    if NOTES.size > 0
+      mnotes           = []
+      len              = VL::Fract.new(0, 1)
+      while len < measureLen && NOTES.size > 0
+        note    = NOTES.shift
+        noteLen = VL::Fract.new(note['durNum'], note['durDenom'])
+        if len+noteLen > measureLen
+          remLen              = len+noteLen-measureLen
+          noteLen            -= remLen
+          remNote             = note.dup
+          remNote['durNum']   = remLen.num
+          remNote['durDenom'] = remLen.denom
+          remNote['tied']     = (remNote['tied'] || 0) | VL::TiedWithPrev
+          note['tied']        = (note['tied'] || 0) | VL::TiedWithNext
+          NOTES.unshift(remNote)
+        end
+        if note['pitch'] != VL::NoPitch &&
+            (!note['tied'] || (note['tied'] & VL::TiedWithPrev) == 0)
+          ly     = []
+          stanza = 0
+          STANZAS.each_index do |i|
+            lyrics = STANZAS[i]
+            if lyrics.size > 0
+              stanza = i+1
+              syll   = lyrics.shift
+              ly.push({'text' => syll[0].gsub('_', ' '), 'kind' => syll[1]})
+            else
+              ly.push({'text' => '', 'kind' => 0})
+            end
           end
+          if stanza < ly.size
+            ly[stanza..-1] = nil
+          end
+          note['lyrics'] = ly if stanza > 0
         end
-        if stanza < ly.size
-          ly[stanza..-1] = nil
-        end
-        note['lyrics'] = ly if stanza > 0
+        mnotes.push(note)
+        len += noteLen
       end
-      mnotes.push(note)
-      len += noteLen
+      meas['melody']   = mnotes
     end
-    meas['melody']   = mnotes
+    if peek(NOTES, 'end-ending')
+      ending = NOTES.shift
+      meas['end-ending'] = {'last' => ending['last'], 'volta' => ending['volta']}
+    end
+    if peek(NOTES, 'end-repeat')
+      NOTES.shift
+      meas['end-repeat'] = {}
+    end
+    MEAS.push(meas)
   end
-  if peek(notes, 'end-ending')
-    ending = notes.shift
-    meas['end-ending'] = {'last' => ending['last'], 'volta' => ending['volta']}
-  end
-  if peek(notes, 'end-repeat')
-    notes.shift
-    meas['end-repeat'] = {}
-  end
-  measures.push(meas)
 end
  
-OUTPUT['measures'] = measures
-OUTPUT['properties'] = [{
-  'key'       => key,
-  'mode'      => mode == '\minor' ? -1 : 1,
-  'timeNum'   => timeNum,
-  'timeDenom' => timeDenom
-}]                          
+begin
+  parseLilypond
+  makeMeasures
 
-writePlist($stdout, OUTPUT)
+  OUTPUT['measures'] = MEAS
+  OUTPUT['properties'] = [{
+                            'key'       => $key,
+                            'mode'      => $mode == '\minor' ? -1 : 1,
+                            'timeNum'   => $timeNum,
+                            'timeDenom' => $timeDenom
+                          }]                          
+
+  writePlist($stdout, OUTPUT)
+rescue => except
+  $stderr.print except.message, "\n", except.backtrace.join("\n"), "\n"
+end
 
 # Local Variables:
 # mode:ruby
