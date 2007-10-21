@@ -5,8 +5,6 @@
 # Based on reverse engineering work by Alf Warnock & Alain Brenzikofer
 #
 
-DEBUG = false
-
 require File.dirname($0)+'/plistWriter'
 require File.dirname($0)+'/vl'
 
@@ -326,7 +324,7 @@ end
 
 if styleFile
   styleFile = File.basename(styleFile, '.STY')
-  puts "Style #{styleFile}" if DEBUG
+  puts "Style #{styleFile}" if $DEBUG
   groove = STY_GROOVE[styleFile] || groove
 end
 OUTPUT['groove'] = groove[0] || 'Swing'
@@ -341,16 +339,16 @@ if biab.sub!(/^.*?\xA0\xB0\xC1/m, '')
   (0...noteCount).each do |i|
     onset, channel, pitch, velocity, duration = biab[i*12, 12].unpack('VCCCxV')
     break if channel==0
-    puts "O #{onset}; C #{channel}; P #{pitch}; V #{velocity}; D #{duration}" if DEBUG
-    if channel==176 or channel==179
+    puts "O #{onset}; C #{channel}; P #{pitch}; V #{velocity}; D #{duration}" if $DEBUG
+    if channel==176 or channel==179 or channel==180
       pitch = VL::NoPitch
     end
-    onset = (onset / 10.0).round
+    onset = (onset / 10.0).floor
     RAWNOTES.push([onset, pitch])
   end
 end
 
-p RAWNOTES, CHORDS, STEPS, ROOTS if DEBUG
+p RAWNOTES, CHORDS, STEPS, ROOTS if $DEBUG
 
 CHORDS.pop
 measLen        = VL::Fract.new(PROP['timeNum']*48, PROP['timeDenom']).num
