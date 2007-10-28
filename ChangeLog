@@ -1,3 +1,321 @@
+2007-10-28 20:02 +0000 [r217]  Matthias Neeracher
+
+	* Resources/Help/about.html, Resources/Help/files.html (added),
+	  Resources/Help/index.html: Update online help
+
+2007-10-21 22:06 +0000 [r216]  Matthias Neeracher
+
+	* Filters/VLLilypondType.reader: Better error propagation
+
+2007-10-21 21:25 +0000 [r215]  Matthias Neeracher
+
+	* Filters/VLLilypondType.reader: Fix relative pitch
+
+2007-10-21 20:54 +0000 [r214]  Matthias Neeracher
+
+	* Filters/VLBIABType.reader: Use standard ruby debug mechanism
+
+2007-10-17 16:07 +0000 [r213]  Matthias Neeracher
+
+	* Filters/VLLilypondType.reader: Fix lyrics import errors
+
+2007-10-17 15:41 +0000 [r212]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader, Filters/VLLilypondType.reader,
+	  Filters/VLMusicXMLType.writer, Filters/VLBIABType.reader,
+	  Filters/vl.rb: Allow input on command line
+
+2007-10-10 06:36 +0000 [r211]  Matthias Neeracher
+
+	* Filters/VLLilypondType.reader, Sources/VLPListDocument.mm,
+	  Filters/VLBIABType.reader: Automatically compute divisions on
+	  import
+
+2007-10-09 05:15 +0000 [r209-210]  Matthias Neeracher
+
+	* Filters/VLBIABType.reader: More BIAB fixes
+
+	* Sources/VLModel.cpp: Allow swung 8ths in high granularity songs
+
+2007-10-08 06:07 +0000 [r208]  Matthias Neeracher
+
+	* Sources/VLSheetViewChords.mm: Properly align chord names
+
+2007-10-08 05:48 +0000 [r207]  Matthias Neeracher
+
+	* Sources/VLPListDocument.mm: Trim after import
+
+2007-09-24 01:09 +0000 [r206]  Matthias Neeracher
+
+	* Filters/VLBIABType.reader: Band in a box import starting to work
+
+2007-09-17 00:12 +0000 [r205]  Matthias Neeracher
+
+	* English.lproj/InfoPlist.strings, Resources/Info.plist,
+	  VocalEasel.xcodeproj/project.pbxproj, Filters/VLBIABType.reader
+	  (added), Sources/VLDocument.mm: Start implementing Band-in-a-Box
+	  import
+
+2007-09-15 21:51 +0000 [r204]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader: Fix Sibelius/Dolet divisions and
+	  title
+
+2007-09-13 23:18 +0000 [r203]  Matthias Neeracher
+
+	* Filters/VLLilypondType.reader: Handle regular repeats
+
+2007-09-11 15:35 +0000 [r202]  Matthias Neeracher
+
+	* Filters/VLLilypondType.reader: Read lilypond lyrics
+
+2007-09-10 08:25 +0000 [r201]  Matthias Neeracher
+
+	* VocalEasel.xcodeproj/project.pbxproj,
+	  Filters/VLLilypondType.reader, Sources/VLPListDocument.mm,
+	  Filters/vl.rb, Sources/VLDocument.mm: Lilypond import works,
+	  without repeats & lyrics
+
+2007-09-06 18:06 +0000 [r200]  Matthias Neeracher
+
+	* Resources/Info.plist, Filters/VLLilypondType.reader: Parse
+	  lilypond melody
+
+2007-09-06 00:43 +0000 [r197-199]  Matthias Neeracher
+
+	* Filters/VLLilypondType.reader (added): Started writing lilypond
+	  reader
+
+	* Filters/VLMusicXMLType.reader, Resources/Info.plist,
+	  Filters/VLMusicXMLType.writer: More MusicXML bug fixes
+
+	* Sources/VLModel.cpp, Sources/VLModel.h: Simplify default
+	  durations
+
+2007-09-04 17:26 +0000 [r196]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader, Filters/VLMusicXMLType.writer:
+	  Properly read and write harmony info
+
+2007-09-03 14:28 +0000 [r195]  Matthias Neeracher
+
+	* Sources/VLXMLDocument.mm: Mark imported XML documents as such
+
+2007-09-03 14:22 +0000 [r194]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader: Read tempo from sound attribute
+
+2007-09-03 14:13 +0000 [r193]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader: Fix handling of pickup notes
+
+2007-09-03 14:01 +0000 [r188-192]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader, Filters/vl.rb: Read harmony
+	  elements
+
+	* Resources/Info.plist: Import flat MusicXML files
+
+	* Sources/VLPListDocument.mm: Fix filter error reporting
+
+	* Sources/VLDocument.mm: Import flat MusicXML files
+
+	* Sources/VLXMLDocument.mm: Import flat MusicXML files
+
+2007-08-31 22:37 +0000 [r187]  Matthias Neeracher
+
+	* VocalEasel.xcodeproj/project.pbxproj, Sources/VLPListDocument.mm,
+	  Sources/VLXMLDocument.mm: Ditch ObjC MusicXML generation
+
+2007-08-30 22:34 +0000 [r185-186]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.writer, Filters/plistReader.rb: Improve
+	  robustness
+
+	* Filters/VLMusicXMLType.reader: Parse encoding fields
+
+2007-08-30 21:58 +0000 [r182-184]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader: Use stream parser, which is much
+	  faster
+
+	* Filters/plistWriter.rb: Encode true/false, sort keys
+
+	* Filters/VLMusicXMLType.writer: Fix lyric #s
+
+2007-08-30 18:28 +0000 [r181]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.writer: Make writer executable
+
+2007-08-30 18:18 +0000 [r180]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader: Faster tree parsing
+
+2007-08-29 22:15 +0000 [r179]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader (added), Filters/plistWriter.rb,
+	  Sources/VLPListDocument.mm: Added VLMusicXMLType.reader
+
+2007-08-28 19:34 +0000 [r178]  Matthias Neeracher
+
+	* Sources/VLPListDocument.mm: Fixed and verified round trip
+
+2007-08-27 22:00 +0000 [r177]  Matthias Neeracher
+
+	* English.lproj/MainMenu.nib/keyedobjects.nib,
+	  English.lproj/MainMenu.nib/designable.nib,
+	  Sources/VLPListDocument.mm: Implement property list reading,
+	  round trip debug item
+
+2007-08-27 00:10 +0000 [r176]  Matthias Neeracher
+
+	* Sources/VLPListDocument.mm, Filters/VLMusicXMLType.writer:
+	  Implement endings, coda
+
+2007-08-26 22:57 +0000 [r175]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.writer, Filters/plistReader.rb,
+	  Filters/vl.rb (added): Writes chords and notes in original format
+
+2007-08-23 12:16 +0000 [r174]  Matthias Neeracher
+
+	* Sources/VLPListDocument.mm, Filters/VLMusicXMLType.writer: Store
+	  repeats inline in measures
+
+2007-08-22 18:27 +0000 [r173]  Matthias Neeracher
+
+	* Sources/VLPListDocument.mm: Added filter execution code
+
+2007-08-19 21:11 +0000 [r171-172]  Matthias Neeracher
+
+	* Filters/plistWriter.rb, VocalEasel.xcodeproj/project.pbxproj,
+	  Filters/VLMusicXMLType.writer (added): Started MusicXML writer
+
+	* Sources/VLPListDocument.mm: Write title, groove, tempo
+
+2007-08-18 23:17 +0000 [r169-170]  Matthias Neeracher
+
+	* English.lproj/MainMenu.nib/keyedobjects.nib,
+	  English.lproj/MainMenu.nib/designable.nib, Filters/plistWriter.rb
+	  (added), Filters (added), Filters/plistReader.rb (added): Add
+	  Plist <=> Ruby infrastructure
+
+	* Sources/VLPListDocument.mm: Write lyrics, use straight NSDates
+
+2007-08-18 16:12 +0000 [r168]  Matthias Neeracher
+
+	* Sources/VLDebugFlags.h (added), Sources/VLDebugFlags.cpp (added):
+	  Added VLDebugFlags
+
+2007-08-12 21:30 +0000 [r167]  Matthias Neeracher
+
+	* Sources/VLAppController.h,
+	  English.lproj/MainMenu.nib/keyedobjects.nib,
+	  Sources/VLAppController.mm,
+	  English.lproj/MainMenu.nib/designable.nib,
+	  VocalEasel.xcodeproj/project.pbxproj, Sources/VLPListDocument.h,
+	  Sources/VLPListDocument.mm: Implement debug menu, document dump
+
+2007-08-12 20:45 +0000 [r166]  Matthias Neeracher
+
+	* VocalEasel.xcodeproj/project.pbxproj, Sources/VLPListDocument.mm:
+	  Add missing encode functions
+
+2007-08-12 19:40 +0000 [r165]  Matthias Neeracher
+
+	* Sources/VLPListDocument.h (added), Sources/VLPListDocument.mm
+	  (added): Added plist writing
+
+2007-07-29 20:12 +0000 [r164]  Matthias Neeracher
+
+	* Sources/VLModel.cpp: Merge adjacent rests
+
+2007-07-29 19:49 +0000 [r163]  Matthias Neeracher
+
+	* VocalEasel.xcodeproj/project.pbxproj, Sources/VLModel.cpp,
+	  Sources/VLModel.h: Fix ransposing into minor key
+
+2007-06-04 06:29 +0000 [r162]  Matthias Neeracher
+
+	* Resources/Templates/default.lyt: Tweak chord font
+
+2007-06-04 05:47 +0000 [r161]  Matthias Neeracher
+
+	* Sources/VLLilypondWriter.cpp, TestData/Chords.vlsong/Properties
+	  (added), TestData/Chords.vlsong (added),
+	  Resources/Templates/default.lyt,
+	  VocalEasel.xcodeproj/project.pbxproj, TestData/Chords.vlsong/Song
+	  (added), TestData (added): Clean up lilypond chord display
+
+2007-05-29 08:52 +0000 [r160]  Matthias Neeracher
+
+	* Sources/VLLilypondWriter.cpp: Escape characters when needed
+
+2007-05-29 07:53 +0000 [r159]  Matthias Neeracher
+
+	* Sources/VLModel.cpp: Be more conservative about triplets
+
+2007-05-27 21:57 +0000 [r158]  Matthias Neeracher
+
+	* Sources/VLLilypondWriter.cpp: Fix triplet handling
+
+2007-05-27 20:48 +0000 [r157]  Matthias Neeracher
+
+	* Sources/VLModel.cpp: Fix crash when song ends on repeat
+
+2007-05-27 07:16 +0000 [r156]  Matthias Neeracher
+
+	* Sources/VLMMAWriter.cpp, Sources/VLModel.cpp, Sources/VLModel.h:
+	  Implement tying across measures
+
+2007-05-27 04:42 +0000 [r155]  Matthias Neeracher
+
+	* Resources/Info.plist, Sources/VLModel.cpp, Sources/VLModel.h:
+	  Remove vestigial MMA / Partial/Visual note infrastructure
+
+2007-05-27 04:35 +0000 [r154]  Matthias Neeracher
+
+	* Sources/VLMMAWriter.cpp (added), Sources/VLMMAWriter.h (added),
+	  VocalEasel.xcodeproj/project.pbxproj, Sources/VLMMADocument.mm,
+	  Sources/VLModel.cpp, Sources/VLModel.h: Generate MMA through
+	  VLMMAWriter
+
+2007-05-24 08:52 +0000 [r152-153]  Matthias Neeracher
+
+	* Sources/VLLilypondWriter.cpp (added), Sources/VLLilypondWriter.h
+	  (added), VocalEasel.xcodeproj/project.pbxproj,
+	  Sources/VLLilypondDocument.mm, Sources/VLModel.cpp,
+	  Sources/VLModel.h: VLSongVisitor; generate Lilypond through
+	  VLLilypondWriter
+
+	* htdocs/index.html: Tweak icon placement
+
+2007-05-21 08:22 +0000 [r151]  Matthias Neeracher
+
+	* Sources/VLXMLDocument.mm: Don't count property load as a document
+	  change
+
+2007-05-21 08:18 +0000 [r150]  Matthias Neeracher
+
+	* Tests/TVLEdit.cpp, Sources/VLModel.cpp,
+	  Sources/VLSheetViewNotes.mm, Sources/VLModel.h: Implement new
+	  duration visual model
+
+2007-05-20 04:26 +0000 [r149]  Matthias Neeracher
+
+	* Users (added), scripts/updateChangeLog (added), ChangeLog
+	  (added), NEWS (added): Finish ChangeLog / NEWS infrastructure
+
+2007-05-17 06:40 +0000 [r147]  Matthias Neeracher
+
+	* Sources/VLModel.cpp: Distinguish MMA 82 vs 3
+
+2007-05-17 06:24 +0000 [r145-146]  Matthias Neeracher
+
+	* Sources/VLModel.cpp: Extend song when note gets extended
+
+	* VocalEasel.xcodeproj/project.pbxproj: Build Deployment fat
+
 2007-05-16 06:47 +0000 [r144]  Matthias Neeracher
 
 	* English.lproj/VLMirrorWindow.nib/designable.nib (added),
