@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2.5
 #
 # Copyright (c) 2003 The University of Wroclaw.
 # All rights reserved.
