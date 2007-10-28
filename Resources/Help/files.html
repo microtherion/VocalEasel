@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>VocalEasel: Opening and Saving Music Files</title>
+</head>
+<body>
+<h1>Opening and Saving Music Files</h1>
+
+<p>In addition to its native file format, which it saves in file bundles with a <tt>.vlsong</tt> extension, VocalEasel is capable of importing and creating a number of other file formats.</p>
+
+<h2>Importing Music Files</h2>
+
+<p>All available file formats are displayed with the <i>Open...</i> menu item.</p>
+
+<p>Like much of the functionality of VocalEasel, file importing is fairly new and little tested. To make file reporting more comprehensive and reliable, please report any import problems as <a href="bugs.html">bugs</a>.</p>
+ 
+<h3>MusicXML</h3>
+
+<p>MusicXML&nbsp;&lt;<a href="http://musicxml.org">http://musicxml.org</a>&gt; is capable of representing a huge variety of sheet music, and VocalEasel only understands a small subset of this: A single melody, with an optional harmony and lyrics. Examples of this kind of MusicXML can be found at Wikifonia&nbsp;&lt;<a href="http://www.wikifonia.org">http://www.wikifonia.org</a>&gt;</p>
+
+<h3>Band-in-a-Box</h3>
+
+<p>VocalEasel should be capable of importing most Band-in-a-Box&nbsp;&lt;<a href="http://www.pgmusic.com">http://www.pgmusic.com</a>&gt; files, although not all styles may work correctly at this point.
+</p>
+
+<h3>Lilypond</h3>
+
+<p>Lilypond&nbsp;&lt;<a href="http://www.lilypond.org">http://www.lilypond.org</a>&gt; is capable of representing a huge variety of sheet music, and has a rather general purpose input format with procedural elements that is not easy to parse. Therefore, VocalEasel is only capable of importing very simple Lilypond files.</p>
+
+<h2>Export Formats</h2>
+
+<p>To export a VocalEasel song in a different format, use the <i>Save a Copy As...</i> menu item and select the format from the popup menu. File exporting should be fairly reliable already.</p>
+
+<h3>PDF</h3>
+
+Saves graphical output in Adobe's &lt;<a href="http://en.wikipedia.org/wiki/Portable_Document_Format">Portable Document Format</a>&gt;
+
+<h3>MIDI</h3>
+
+Saves music in &lt;<a href="http://en.wikipedia.org/wiki/MIDI">Musical Instrument Digital Interface</a>&gt; format.
+
+<h3>MusicXML</h3>
+
+Saves file in uncompressed, part-wise MusicXML 1.1 format.
+
+<h3>Lilypond</h3>
+
+Saves output in Lilypond format.
+
+<h2>Importing VocalEasel Songs From Other Software</h2>
+
+If necessary, it is possible to import VocalEasel songs into other programs even without running VocalEasel: The <tt>.vlsong</tt> bundle contains a file <tt>Song</tt> which is simply the song in uncompressed, part-wise MusicXML 1.1 format.
+ 
+</body>
+</html>
