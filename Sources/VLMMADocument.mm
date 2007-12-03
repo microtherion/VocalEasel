@@ -29,10 +29,27 @@
 		+ "Solo Volume fff\n";
 	sprintf(buf, "Tempo %d\n", [songTempo intValue]);
 	mmaFile	+= buf;
+	if (playElements & kVLPlayCountIn)
+		switch ([[self songTime] intValue]) {
+		case 0x404:
+			mmaFile	+= "Groove Metronome2-4\nz\nz\n";
+			break;
+		case 0x304:
+		case 0x608:
+			mmaFile	+= "Groove Metronome3\nz\nz\n";
+			break;
+		default:
+			// Can't handle these yet
+			break;
+		}
 	sprintf(buf, "Groove %s\n", [songGroove UTF8String]);
 	mmaFile	+= buf;
 	sprintf(buf, "KeySig %d%c\n", labs(prop.fKey), prop.fKey>=0 ? '#' : '&');
 	mmaFile	+= buf;
+	if (!(playElements & kVLPlayAccompaniment))
+		mmaFile += "AllTracks Off\nSolo On\n";
+	if (!(playElements & kVLPlayMelody))
+		mmaFile += "Solo Off\n";
 	mmaFile += '\n'+writer.Measures();	
 
 	return [[NSString stringWithUTF8String:mmaFile.c_str()] 

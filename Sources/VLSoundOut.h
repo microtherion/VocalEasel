@@ -38,6 +38,7 @@ public:
 	virtual void PlayChord(const VLChord & chord) = 0; 
 	virtual void PlayFile(CFDataRef file) = 0;
 	virtual void Stop() = 0;
+	virtual bool Playing() = 0;
 
 	virtual ~VLSoundOut();
 };

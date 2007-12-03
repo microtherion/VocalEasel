@@ -77,6 +77,7 @@
 		songArranger		= @"";
 		songGroove			= @"Swing";
 		songTempo			= [[NSNumber numberWithInt:120] retain];
+		playElements		= kVLPlayAccompaniment|kVLPlayMelody|kVLPlayCountIn;
 		sheetWin			= nil;
 		pdfWin				= nil;	
 		logWin				= nil;
@@ -247,6 +248,21 @@
 - (int) repeatVolta
 {	
 	return repeatVolta;
+}
+
+- (IBAction) togglePlayElements:(id)sender
+{
+	playElements ^= [sender tag];
+	[validTmpFiles removeObjectForKey:@"mma"]; 
+	[validTmpFiles removeObjectForKey:@"mid"]; 
+}
+
+- (BOOL) validateMenuItem:(NSMenuItem *)menuItem
+{
+	if (int tag = [menuItem tag])
+		[menuItem setState:(playElements & tag) != 0];
+
+	return YES;
 }
 
 - (bool) brandNew
@@ -433,6 +449,17 @@
 - (IBAction) stop:(id)sender
 {
 	VLSoundOut::Instance()->Stop();
+}
+
+- (IBAction) playStop:(id)sender
+{	
+	if (VLSoundOut::Instance()->Playing()) {
+		[self stop:sender];
+		[sender setTitle:@"Play"];
+	} else {
+		[self play:sender];
+		[sender setTitle:@"Stop"];
+	}
 }
 
 - (IBAction) showOutput:(id)sender

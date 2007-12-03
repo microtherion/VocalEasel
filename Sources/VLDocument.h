@@ -17,6 +17,13 @@
 @class VLLogWindow;
 @class PDFDocument;
 
+enum {
+	kVLPlayAccompaniment = 1,
+	kVLPlayMelody		 = 2,
+	kVLPlayMetronome	 = 4,
+	kVLPlayCountIn		 = 8
+};
+
 @interface VLDocument : NSDocument
 {
 	VLSong *			song;
@@ -27,6 +34,7 @@
 	NSString *			songArranger;
 	NSString *			songGroove;
 	NSNumber *			songTempo;
+	int					playElements;
 	NSString *			tmpPath;
 	NSFileWrapper *		vcsWrapper;
 	NSMutableArray* 	observers;
@@ -56,6 +64,9 @@
 - (IBAction) showLog:(id)sender;
 - (IBAction) play:(id)sender;
 - (IBAction) stop:(id)sender;
+- (IBAction) playStop:(id)sender;
+- (IBAction) togglePlayElements:(id)sender;
+- (IBAction) playStop:(id)sender;
 
 - (NSString *) tmpPath;
 - (NSString *) workPath;

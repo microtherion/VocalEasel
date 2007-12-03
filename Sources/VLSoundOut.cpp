@@ -29,6 +29,7 @@ public:
 	virtual void 	PlayChord(const VLChord & chord); 
 	virtual void 	PlayFile(CFDataRef file);
 	virtual void	Stop();
+	virtual bool	Playing();
 	
 	virtual 	   ~VLAUSoundOut();
 protected:
@@ -198,6 +199,11 @@ void VLAUSoundOut::Stop()
 			fMusic = 0;
 		}
 	}
+}
+
+bool VLAUSoundOut::Playing()
+{
+	return fRunning;
 }
 
 void VLAUSoundOut::PlayNote(const VLNote & note)
