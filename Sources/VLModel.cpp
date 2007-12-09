@@ -1127,7 +1127,9 @@ size_t VLSong::EmptyEnding() const
 {
 	size_t full = fMeasures.size();
 
-	while (full-- && fMeasures[full].IsEmpty())
+	while (full-- && fMeasures[full].IsEmpty() 
+		   && !DoesEndRepeat(full+1, 0) && !DoesEndEnding(full+1, 0, 0)
+	)
 		;
 
 	return fMeasures.size()-(full+1);
