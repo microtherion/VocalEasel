@@ -51,7 +51,7 @@
 - (void) setStringValue:(NSString *)val
 {
 	[[fView document] willChangeSong];
-	fSong->SetWord(fStanza, fMeasure, fAt, [val UTF8String], &fNextMeas, &fNextAt);
+	fSong->SetWord(fStanza, fMeasure, fAt, val ? [val UTF8String] : "", &fNextMeas, &fNextAt);
 	[[fView document] didChangeSong];
 }
 
