@@ -552,7 +552,7 @@ VLSong::VLSong(bool initialize)
 
 void VLSong::AddMeasure()
 {
-	VLFraction		dur  = fProperties.front().fTime;
+	VLFraction		dur  = fProperties.back().fTime;
 	dur.Normalize();
 	VLLyricsNote 	rest(dur);
 	VLChord 		rchord(dur);
@@ -1914,8 +1914,8 @@ void VLSong::PasteMeasures(size_t beginMeasure, const VLSong & measures, int mod
 void VLSong::DeleteMeasures(size_t beginMeasure, size_t endMeasure, int mode)
 {
 	if (mode == kOverwriteMelody) {
-		VLLyricsNote rest(fProperties.front().fTime);
 		for (size_t m=beginMeasure; m<endMeasure; ++m) {
+			VLLyricsNote rest(Properties(m).fTime);
 			fMeasures[m].fMelody.clear();
 			fMeasures[m].fMelody.push_back(rest);
 		}

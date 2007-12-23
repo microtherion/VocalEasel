@@ -103,7 +103,7 @@ std::string NormalizeName(NSString* rawName)
 			//
 			VLSoundOut::Instance()->PlayChord(*chord);
 
-			const VLProperties & 	prop	= fSong->fProperties.front();
+			const VLProperties & 	prop	= fSong->Properties(fMeasure);
 			std::string name, ext, root;
 			chord->Name(name, ext, root, prop.fKey > 0);
 			

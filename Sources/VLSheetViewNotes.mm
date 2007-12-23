@@ -279,8 +279,7 @@
 {
 	const int   			kFirstMeas	= fLayout->FirstMeasure(system);
 	const VLSong 		*	song 	  	= [self song];
-	const VLProperties & 	kProp 	  	= 
-		song->fProperties[song->fMeasures[kFirstMeas].fPropIdx];
+	const VLProperties & 	kProp 	  	= song->Properties(kFirstMeas);
 	const VLSystemLayout & 	kLayout 	= (*fLayout)[system];
 
 	float kSystemY = [self systemY:system];

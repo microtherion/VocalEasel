@@ -28,8 +28,7 @@ VLSystemLayout::VLSystemLayout(const VLProperties & prop, float width)
 VLLayout::VLLayout(const VLSong & song, float width)
 {
 	for (size_t meas = 0; meas<song.fMeasures.size(); ) {
-		const VLProperties & prop = song.fProperties[song.fMeasures[meas].fPropIdx];
-		push_back(VLSystemLayout(prop, width));
+		push_back(VLSystemLayout(song.Properties(meas), width));
 		meas += back().NumMeasures();
 	}
 }

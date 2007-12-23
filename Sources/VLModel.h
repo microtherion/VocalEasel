@@ -362,6 +362,12 @@ public:
 	size_t	CountTopLedgers() const;
 	size_t	CountBotLedgers() const;
 	VLFract TiedDuration(size_t measure);
+	VLProperties & Properties(size_t measure) {
+		return fProperties[fMeasures[measure].fPropIdx];
+	}
+	const VLProperties & Properties(size_t measure) const {
+		return fProperties[fMeasures[measure].fPropIdx];
+	}
 private:
 	void	AddMeasure();
 };

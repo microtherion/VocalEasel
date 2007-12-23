@@ -85,7 +85,7 @@
 	VLFraction at = fAt;
 	if (!fSong->PrevWord(fStanza, fMeasure, at)) {
 		fMeasure = fSong->CountMeasures()-1;
-		at		 = fSong->fProperties.front().fTime;
+		at		 = fSong->Properties(fMeasure).fTime;
 		fSong->PrevWord(fStanza, fMeasure, at);
 	}
 	fAt = at;

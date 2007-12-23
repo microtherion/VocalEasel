@@ -295,8 +295,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 
 	const VLSystemLayout &  kLayout = (*fLayout)[system];
 	const VLSong * 			song  	= [self song];
-	const VLProperties & 	kProp 	=
-		song->fProperties[song->fMeasures[fLayout->FirstMeasure(system)].fPropIdx];
+	const VLProperties & 	kProp 	= song->Properties(fLayout->FirstMeasure(system));
 
 	const float kSystemY 	= [self systemY:system];
 	const float kLineW 		= (*fLayout)[system].SystemWidth();
@@ -722,14 +721,15 @@ static int8_t sSharpAcc[] = {
 {
 	fCursorPitch = VLNote::kNoPitch;
 
-	const VLProperties & 	prop = [self song]->fProperties.front();
 	NSPoint loc 	= [event locationInWindow];
 	loc 			= [self convertPoint:loc fromView:nil];
 
 	if (loc.y < 0.0f || loc.y >= fLayout->NumSystems()*kSystemH)
 		return fCursorRegion = kRegionNowhere;
 
-	int system = fLayout->NumSystems() - static_cast<int>(loc.y / kSystemH) - 1;
+	const VLSong * 			song  		= [self song];
+	int system 							= 
+		fLayout->NumSystems() - static_cast<int>(loc.y / kSystemH) - 1;
 	const VLSystemLayout &	kLayout		= (*fLayout)[system];
 	const float				kMeasureW	= kLayout.MeasureWidth();
 	loc.y      = fmodf(loc.y, kSystemH);
@@ -760,12 +760,12 @@ static int8_t sSharpAcc[] = {
 	loc.x		   -= group*(kLayout.DivPerGroup()+1)*kNoteW;
 	int div			= static_cast<int>(roundf(loc.x / kNoteW))-1;
 	div				= std::min(std::max(div, 0), kLayout.DivPerGroup()-1);
-	fCursorAt 		= VLFraction(div+group*kLayout.DivPerGroup(), 4*prop.fDivisions);
 	fCursorMeasure	= measure+fLayout->FirstMeasure(system);
-
 	if (fCursorMeasure > [self song]->fMeasures.size())
 		return fCursorRegion = kRegionNowhere;
 		
+	fCursorAt 		= VLFraction(div+group*kLayout.DivPerGroup(), 4*song->Properties(fCursorMeasure).fDivisions);
+
 	if (loc.y >= kSystemBaseline+kChordY) {
 		//
 		// Chord, round to quarters
