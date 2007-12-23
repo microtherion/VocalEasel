@@ -376,7 +376,7 @@ void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bo
 }
 
 VLMeasure::VLMeasure()
-	: fPropIdx(0)
+	: fBreak(0), fPropIdx(0)
 {
 }
 

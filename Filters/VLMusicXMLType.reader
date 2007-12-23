@@ -158,6 +158,13 @@ class MusicXMLListener
           'melody'     => []
         }
       end
+    when 'print'
+      if attrs['new-system'] == 'yes'
+        @meas['new-system'] = true
+      end
+      if attrs['new-page'] == 'yes'
+        @meas['new-page'] = true
+      end      
     when 'barline' 
       @times     = nil
       @type      = nil
@@ -178,7 +185,7 @@ class MusicXMLListener
         @meas['coda'] = true
       end
       if attrs['tempo']
-        OUTPUT['tempo'] = attrs['tempo'].to_i
+         OUTPUT['tempo'] = attrs['tempo'].to_i
       end
     when 'divisions' 
       @kind = 'prop'

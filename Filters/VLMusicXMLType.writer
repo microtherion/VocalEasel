@@ -310,6 +310,11 @@ def _melody
       lastProp = meas['properties']
       m.add_element(_attributes(INPUT['properties'][lastProp]))
     end
+    if meas['new-page']
+      m.add_element 'print', {'new-page' => 'yes'}
+    elsif meas['new-system']
+      m.add_element 'print', {'new-system' => 'yes'}
+    end
     if meas['coda']
       m.add_element 'sound', {'coda' => 'A'}
     end

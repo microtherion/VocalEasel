@@ -239,6 +239,11 @@ typedef std::list<VLChord>		VLChordList;
 typedef std::list<VLLyricsNote> VLNoteList;
 
 struct VLMeasure {
+	enum {
+		kNewSystem	= 1,
+		kNewPage	= 2
+	};
+	uint8_t		fBreak;
 	int8_t		fPropIdx;
 	VLChordList fChords;
 	VLNoteList 	fMelody;

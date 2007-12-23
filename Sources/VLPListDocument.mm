@@ -119,6 +119,10 @@ void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 		[md setObject:[NSNumber numberWithBool:YES] forKey:@"tocoda"];
 	if (fSong->fCoda == m)
 		[md setObject:[NSNumber numberWithBool:YES] forKey:@"coda"];
+	if (meas.fBreak & VLMeasure::kNewSystem)
+		[md setObject:[NSNumber numberWithBool:YES] forKey:@"new-system"];
+	if (meas.fBreak & VLMeasure::kNewPage)
+		[md setObject:[NSNumber numberWithBool:YES] forKey:@"new-page"];
 	[fMeasures addObject:md];
 }
 
@@ -313,6 +317,10 @@ advanceAt:
 			song->fGoToCoda = measNo+1;
 		if ([[mdict objectForKey:@"coda"] boolValue])
 			song->fCoda = measNo;			
+		if ([[mdict objectForKey:@"new-system"] boolValue])
+			song->fMeasures[measNo].fBreak |= VLMeasure::kNewSystem;
+		if ([[mdict objectForKey:@"new-page"] boolValue])
+			song->fMeasures[measNo].fBreak |= VLMeasure::kNewPage;
 		if (NSDictionary * beginRep = [mdict objectForKey:@"begin-repeat"]) {
 			VLRepeat 			rep;
 			VLRepeat::Ending	ending(measNo, measNo, 0);

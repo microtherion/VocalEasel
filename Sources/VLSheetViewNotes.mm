@@ -302,10 +302,10 @@
 			int		pitch = note->fPitch;
 			if (pitch != VLNote::kNoPitch) {
 				[self drawLedgerLinesWithPitch:pitch 
-					  at:NSMakePoint([self noteXInMeasure:m at:at], kSystemY)];
+					  at:NSMakePoint([self noteXInMeasure:measIdx at:at], kSystemY)];
 				VLMusicElement		accidental;
 				NSPoint pos = 
-					NSMakePoint([self noteXInMeasure:m at:at],
+					NSMakePoint([self noteXInMeasure:measIdx at:at],
 								kSystemY+[self noteYWithPitch:pitch 
 											   accidental:&accidental]);
 				VLMusicElement 	acc = accidental;
@@ -325,7 +325,7 @@
 			} else {
 				VLMusicElement		accidental;
 				NSPoint pos = 
-					NSMakePoint([self noteXInMeasure:m at:at],
+					NSMakePoint([self noteXInMeasure:measIdx at:at],
 								kSystemY+[self noteYWithPitch:65 
 											   accidental:&accidental]);
 				[self drawRest:note->fVisual & VLNote::kNoteHead at: pos];

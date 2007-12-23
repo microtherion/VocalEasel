@@ -13,7 +13,7 @@
 
 class VLSystemLayout {
 public:
-	VLSystemLayout(const VLProperties & prop, float width);
+	VLSystemLayout(const VLProperties & prop, float width, int maxMeas);
 
 	float	ClefKeyWidth() 			const { return fClefKeyWidth; }
 	float	MeasureWidth() 			const { return fMeasureWidth; }

@@ -263,7 +263,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 
 	delete fLayout;
 	fLayout = new VLLayout(*[self song], sz.width / fDisplayScale);
-	sz.height		= fLayout->NumSystems()*kSystemH;
+	sz.height		= std::max(2, fLayout->NumSystems())*kSystemH;
 
 	NSSize boundsSz	= {sz.width / fDisplayScale, sz.height / fDisplayScale};
 
@@ -283,15 +283,24 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	fNeedsRecalc	= kNoRecalc;	
 }
 
+const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
+
 - (void)drawGridForSystem:(int)system
 {
 	static NSDictionary * sMeasNoFont 	 = nil;
+	static NSDictionary * sBreakFont	 = nil;
 	if (!sMeasNoFont)
 		sMeasNoFont =
 			[[NSDictionary alloc] initWithObjectsAndKeys:
 				[NSFont fontWithName: @"Helvetica" size: 10],
                 NSFontAttributeName,
 				nil];
+	if (!sBreakFont)
+		sBreakFont =
+			[[NSDictionary alloc] initWithObjectsAndKeys:
+				[NSFont fontWithName: @"Symbol" size: 30],
+                NSFontAttributeName,
+				nil];		
 
 	const VLSystemLayout &  kLayout = (*fLayout)[system];
 	const VLSong * 			song  	= [self song];
@@ -468,6 +477,17 @@ VLMusicElement sSemi2Accidental[12][12] = {
 			x += kAccW;
 		}
 	}
+	//
+	// Draw break character
+	//
+	int breakType 	= 0;
+	int nextMeasure	= fLayout->FirstMeasure(system+1);
+	if (nextMeasure < song->fMeasures.size())
+		breakType = song->fMeasures[nextMeasure].fBreak;
+	if (breakType)
+		[[NSString stringWithUTF8String:sBreak[breakType]]
+			drawAtPoint: NSMakePoint(kLineX+kLineW+kBreakX, kSystemY+kBreakY)
+			withAttributes: sBreakFont];
 }
 
 - (void)drawBackgroundForSystem:(int)system
@@ -721,15 +741,19 @@ static int8_t sSharpAcc[] = {
 {
 	fCursorPitch = VLNote::kNoPitch;
 
-	NSPoint loc 	= [event locationInWindow];
-	loc 			= [self convertPoint:loc fromView:nil];
+	NSPoint loc 			= [event locationInWindow];
+	loc 					= [self convertPoint:loc fromView:nil];
+	const int kNumSystems	= std::max(2, fLayout->NumSystems());
 
-	if (loc.y < 0.0f || loc.y >= fLayout->NumSystems()*kSystemH)
+	if (loc.y < 0.0f || loc.y >= kNumSystems*kSystemH)
 		return fCursorRegion = kRegionNowhere;
 
 	const VLSong * 			song  		= [self song];
-	int system 							= 
-		fLayout->NumSystems() - static_cast<int>(loc.y / kSystemH) - 1;
+	int 					system 		= 
+		kNumSystems - static_cast<int>(loc.y / kSystemH) - 1;
+	if (system >= fLayout->NumSystems())
+		return fCursorRegion = kRegionNowhere;
+		
 	const VLSystemLayout &	kLayout		= (*fLayout)[system];
 	const float				kMeasureW	= kLayout.MeasureWidth();
 	loc.y      = fmodf(loc.y, kSystemH);
