@@ -299,6 +299,7 @@ class MusicXMLListener
     #
     # Interesting text nodes have @kind set
     #
+    @text.strip!
     if @kind
       case @kind
       when 'textProp' 
