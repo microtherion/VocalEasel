@@ -11,6 +11,7 @@
 #import <Cocoa/Cocoa.h>
 
 #import "VLModel.h"
+#import "VLLayout.h"
 
 @class VLDocument;
 
@@ -63,14 +64,7 @@ enum VLRecalc {
 	NSImage **			fMusic;
 	VLRecalc			fNeedsRecalc;
 	char				fClickMode;
-	float				fClefKeyW;
-	float				fMeasureW;
 	size_t				fLastMeasures;
-	int 				fGroups; 
-	int 				fQuarterBeats;
-	int 				fDivPerGroup;
-	int					fMeasPerSystem;
-	int					fNumSystems;
 	float				fDisplayScale;
 	NSPoint				fLastNoteCenter;
 	NSTrackingRectTag	fCursorTracking;
@@ -88,6 +82,7 @@ enum VLRecalc {
 	int					fNumStanzas;
 	size_t				fVolta;
 	size_t				fVoltaOK;
+	VLLayout *			fLayout;
 
 	IBOutlet id			fFieldEditor;
 	IBOutlet id			fRepeatSheet;

@@ -195,26 +195,23 @@ VLMusicElement sSemi2Accidental[12][12] = {
 
 - (float) noteYInMeasure:(int)measure withPitch:(int)pitch accidental:(VLMusicElement*)accidental
 {
-	return [self systemY:measure/fMeasPerSystem]
+	return [self systemY:fLayout->SystemForMeasure(measure)]
 		+ [self noteYWithPitch:pitch accidental:accidental];
 }
 
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at
 {
-	const VLProperties & prop	= [self song]->fProperties.front();
-	const float mx				= fClefKeyW+(measure%fMeasPerSystem)*fMeasureW;
-
-	at 		*= 4 * prop.fDivisions;
-	int div	=  at.fNum / at.fDenom;
-
-	return mx + (div + (div / fDivPerGroup) + 1)*kNoteW;
+	return fLayout->NotePosition(measure, at);
 }
 
 - (void) scrollMeasureToVisible:(int)measure
 {
-	NSRect r = NSMakeRect(fClefKeyW+(measure%fMeasPerSystem)*fMeasureW,
-						  [self systemY:measure/fMeasPerSystem]-kSystemBaseline,
-						  fMeasureW, kSystemH);
+	const int				system	= fLayout->SystemForMeasure(measure);
+	const VLSystemLayout &	kLayout	= (*fLayout)[system];
+	NSRect r = NSMakeRect(
+      fLayout->MeasurePosition(measure),
+	  [self systemY:system]-kSystemBaseline,
+	  kLayout.MeasureWidth(), kSystemH);
 	[self scrollRectToVisible:r];
 }
 
@@ -264,17 +261,9 @@ VLMusicElement sSemi2Accidental[12][12] = {
 
 	NSSize sz 	=  [scroll contentSize];
 
-	const VLSong * 			song = [self song];
-	const VLProperties & 	prop = song->fProperties.front();
-
-	fGroups 		= prop.fTime.fNum / std::max(prop.fTime.fDenom / 4, 1); 
-	fQuarterBeats 	= (prop.fTime.fNum*4) / prop.fTime.fDenom;
-	fDivPerGroup	= prop.fDivisions * (fQuarterBeats / fGroups);
-	fClefKeyW		= kClefX+kClefW+(std::labs(prop.fKey)+1)*kKeyW;
-	fMeasureW		= fGroups*(fDivPerGroup+1)*kNoteW;
-	fMeasPerSystem	= std::max<int>(1, std::floor((sz.width-fClefKeyW) / fDisplayScale / fMeasureW));
-	fNumSystems 	= std::max(2lu, (song->CountMeasures()+fMeasPerSystem-1)/fMeasPerSystem);
-	sz.height		= fNumSystems*kSystemH;
+	delete fLayout;
+	fLayout = new VLLayout(*[self song], sz.width / fDisplayScale);
+	sz.height		= fLayout->NumSystems()*kSystemH;
 
 	NSSize boundsSz	= {sz.width / fDisplayScale, sz.height / fDisplayScale};
 
@@ -290,7 +279,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 			NSMakePoint(0.0, NSMaxY([dv frame])-NSHeight([cv bounds]))];
 	}
 
-	fLastMeasures	= song->CountMeasures();
+	fLastMeasures	= [self song]->CountMeasures();
 	fNeedsRecalc	= kNoRecalc;	
 }
 
@@ -304,11 +293,14 @@ VLMusicElement sSemi2Accidental[12][12] = {
                 NSFontAttributeName,
 				nil];
 
-	const float kSystemY 	= [self systemY:system];
-	const float kLineW 		= fClefKeyW + fMeasPerSystem*fMeasureW;
+	const VLSystemLayout &  kLayout = (*fLayout)[system];
+	const VLSong * 			song  	= [self song];
+	const VLProperties & 	kProp 	=
+		song->fProperties[song->fMeasures[fLayout->FirstMeasure(system)].fPropIdx];
 
-	const VLSong * 			song = [self song];
-	const VLProperties & 	prop = song->fProperties.front();
+	const float kSystemY 	= [self systemY:system];
+	const float kLineW 		= (*fLayout)[system].SystemWidth();
+	const float kMeasureW	= kLayout.MeasureWidth();
 
 	NSBezierPath * bz = [NSBezierPath bezierPath];
 	
@@ -327,22 +319,22 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	// Draw measure lines
 	//
 	[bz setLineWidth:2.0];
-	int m = system*fMeasPerSystem;
-	for (int measure = 0; measure<=fMeasPerSystem; ++measure, ++m) {
+	int m = fLayout->FirstMeasure(system);
+	for (int measure = 0; measure<=kLayout.NumMeasures(); ++measure, ++m) {
 		const float kDblLineOff = 1.5f;
 		const float kThick		= 2.5f;
 		const float kThin		= 1.0f;
 		const float kDotOff		= 4.5f;
 		const float kDotRadius	= 2.0f;
 		const float kVoltaTextOff = 7.0f;
-		const float x	= fClefKeyW+measure*fMeasureW;
+		const float x	= kLayout.MeasurePosition(measure);
 		const float yy	= kSystemY+4.0f*kLineH;
 		bool repeat;
 		size_t volta;
 		bool dotsPrecede= measure != 0 && 
 			(song->DoesEndRepeat(m) 
 			 || (song->DoesEndEnding(m, &repeat) && repeat));
-		bool dotsFollow = measure<fMeasPerSystem && song->DoesBeginRepeat(m);
+		bool dotsFollow = measure<kLayout.NumMeasures() && song->DoesBeginRepeat(m);
 		if (!dotsPrecede && !dotsFollow) {
 			//
 			// Regular
@@ -388,12 +380,12 @@ VLMusicElement sSemi2Accidental[12][12] = {
 			[bz fill];
 			[bz removeAllPoints];
 		}
-		if (measure<fMeasPerSystem) {
+		if (measure<kLayout.NumMeasures()) {
 			if (song->DoesBeginEnding(m, 0, &volta)) {
 				[bz setLineWidth:kThin];
 				[bz moveToPoint: NSMakePoint(x+kDblLineOff, yy+0.5f*kLineH)];
 				[bz lineToPoint: NSMakePoint(x+kDblLineOff, yy+2.0f*kLineH)];
-				[bz lineToPoint: NSMakePoint(x+0.5f*fMeasureW, yy+2.0f*kLineH)];
+				[bz lineToPoint: NSMakePoint(x+0.5f*kMeasureW, yy+2.0f*kLineH)];
 				[bz stroke];
 				[bz removeAllPoints];			
 				[bz setLineWidth:2.0];
@@ -409,10 +401,10 @@ VLMusicElement sSemi2Accidental[12][12] = {
 			}
 			if (song->DoesEndEnding(m+1, &repeat)) {
 				[bz setLineWidth:kThin];
-				[bz moveToPoint: NSMakePoint(x+0.5f*fMeasureW, yy+2.0f*kLineH)];
-				[bz lineToPoint: NSMakePoint(x+fMeasureW-kDblLineOff, yy+2.0f*kLineH)];
+				[bz moveToPoint: NSMakePoint(x+0.5f*kMeasureW, yy+2.0f*kLineH)];
+				[bz lineToPoint: NSMakePoint(x+kMeasureW-kDblLineOff, yy+2.0f*kLineH)];
 				if (repeat)
-					[bz lineToPoint: NSMakePoint(x+fMeasureW-kDblLineOff, yy+0.5f*kLineH)];
+					[bz lineToPoint: NSMakePoint(x+kMeasureW-kDblLineOff, yy+0.5f*kLineH)];
 				[bz stroke];
 				[bz removeAllPoints];			
 				[bz setLineWidth:2.0];
@@ -429,13 +421,13 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	//
 	[bz setLineWidth:0.0];
 	[[NSColor colorWithDeviceWhite:0.8f alpha:1.0f] set];
-	for (int measure = 0; measure<fMeasPerSystem; ++measure) {
-		const float mx	= fClefKeyW+measure*fMeasureW;
+	for (int measure = 0; measure<kLayout.NumMeasures(); ++measure) {
+		const float mx	= kLayout.MeasurePosition(measure);
 		const float y0	= kSystemY-(fNumBotLedgers+1)*kLineH;
 		const float yy	= kSystemY+(fNumTopLedgers+5)*kLineH;
-		for (int group = 0; group < fGroups; ++group) {
-			for (int div = 0; div < fDivPerGroup; ++div) {
-				const float x = mx+(group*(fDivPerGroup+1)+div+1)*kNoteW;
+		for (int group = 0; group < kLayout.NumGroups(); ++group) {
+			for (int div = 0; div < kLayout.DivPerGroup(); ++div) {
+				const float x = mx+(group*(kLayout.DivPerGroup()+1)+div+1)*kNoteW;
 				[bz moveToPoint: NSMakePoint(x, y0)];
 				[bz lineToPoint: NSMakePoint(x, yy)];
 			}
@@ -452,24 +444,24 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	//
 	// Draw measure #
 	//
-	[[NSString stringWithFormat:@"%d", system*fMeasPerSystem+1]
+	[[NSString stringWithFormat:@"%d", fLayout->FirstMeasure(system)+1]
 		drawAtPoint: NSMakePoint(kMeasNoX, kSystemY+kMeasNoY)
 		withAttributes: sMeasNoFont];
 	//
 	// Draw key (sharps & flats)
 	//
-	if (prop.fKey > 0) {
+	if (kProp.fKey > 0) {
 		float x = kClefX+kClefW;
-		for (int i=0; i<prop.fKey; ++i) {
+		for (int i=0; i<kProp.fKey; ++i) {
 			[[self musicElement:kMusicSharp] 
 				compositeToPoint: 
 					NSMakePoint(x, kSystemY+sSharpPos[i]+kSharpY)
 				operation: NSCompositeSourceOver];
 			x += kAccW;
 		}
-	} else if (prop.fKey < 0) {
+	} else if (kProp.fKey < 0) {
 		float x = kClefX+kClefW;
-		for (int i=0; -i>prop.fKey; ++i) {
+		for (int i=0; -i>kProp.fKey; ++i) {
 			[[self musicElement: kMusicFlat] 
 				compositeToPoint: 
 					NSMakePoint(x, kSystemY+sFlatPos[i]+kFlatY)
@@ -482,7 +474,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 - (void)drawBackgroundForSystem:(int)system
 {
 	const float kSystemY 	= [self systemY:system];
-	const float kLineW		= fClefKeyW + fMeasPerSystem*fMeasureW;
+	const float kLineW		= (*fLayout)[system].SystemWidth();
 
 	NSArray * colors = [NSColor controlAlternatingRowBackgroundColors];
 	[NSGraphicsContext saveGraphicsState];
@@ -501,20 +493,21 @@ VLMusicElement sSemi2Accidental[12][12] = {
 
 - (void)highlightSelectionForSystem:(int)system
 {
-	int startMeas = std::max(fSelStart-system*fMeasPerSystem, 0);
-	int endMeas	  = std::min(fSelEnd-system*fMeasPerSystem, fMeasPerSystem);
+	int startMeas = std::max(fSelStart-fLayout->FirstMeasure(system), 0);
+	int endMeas	  = std::min(fSelEnd-fLayout->FirstMeasure(system), (*fLayout)[system].NumMeasures());
 	const float kRawSystemY = [self systemY:system]-kSystemBaseline;
+	const VLSystemLayout & kLayout = (*fLayout)[system];
 
 	[NSGraphicsContext saveGraphicsState];
 	[[NSColor selectedTextBackgroundColor] setFill];
 	if (fSelStart == fSelEnd) 
 		[NSBezierPath fillRect:
-		   NSMakeRect(fClefKeyW+startMeas*fMeasureW-kMeasTol, kRawSystemY, 
+		   NSMakeRect(kLayout.MeasurePosition(startMeas)-kMeasTol, kRawSystemY, 
 					  2.0f*kMeasTol, kSystemH)];  
 	else
 		[NSBezierPath fillRect:
-		   NSMakeRect(fClefKeyW+startMeas*fMeasureW, kRawSystemY, 
-					  (endMeas-startMeas)*fMeasureW, kSystemH)];  
+		   NSMakeRect(kLayout.MeasurePosition(startMeas), kRawSystemY, 
+					  (endMeas-startMeas)*kLayout.MeasureWidth(), kSystemH)];  
 	[NSGraphicsContext restoreGraphicsState];
 }
 
@@ -530,10 +523,9 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	[NSGraphicsContext restoreGraphicsState];
 
 	size_t stanzas = [self song]->CountStanzas();
-	const float kLineW = fClefKeyW + fMeasPerSystem*fMeasureW;
-	for (int system = 0; system<fNumSystems; ++system) {
+	for (int system = 0; system<fLayout->NumSystems(); ++system) {
 		const float kSystemY = [self systemY:system];
-		NSRect systemRect	 = NSMakeRect(kLineX, kSystemY-kSystemBaseline, kLineW, kSystemH);
+		NSRect systemRect	 = NSMakeRect(kLineX, kSystemY-kSystemBaseline, (*fLayout)[system].SystemWidth(), kSystemH);
 		if (!NSIntersectsRect(rect, systemRect)) 
 			continue; // This system does not need to be drawn
 
@@ -543,8 +535,8 @@ VLMusicElement sSemi2Accidental[12][12] = {
 		// on top.
 		//
 		if (fSelStart <= fSelEnd 
-			&& (system+1)*fMeasPerSystem > fSelStart 
-			&& system*fMeasPerSystem < fSelEnd+(fSelStart==fSelEnd)
+			&& fLayout->FirstMeasure(system+1) > fSelStart 
+			&& fLayout->FirstMeasure(system) < fSelEnd+(fSelStart==fSelEnd)
 		)
 			[self highlightSelectionForSystem:system];
 		[self drawGridForSystem:system];
@@ -734,39 +726,42 @@ static int8_t sSharpAcc[] = {
 	NSPoint loc 	= [event locationInWindow];
 	loc 			= [self convertPoint:loc fromView:nil];
 
-	if (loc.y < 0.0f || loc.y >= fNumSystems*kSystemH)
+	if (loc.y < 0.0f || loc.y >= fLayout->NumSystems()*kSystemH)
 		return fCursorRegion = kRegionNowhere;
 
-	int system = fNumSystems - static_cast<int>(loc.y / kSystemH) - 1;
+	int system = fLayout->NumSystems() - static_cast<int>(loc.y / kSystemH) - 1;
+	const VLSystemLayout &	kLayout		= (*fLayout)[system];
+	const float				kMeasureW	= kLayout.MeasureWidth();
 	loc.y      = fmodf(loc.y, kSystemH);
 
-	loc.x -= fClefKeyW;
-	if (loc.y > kSystemBaseline && loc.y < kSystemBaseline+4.0f*kLineH
-	 && fmodf(loc.x+kMeasTol, fMeasureW) < 2*kMeasTol
-	) {
-		int measure = static_cast<int>((loc.x+kMeasTol)/fMeasureW);
+	loc.x -= kLayout.ClefKeyWidth();
 
-		if (measure < 0 || measure > fMeasPerSystem)
+	if (loc.y > kSystemBaseline && loc.y < kSystemBaseline+4.0f*kLineH
+	 && fmodf(loc.x+kMeasTol, kMeasureW) < 2*kMeasTol
+	) {
+		int measure = static_cast<int>((loc.x+kMeasTol)/kMeasureW);
+
+		if (measure < 0 || measure > kLayout.NumMeasures())
 			return fCursorRegion = kRegionNowhere;
 
-		fCursorMeasure	= measure+system*fMeasPerSystem;
+		fCursorMeasure	= measure+fLayout->FirstMeasure(system);
 			
 		if (fCursorMeasure > [self song]->fMeasures.size())
 			return fCursorRegion = kRegionNowhere;
 		else
 			return fCursorRegion = kRegionMeasure;
 	}
-	if (loc.x < 0.0f || loc.x >= fMeasPerSystem*fMeasureW)
+	if (loc.x < 0.0f || loc.x >= kLayout.NumMeasures()*kMeasureW)
 		return fCursorRegion = kRegionNowhere;
 	
-	int measure 	= static_cast<int>(loc.x / fMeasureW);
-	loc.x	   	   -= measure*fMeasureW;
-	int group	  	= static_cast<int>(loc.x / ((fDivPerGroup+1)*kNoteW));
-	loc.x		   -= group*(fDivPerGroup+1)*kNoteW;
+	int measure 	= static_cast<int>(loc.x / kMeasureW);
+	loc.x	   	   -= measure*kMeasureW;
+	int group	  	= static_cast<int>(loc.x / ((kLayout.DivPerGroup()+1)*kNoteW));
+	loc.x		   -= group*(kLayout.DivPerGroup()+1)*kNoteW;
 	int div			= static_cast<int>(roundf(loc.x / kNoteW))-1;
-	div				= std::min(std::max(div, 0), fDivPerGroup-1);
-	fCursorAt 		= VLFraction(div+group*fDivPerGroup, 4*prop.fDivisions);
-	fCursorMeasure	= measure+system*fMeasPerSystem;
+	div				= std::min(std::max(div, 0), kLayout.DivPerGroup()-1);
+	fCursorAt 		= VLFraction(div+group*kLayout.DivPerGroup(), 4*prop.fDivisions);
+	fCursorMeasure	= measure+fLayout->FirstMeasure(system);
 
 	if (fCursorMeasure > [self song]->fMeasures.size())
 		return fCursorRegion = kRegionNowhere;
@@ -1044,3 +1039,4 @@ static int8_t sSharpAcc[] = {
 }
 
 @end
+	

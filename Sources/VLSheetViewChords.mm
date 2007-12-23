@@ -227,14 +227,16 @@ std::string NormalizeName(NSString* rawName)
 
 - (void) drawChordsForSystem:(int)system
 {
-	const VLSong * 	song 		= [self song];
-	const float 	kSystemY	= [self systemY:system];
+	const VLSong * 			song 		= [self song];
+	const float 			kSystemY	= [self systemY:system];
+	const int				kFirstMeas	= fLayout->FirstMeasure(system);
+	const VLSystemLayout &	kLayout		= (*fLayout)[system];
 	
 	//
 	// Build new list
 	//
-	for (int m = 0; m<fMeasPerSystem; ++m) {
-		int	measIdx = m+system*fMeasPerSystem;
+	for (int m = 0; m<kLayout.NumMeasures(); ++m) {
+		int	measIdx = m+kFirstMeas;
 		if (measIdx >= song->CountMeasures())
 			break;
 		const VLMeasure		measure = song->fMeasures[measIdx];
@@ -268,7 +270,7 @@ std::string NormalizeName(NSString* rawName)
 - (void) highlightChordInMeasure:(int)measure at:(VLFraction)at
 {
 	const VLProperties & 	prop = [self song]->fProperties.front();
-	const float 	   	kSystemY = [self systemY:measure / fMeasPerSystem];
+	const float 	   	kSystemY = [self systemY:fLayout->SystemForMeasure(measure)];
 	NSRect 				r 	   	 =
 		NSMakeRect([self noteXInMeasure:measure at:at]-kNoteW*0.5f,
 				   kSystemY+kChordY, prop.fDivisions*kNoteW, kChordH);

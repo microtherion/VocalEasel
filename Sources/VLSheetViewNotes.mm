@@ -93,7 +93,7 @@
 					  withPitch:fCursorPitch accidental:&accidental] - kNoteY;
 			[self drawLedgerLinesWithPitch:fCursorPitch 
 				  at:NSMakePoint(cursorX, 
-								 [self systemY:fCursorMeasure/fMeasPerSystem])];
+								 [self systemY:fLayout->SystemForMeasure(fCursorMeasure)])];
 			cursorElt 	= kMusicNoteCursor;
 			break;
 		case 'r':
@@ -277,19 +277,22 @@
 
 - (void) drawNotesForSystem:(int)system
 {
-	const VLSong 		*	song = [self song];
-	const VLProperties & 	prop = song->fProperties.front();
+	const int   			kFirstMeas	= fLayout->FirstMeasure(system);
+	const VLSong 		*	song 	  	= [self song];
+	const VLProperties & 	kProp 	  	= 
+		song->fProperties[song->fMeasures[kFirstMeas].fPropIdx];
+	const VLSystemLayout & 	kLayout 	= (*fLayout)[system];
 
 	float kSystemY = [self systemY:system];
-	for (int m = 0; m<fMeasPerSystem; ++m) {
+	for (int m = 0; m<kLayout.NumMeasures(); ++m) {
 		VLMusicElement accidentals[7];
 		memset(accidentals, 0, 7*sizeof(VLMusicElement));
-		int	measIdx = m+system*fMeasPerSystem;
+		int	measIdx = m+kFirstMeas;
 		if (measIdx >= song->CountMeasures())
 			break;
 		const VLMeasure	&	measure = song->fMeasures[measIdx];
 		VLNoteList 			melody;
-		measure.DecomposeNotes(song->fProperties[measure.fPropIdx], melody);
+		measure.DecomposeNotes(kProp, melody);
 		VLFraction 			at(0);
 		for (VLNoteList::const_iterator note = melody.begin(); 
 			 note != melody.end(); 
@@ -312,7 +315,7 @@
 					acc = kMusicNothing; 	// Don't repeat accidentals
 				else if (acc == kMusicNothing) 
 					if (accidentals[step] == kMusicNatural) // Resume signature
-						acc = prop.fKey < 0 ? kMusicFlat : kMusicSharp;
+						acc = kProp.fKey < 0 ? kMusicFlat : kMusicSharp;
 					else 
 						acc = kMusicNatural;
 				[self drawNote:note->fVisual & VLNote::kNoteHead
@@ -331,7 +334,7 @@
 			at	   += note->fDuration;
 		}
 	}
-	if (fCursorPitch != VLNote::kNoPitch && fCursorMeasure/fMeasPerSystem == system)
+	if (fCursorPitch != VLNote::kNoPitch && fLayout->SystemForMeasure(fCursorMeasure) == system)
 		[self drawNoteCursor];
 }
 

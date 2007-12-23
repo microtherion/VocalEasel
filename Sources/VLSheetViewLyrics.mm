@@ -112,14 +112,16 @@
                 NSFontAttributeName,
 				nil];
 
-	const VLSong * 	song 		= [self song];
-	const float 	kSystemY	= [self systemY:system];
+	const VLSong * 			song 	  	= [self song];
+	const float 			kSystemY  	= [self systemY:system];
+	const VLSystemLayout & 	kLayout	  	= (*fLayout)[system];
+	const int				kFirstMeas	= fLayout->FirstMeasure(system);
 	
 	//
 	// Build new list
 	//
-	for (int m = 0; m<fMeasPerSystem; ++m) {
-		int	measIdx = m+system*fMeasPerSystem;
+	for (int m = 0; m<kLayout.NumMeasures(); ++m) {
+		int	measIdx = m+kFirstMeas;
 		if (measIdx >= song->CountMeasures())
 			break;
 		const VLMeasure		measure = song->fMeasures[measIdx];

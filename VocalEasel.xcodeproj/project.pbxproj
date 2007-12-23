@@ -75,6 +75,7 @@
 		95C461FE0B04432700649F92 /* MMA in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95C461DD0B04430F00649F92 /* MMA */; };
 		95C462000B04472E00649F92 /* mmaWrapper in Copy Tools */ = {isa = PBXBuildFile; fileRef = 95C461FF0B04472900649F92 /* mmaWrapper */; };
 		95C462830B045CB700649F92 /* lilyWrapper in Copy Tools */ = {isa = PBXBuildFile; fileRef = 95C4627A0B045C8E00649F92 /* lilyWrapper */; };
+		95D0597A0D1E6B0D00E28FAE /* VLLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95D059780D1E6B0D00E28FAE /* VLLayout.cpp */; };
 		95D0C2FC0B785D020061080E /* rebuildGrooves in Copy Tools */ = {isa = PBXBuildFile; fileRef = 95D0C2FB0B785D020061080E /* rebuildGrooves */; };
 		95E04DA70AEB486E006F30A0 /* TVLLilypond.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */; };
 		95E04DA80AEB4878006F30A0 /* VLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* VLDocument.mm */; };
@@ -246,6 +247,8 @@
 		95C461DD0B04430F00649F92 /* MMA */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MMA; path = mma/MMA; sourceTree = "<group>"; };
 		95C461FF0B04472900649F92 /* mmaWrapper */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; name = mmaWrapper; path = Tools/mmaWrapper; sourceTree = "<group>"; };
 		95C4627A0B045C8E00649F92 /* lilyWrapper */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; name = lilyWrapper; path = Tools/lilyWrapper; sourceTree = "<group>"; };
+		95D059780D1E6B0D00E28FAE /* VLLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VLLayout.cpp; path = Sources/VLLayout.cpp; sourceTree = "<group>"; };
+		95D059790D1E6B0D00E28FAE /* VLLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLLayout.h; path = Sources/VLLayout.h; sourceTree = "<group>"; };
 		95D0C2FB0B785D020061080E /* rebuildGrooves */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; name = rebuildGrooves; path = Tools/rebuildGrooves; sourceTree = "<group>"; };
 		95E04DA00AEB4837006F30A0 /* TVLLilypond */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLLilypond; sourceTree = BUILT_PRODUCTS_DIR; };
 		95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = TVLLilypond.mm; path = Tests/TVLLilypond.mm; sourceTree = "<group>"; };
@@ -381,6 +384,8 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				95D059780D1E6B0D00E28FAE /* VLLayout.cpp */,
+				95D059790D1E6B0D00E28FAE /* VLLayout.h */,
 				9588365A0C6FABBA004B4162 /* VLDebugFlags.cpp */,
 				9588365B0C6FABBA004B4162 /* VLDebugFlags.h */,
 				9588363A0C6F9C7D004B4162 /* VLPListDocument.h */,
@@ -750,6 +755,7 @@
 				9545C5C30C092F4600251547 /* VLMMAWriter.cpp in Sources */,
 				9588363C0C6F9C7D004B4162 /* VLPListDocument.mm in Sources */,
 				9588365C0C6FABBA004B4162 /* VLDebugFlags.cpp in Sources */,
+				95D0597A0D1E6B0D00E28FAE /* VLLayout.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
