@@ -492,18 +492,36 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 
 - (void)drawBackgroundForSystem:(int)system
 {
-	const float kSystemY 	= [self systemY:system];
-	const float kLineW		= (*fLayout)[system].SystemWidth();
+	const VLSong * 	song	   	= [self song];
+	const float 	kSystemY 	= [self systemY:system];
+	const float 	kLineW		= (*fLayout)[system].SystemWidth();
+	const bool		kAltColors  = song->fMeasures[fLayout->FirstMeasure(system)].fPropIdx & 1;
 
 	NSArray * colors = [NSColor controlAlternatingRowBackgroundColors];
+	NSColor * bgColor= [colors objectAtIndex:0];
+	NSColor * fgColor= [colors objectAtIndex:1];
+	if (kAltColors) {
+		float hue, saturation, brightness, alpha;
+		
+		[[fgColor colorUsingColorSpaceName:NSCalibratedRGBColorSpace] getHue:&hue saturation:&saturation 
+				 brightness:&brightness alpha:&alpha];
+
+		if (saturation) // Color
+			hue = fmod(hue-0.5f, 1.0f);
+		else 			// Black & white
+			brightness -= 0.05f;
+
+		fgColor = [NSColor colorWithCalibratedHue:hue saturation:saturation 
+						   brightness:brightness alpha:alpha];
+	}
 	[NSGraphicsContext saveGraphicsState];
-	[[colors objectAtIndex:1] setFill];
+	[fgColor setFill];
 	[NSBezierPath fillRect:
 	   NSMakeRect(kLineX, kSystemY-kSystemBaseline, 
 				  kLineW, fNumStanzas*kLyricsH)];
 	[NSBezierPath fillRect:
 	   NSMakeRect(kLineX, kSystemY+kChordY, kLineW, kChordH)];
-	[[colors objectAtIndex:0] setFill];
+	[bgColor setFill];
 	[NSBezierPath fillRect:
 	   NSMakeRect(kLineX, kSystemY-kSystemBaseline+fNumStanzas*kLyricsH, 
 				  kLineW, kSystemBaseline+kChordY-fNumStanzas*kLyricsH)];
