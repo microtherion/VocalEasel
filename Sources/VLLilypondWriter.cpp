@@ -58,6 +58,10 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 	bool	repeat;
 		
 	fAccum.clear();
+	if (meas.fBreak == VLMeasure::kNewPage)
+		fAccum += fIndent+"\\pageBreak\n";
+	else if (meas.fBreak == VLMeasure::kNewSystem)
+		fAccum += fIndent+"\\break\n";
 	if (fSong->DoesEndRepeat(m)) {
 		fAccum += "}\n";
 		fIndent = "";

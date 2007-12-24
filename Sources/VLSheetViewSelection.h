@@ -21,6 +21,9 @@
 
 - (IBAction)editRepeat:(id)sender;
 - (IBAction)editRepeatEnding:(id)sender;
+- (IBAction)insertStartCoda:(id)sender;
+- (IBAction)insertJumpToCoda:(id)sender;
+- (IBAction)insertBreak:(id)sender;
 
 @end
 

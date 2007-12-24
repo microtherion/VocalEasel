@@ -78,6 +78,15 @@ static VLSong	sPasteboard;
 			return YES;
 		} else
 			return NO;
+	else if (action == @selector(insertBreak:))
+		if (fSelStart == fSelEnd && fSelStart > 0) {
+			VLSong * song = [self song];
+			[item setState:fSelStart < song->fMeasures.size() 
+				  && song->fMeasures[fSelStart].fBreak == [item tag]];
+
+			return YES;
+		} else
+			return NO;
 	else 
 		return [self validateUserInterfaceItem:item];
 }
@@ -258,6 +267,20 @@ static VLSong	sPasteboard;
 		song->fCoda = -1;
 	else
 		song->fCoda = fSelStart;
+	[self setNeedsDisplay:YES];
+	[[self document] didChangeSong];
+}
+
+- (IBAction)insertBreak:(id)sender
+{
+	[[self document] willChangeSong];
+	VLSong * 	song = [self song];
+	VLMeasure & meas = song->fMeasures[fSelStart];
+	if (meas.fBreak == [sender tag])
+		meas.fBreak = 0;
+	else
+		meas.fBreak = [sender tag];
+	fNeedsRecalc = kRecalc;
 	[self setNeedsDisplay:YES];
 	[[self document] didChangeSong];
 }
