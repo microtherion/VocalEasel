@@ -114,22 +114,78 @@ void VLTextLayout::AddSyllable(const VLSyllable & syll, float x)
 typedef std::vector<VLLayoutSyll>::iterator	VLSyllIter;
 
 #define NARROW_SPACE "\xE2\x80\x89"
+#define PRE_DASH     "-" NARROW_SPACE
+#define POST_DASH    NARROW_SPACE "-"
 
 void VLTextLayout::DrawLine(float y)
 {
-	VLSyllIter 	syll = fSyllables.begin();
-	VLSyllIter 	end  = fSyllables.end();
+	if (fSyllables.empty())
+		return;
+
+	const float kDashW	= fRegularFont->Width("-");
+	const float kSpaceW = fRegularFont->Width(NARROW_SPACE);
+	VLSyllIter 	syll 	= fSyllables.begin();
+	VLSyllIter 	end  	= fSyllables.end();
+	float 		nextW   = fRegularFont->Width(syll->fText.c_str());
+	float		nextX	= syll->fX-0.5*nextW;
+
+	if (syll->fKind & VLSyllable::kHasPrev)
+		fRegularFont->Draw(nextX-fRegularFont->Width(PRE_DASH), y, PRE_DASH);
 
 	while (syll != end) {
 		std::string text = syll->fText;
-		float 	  	x	 = syll->fX-0.5*fRegularFont->Width(text.c_str());
-		if (syll == fSyllables.begin() && syll->fKind & VLSyllable::kHasPrev)
-			text = "-" NARROW_SPACE + text;
-		if (syll->fKind & VLSyllable::kHasNext)
-			text += NARROW_SPACE "-";
+		VLSyllIter  next = syll+1;
+		float       curW = nextW;
+		float		curX = nextX;
 
-		fRegularFont->Draw(x, y, text.c_str());
+		while (next != end) {
+			nextW 	= fRegularFont->Width(next->fText.c_str());
+			nextX 	= next->fX-0.5*nextW;
+			if (next->fKind & VLSyllable::kHasPrev) {
+				if (curX+curW+kDashW < nextX) {
+					//
+					// Plenty of space, draw dashes
+					//
+					float dashSpace = 0.5*(nextX-curX-curW-kDashW);
+					fRegularFont->Draw(curX, y, text.c_str());
+					fRegularFont->Draw(curX+curW+dashSpace, y, "-");
 
-		++syll;
+					goto nextText;
+				} else {
+					//
+					// Fuse & continue
+					//
+					text   += next->fText;
+					curW 	= fRegularFont->Width(text.c_str());
+					if (++next != end) {
+						nextW	= fRegularFont->Width(next->fText.c_str());
+						nextX 	= next->fX-0.5*nextW;						
+					}
+				}
+			} else {
+				if (curX+curW+kSpaceW < nextX) {
+					//
+					// Enough space, draw regular
+					//
+					fRegularFont->Draw(curX, y, text.c_str());
+				} else {
+					//
+					// Tight space, draw narrow & adjust
+					//
+					fNarrowFont->Draw(curX, y, text.c_str());
+					text += NARROW_SPACE;
+					nextX = std::max(nextX, curX+fNarrowFont->Width(text.c_str()));
+				}
+				goto nextText;
+			}
+		}
+		//
+		// At end of line
+		//
+		if ((end-1)->fKind & VLSyllable::kHasNext)
+			text += POST_DASH;
+		fRegularFont->Draw(curX, y, text.c_str());
+	nextText:
+		syll = next;
 	}
 }
