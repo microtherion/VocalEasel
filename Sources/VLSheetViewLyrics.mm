@@ -100,17 +100,50 @@
 
 @end
 
+class VLCocoaFontHandler : public VLFontHandler {
+public:
+	VLCocoaFontHandler(NSString * name, float size);
+
+	virtual void 	Draw(float x, float y, const char * utf8Text);
+	virtual float	Width(const char * utf8Text);
+private:
+	NSDictionary *	fTextAttr;
+};
+
+VLCocoaFontHandler::VLCocoaFontHandler(NSString * name, float size)
+{
+	NSFont * font = [NSFont fontWithName:name size:size];
+	
+	fTextAttr = 
+		[[NSDictionary alloc] initWithObjectsAndKeys:
+			font, NSFontAttributeName, nil];
+}
+
+void VLCocoaFontHandler::Draw(float x, float y, const char * utf8Text)
+{
+	NSString * t = [NSString stringWithUTF8String:utf8Text];
+	[t drawAtPoint:NSMakePoint(x,y) withAttributes:fTextAttr];
+}
+
+float VLCocoaFontHandler::Width(const char * utf8Text)
+{
+	NSString * t = [NSString stringWithUTF8String:utf8Text];
+	NSSize	   sz= [t sizeWithAttributes:fTextAttr];
+
+	return sz.width;
+}
+
 @implementation VLSheetView (Lyrics)
 
 - (void) drawLyricsForSystem:(int)system stanza:(size_t)stanza
 {
-	static NSDictionary * sLyricsFont 	 = nil;
-	if (!sLyricsFont)
-		sLyricsFont =
-			[[NSDictionary alloc] initWithObjectsAndKeys:
-				[NSFont fontWithName: @"Helvetica" size: 12],
-                NSFontAttributeName,
-				nil];
+	static VLFontHandler * sRegularFont  = nil;
+	static VLFontHandler * sNarrowFont 	 = nil;
+	if (!sRegularFont) {
+		sRegularFont = new VLCocoaFontHandler(@"Arial", 12.0f);
+		sNarrowFont  = new VLCocoaFontHandler(@"ArialNarrow", 12.0f);
+	}
+	VLTextLayout			text(sRegularFont, sNarrowFont);
 
 	const VLSong * 			song 	  	= [self song];
 	const float 			kSystemY  	= [self systemY:system];
@@ -136,22 +169,14 @@
 			) {
 				;
 			} else {
-				NSString * syll 	= 
-					[NSString stringWithUTF8String:
-								  note->fLyrics[stanza-1].fText.c_str()];
-				NSSize		sz			= 
-					[syll sizeWithAttributes:sLyricsFont];
-				NSPoint 	syllLoc  	=
-					NSMakePoint([self noteXInMeasure:measIdx at:at]
-								- 0.5f*sz.width, 
-								kSystemY+kLyricsY-stanza*kLyricsH);
-				if (note->fLyrics[stanza-1].fKind & VLSyllable::kHasNext)
-					syll = [syll stringByAppendingString:@" -"];
-				[syll drawAtPoint:syllLoc withAttributes:sLyricsFont];
+				text.AddSyllable(note->fLyrics[stanza-1], 
+								 [self noteXInMeasure:measIdx at:at]);
 			}
 			at += note->fDuration;
 		}
 	}
+
+	text.DrawLine(kSystemY+kLyricsY-stanza*kLyricsH);
 }
 
 - (void) editLyrics

@@ -91,3 +91,45 @@ float VLLayout::NotePosition(int measure, VLFraction at) const
 	}
 	return 0.0f;
 }
+
+VLFontHandler::~VLFontHandler()
+{
+}
+
+VLTextLayout::VLTextLayout(VLFontHandler * regular, VLFontHandler * narrow)
+	: fRegularFont(regular), fNarrowFont(narrow)
+{
+}
+
+void VLTextLayout::AddSyllable(const VLSyllable & syll, float x)
+{
+	VLLayoutSyll ls;
+
+	static_cast<VLSyllable &>(ls)    = syll;
+	ls.fX = x;
+
+	fSyllables.push_back(ls);
+}
+
+typedef std::vector<VLLayoutSyll>::iterator	VLSyllIter;
+
+#define NARROW_SPACE "\xE2\x80\x89"
+
+void VLTextLayout::DrawLine(float y)
+{
+	VLSyllIter 	syll = fSyllables.begin();
+	VLSyllIter 	end  = fSyllables.end();
+
+	while (syll != end) {
+		std::string text = syll->fText;
+		float 	  	x	 = syll->fX-0.5*fRegularFont->Width(text.c_str());
+		if (syll == fSyllables.begin() && syll->fKind & VLSyllable::kHasPrev)
+			text = "-" NARROW_SPACE + text;
+		if (syll->fKind & VLSyllable::kHasNext)
+			text += NARROW_SPACE "-";
+
+		fRegularFont->Draw(x, y, text.c_str());
+
+		++syll;
+	}
+}

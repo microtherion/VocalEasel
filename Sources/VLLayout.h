@@ -43,6 +43,29 @@ public:
 	float NotePosition(int measure, VLFraction at) const;
 };
 
+class VLFontHandler {
+public:
+	virtual void 	Draw(float x, float y, const char * utf8Text) = 0;
+	virtual float	Width(const char * utf8Text) = 0;
+	virtual ~VLFontHandler();
+};
+
+struct VLLayoutSyll : public VLSyllable {
+	float	fX;
+};
+
+class VLTextLayout {
+public:
+	VLTextLayout(VLFontHandler * regular, VLFontHandler * narrow);
+
+	void AddSyllable(const VLSyllable & syll, float x);
+	void DrawLine(float y);
+private:
+	VLFontHandler *				fRegularFont;
+	VLFontHandler *				fNarrowFont;
+	std::vector<VLLayoutSyll>	fSyllables;
+};
+
 // Local Variables:
 // mode:C++
 // End:
