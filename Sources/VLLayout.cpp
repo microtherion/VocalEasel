@@ -29,8 +29,9 @@ VLSystemLayout::VLSystemLayout(const VLProperties & prop, float width, int maxMe
 
 static size_t NextBreak(const VLSong & song, size_t after=0)
 {
+	size_t propIdx = song.fMeasures[after].fPropIdx;
 	while (++after < song.fMeasures.size())
-		if (song.fMeasures[after].fBreak)
+		if (song.fMeasures[after].fBreak || song.fMeasures[after].fPropIdx != propIdx)
 			return after;
 	return song.fMeasures.size();
 }

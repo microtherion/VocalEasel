@@ -80,9 +80,13 @@ static VLSong	sPasteboard;
 			return NO;
 	else if (action == @selector(insertBreak:))
 		if (fSelStart == fSelEnd && fSelStart > 0) {
-			VLSong * song = [self song];
-			[item setState:fSelStart < song->fMeasures.size() 
-				  && song->fMeasures[fSelStart].fBreak == [item tag]];
+			VLSong * 	song  	= [self song];
+			bool 		checked = fSelStart < song->fMeasures.size();
+			if ([item tag] == 256)
+				checked = checked && song->DoesBeginSection(fSelStart);
+			else
+				checked = checked && song->fMeasures[fSelStart].fBreak == [item tag];
+			[item setState:checked];
 
 			return YES;
 		} else
@@ -275,11 +279,18 @@ static VLSong	sPasteboard;
 {
 	[[self document] willChangeSong];
 	VLSong * 	song = [self song];
-	VLMeasure & meas = song->fMeasures[fSelStart];
-	if (meas.fBreak == [sender tag])
-		meas.fBreak = 0;
-	else
-		meas.fBreak = [sender tag];
+	if ([sender tag] == 256) {
+		if (song->DoesBeginSection(fSelStart))
+			song->DelSection(fSelStart);
+		else
+			song->AddSection(fSelStart);
+	} else {
+		VLMeasure & meas = song->fMeasures[fSelStart];
+		if (meas.fBreak == [sender tag])
+			meas.fBreak = 0;
+		else
+			meas.fBreak = [sender tag];
+	}
 	fNeedsRecalc = kRecalc;
 	[self setNeedsDisplay:YES];
 	[[self document] didChangeSong];

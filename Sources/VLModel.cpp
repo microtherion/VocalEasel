@@ -1985,6 +1985,36 @@ VLFract VLSong::TiedDuration(size_t measure)
 	return total;
 }
 
+bool VLSong::DoesBeginSection(size_t measure)
+{
+	return measure && measure < fMeasures.size()
+	  && fMeasures[measure-1].fPropIdx!=fMeasures[measure].fPropIdx;
+}
+
+void VLSong::AddSection(size_t measure)
+{
+	int splitIdx = fMeasures[measure].fPropIdx;
+
+	VLProperties newProp = fProperties[splitIdx];
+	if (splitIdx < fProperties.size()-1) 
+		fProperties.insert(fProperties.begin()+splitIdx, newProp);
+	else
+		fProperties.push_back(newProp);
+	while (measure < fMeasures.size())
+		++fMeasures[measure++].fPropIdx;
+}
+
+void VLSong::DelSection(size_t measure)
+{
+	int delIdx = fMeasures[measure].fPropIdx;
+
+	fProperties.erase(fProperties.begin()+delIdx);
+	while (measure < fMeasures.size())
+		--fMeasures[measure++].fPropIdx;
+}
+
+//////////////////////// VLSongVisitor ////////////////////////////////
+
 VLSongVisitor::~VLSongVisitor()
 {
 }

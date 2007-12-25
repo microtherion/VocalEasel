@@ -360,7 +360,6 @@ public:
 	void	PasteMeasures(size_t beginMeasure, const VLSong & measures, 
 						  int mode = kInsert);
 	void	DeleteMeasures(size_t beginMeasure, size_t endMeasure, int mode = kInsert);
-
 	size_t	CountMeasures() const { return fMeasures.size(); }
 	size_t	EmptyEnding() const;
 	size_t  CountStanzas() const;
@@ -373,6 +372,10 @@ public:
 	const VLProperties & Properties(size_t measure) const {
 		return fProperties[fMeasures[measure].fPropIdx];
 	}
+
+	bool 	DoesBeginSection(size_t measure);
+	void	AddSection(size_t measure);
+	void	DelSection(size_t measure);
 private:
 	void	AddMeasure();
 };
