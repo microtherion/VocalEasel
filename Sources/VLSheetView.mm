@@ -262,8 +262,8 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	NSSize sz 	=  [scroll contentSize];
 
 	delete fLayout;
-	fLayout = new VLLayout(*[self song], sz.width / fDisplayScale);
-	sz.height		= std::max(2, fLayout->NumSystems())*kSystemH;
+	fLayout 	= new VLLayout(*[self song], sz.width / fDisplayScale);
+	sz.height	= std::max(2, fLayout->NumSystems())*kSystemH*fDisplayScale;
 
 	NSSize boundsSz	= {sz.width / fDisplayScale, sz.height / fDisplayScale};
 
