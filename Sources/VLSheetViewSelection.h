@@ -12,6 +12,7 @@
 
 - (void)editSelection;
 - (void)adjustSelection:(NSEvent *)event;
+- (NSRange)sectionsInSelection;
 
 - (BOOL)validateUserInterfaceItem:(id)item;
 - (IBAction)cut:(id)sender;

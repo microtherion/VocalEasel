@@ -591,7 +591,8 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 		return;
 
 	int key = [[sender selectedItem] tag];
-	[[self document] setKey:key transpose:returnCode==NSAlertDefaultReturn];
+	[[self document] setKey:key transpose:returnCode==NSAlertDefaultReturn
+					 inSections:[self sectionsInSelection]];
 	fNeedsRecalc = kRecalc;
 	[self setNeedsDisplay: YES];	
 }
@@ -617,7 +618,8 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 {
 	int time = [[sender selectedItem] tag];
 
-	[[self document] setTimeNum: time >> 8 denom: time & 0xFF];
+	[[self document] setTimeNum: time >> 8 denom: time & 0xFF
+					 inSections:[self sectionsInSelection]];
 	fNeedsRecalc = kRecalc;
 	[self setNeedsDisplay: YES];	
 }
@@ -626,7 +628,7 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 {
 	int div = [[sender selectedItem] tag];
 
-	[[self document] setDivisions: div];
+	[[self document] setDivisions: div inSections:[self sectionsInSelection]];
 	fNeedsRecalc = kRecalc;
 	[self setNeedsDisplay: YES];	
 }

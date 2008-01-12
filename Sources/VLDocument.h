@@ -55,9 +55,9 @@ enum {
 - (int)			repeatVolta;
 - (bool)		brandNew;
 
-- (void)		setKey:(int)key transpose:(BOOL)transpose;
-- (void)		setTimeNum:(int)num denom:(int)denom;
-- (void)		setDivisions:(int)divisions;
+- (void)		setKey:(int)key transpose:(BOOL)transpose inSections:(NSRange)sections;
+- (void)		setTimeNum:(int)num denom:(int)denom inSections:(NSRange)sections;
+- (void)		setDivisions:(int)divisions inSections:(NSRange)sections;
 - (void) 		setRepeatVolta:(int)repeatVolta;
 
 - (IBAction) showOutput:(id)sender;

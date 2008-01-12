@@ -896,9 +896,9 @@ static void TransposePinned(int8_t & pitch, int semi)
 		pitch 		  = octave+pitchInOctave;
 }
 
-void VLSong::ChangeKey(int newKey, int newMode, bool transpose)
+void VLSong::ChangeKey(int section, int newKey, int newMode, bool transpose)
 {
-	VLProperties & prop = fProperties.front();
+	VLProperties & prop = fProperties[section];
 	int semi 	= 7*(newKey-prop.fKey) % 12;
 	prop.fKey 	= newKey;
 	prop.fMode	= newMode;	
@@ -906,6 +906,9 @@ void VLSong::ChangeKey(int newKey, int newMode, bool transpose)
 		return;
 
 	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
+		if (fMeasures[measure].fPropIdx != section)
+			continue;
+
 		VLChordList::iterator i = fMeasures[measure].fChords.begin();
 		VLChordList::iterator e = fMeasures[measure].fChords.end();
 
@@ -918,6 +921,9 @@ void VLSong::ChangeKey(int newKey, int newMode, bool transpose)
 		int8_t low		= 127;
 		int8_t high	= 0;
 		for (size_t measure=0; measure<fMeasures.size(); ++measure) {
+			if (fMeasures[measure].fPropIdx != section)
+				continue;
+
 			VLNoteList::iterator i = fMeasures[measure].fMelody.begin();
 			VLNoteList::iterator e = fMeasures[measure].fMelody.end();
 
@@ -1026,101 +1032,137 @@ VLFraction VLRealigner::operator()(VLFraction at)
 	return quarters + fTable[at.fNum / at.fDenom]*fNewFrac;
 }
 
-void VLSong::ChangeDivisions(int newDivisions)
+static VLChordList Realign(const VLChordList & chords, 
+						   const VLProperties& fromProp,
+						   const VLProperties& toProp)
 {
-	VLProperties & prop = fProperties.front();
-	if (newDivisions == prop.fDivisions)
-		return; // Unchanged
-	
-	VLRealigner realign(prop.fDivisions, newDivisions);
-	//
-	// Only melody needs to be realigned, chords are already quarter notes
-	//
-	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
-		VLNoteList newMelody;
+	if (fromProp.fTime == toProp.fTime)
+		return chords;
+	if (fromProp.fTime < toProp.fTime) {
+		VLChord	rchord(toProp.fTime-fromProp.fTime);
+		VLChordList newChords(chords);
+		newChords.push_back(rchord);
+
+		return newChords;
+	} else {
+		VLChordList::const_iterator i = chords.begin();
+		VLChordList::const_iterator e = chords.end();
+		VLFraction 	at(0);
+		VLChordList	newChords;
+
+		for (; i!=e; ++i) {
+			VLChord	c = *i;
+			if (at+c.fDuration >= toProp.fTime) {
+				if (at < toProp.fTime) {
+					c.fDuration = toProp.fTime-at;
+					newChords.push_back(c);
+				}
+				break;
+			} else {
+				newChords.push_back(c);
+				at += c.fDuration;
+			}
+		}
+
+		return newChords;
+	}
+}
+
+static VLNoteList Realign(const VLNoteList & notes, 
+						  const VLProperties& fromProp,
+						  const VLProperties& toProp)
+{
+	if (fromProp.fTime == toProp.fTime && fromProp.fDivisions == toProp.fDivisions)
+		return notes;
+	VLNoteList newNotes(notes);
+	if (fromProp.fTime < toProp.fTime) {
+		VLNote	rest(toProp.fTime-fromProp.fTime);
+		newNotes.push_back(rest);
+	} else if (fromProp.fTime > toProp.fTime) {
+		VLNoteList::const_iterator i = notes.begin();
+		VLNoteList::const_iterator e = notes.end();
+		VLFraction 	at(0);
+
+		for (; i!=e; ++i) {
+			VLNote	n = *i;
+			if (at+n.fDuration >= toProp.fTime) {
+				if (at < toProp.fTime) {
+					n.fDuration = toProp.fTime-at;
+					newNotes.push_back(n);
+				}
+				break;
+			} else {
+				newNotes.push_back(n);
+				at += n.fDuration;
+			}
+		}
+	}	
+	if (fromProp.fDivisions == toProp.fDivisions) {
+		VLRealigner realign(fromProp.fDivisions, toProp.fDivisions);
+
+		VLNoteList alignedNotes;
 		VLFraction at(0);
 		VLFraction lastAt;
 
-		VLNoteList::iterator i = fMeasures[measure].fMelody.begin();
-		VLNoteList::iterator e = fMeasures[measure].fMelody.end();
+		VLNoteList::iterator i = newNotes.begin();
+		VLNoteList::iterator e = newNotes.end();
 
 		for (; i!=e; ++i) {
 			VLLyricsNote n 		= *i;
 			VLFraction 	 newAt 	= realign(at);
-			if (newMelody.empty()) {
-				newMelody.push_back(n);
+			if (alignedNotes.empty()) {
+				alignedNotes.push_back(n);
 				lastAt	= newAt;
 			} else if (newAt != lastAt) {
-				newMelody.back().fDuration = newAt-lastAt;
-				newMelody.push_back(n);
+				alignedNotes.back().fDuration = newAt-lastAt;
+				alignedNotes.push_back(n);
 				lastAt	= newAt;
 			}
 			at += n.fDuration;
 		}
 		if (lastAt == at)
-			newMelody.pop_back();
+			alignedNotes.pop_back();
 		else
-			newMelody.back().fDuration = at-lastAt;
-		fMeasures[measure].fMelody.swap(newMelody);
-	}
-	prop.fDivisions = newDivisions;
+			alignedNotes.back().fDuration = at-lastAt;
+
+		return alignedNotes;
+	} else
+		return newNotes;
 }
 
-void VLSong::ChangeTime(VLFraction newTime)
+void VLSong::ChangeDivisions(int section, int newDivisions)
 {
-	VLProperties & prop = fProperties.front();
+	VLProperties & prop = fProperties[section];
+	if (prop.fDivisions == newDivisions)
+		return; // Unchanged
+	VLProperties newProp = prop;
+	newProp.fDivisions   = newDivisions;
+
+	//
+	// Only melody needs to be realigned, chords are already quarter notes
+	//
+	for (size_t measure=0; measure<fMeasures.size(); ++measure) 
+		if (fMeasures[measure].fPropIdx == section)
+			fMeasures[measure].fMelody = 
+				Realign(fMeasures[measure].fMelody, prop, newProp);
+	prop = newProp;
+}
+
+void VLSong::ChangeTime(int section, VLFraction newTime)
+{
+	VLProperties & prop = fProperties[section];
 	if (prop.fTime == newTime)
 		return; // No change
-	VLChord			rchord(newTime-prop.fTime);
-	VLLyricsNote	rnote(newTime-prop.fTime);
-	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
-		if (newTime < prop.fTime) {
-			VLChordList::iterator i = fMeasures[measure].fChords.begin();
-			VLChordList::iterator e = fMeasures[measure].fChords.end();
-			VLFraction 	at(0);
-			VLChordList	newChords;
-
-			for (; i!=e; ++i) {
-				VLChord	c = *i;
-				if (at+c.fDuration >= newTime) {
-					if (at < newTime) {
-						c.fDuration = newTime-at;
-						newChords.push_back(c);
-					}
-					break;
-				} else {
-					newChords.push_back(c);
-					at += c.fDuration;
-				}
-			}
-			fMeasures[measure].fChords.swap(newChords);
-		} else
-			fMeasures[measure].fChords.push_back(rchord);
-
-		if (newTime < prop.fTime) {
-			VLNoteList::iterator i = fMeasures[measure].fMelody.begin();
-			VLNoteList::iterator e = fMeasures[measure].fMelody.end();
-			VLFraction 	at(0);
-			VLNoteList	newMelody;
-
-			for (; i!=e; ++i) {
-				VLLyricsNote	n = *i;
-				if (at+n.fDuration >= newTime) {
-					if (at < newTime) {
-						n.fDuration = newTime-at;
-						newMelody.push_back(n);
-					}
-					break;
-				} else {
-					newMelody.push_back(n);
-					at += n.fDuration;
-				}
-			}
-			fMeasures[measure].fMelody.swap(newMelody);
-		} else
-			fMeasures[measure].fMelody.push_back(rnote);
-	}
-	prop.fTime	= newTime;
+	VLProperties newProp = prop;
+	newProp.fTime   = newTime;
+	for (size_t measure=0; measure<fMeasures.size(); ++measure) 
+		if (fMeasures[measure].fPropIdx == section) {
+			fMeasures[measure].fChords = 
+				Realign(fMeasures[measure].fChords, prop, newProp);
+			fMeasures[measure].fMelody = 
+				Realign(fMeasures[measure].fMelody, prop, newProp);
+		}
+	prop = newProp;
 }
 
 size_t VLSong::EmptyEnding() const
@@ -1867,12 +1909,34 @@ void VLSong::PasteMeasures(size_t beginMeasure, const VLSong & measures, int mod
 {
 	size_t numMeas		= measures.CountMeasures();
 	size_t nextMeasure 	= mode==kInsert ? beginMeasure : beginMeasure+numMeas;
-	//
-	// Ignore properties for now. We don't use multiple properties yet.
-	//
+
 	if (mode == kInsert) {
+		int propAt     = fMeasures[beginMeasure].fPropIdx;
+		int propOffset = 0;
+		VLPropertyList::const_iterator	beginProp = measures.fProperties.begin();
+		VLPropertyList::const_iterator	endProp	  = measures.fProperties.end();
+		
+		if (beginMeasure) {
+			propOffset = fMeasures[beginMeasure-1].fPropIdx;
+			if (fProperties[propOffset] == beginProp[0])
+				++beginProp;
+			else 
+				++propOffset;
+			if (fProperties[propAt] == endProp[-1])
+				--endProp;
+		}
+		int postOffset = endProp - beginProp;
+		
+		fProperties.insert(fProperties.begin()+propAt, beginProp, endProp);
 		fMeasures.insert(fMeasures.begin()+beginMeasure, 
 						 measures.fMeasures.begin(), measures.fMeasures.end());
+		if (propOffset)
+			for (size_t meas=beginMeasure; meas<beginMeasure+numMeas; ++meas)
+				fMeasures[meas].fPropIdx += propOffset;
+		if (postOffset)
+			for (size_t meas=beginMeasure+numMeas; meas<fMeasures.size(); ++meas)	
+				fMeasures[meas].fPropIdx += postOffset;
+			
 		for (size_t r=0; r<fRepeats.size(); ++r) {
 			VLRepeat & repeat = fRepeats[r];
 			for (size_t e=0; e<repeat.fEndings.size(); ++e) {
@@ -1904,9 +1968,13 @@ void VLSong::PasteMeasures(size_t beginMeasure, const VLSong & measures, int mod
 			const VLMeasure &	srcMeas = measures.fMeasures[m];
 			VLMeasure &			dstMeas = fMeasures[beginMeasure+m];
 			if (mode & kOverwriteChords)
-				dstMeas.fChords = srcMeas.fChords;
+				dstMeas.fChords = Realign(srcMeas.fChords, 
+										  measures.fProperties[srcMeas.fPropIdx],
+										  fProperties[dstMeas.fPropIdx]);
 			if (mode & kOverwriteMelody)
-				dstMeas.fMelody = srcMeas.fMelody;			
+				dstMeas.fMelody = Realign(srcMeas.fMelody, 
+										  measures.fProperties[srcMeas.fPropIdx],
+										  fProperties[dstMeas.fPropIdx]);
 		}
 	}
 }

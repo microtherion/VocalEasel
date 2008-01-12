@@ -61,6 +61,27 @@ static VLSong	sPasteboard;
 	fCursorRegion = kRegionMeasure;
 }
 
+- (NSRange)sectionsInSelection
+{
+	NSRange sections;
+	int firstSection;
+	int lastSection;
+	VLSong * song = [self song];
+
+	if (fSelEnd > -1) {
+		firstSection = song->fMeasures[fSelStart].fPropIdx;
+		lastSection = fSelEnd > fSelStart+1 ?
+			song->fMeasures[fSelEnd].fPropIdx : firstSection;
+	} else {
+		firstSection = 0;
+		lastSection  = song->fMeasures.back().fPropIdx;
+	}
+	sections.location = firstSection;
+	sections.length   = lastSection-firstSection+1;
+
+	return sections;
+}
+
 - (BOOL)validateMenuItem:(id) item
 {
 	SEL action = [item action];

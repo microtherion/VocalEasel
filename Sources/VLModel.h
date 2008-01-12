@@ -269,17 +269,21 @@ struct VLRepeat {
 	std::vector<Ending>	fEndings;
 };
 
+typedef std::vector<VLProperties>	VLPropertyList;
+typedef std::vector<VLMeasure>		VLMeasureList;
+typedef std::vector<VLRepeat>		VLRepeatList;
+
 class VLSong {
 public:
 	VLSong(bool initialize = true);
 	void swap(VLSong & other);
 	void clear();
 	
-	std::vector<VLProperties>	fProperties;
-	std::vector<VLMeasure>		fMeasures;
-	std::vector<VLRepeat>		fRepeats;
-	int8_t						fGoToCoda;
-	int8_t						fCoda;
+	VLPropertyList	fProperties;
+	VLMeasureList	fMeasures;
+	VLRepeatList	fRepeats;
+	int8_t			fGoToCoda;
+	int8_t			fCoda;
 
 	//
 	// Iterate over measures in performance order
@@ -340,9 +344,9 @@ public:
 	bool DoesTieWithPrevRepeat(size_t measure) const;
 	bool DoesTieWithNextRepeat(size_t measure) const;
 	bool IsNonEmpty() const;
-	void ChangeKey(int newKey, int newMode, bool transpose);
-	void ChangeDivisions(int newDivisions);
-	void ChangeTime(VLFraction newTime);
+	void ChangeKey(int section, int newKey, int newMode, bool transpose);
+	void ChangeDivisions(int section, int newDivisions);
+	void ChangeTime(int section, VLFraction newTime);
 
 	bool FindWord(size_t stanza, size_t & measure, VLFraction & at);
 	bool PrevWord(size_t stanza, size_t & measure, VLFraction & at);

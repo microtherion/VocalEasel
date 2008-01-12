@@ -203,11 +203,12 @@
 	return [NSNumber numberWithInt: (prop.fKey << 8) | (prop.fMode & 0xFF)];
 }
 
-- (void) setKey:(int)key transpose:(BOOL)transpose
+- (void) setKey:(int)key transpose:(BOOL)transpose inSections:(NSRange)sections
 {
 	[self willChangeSong];
 	[self willChangeValueForKey:@"songKey"];
-	song->ChangeKey(key>>8, key & 0xFF, transpose);
+	while (sections.length-- > 0)
+		song->ChangeKey(sections.location++, key>>8, key & 0xFF, transpose);
 	[self didChangeValueForKey:@"songKey"];
 	[self didChangeSong];
 }
@@ -219,11 +220,12 @@
 	return [NSNumber numberWithInt: (prop.fTime.fNum << 8) | prop.fTime.fDenom];
 }
 
-- (void) setTimeNum:(int)num denom:(int)denom
+- (void) setTimeNum:(int)num denom:(int)denom inSections:(NSRange)sections
 {
 	[self willChangeSong];
 	[self willChangeValueForKey:@"songTime"];
-	song->ChangeTime(VLFraction(num, denom));
+	while (sections.length-- > 0)
+		song->ChangeTime(sections.location++, VLFraction(num, denom));
 	[self didChangeValueForKey:@"songTime"];
 	[self didChangeSong];
 }
@@ -235,12 +237,13 @@
 	return [NSNumber numberWithInt: prop.fDivisions];	
 }
 
-- (void) setDivisions:(int)divisions
+- (void) setDivisions:(int)divisions inSections:(NSRange)sections
 {
 	[self willChangeSong];
 	[self willChangeValueForKey:@"songDivisions"];
 	[self willChangeSong];
-	song->ChangeDivisions(divisions);
+	while (sections.length-- > 0)
+		song->ChangeDivisions(sections.location++, divisions);
 	[self didChangeValueForKey:@"songDivisions"];
 	[self didChangeSong];
 }
