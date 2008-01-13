@@ -1097,7 +1097,7 @@ static VLNoteList Realign(const VLNoteList & notes,
 			}
 		}
 	}	
-	if (fromProp.fDivisions == toProp.fDivisions) {
+	if (fromProp.fDivisions != toProp.fDivisions) {
 		VLRealigner realign(fromProp.fDivisions, toProp.fDivisions);
 
 		VLNoteList alignedNotes;
