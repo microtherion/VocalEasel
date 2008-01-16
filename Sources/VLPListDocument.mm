@@ -321,6 +321,10 @@ advanceAt:
 			song->fMeasures[measNo].fBreak |= VLMeasure::kNewSystem;
 		if ([[mdict objectForKey:@"new-page"] boolValue])
 			song->fMeasures[measNo].fBreak |= VLMeasure::kNewPage;
+		if (NSNumber * mPx = [mdict objectForKey:@"properties"])
+			song->fMeasures[measNo].fPropIdx= 
+				static_cast<size_t>([mPx intValue]);
+		
 		if (NSDictionary * beginRep = [mdict objectForKey:@"begin-repeat"]) {
 			VLRepeat 			rep;
 			VLRepeat::Ending	ending(measNo, measNo, 0);

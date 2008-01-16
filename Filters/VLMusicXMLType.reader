@@ -354,7 +354,7 @@ class MusicXMLListener
       case tag
       when 'attributes' 
         if @prop != @props.last
-          @props.push(@prop)
+          @props.push(@prop.dup)
         end
       when 'note' 
         if @chord
