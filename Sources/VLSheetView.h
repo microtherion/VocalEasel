@@ -91,6 +91,9 @@ enum VLRecalc {
 	IBOutlet id			fRepeatMsg;
 	IBOutlet id			fEndingMsg;
 	IBOutlet id			fGrooveMenu;
+	IBOutlet id			fKeyMenu;
+	IBOutlet id			fTimeMenu;
+	IBOutlet id			fDivisionMenu;
 }
 
 - (IBAction) setKey:(id)sender;

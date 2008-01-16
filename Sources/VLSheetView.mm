@@ -983,6 +983,8 @@ static int8_t sSharpAcc[] = {
 	[doc addObserver:self];
 	[doc addObserver:self forKeyPath:@"song" options:0 context:nil];
 	[doc addObserver:self forKeyPath:@"songKey" options:0 context:nil];	
+	[doc addObserver:self forKeyPath:@"songTime" options:0 context:nil];	
+	[doc addObserver:self forKeyPath:@"songDivisions" options:0 context:nil];	
 	[doc addObserver:self forKeyPath:@"songGroove" options:0 context:nil];	
 	[self setGrooveMenu:[doc valueForKey:@"songGroove"]];
 
@@ -990,12 +992,16 @@ static int8_t sSharpAcc[] = {
 	fNumTopLedgers 	= std::max<int>(song->CountTopLedgers(), 1);
 	fNumBotLedgers 	= std::max<int>(song->CountBotLedgers(), 1);
 	fNumStanzas    	= std::max<int>(song->CountStanzas(), 2);
+
+	[self updateMenus];
 }
 
 - (void)removeObservers:(id)target
 {
 	[target removeObserver:self forKeyPath:@"song"];
 	[target removeObserver:self forKeyPath:@"songKey"];	
+	[target removeObserver:self forKeyPath:@"songTime"];	
+	[target removeObserver:self forKeyPath:@"songDivisions"];	
 	[target removeObserver:self forKeyPath:@"songGroove"];	
 }
 
@@ -1004,8 +1010,13 @@ static int8_t sSharpAcc[] = {
 	if ([keyPath isEqual:@"songKey"]) {
 		fNeedsRecalc = kRecalc;
 		[self setNeedsDisplay: YES];
+		[self updateKeyMenu];
 	} else if ([keyPath isEqual:@"song"]) {
 		[self setNeedsDisplay: YES];
+	} else if ([keyPath isEqual:@"songTime"]) {
+		[self updateTimeMenu];
+	} else if ([keyPath isEqual:@"songDivisions"]) {
+		[self updateDivisionMenu];
 	} else if ([keyPath isEqual:@"songGroove"]) {
 		[self setGrooveMenu:[[self document] valueForKey:@"songGroove"]];
 	}					

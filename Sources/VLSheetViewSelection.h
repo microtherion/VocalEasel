@@ -26,6 +26,11 @@
 - (IBAction)insertJumpToCoda:(id)sender;
 - (IBAction)insertBreak:(id)sender;
 
+- (void)updateKeyMenu;
+- (void)updateTimeMenu;
+- (void)updateDivisionMenu;
+- (void)updateMenus;
+
 @end
 
 // Local Variables:

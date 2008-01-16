@@ -12,6 +12,19 @@
 #import "VLSheetViewSelection.h"
 #import "VLDocument.h"
 
+@interface NSMenuItem (VLSetStateToOff)
+- (void) VLSetStateToOff;
+@end
+
+@implementation NSMenuItem (VLSetStateToOff)
+
+- (void) VLSetStateToOff
+{
+	[self setState:NSOffState];
+}
+
+@end
+
 //	
 // We're too lazy to properly serialize our private pasteboard format.
 //
@@ -22,6 +35,7 @@ static VLSong	sPasteboard;
 - (void)editSelection
 {
 	fSelStart	= fSelEnd	= fCursorMeasure;
+	[self updateMenus];
 	[self setNeedsDisplay:YES];	
 }
 
@@ -42,15 +56,19 @@ static VLSong	sPasteboard;
 			std::max(0, std::min<int>(fCursorMeasure, [self song]->CountMeasures()));
 		if (fCursorMeasure > fSelEnd) {
 			fSelEnd		= fCursorMeasure;
+			[self updateMenus];
 			[self setNeedsDisplay:YES];
 		} else if (fCursorMeasure < fSelStart) {
 			fSelStart	= fCursorMeasure;
+			[self updateMenus];
 			[self setNeedsDisplay:YES];
 		} else if (prevMeasure == fSelEnd && fCursorMeasure<prevMeasure) {
 			fSelEnd		= fCursorMeasure;
+			[self updateMenus];
 			[self setNeedsDisplay:YES];
 		} else if (prevMeasure == fSelStart && fCursorMeasure>prevMeasure) {
 			fSelStart	= fCursorMeasure;
+			[self updateMenus];
 			[self setNeedsDisplay:YES];
 		}
 		break;
@@ -315,6 +333,84 @@ static VLSong	sPasteboard;
 	fNeedsRecalc = kRecalc;
 	[self setNeedsDisplay:YES];
 	[[self document] didChangeSong];
+}
+
+inline int KeyModeTag(const VLProperties & prop)
+{
+	return (prop.fKey << 8) | (prop.fMode & 0xFF);
+}
+
+- (void)updateKeyMenu
+{
+	NSMenu *menu		= [fKeyMenu menu];
+	NSRange sections 	= [self sectionsInSelection];
+	VLSong *song		= [self song];
+
+	[[menu itemArray] makeObjectsPerformSelector:@selector(VLSetStateToOff)];
+	int 	firstTag 	= KeyModeTag(song->fProperties[sections.location]);
+	[fKeyMenu selectItemWithTag:firstTag];
+	int		firstState  = NSOnState;
+	while (--sections.length > 0) {
+		int thisTag = KeyModeTag(song->fProperties[++sections.location]);
+		if (thisTag != firstTag) {
+			firstState = NSMixedState;	
+			[[menu itemWithTag:thisTag] setState:NSMixedState];
+		}
+	}
+	[[menu itemWithTag:firstTag] setState:firstState];
+}
+
+inline int TimeTag(const VLProperties & prop)
+{
+	return (prop.fTime.fNum << 8) | prop.fTime.fDenom;
+}
+
+
+- (void)updateTimeMenu
+{
+	NSMenu *menu		= [fTimeMenu menu];
+	NSRange sections 	= [self sectionsInSelection];
+	VLSong *song		= [self song];
+
+	[[menu itemArray] makeObjectsPerformSelector:@selector(VLSetStateToOff)];
+	int 	firstTag 	= TimeTag(song->fProperties[sections.location]);
+	[fTimeMenu selectItemWithTag:firstTag];
+	int		firstState  = NSOnState;
+	while (--sections.length > 0) {
+		int thisTag = TimeTag(song->fProperties[++sections.location]);
+		if (thisTag != firstTag) {
+			firstState = NSMixedState;	
+			[[menu itemWithTag:thisTag] setState:NSMixedState];
+		}
+	}
+	[[menu itemWithTag:firstTag] setState:firstState];
+}
+
+- (void)updateDivisionMenu
+{
+	NSMenu *menu		= [fDivisionMenu menu];
+	NSRange sections 	= [self sectionsInSelection];
+	VLSong *song		= [self song];
+
+	[[menu itemArray] makeObjectsPerformSelector:@selector(VLSetStateToOff)];
+	int 	firstTag 	= song->fProperties[sections.location].fDivisions;
+	[fDivisionMenu selectItemWithTag:firstTag];
+	int		firstState  = NSOnState;
+	while (--sections.length > 0) {
+		int thisTag = song->fProperties[++sections.location].fDivisions;
+		if (thisTag != firstTag) {
+			firstState = NSMixedState;	
+			[[menu itemWithTag:thisTag] setState:NSMixedState];
+		}
+	}
+	[[menu itemWithTag:firstTag] setState:firstState];
+}
+
+- (void)updateMenus
+{
+	[self updateKeyMenu];
+	[self updateTimeMenu];
+	[self updateDivisionMenu];
 }
 
 @end
