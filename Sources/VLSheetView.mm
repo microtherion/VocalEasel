@@ -599,19 +599,31 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 
 - (IBAction) setKey:(id)sender
 {
-	if ([self song]->IsNonEmpty())
-		[[NSAlert alertWithMessageText:@"Transpose Song?"
-				  defaultButton:@"Transpose"
-				  alternateButton:@"Cancel"
-				  otherButton:@"Change Key"
-				  informativeTextWithFormat:
-					  @"Do you want to transpose the song into the new key?"]
-			beginSheetModalForWindow:[self window]
-			modalDelegate:self 
-			didEndSelector:@selector(setKey:returnCode:contextInfo:)
-			contextInfo:sender];
-	else
-		[self setKey:nil returnCode:NSAlertOtherReturn contextInfo:sender];
+	if ([self song]->IsNonEmpty()) {
+		int 	newKey 	= [[sender selectedItem] tag] >> 8;
+		NSRange	sections= [self sectionsInSelection];
+		VLSong *song	= [self song];
+		bool	plural  = sections.length > 1;
+
+		while (sections.length-- > 0)
+			if (song->fProperties[sections.location++].fKey != newKey) {
+				[[NSAlert alertWithMessageText:@"Transpose Song?"
+						  defaultButton:@"Transpose"
+						  alternateButton:@"Cancel"
+						  otherButton:@"Change Key"
+						  informativeTextWithFormat:
+							  @"Do you want to transpose the %@ into the new key?",
+						  (fSelEnd > -1 && song->fProperties.size() > 1)
+						  ? (plural ? @"sections" : @"section") : @"song"
+				  ]
+					beginSheetModalForWindow:[self window]
+					modalDelegate:self 
+					didEndSelector:@selector(setKey:returnCode:contextInfo:)
+					contextInfo:sender];
+				return;
+			}
+	}
+	[self setKey:nil returnCode:NSAlertOtherReturn contextInfo:sender];
 }
 
 - (IBAction) setTime:(id)sender
