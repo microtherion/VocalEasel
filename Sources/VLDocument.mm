@@ -262,8 +262,9 @@
 
 - (BOOL) validateMenuItem:(NSMenuItem *)menuItem
 {
-	if (int tag = [menuItem tag])
-		[menuItem setState:(playElements & tag) != 0];
+	if ([menuItem action] == @selector(togglePlayElements:))
+		if (int tag = [menuItem tag])
+			[menuItem setState:(playElements & tag) != 0];
 
 	return YES;
 }
