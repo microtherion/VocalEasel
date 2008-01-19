@@ -101,7 +101,8 @@ class MusicXMLListener
   include REXML::StreamListener
 
   def initialize
-    @text = ""
+    @text       = ""
+    @nativeFile = false
   end
 
   def tag_start(tag, attrs)
@@ -199,6 +200,12 @@ class MusicXMLListener
     when 'beat-type' 
       @kind = 'prop'
       @key  = 'timeDenom'
+    when 'words'
+      #
+      # 'words' is a very general direction type, but if we encoded the file
+      # we know that we used it for groove names
+      #
+      @kind = 'groove' if @nativeFile
     when 'harmony' 
       @note = { 'pitch' => VL::NoPitch, 'steps' => 0, 'root' => VL::NoPitch,
                 'at' => @at }
@@ -304,6 +311,9 @@ class MusicXMLListener
       case @kind
       when 'textProp' 
         OUTPUT[@key] = @text
+        if @key == 'software' && @text =~ /VocalEasel/
+          @nativeFile = true # We (presumably) encoded this
+        end
       when 'dateProp' 
 		begin 
 			OUTPUT[@key] = Time.parse(@text)
@@ -312,6 +322,8 @@ class MusicXMLListener
 		end
       when 'prop' 
         @prop[@key] = @text.to_i
+      when 'groove'
+        @prop['groove'] = @text
       when 'mode' 
         @prop['mode'] = @text == 'minor' ? -1 : 1
       when 'step' 

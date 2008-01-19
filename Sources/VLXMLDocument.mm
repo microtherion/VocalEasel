@@ -13,18 +13,6 @@
 
 @implementation VLDocument (XML)
 
-
-- (NSArray *)propertyKeys
-{
-	static NSArray * sPropertyKeys = nil;
-	
-	if (!sPropertyKeys)
-		sPropertyKeys = [[NSArray alloc] initWithObjects:
-											 @"songGroove", @"songTempo", nil];
-
-	return sPropertyKeys;
-}
-
 - (NSFileWrapper *)XMLFileWrapperWithError:(NSError **)outError flat:(BOOL)flat;
 {
 	NSFileWrapper * contents = [self fileWrapperWithFilter:@"VLMusicXMLType" error:outError];
@@ -40,13 +28,6 @@
 									  autorelease];
 		[contents setPreferredFilename:@"Song"];
 		[wrap addFileWrapper:contents];
-		NSDictionary * prop = 
-			[self dictionaryWithValuesForKeys:[self propertyKeys]];
-		[wrap addRegularFileWithContents:
-				  [NSPropertyListSerialization dataFromPropertyList:prop
-											   format:NSPropertyListXMLFormat_v1_0
-											   errorDescription:nil]
-			  preferredFilename:@"Properties"];
 		if (vcsWrapper)
 			[wrap addFileWrapper:vcsWrapper];
 
@@ -62,6 +43,9 @@
 		 || (vcsWrapper = [wrappers objectForKey:@".svn"])
 		)
 			[vcsWrapper retain];
+		//
+		// Read properties dictionary for backward compatibility
+		//
 		NSFileWrapper * prop = [wrappers objectForKey:@"Properties"];
 		if (prop) {
 			NSUndoManager * undoMgr = [self undoManager];

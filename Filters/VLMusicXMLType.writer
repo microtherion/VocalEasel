@@ -79,6 +79,28 @@ def _attributes(prop)
   return attr
 end
 
+def _groove(groove)
+  dir = REXML::Element.new('direction')
+    dty = REXML::Element.new('direction-type')
+    dty.add_element newTextElement('words', groove)
+  dir.add_element(dty)
+
+  return dir
+end
+
+def _tempo(tempo)
+  dir = REXML::Element.new('direction')
+    dty = REXML::Element.new('direction-type')
+      metro = REXML::Element.new('metronome')
+      metro.add_element newTextElement('beat-unit', 'quarter')
+      metro.add_element newTextElement('per-minute', tempo)
+    dty.add_element(metro)
+  dir.add_element(dty)
+  dir.add_element 'sound', {'tempo' => tempo}
+
+  return dir
+end
+
 STEPS = 'C DbD EbE F GbG AbA BbB '
 
 def _pitch(name, pitch, prefix="")
@@ -292,9 +314,10 @@ def _melody
   melody = REXML::Element.new('part')
   melody.add_attribute('id', 'MELO')
   
-  lastProp = -1
-  measNum  = 0
-  repeat   = [0]
+  lastProp   = -1
+  lastGroove = nil
+  measNum    = 0
+  repeat     = [0]
   INPUT['measures'].each do |meas|
     r = 0
     r |= 1 if meas['begin-repeat']
@@ -306,8 +329,16 @@ def _melody
     measNum += 1
     m = REXML::Element.new('measure')
     m.add_attribute('number', measNum.to_s);
+    if measNum == 1
+      m.add_element(_tempo(INPUT['tempo'].to_i))
+    end
     if meas['properties'] != lastProp
       lastProp = meas['properties']
+      groove   = INPUT['properties'][lastProp]['groove']
+      if groove != lastGroove
+        lastGroove = groove
+        m.add_element(_groove(lastGroove))
+      end
       m.add_element(_attributes(INPUT['properties'][lastProp]))
     end
     if meas['new-page']

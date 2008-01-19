@@ -540,7 +540,7 @@ VLSong::VLSong(bool initialize)
 		return;
 
 	const VLFraction 	fourFour(4,4);
-	VLProperties 		defaultProperties = {fourFour, 0, 1, 3};
+	VLProperties 		defaultProperties = {fourFour, 0, 1, 3, "Swing"};
 	
 	fProperties.push_back(defaultProperties);
 
@@ -2053,7 +2053,7 @@ VLFract VLSong::TiedDuration(size_t measure)
 	return total;
 }
 
-bool VLSong::DoesBeginSection(size_t measure)
+bool VLSong::DoesBeginSection(size_t measure) const
 {
 	return measure && measure < fMeasures.size()
 	  && fMeasures[measure-1].fPropIdx!=fMeasures[measure].fPropIdx;
@@ -2079,6 +2079,47 @@ void VLSong::DelSection(size_t measure)
 	fProperties.erase(fProperties.begin()+delIdx);
 	while (measure < fMeasures.size())
 		--fMeasures[measure++].fPropIdx;
+}
+
+std::string VLSong::PrimaryGroove() const
+{
+	std::string bestGroove = fProperties[0].fGroove;
+
+	for (size_t p=1; p<fProperties.size()-EmptyEnding(); ++p)
+		if (fProperties[p].fGroove != bestGroove) {
+			//
+			// Multiple grooves in song, count them the hard way
+			//
+			std::vector<size_t> numMeas(fProperties.size());
+			for (size_t m=0; m<fMeasures.size(); ++m)
+				++numMeas[fMeasures[m].fPropIdx];
+
+			size_t bestCount = numMeas[0];
+			for (size_t px=1; px<fProperties.size(); ++px)
+				if (fProperties[px].fGroove == bestGroove) {
+					bestCount += numMeas[px];
+					numMeas[px]= 0;
+				}
+
+			for (; p<fProperties.size(); ++p)
+				if (numMeas[p]) {
+					std::string	curGroove= fProperties[p].fGroove;
+					size_t 		curCount = numMeas[p];
+					for (size_t px=p+1; px<fProperties.size(); ++px)
+						if (fProperties[px].fGroove == curGroove) {
+							curCount  += numMeas[px];
+							numMeas[px]= 0;
+						}
+					if (curCount > bestCount) {
+						bestGroove= curGroove;
+						bestCount = curCount;
+					}
+				}
+
+			break;
+		}
+
+	return bestGroove;
 }
 
 //////////////////////// VLSongVisitor ////////////////////////////////

@@ -61,6 +61,7 @@ NSDictionary * VLPlistVisitor::EncodeProperties(const VLProperties & properties)
 			[NSNumber numberWithInt: properties.fKey], @"key",
 			[NSNumber numberWithInt: properties.fMode], @"mode",
 			[NSNumber numberWithInt: properties.fDivisions], @"divisions",
+			[NSString stringWithUTF8String:properties.fGroove.c_str()], @"groove",			 
 			nil];
 }
 
@@ -166,8 +167,8 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 {
 	NSMutableDictionary *	plist = 
 		[NSMutableDictionary dictionaryWithObjectsAndKeys:
-		 songTitle, @"title", 
-		 songGroove, @"groove", songTempo, @"tempo",
+		 songTitle, @"title", songTempo, @"tempo",
+		 [NSString stringWithUTF8String:song->PrimaryGroove().c_str()], @"groove", 
 		 songComposer, @"composer", songLyricist, @"lyricist",
 		 [NSDate date], @"saved",
 		 [NSString stringWithFormat:@"VocalEasel %@",
@@ -404,6 +405,11 @@ advanceAt:
 		prop.fKey			= [[pdict objectForKey:@"key"] intValue];
 		prop.fMode			= [[pdict objectForKey:@"mode"] intValue];
 		prop.fDivisions		= [[pdict objectForKey:@"divisions"] intValue];
+
+		if (NSString * groove = [pdict objectForKey:@"groove"])
+			prop.fGroove	= [groove UTF8String];
+		else
+			prop.fGroove	= [songGroove UTF8String];
 
 		song->fProperties.push_back(prop);
 	}

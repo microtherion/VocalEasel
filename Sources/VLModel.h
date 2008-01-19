@@ -221,10 +221,11 @@ struct VLProperties {
 	int8_t		fKey;		// Circle of fifths from C, >0 sharps, <0 flats
 	int8_t		fMode;		// 1 = major -1 = minor
 	int8_t		fDivisions;	// Number of divisions per quarter note
+	std::string	fGroove;	// MMA Groove
 
 	bool operator==(const VLProperties & other)
 	{ return fTime == other.fTime && fKey == other.fKey && fMode == other.fMode
-			&& fDivisions == other.fDivisions;
+			&& fDivisions == other.fDivisions && fGroove == other.fGroove;
 	}
 };
 
@@ -377,9 +378,11 @@ public:
 		return fProperties[fMeasures[measure].fPropIdx];
 	}
 
-	bool 	DoesBeginSection(size_t measure);
+	bool 	DoesBeginSection(size_t measure) const;
 	void	AddSection(size_t measure);
 	void	DelSection(size_t measure);
+
+	std::string PrimaryGroove() const;
 private:
 	void	AddMeasure();
 };
