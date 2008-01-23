@@ -58,8 +58,6 @@
 	[fDocument stop:self];
 	if (returnCode == NSAlertFirstButtonReturn)
 		[(VLSheetView *)contextInfo setGroove:[[fBrowser selectedCellInColumn:1] stringValue]];
-	else
-		[(VLSheetView *)contextInfo setGroove:nil];
 		
 	[[self window] orderOut:self];
 }

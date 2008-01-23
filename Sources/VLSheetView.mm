@@ -998,12 +998,14 @@ static int8_t sSharpAcc[] = {
 	[doc addObserver:self forKeyPath:@"songTime" options:0 context:nil];	
 	[doc addObserver:self forKeyPath:@"songDivisions" options:0 context:nil];	
 	[doc addObserver:self forKeyPath:@"songGroove" options:0 context:nil];	
-	[self setGrooveMenu:[doc valueForKey:@"songGroove"]];
 
 	VLSong * song 	= [self song];
 	fNumTopLedgers 	= std::max<int>(song->CountTopLedgers(), 1);
 	fNumBotLedgers 	= std::max<int>(song->CountBotLedgers(), 1);
 	fNumStanzas    	= std::max<int>(song->CountStanzas(), 2);
+
+	[fGrooveMenu addItemsWithTitles:
+	   [[NSUserDefaults standardUserDefaults] arrayForKey:@"VLGrooves"]];	
 
 	[self updateMenus];
 }
@@ -1030,7 +1032,7 @@ static int8_t sSharpAcc[] = {
 	} else if ([keyPath isEqual:@"songDivisions"]) {
 		[self updateDivisionMenu];
 	} else if ([keyPath isEqual:@"songGroove"]) {
-		[self setGrooveMenu:[[self document] valueForKey:@"songGroove"]];
+		[self updateGrooveMenu];
 	}					
 }
 
@@ -1049,26 +1051,7 @@ static int8_t sSharpAcc[] = {
 
 - (void)setGroove:(NSString *)groove
 {
-	if (groove) {
-		[[self document] setValue:groove forKey:@"songGroove"];
-		[self setGrooveMenu:groove];
-	} else {
-		[fGrooveMenu selectItemAtIndex:2];
-	}
-}
-
-- (void)setGrooveMenu:(NSString *)groove
-{
-	int removeIndex = [fGrooveMenu indexOfItemWithTitle:groove];
-	if (removeIndex < 0 && [fGrooveMenu numberOfItems] > 11)
-		removeIndex = 11;
-	if (removeIndex >= 0)
-		[fGrooveMenu removeItemAtIndex:removeIndex];
-	[fGrooveMenu insertItemWithTitle:groove atIndex:2];
-	[fGrooveMenu selectItemAtIndex:2];
-	NSArray * grooves = [fGrooveMenu itemTitles];
-	grooves = [grooves subarrayWithRange:NSMakeRange(2, [grooves count]-2)];
-	[[NSUserDefaults standardUserDefaults] setObject:grooves forKey:@"VLGrooves"];
+	[[self document] setGroove:groove inSections:[self sectionsInSelection]];
 }
 
 - (IBAction)editDisplayOptions:(id)sender

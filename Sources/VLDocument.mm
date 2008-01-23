@@ -241,10 +241,20 @@
 {
 	[self willChangeSong];
 	[self willChangeValueForKey:@"songDivisions"];
-	[self willChangeSong];
 	while (sections.length-- > 0)
 		song->ChangeDivisions(sections.location++, divisions);
 	[self didChangeValueForKey:@"songDivisions"];
+	[self didChangeSong];
+}
+
+- (void) setGroove:(NSString *)groove inSections:(NSRange)sections
+{
+	const char * grv = [groove UTF8String];
+	[self willChangeSong];
+	[self willChangeValueForKey:@"songGroove"];
+	while (sections.length-- > 0)
+		song->fProperties[sections.location++].fGroove = grv;
+	[self didChangeValueForKey:@"songGroove"];
 	[self didChangeSong];
 }
 

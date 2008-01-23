@@ -29,6 +29,8 @@
 - (void)updateKeyMenu;
 - (void)updateTimeMenu;
 - (void)updateDivisionMenu;
+- (void)updateGrooveMenu;
+
 - (void)updateMenus;
 
 @end

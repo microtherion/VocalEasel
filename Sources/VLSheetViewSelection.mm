@@ -406,11 +406,41 @@ inline int TimeTag(const VLProperties & prop)
 	[[menu itemWithTag:firstTag] setState:firstState];
 }
 
+- (void)updateGrooveMenu
+{
+	NSRange 		sections 	= [self sectionsInSelection];
+	VLSong *		song		= [self song];
+	NSMutableArray* grooves     = [NSMutableArray array];
+
+	while (sections.length-- > 0) {
+		NSString * groove = 
+			[NSString stringWithUTF8String:
+			   song->fProperties[sections.location++].fGroove.c_str()];
+		if (![grooves containsObject:groove])
+			[grooves addObject:groove];
+	}
+	int	selected	= [grooves count];
+	int history		= [fGrooveMenu numberOfItems]-2;
+	while (history-- > 0) {
+		NSString * groove = [fGrooveMenu itemTitleAtIndex:2];  	
+		[fGrooveMenu removeItemAtIndex:2];
+		if (![grooves containsObject:groove])
+			[grooves addObject:groove];
+	}
+	[fGrooveMenu addItemsWithTitles:grooves];
+	[fGrooveMenu selectItemAtIndex:2];
+	if (selected > 1) 
+		while (selected-- > 0)
+			[[fGrooveMenu itemAtIndex:selected+2] setState:NSMixedState];
+	[[NSUserDefaults standardUserDefaults] setObject:grooves forKey:@"VLGrooves"];	
+}
+
 - (void)updateMenus
 {
 	[self updateKeyMenu];
 	[self updateTimeMenu];
 	[self updateDivisionMenu];
+	[self updateGrooveMenu];
 }
 
 @end
