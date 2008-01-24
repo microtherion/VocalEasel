@@ -21,15 +21,17 @@ public:
 
 	const std::string & Measures() const { return fMeasures; }
 private:	
-	std::string					fMeasures;
+	std::string		fMeasures;
 
-	VLSong *					fSong;
-	bool						fUseSharps;
-	bool						fTied;
-	bool						fInitial;
-	int							fMeas;
-	size_t						fLastDur;
-	std::string					fAccum;
+	VLSong *		fSong;
+	bool			fUseSharps;
+	bool			fTied;
+	bool			fInitial;
+	int				fMeas;
+	size_t			fLastDur;
+	std::string		fAccum;
+	int				fKey;
+	std::string		fGroove;
 };
 
 // Local Variables:

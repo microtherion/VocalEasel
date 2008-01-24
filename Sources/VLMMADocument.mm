@@ -42,10 +42,6 @@
 			// Can't handle these yet
 			break;
 		}
-	sprintf(buf, "Groove %s\n", [songGroove UTF8String]);
-	mmaFile	+= buf;
-	sprintf(buf, "KeySig %d%c\n", labs(prop.fKey), prop.fKey>=0 ? '#' : '&');
-	mmaFile	+= buf;
 	if (!(playElements & kVLPlayAccompaniment))
 		mmaFile += "AllTracks Off\nSolo On\n";
 	if (!(playElements & kVLPlayMelody))

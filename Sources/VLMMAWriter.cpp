@@ -16,16 +16,29 @@ void VLMMAWriter::Visit(VLSong & song)
 	fMeas	= 0;
 	fInitial= true;
 	fMeasures.clear();
+	fKey	= -999;
+	fGroove = "";
 
 	VisitMeasures(song, true);
 }
 
 void VLMMAWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas) 
 {
-	char buf[8];
+	char buf[64];
+
+	if (p.fKey != fKey) {
+		fKey       = p.fKey;
+		sprintf(buf, "KeySig %d%c\n", labs(fKey), fKey>=0 ? '#' : '&');
+		fMeasures += buf;
+	}
+	if (p.fGroove != fGroove) {
+		fGroove    = p.fGroove;
+		fMeasures += "Groove " + fGroove + '\n';
+	}
+
 	sprintf(buf, "%-3d", ++fMeas);
 
-	fUseSharps	= p.fKey >= 0;
+	fUseSharps	= fKey >= 0;
 
 	//
 	// Generate chords
