@@ -23,6 +23,7 @@
 		[[NSPredicate predicateWithFormat:
 			@"!(SELF matches[c] '.*(Intro|End)\\\\d*$')"]
 			retain];
+	fView		= view;
 	fDocument	= [view document];
 
 	[NSApp beginSheet: [self window]
@@ -43,7 +44,7 @@
 - (IBAction) togglePlay:(id)sender
 {
 	if ([sender state])
-		[fDocument playWithGroove:[[fBrowser selectedCellInColumn:1] stringValue]];
+		[fView playWithGroove:[[fBrowser selectedCellInColumn:1] stringValue]];
 	else
 		[fDocument stop:sender];
 }
@@ -57,7 +58,7 @@
 {
 	[fDocument stop:self];
 	if (returnCode == NSAlertFirstButtonReturn)
-		[(VLSheetView *)contextInfo setGroove:[[fBrowser selectedCellInColumn:1] stringValue]];
+		[fView setGroove:[[fBrowser selectedCellInColumn:1] stringValue]];
 		
 	[[self window] orderOut:self];
 }

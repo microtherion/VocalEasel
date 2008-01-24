@@ -12,7 +12,9 @@
 
 class VLMMAWriter: public VLSongVisitor {
 public:
-	VLMMAWriter() {}
+	VLMMAWriter(bool preview, int beginSection, int endSection) 
+		: fPreview(preview), fBeginSection(beginSection), fEndSection(endSection)
+	{}
 
 	virtual void Visit(VLSong & song);
 	virtual void VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas);
@@ -24,6 +26,7 @@ private:
 	std::string		fMeasures;
 
 	VLSong *		fSong;
+	bool			fPreview;
 	bool			fUseSharps;
 	bool			fTied;
 	bool			fInitial;
@@ -32,6 +35,8 @@ private:
 	std::string		fAccum;
 	int				fKey;
 	std::string		fGroove;
+	int				fBeginSection;
+	int				fEndSection;
 };
 
 // Local Variables:

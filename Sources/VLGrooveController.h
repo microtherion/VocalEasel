@@ -23,6 +23,7 @@
 	NSDictionary *			fSubStyles;
 	NSArray *				fSubStyleList;
 	NSPredicate *			fSubStyleFilter;
+	VLSheetView *			fView;
 	VLDocument *			fDocument;
 }
 

@@ -21,7 +21,8 @@ enum {
 	kVLPlayAccompaniment = 1,
 	kVLPlayMelody		 = 2,
 	kVLPlayMetronome	 = 4,
-	kVLPlayCountIn		 = 8
+	kVLPlayCountIn		 = 8,
+	kVLPlayGroovePreview = 32768
 };
 
 @interface VLDocument : NSDocument
@@ -46,6 +47,7 @@ enum {
 	VLPDFWindow *		pdfWin;
 	VLKeyValueUndo*		undo;
 	PDFDocument *		printDoc;
+	NSRange				previewRange;
 }
 
 - (VLSong *)	song;
@@ -59,6 +61,7 @@ enum {
 - (void) setTimeNum:(int)num denom:(int)denom inSections:(NSRange)sections;
 - (void) setDivisions:(int)divisions inSections:(NSRange)sections;
 - (void) setGroove:(NSString *)groove inSections:(NSRange)sections; 
+- (void) playWithGroove:(NSString *)groove inSections:(NSRange)sections; 
 
 - (void) setRepeatVolta:(int)repeatVolta;
 
@@ -81,7 +84,6 @@ enum {
 - (void)	   didChangeSong;
 - (void)	   addObserver:(id)observer;
 - (VLLogWindow *)logWin;
-- (void)	   playWithGroove:(NSString *)groove;
 
 @end
 

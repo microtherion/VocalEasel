@@ -1054,6 +1054,11 @@ static int8_t sSharpAcc[] = {
 	[[self document] setGroove:groove inSections:[self sectionsInSelection]];
 }
 
+- (void)playWithGroove:(NSString *)groove
+{
+	[[self document] playWithGroove:groove inSections:[self sectionsInSelection]];
+}
+
 - (IBAction)editDisplayOptions:(id)sender
 {
 	VLSheetWindow * wc = [[self window] windowController];

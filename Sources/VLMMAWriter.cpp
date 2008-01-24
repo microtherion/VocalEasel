@@ -24,6 +24,10 @@ void VLMMAWriter::Visit(VLSong & song)
 
 void VLMMAWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas) 
 {
+	if (fPreview)
+		if (meas.fPropIdx < fBeginSection || meas.fPropIdx >= fEndSection)
+			return; // Skip this measure
+
 	char buf[64];
 
 	if (p.fKey != fKey) {
@@ -31,7 +35,7 @@ void VLMMAWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 		sprintf(buf, "KeySig %d%c\n", labs(fKey), fKey>=0 ? '#' : '&');
 		fMeasures += buf;
 	}
-	if (p.fGroove != fGroove) {
+	if (!fPreview && p.fGroove != fGroove) {
 		fGroove    = p.fGroove;
 		fMeasures += "Groove " + fGroove + '\n';
 	}

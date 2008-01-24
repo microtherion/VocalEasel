@@ -448,14 +448,17 @@
 							[self fileURLWithExtension:@"mid"]]));
 }
 
-- (void) playWithGroove:(NSString *)groove
+- (void) playWithGroove:(NSString *)groove inSections:(NSRange)sections
 {
 	NSString * savedGroove	= songGroove;
-	songGroove				= groove;
 	[validTmpFiles removeObjectForKey:@"mma"]; 
 	[validTmpFiles removeObjectForKey:@"mid"]; 
+	songGroove	   	 = groove;
+	previewRange	 = sections;
+	playElements	|= kVLPlayGroovePreview;
 	[self play:groove];
-	songGroove				= savedGroove;
+	playElements	&= ~kVLPlayGroovePreview;
+	songGroove		 = savedGroove;
 	[validTmpFiles removeObjectForKey:@"mma"]; 
 	[validTmpFiles removeObjectForKey:@"mid"]; 
 }
