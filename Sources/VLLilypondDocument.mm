@@ -105,17 +105,8 @@
 
 @implementation VLDocument (Lilypond)
 
-const int kMajorOffset 	= 6;
-const int kMinorOffset  = 9;
-
-static const char * sKeyNames[] = {
-	"ges", "des", "as", "es", "bes", "f",
-	"c", "g", "d", "a", "e", "b", "fis", "cis", "gis"
-};
-
 - (NSData *)lilypondDataWithError:(NSError **)outError
 {
-	const VLProperties & 	prop = song->fProperties.front();
 	VLLilypondWriter        writer;
 	writer.Visit(*song);
 	NSBundle *	 			bndl = [NSBundle mainBundle];
@@ -137,14 +128,6 @@ static const char * sKeyNames[] = {
 			[bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
 	[ly substituteMacro:@"CHORDS" withValue: 
 			[NSString stringWithUTF8String:writer.Chords().c_str()]];
-	[ly substituteMacro:@"TIME" withValue:
-			[NSString stringWithFormat:@"%d/%d",
-					  prop.fTime.fNum, prop.fTime.fDenom]];
-	[ly substituteMacro:@"KEY" withValue: prop.fMode > 0 
-		? [NSString stringWithFormat:@"%s \\major",
-					sKeyNames[prop.fKey+kMajorOffset]]
-		: [NSString stringWithFormat:@"%s \\minor", 
-					sKeyNames[prop.fKey+kMinorOffset]]];
 	[ly substituteMacro:@"NOTES" withValue: 
 			[NSString stringWithUTF8String:writer.Melody().c_str()]];
 	if (size_t stanzas = song->CountStanzas())

@@ -36,6 +36,7 @@ private:
 	std::string					fAccum;
 	std::string 				fIndent;
 	std::vector<std::string> 	fL;
+	VLProperties *				fLastProp;
 };
 
 // Local Variables:

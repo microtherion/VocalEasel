@@ -22,6 +22,7 @@ void VLLilypondWriter::Visit(VLSong & song)
 	fIndent.clear();
 	fSeenEnding	= 0;
 	fNumEndings	= 0;
+	fLastProp   = 0;
 
 	VisitMeasures(song, false);
 	//
@@ -50,6 +51,31 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 	fAccum += measNo;
 	fChords+= fAccum + '\n';
 
+	fAccum.clear();
+	//
+	// Generate key/time if changed
+	//
+	if (!fLastProp || fLastProp->fTime != p.fTime) {
+		char time[16];
+		sprintf(time, "\\time %d/%d\n", p.fTime.fNum, p.fTime.fDenom);
+		fAccum += fIndent+time;
+	}
+	if (!fLastProp || fLastProp->fKey != p.fKey || fLastProp->fMode != p.fMode) {
+		const int kMajorOffset 	= 6;
+		const int kMinorOffset  = 9;
+
+		static const char * sKeyNames[] = {
+			"ges", "des", "as", "es", "bes", "f",
+			"c", "g", "d", "a", "e", "b", "fis", "cis", "gis"
+		};
+		char key[16];
+		if (p.fMode < 0)
+			sprintf(key, "\\key %s \\minor\n", sKeyNames[p.fKey+kMinorOffset]);
+		else
+			sprintf(key, "\\key %s \\major\n", sKeyNames[p.fKey+kMajorOffset]);
+		fAccum += fIndent+key;
+	}
+	fLastProp = &p;
 	//
 	// Generate structure elements
 	//
@@ -57,7 +83,6 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 	size_t	volta;
 	bool	repeat;
 		
-	fAccum.clear();
 	if (meas.fBreak == VLMeasure::kNewPage)
 		fAccum += fIndent+"\\pageBreak\n";
 	else if (meas.fBreak == VLMeasure::kNewSystem)
