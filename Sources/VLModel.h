@@ -377,6 +377,7 @@ public:
 	const VLProperties & Properties(size_t measure) const {
 		return fProperties[fMeasures[measure].fPropIdx];
 	}
+	void	SetProperties(size_t measure, int propIdx);
 
 	bool 	DoesBeginSection(size_t measure) const;
 	void	AddSection(size_t measure);

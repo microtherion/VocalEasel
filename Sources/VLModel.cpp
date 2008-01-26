@@ -558,10 +558,30 @@ void VLSong::AddMeasure()
 	VLChord 		rchord(dur);
 	VLMeasure meas;
 	
+	meas.fPropIdx = fProperties.size()-1;
 	meas.fChords.push_back(rchord);
 	meas.fMelody.push_back(rest);
 
 	fMeasures.push_back(meas);
+}
+
+void VLSong::SetProperties(size_t measure, int propIdx)
+{
+	VLFraction		dur  = fProperties[propIdx].fTime;
+	dur.Normalize();
+	VLLyricsNote 	rest(dur);
+	VLChord 		rchord(dur);
+	VLMeasure 		meas;
+
+	meas.fPropIdx    = propIdx;
+	meas.fChords.push_back(rchord);
+	meas.fMelody.push_back(rest);
+
+	if (measure < fMeasures.size())
+		fMeasures[measure] = meas;
+	else
+		while (fMeasures.size() <= measure)
+			fMeasures.push_back(meas);
 }
 
 void VLSong::swap(VLSong & other)

@@ -310,6 +310,8 @@ advanceAt:
 	) {
 		if (NSNumber * mNo = [mdict objectForKey:@"measure"])
 			measNo = static_cast<size_t>([mNo intValue]);
+		if (NSNumber * mPx = [mdict objectForKey:@"properties"]) 
+			song->SetProperties(measNo, [mPx intValue]);
 
 		[self readMelody:[mdict objectForKey:@"melody"] inMeasure:measNo onsets:onsets];
 		[self readChords:[mdict objectForKey:@"chords"] inMeasure:measNo];
@@ -322,9 +324,6 @@ advanceAt:
 			song->fMeasures[measNo].fBreak |= VLMeasure::kNewSystem;
 		if ([[mdict objectForKey:@"new-page"] boolValue])
 			song->fMeasures[measNo].fBreak |= VLMeasure::kNewPage;
-		if (NSNumber * mPx = [mdict objectForKey:@"properties"])
-			song->fMeasures[measNo].fPropIdx= 
-				static_cast<size_t>([mPx intValue]);
 		
 		if (NSDictionary * beginRep = [mdict objectForKey:@"begin-repeat"]) {
 			VLRepeat 			rep;
