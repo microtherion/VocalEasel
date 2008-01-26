@@ -1061,6 +1061,10 @@ static int8_t sSharpAcc[] = {
 
 - (IBAction)editDisplayOptions:(id)sender
 {
+	NSUndoManager * undoMgr = [[self document] undoManager];	
+	[undoMgr setGroupsByEvent:NO];
+	[undoMgr beginUndoGrouping];
+
 	VLSheetWindow * wc = [[self window] windowController];
 	[wc setValue:[NSNumber numberWithInt:fNumTopLedgers] 
 		forKey:@"editNumTopLedgers"];
@@ -1078,6 +1082,11 @@ static int8_t sSharpAcc[] = {
 - (void)didEndDisplaySheet:(NSWindow *)sheet returnCode:(int)returnCode 
 			  contextInfo:(void *)ctx
 {
+	NSUndoManager * undoMgr = [[self document] undoManager];
+	[undoMgr setActionName:@"Display Options"];
+	[undoMgr endUndoGrouping];
+	[undoMgr setGroupsByEvent:YES];
+
 	switch (returnCode) {
 	case NSAlertFirstButtonReturn: {
 		VLSheetWindow * wc = [[self window] windowController];
@@ -1088,6 +1097,7 @@ static int8_t sSharpAcc[] = {
 		[self setNeedsDisplay:YES];
 	    } break;
 	default:
+		[undoMgr undo];
 		break;
 	}	
 	[sheet orderOut:self];

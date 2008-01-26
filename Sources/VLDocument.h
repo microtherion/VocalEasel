@@ -35,6 +35,9 @@ enum {
 	NSString *			songArranger;
 	NSString *			songGroove;
 	NSNumber *			songTempo;
+	float				chordSize;
+	float				lyricSize;
+	float				staffSize;
 	int					playElements;
 	NSString *			tmpPath;
 	NSFileWrapper *		vcsWrapper;

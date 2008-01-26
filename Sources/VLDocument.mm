@@ -76,7 +76,10 @@
 		songComposer		= @"";
 		songArranger		= @"";
 		songGroove			= @"Swing";
-		songTempo			= [[NSNumber numberWithInt:120] retain];
+		songTempo			= [[NSNumber alloc] initWithInt:120];
+		chordSize			= 6.0f;
+		lyricSize			= 0.0f;
+		staffSize			= 20.0f;
 		playElements		= kVLPlayAccompaniment|kVLPlayMelody|kVLPlayCountIn;
 		sheetWin			= nil;
 		pdfWin				= nil;	
@@ -256,6 +259,24 @@
 		song->fProperties[sections.location++].fGroove = grv;
 	[self didChangeValueForKey:@"songGroove"];
 	[self didChangeSong];
+}
+
+- (void) setChordSize:(float)size
+{
+	[[[self undoManager] prepareWithInvocationTarget:self] setChordSize:chordSize];
+	chordSize = size;
+}
+
+- (void) setLyricSize:(float)size
+{
+	[[[self undoManager] prepareWithInvocationTarget:self] setLyricSize:lyricSize];
+	lyricSize = size;
+}
+
+- (void) setStaffSize:(float)size
+{
+	[[[self undoManager] prepareWithInvocationTarget:self] setStaffSize:staffSize];
+	staffSize = size;
 }
 
 - (int) repeatVolta

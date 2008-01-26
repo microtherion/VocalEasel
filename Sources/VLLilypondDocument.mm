@@ -126,6 +126,12 @@
 	[ly substituteMacro:@"FORMATTING" withValue:@"ragged-last-bottom = ##f"];
 	[ly substituteMacro:@"VLVERSION" withValue:
 			[bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
+	[ly substituteMacro:@"CHORDSIZE" withValue:
+			[NSString stringWithFormat:@"%.1f", chordSize]];
+	[ly substituteMacro:@"LYRICSIZE" withValue:
+			[NSString stringWithFormat:@"%.1f", lyricSize]];
+	[ly substituteMacro:@"STAFFSIZE" withValue:
+			[NSString stringWithFormat:@"%.1f", staffSize]];
 	[ly substituteMacro:@"CHORDS" withValue: 
 			[NSString stringWithUTF8String:writer.Chords().c_str()]];
 	[ly substituteMacro:@"NOTES" withValue: 

@@ -72,9 +72,11 @@ vlExceptions = #(append
 
 \score {
   <<
+    \override Score.ChordName #'font-family = #'Didot
+    \override Score.ChordName #'font-size = #<{CHORDSIZE}>
+    \override Score.LyricText #'font-family = #'Baskerville    
+    \override Score.LyricText #'font-size = #<{LYRICSIZE}>
     \context ChordNames \chords { 
-        \override ChordName #'font-family = #'BitstreamVeraSansMono
-        \override ChordName #'font-size = #6
     	\set chordNameExceptions = #vlExceptions
 	\set chordNameSeparator = ""
 	\set chordRootNamer = #note-name->markup
