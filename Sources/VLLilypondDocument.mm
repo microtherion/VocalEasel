@@ -11,6 +11,8 @@
 #import "VLLilypondDocument.h"
 #import "VLLilypondWriter.h"
 
+#import <algorithm>
+
 @interface NSMutableString (VLLilypond)
 
 - (void) substituteMacro:(NSString *)macro withValue:(NSString *)value;
@@ -103,6 +105,14 @@
 
 @end
 
+static NSSize 		sPaperSizes[] = {
+	{842.0f, 1191.0f}, {595.0f, 842.0f}, {421.0f, 595.0f}, {298.0f, 421.0f},
+	{612.0f, 1008.0f}, {612.0f, 792.0f}, {792.0f, 1224.0f}
+};
+static const char * 	sPaperNames[] = {
+	"a3", "a4", "a5", "a6", "letter", "legal", "11x17", 0
+};
+
 @implementation VLDocument (Lilypond)
 
 - (NSData *)lilypondDataWithError:(NSError **)outError
@@ -116,13 +126,36 @@
 	NSStringEncoding		enc = NSUTF8StringEncoding;
 	NSMutableString * 		ly = 
 		[NSMutableString stringWithContentsOfFile:tmpl encoding:enc error:outError];
+	NSPrintInfo *	pi			= [self printInfo];
+	NSSize 			sz 			= [pi paperSize];
+	int    			bestPaper 	= -1;
+	float			bestDist    = 1e10f;
+	
+	if ([pi orientation] == NSLandscapeOrientation)
+		std::swap(sz.width, sz.height);
+
+	for (int paper = 0; sPaperNames[paper]; ++paper) {
+		float dist = hypotf(sz.width - sPaperSizes[paper].width,
+							sz.height- sPaperSizes[paper].height);
+		if (dist < bestDist) {
+			bestPaper 	= paper;
+			bestDist	= dist;
+		}
+	}
+
+	NSString * paper = [NSString stringWithFormat:
+	  [pi orientation] == NSLandscapeOrientation ? @"\"%s\" 'landscape" : @"\"%s\"", 
+	  sPaperNames[bestPaper]];
+	float 	  scaling= [[[pi dictionary] objectForKey:NSPrintScalingFactor]
+						   floatValue];
+
 	[ly substituteMacro:@"TITLE" withValue:songTitle];
 	[ly substituteMacro:@"POET" withValue:songLyricist];
 	[ly substituteMacro:@"COMPOSER" withValue:songComposer];
 	[ly substituteMacro:@"ARRANGER" withValue:songArranger];
 	[ly substituteMacro:@"VLVERSION" withValue:
 			[bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
-	[ly substituteMacro:@"PAPERSIZE" withValue:@"letter"];
+	[ly substituteMacro:@"PAPERSIZE" withValue:paper];
 	[ly substituteMacro:@"FORMATTING" withValue:@"ragged-last-bottom = ##f"];
 	[ly substituteMacro:@"VLVERSION" withValue:
 			[bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
@@ -131,7 +164,7 @@
 	[ly substituteMacro:@"LYRICSIZE" withValue:
 			[NSString stringWithFormat:@"%.1f", lyricSize]];
 	[ly substituteMacro:@"STAFFSIZE" withValue:
-			[NSString stringWithFormat:@"%.1f", staffSize]];
+			[NSString stringWithFormat:@"%.1f", staffSize*scaling]];
 	[ly substituteMacro:@"CHORDS" withValue: 
 			[NSString stringWithUTF8String:writer.Chords().c_str()]];
 	[ly substituteMacro:@"NOTES" withValue: 

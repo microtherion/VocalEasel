@@ -15,6 +15,8 @@
 
 - (NSFileWrapper *)XMLFileWrapperWithError:(NSError **)outError flat:(BOOL)flat;
 {
+	static NSArray * sPropertyKeys = nil;
+
 	NSFileWrapper * contents = [self fileWrapperWithFilter:@"VLMusicXMLType" error:outError];
 	
 	if (!contents) {
@@ -30,6 +32,17 @@
 		[wrap addFileWrapper:contents];
 		if (vcsWrapper)
 			[wrap addFileWrapper:vcsWrapper];
+		NSData * pd = [NSArchiver archivedDataWithRootObject:
+									  [self printInfo]]; 
+		[wrap addRegularFileWithContents:pd preferredFilename:@"PrintInfo"];
+		if (!sPropertyKeys)
+			sPropertyKeys = [[NSArray alloc] initWithObjects:
+				@"staffSize", @"chordSize", @"lyricSize", nil];
+		NSData * prop = [NSPropertyListSerialization dataFromPropertyList:
+						   [self dictionaryWithValuesForKeys:sPropertyKeys]
+						   format:NSPropertyListXMLFormat_v1_0 
+						   errorDescription:nil];
+		[wrap addRegularFileWithContents:prop preferredFilename:@"Properties"];
 
 		return wrap;
 	}
@@ -44,7 +57,7 @@
 		)
 			[vcsWrapper retain];
 		//
-		// Read properties dictionary for backward compatibility
+		// Read properties dictionary
 		//
 		NSFileWrapper * prop = [wrappers objectForKey:@"Properties"];
 		if (prop) {
@@ -55,6 +68,17 @@
 						  propertyListFromData:[prop regularFileContents]
 						  mutabilityOption:NSPropertyListImmutable
 						  format:nil errorDescription:nil]];
+			[undoMgr enableUndoRegistration];
+		}
+		//
+		// Read print info
+		NSFileWrapper * print = [wrappers objectForKey:@"PrintInfo"];
+		if (print) {
+			NSUndoManager * undoMgr = [self undoManager];
+			[undoMgr disableUndoRegistration];
+			NSPrintInfo * pi = [NSUnarchiver unarchiveObjectWithData:
+												 [print regularFileContents]];
+			[self setPrintInfo:pi];
 			[undoMgr enableUndoRegistration];
 		}
 		return [self readFromFileWrapper:[wrappers objectForKey:@"Song"] withFilter:@"VLMusicXMLType"	

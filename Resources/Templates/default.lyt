@@ -9,7 +9,7 @@
 }
 
 \paper {
-       #(set-paper-size "<{PAPERSIZE}>")
+       #(set-paper-size <{PAPERSIZE}>)
        indent = 0.0\cm
        pagenumber = no
        page-top-space = #.1
