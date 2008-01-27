@@ -1,3 +1,183 @@
+2008-01-26 16:38 +0000 [r249]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm, Resources/Templates/default.lyt,
+	  Sources/VLLilypondDocument.mm,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  English.lproj/VLDocument.nib/designable.nib,
+	  Sources/VLDocument.h, Sources/VLDocument.mm: Add document size
+	  options
+
+2008-01-26 10:54 +0000 [r247-248]  Matthias Neeracher
+
+	* Sources/VLLilypondWriter.cpp, Sources/VLLilypondWriter.h,
+	  Resources/Templates/default.lyt, Sources/VLLilypondDocument.mm:
+	  Support changing time/key in lilypond
+
+	* Sources/VLModel.cpp, Sources/VLPListDocument.mm,
+	  Sources/VLModel.h: Fix reading of documents with multiple time
+	  values
+
+2008-01-24 01:29 +0000 [r246]  Matthias Neeracher
+
+	* Sources/VLMMAWriter.cpp, Sources/VLSheetView.h,
+	  Sources/VLGrooveController.h, Sources/VLSheetView.mm,
+	  Sources/VLGrooveController.mm, Sources/VLMMAWriter.h,
+	  Sources/VLMMADocument.mm, Sources/VLDocument.h,
+	  Sources/VLDocument.mm: Smart groove preview
+
+2008-01-24 00:57 +0000 [r245]  Matthias Neeracher
+
+	* Sources/VLMMAWriter.cpp, Sources/VLMMAWriter.h,
+	  Sources/VLMMADocument.mm, Sources/VLPListDocument.mm: Implement
+	  groove changes in MMA documents
+
+2008-01-23 01:20 +0000 [r244]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm, Sources/VLGrooveController.mm,
+	  Sources/VLSheetViewSelection.h, Sources/VLSheetViewSelection.mm,
+	  Sources/VLPListDocument.mm, Sources/VLDocument.h,
+	  Sources/VLDocument.mm: Edit per-section groove
+
+2008-01-19 21:55 +0000 [r243]  Matthias Neeracher
+
+	* Sources/VLDocument.mm: Get rid of spurious check marks in debug
+	  menu
+
+2008-01-19 21:31 +0000 [r241-242]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader, Sources/VLModel.cpp,
+	  Sources/VLPListDocument.mm, Filters/VLMusicXMLType.writer,
+	  Sources/VLModel.h, Sources/VLXMLDocument.mm: Store per-section
+	  groove, store tempo in file
+
+	* Resources/Info.plist: Bump revision number
+
+2008-01-16 23:09 +0000 [r240]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader, Sources/VLPListDocument.mm: Fix
+	  issues with reading multi-section documents
+
+2008-01-16 13:16 +0000 [r239]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm: Silently transpose between major and
+	  minor modes
+
+2008-01-16 13:04 +0000 [r238]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Sources/VLSheetViewSelection.h, Sources/VLSheetViewSelection.mm,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  English.lproj/VLDocument.nib/designable.nib: Show mixed property
+	  state in menus
+
+2008-01-13 16:40 +0000 [r237]  Matthias Neeracher
+
+	* Sources/VLModel.cpp: Fix flipped test for division realignment
+
+2008-01-12 23:55 +0000 [r236]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm, Sources/VLSheetViewSelection.h,
+	  Sources/VLModel.cpp, Sources/VLSheetViewSelection.mm,
+	  Sources/VLDocument.h, Sources/VLDocument.mm, Sources/VLModel.h:
+	  Rudimentary UI support for setting per-section properties
+
+2007-12-25 19:44 +0000 [r235]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm: Properly scale height
+
+2007-12-25 19:41 +0000 [r234]  Matthias Neeracher
+
+	* Sources/VLLayout.cpp: Much smarter lyrics layout
+
+2007-12-25 16:49 +0000 [r233]  Matthias Neeracher
+
+	* Sources/VLLayout.cpp, Sources/VLSheetViewLyrics.mm,
+	  Sources/VLLayout.h: Refactor to VLTextLayout, with original
+	  algorithm
+
+2007-12-25 13:12 +0000 [r232]  Matthias Neeracher
+
+	* English.lproj/MainMenu.nib/keyedobjects.nib,
+	  English.lproj/MainMenu.nib/designable.nib, Sources/VLLayout.cpp,
+	  Sources/VLModel.cpp, Sources/VLSheetViewSelection.mm,
+	  Sources/VLModel.h: Start introducing section support
+
+2007-12-24 11:15 +0000 [r231]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm: Implement alternate colors
+
+2007-12-24 00:10 +0000 [r230]  Matthias Neeracher
+
+	* Sources/VLLilypondWriter.cpp,
+	  English.lproj/MainMenu.nib/keyedobjects.nib,
+	  English.lproj/MainMenu.nib/designable.nib,
+	  Sources/VLSheetViewSelection.h, Sources/VLSheetViewSelection.mm:
+	  Insert line and page breaks
+
+2007-12-23 23:59 +0000 [r229]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader, Filters/VLMusicXMLType.writer: Fix
+	  incompatibilities with REXML 3.1.7
+
+2007-12-23 23:07 +0000 [r228]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader, Sources/VLSheetView.mm,
+	  Sources/VLLayout.cpp, Sources/VLSheetViewChords.mm,
+	  Sources/VLModel.cpp, Sources/VLSheetViewLyrics.mm,
+	  Sources/VLPListDocument.mm, Filters/VLMusicXMLType.writer,
+	  Sources/VLLayout.h, Sources/VLSheetViewNotes.mm,
+	  Sources/VLModel.h, Sources/VLSheetViewInternal.h: Handle
+	  system/page breaks
+
+2007-12-23 13:14 +0000 [r227]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm, Sources/VLLayout.cpp,
+	  Sources/VLSheetViewChords.mm, Sources/VLModel.cpp,
+	  Sources/VLSheetViewLyrics.mm, Sources/VLSheetViewNotes.mm,
+	  Sources/VLModel.h: Reorganize property access
+
+2007-12-23 12:45 +0000 [r225-226]  Matthias Neeracher
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	  Sources/VLLayout.cpp (added), Sources/VLSheetViewChords.mm,
+	  VocalEasel.xcodeproj/project.pbxproj,
+	  Sources/VLSheetViewLyrics.mm, Sources/VLLayout.h (added),
+	  Sources/VLSheetViewNotes.mm: Reorganize layout system
+
+	* Filters/plistWriter.rb: Write plist without REXML
+
+2007-12-09 22:54 +0000 [r224]  Matthias Neeracher
+
+	* Sources/VLModel.cpp: Fix empty last ending
+
+2007-12-09 17:37 +0000 [r223]  Matthias Neeracher
+
+	* Sources/VLSheetViewLyrics.mm: Fix deleting syllables
+
+2007-12-03 17:45 +0000 [r222]  Matthias Neeracher
+
+	* English.lproj/MainMenu.nib/keyedobjects.nib,
+	  English.lproj/MainMenu.nib/designable.nib, TODO,
+	  Sources/VLMMADocument.mm, Sources/VLSoundOut.cpp,
+	  English.lproj/VLDocument.nib/keyedobjects.nib,
+	  English.lproj/VLDocument.nib/designable.nib,
+	  Sources/VLDocument.h, Sources/VLDocument.mm,
+	  Sources/VLSoundOut.h: Play individual parts / implement count in
+	  for 4/4 and 3/4
+
+2007-12-02 17:06 +0000 [r221]  Matthias Neeracher
+
+	* TODO (added): Added To Do list
+
+2007-10-28 22:00 +0000 [r219]  Matthias Neeracher
+
+	* ChangeLog: Changes for 1.0a4
+
+2007-10-28 21:06 +0000 [r218]  Matthias Neeracher
+
+	* Resources/Help/about.html, Resources/Help/bugs.html,
+	  scripts/svn2log.py, NEWS: Update documentation
+
 2007-10-28 20:02 +0000 [r217]  Matthias Neeracher
 
 	* Resources/Help/about.html, Resources/Help/files.html (added),
