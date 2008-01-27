@@ -265,18 +265,24 @@
 {
 	[[[self undoManager] prepareWithInvocationTarget:self] setChordSize:chordSize];
 	chordSize = size;
+	[validTmpFiles removeObjectForKey:@"ly"]; 
+	[validTmpFiles removeObjectForKey:@"pdf"]; 
 }
 
 - (void) setLyricSize:(float)size
 {
 	[[[self undoManager] prepareWithInvocationTarget:self] setLyricSize:lyricSize];
 	lyricSize = size;
+	[validTmpFiles removeObjectForKey:@"ly"]; 
+	[validTmpFiles removeObjectForKey:@"pdf"]; 
 }
 
 - (void) setStaffSize:(float)size
 {
 	[[[self undoManager] prepareWithInvocationTarget:self] setStaffSize:staffSize];
 	staffSize = size;
+	[validTmpFiles removeObjectForKey:@"ly"]; 
+	[validTmpFiles removeObjectForKey:@"pdf"]; 
 }
 
 - (int) repeatVolta
