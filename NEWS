@@ -1,3 +1,13 @@
+27Jan08		VocalEasel 1.0b1
+
+ - Feature complete for Release 1.0
+ - Fixed numberous bugs
+ - Added sections to allow changing key, meter, divisions, or groove, within a song.
+ - Added manual line/page breaks.
+ - Added support for fine tuning font and music sizes.
+ - Added support for playing melody / accompaniment only.
+ - Improved display of on-screen lyrics.
+
 28Oct07		VocalEasel 1.0a4
 
  - Fixed numerous bugs.
