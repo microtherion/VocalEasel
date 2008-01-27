@@ -232,6 +232,9 @@ class MusicXMLListener
     when 'lyric' 
       num = (attrs['number'] || "1").to_i-1
       @note['lyrics'] ||= []
+      (0..num-1).each do |stanza| 
+        @note['lyrics'][stanza] ||= {}
+      end
       @note['lyrics'][num] = @lyric = {}
     when 'chord' 
       @chord = true
