@@ -72,6 +72,7 @@
 		}
 		//
 		// Read print info
+		//
 		NSFileWrapper * print = [wrappers objectForKey:@"PrintInfo"];
 		if (print) {
 			NSUndoManager * undoMgr = [self undoManager];

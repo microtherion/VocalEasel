@@ -156,15 +156,15 @@ static const char * 	sPaperNames[] = {
 	[ly substituteMacro:@"VLVERSION" withValue:
 			[bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
 	[ly substituteMacro:@"PAPERSIZE" withValue:paper];
-	[ly substituteMacro:@"FORMATTING" withValue:@"ragged-last-bottom = ##f"];
+	//	[ly substituteMacro:@"FORMATTING" withValue:@"ragged-last-bottom = ##f"];
 	[ly substituteMacro:@"VLVERSION" withValue:
 			[bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
 	[ly substituteMacro:@"CHORDSIZE" withValue:
-			[NSString stringWithFormat:@"%.1f", chordSize]];
+			[NSString stringWithFormat:@"%f", chordSize]];
 	[ly substituteMacro:@"LYRICSIZE" withValue:
-			[NSString stringWithFormat:@"%.1f", lyricSize]];
+			[NSString stringWithFormat:@"%f", lyricSize]];
 	[ly substituteMacro:@"STAFFSIZE" withValue:
-			[NSString stringWithFormat:@"%.1f", staffSize*scaling]];
+			[NSString stringWithFormat:@"%f", staffSize*scaling]];
 	[ly substituteMacro:@"CHORDS" withValue: 
 			[NSString stringWithUTF8String:writer.Chords().c_str()]];
 	[ly substituteMacro:@"NOTES" withValue: 
