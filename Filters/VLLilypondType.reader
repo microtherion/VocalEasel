@@ -3,6 +3,8 @@
 # VLLilypondType.reader - Import lilypond files
 #
 
+$KCODE = 'u'
+
 require File.dirname($0)+'/plistWriter'
 require File.dirname($0)+'/vl'
 
@@ -392,11 +394,15 @@ def parseLilypond
       tokens[0] = nil 
     when '\new'
       if tokens[0] == "Lyrics"
-        stack.push([block, level, ""])
-        block = '\lyricmode'
-        level = nestLevel
-        STANZAS.push(lyrics= [])
-        tokens[0..0] = nil
+        if tokens[1] =~ /^\\/
+          tokens[0..1] = nil
+        else
+          stack.push([block, level, ""])
+          block = '\lyricmode'
+          level = nestLevel
+          STANZAS.push(lyrics= [])
+          tokens[0..0] = nil
+        end
       end
     when '\relative'
       stack.push([block, level, ""])

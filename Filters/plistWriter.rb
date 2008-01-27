@@ -15,6 +15,18 @@ class PlistData
   end
 end
 
+def _encodeEntities(string)
+  encoded = []
+  string.unpack('U*').each do |ch|
+    if ch <= 0x7F
+      encoded << ch
+    else
+      encoded.concat("&\##{ch};".unpack('C*'))
+    end
+  end
+  encoded.pack('C*')
+end
+
 def _encodePlist(destination, object, indent)
   destination.print " "*indent
   case object 
@@ -23,7 +35,7 @@ def _encodePlist(destination, object, indent)
   when true then
     destination.print "<true/>\n"
   when String then
-    destination.print "<string>#{object}</string>\n"
+    destination.print "<string>#{_encodeEntities(object)}</string>\n"
   when PlistData then
     destination.print "<data>#{object}</data>\n"
   when Integer then
