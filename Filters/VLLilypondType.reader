@@ -389,7 +389,7 @@ def parseLilypond
       block = '\chords'
       level = nestLevel
     when '\lyricsto'
-      tokens[0..3] = nil 
+      tokens[0] = nil 
     when '\new'
       if tokens[0] == "Lyrics"
         stack.push([block, level, ""])
