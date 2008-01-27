@@ -7,7 +7,9 @@
 <body>
 <h1>Entering Music</h1>
 
-<h2>Song Setup</h2>
+<h2>Basic Editing</h2>
+
+<h3>Song Setup</h3>
 
 Start by entering some information applying to the entire song:
 
@@ -21,7 +23,7 @@ Start by entering some information applying to the entire song:
   <a href="play.html">playing</a> the song.
 </ul>
 
-<h2>Entering Chords</h2>
+<h3>Entering Chords</h3>
 
 Now you're ready to enter the harmonic structure of the song:
 
@@ -40,7 +42,7 @@ Now you're ready to enter the harmonic structure of the song:
   </li>
 </ul>
 
-<h2>Entering the Melody</h2>
+<h3>Entering the Melody</h3>
 
 Next, enter the melody:
 
@@ -75,7 +77,7 @@ Next, enter the melody:
   the top right to change the number of top or bottom ledger lines.</li>
 </ul>
 
-<h2>Entering Lyrics</h2>
+<h3>Entering Lyrics</h3>
 
 Finally, you may choose to enter lyrics:
 
@@ -87,10 +89,12 @@ Finally, you may choose to enter lyrics:
   <li>To place two words on the same note, use an underscore ("and_a").</li>
   <li>Use the TAB key to advance to the next note, Shift-TAB to retreat to the preceding note.</li>
   <li>By default, you can enter two lines of lyrics. To change that, click the
-  <i>Display</i> icon at the top right to change the number of lyrics lines.</li>
+  <i>Display</i> icon at the top right of the window to change the number of lyrics lines.</li>
 </ul>
 
-<h2>Editing the Song</h2>
+<h2>Advanced Editing</h2>
+
+<h3>Working with Selections</h3>
 
 <ul>
   <li>Click on a bar line to select an insertion point.</li>
@@ -99,10 +103,10 @@ Finally, you may choose to enter lyrics:
   items to manipulate the selection.</li>
 </ul>
 
-<h2>Repeats / Coda</h2>
+<h3>Repeats / Coda</h3>
 
 <ul>
-  <li>To repeat a section of the song, select it and use the <i>Repeats&rarr;Repeat...</i> menu item to specify the number of repeats.</li>
+  <li>To repeat a section of the song, select it and use the <i>Repeats&rarr;Repeat...</i> menu item in the <i>Song</i> menu to specify the number of repeats.</li>
   <li>To specify alternate endings, select measures at the end of a repeat and
   use <i>Repeats&rarr;Endings...</i> to specify when to use the endings.</li>
  <li>To specify a coda the last time through a song, select a bar line and use
@@ -110,6 +114,14 @@ Finally, you may choose to enter lyrics:
   occurs and then select another bar line and use <i>Repeats&rarr;Start
   Coda</i> to specify where the coda starts.</li>  
 </ul>
+
+<h3>Controlling Line / Page Breaks</h3>
+
+By default, Lilypond will choose where to start new lines and new pages. To override these decisions with explicit line and page breaks, click on a bar line and select <i>Line Break</i> or <i>Page Break</i> from the <i>Song</i> menu.
+
+<h3>Working with Multiple Sections</h3>
+
+By default, the <i>key</i>, <i>meter</i>, <i>subdivisions</i>, and <i>groove</i> settings you choose apply to the entire song. If you need to change these in the middle of a song (e.g. to alternate between swing and latin in a song like Green Dolphin Street), click on a bar line and select <i>Section Break</i> from the <i>Song</i> menu. From then on, changes to the above settings only apply to the sections partially or wholly contained in the selection.
 
 </body>
 </html>
