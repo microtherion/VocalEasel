@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2007 Matthias Neeracher
+// Copyright © 2005-2008 Matthias Neeracher
 //
 
 #import "VLSheetWindow.h"
@@ -162,6 +162,21 @@ static NSString*	sDisplayToolbarItemIdentifier	= @"Display Toolbar Item Identifi
 - (void) stopAnimation
 {
 	[progressToolItem stopAnimation:self];
+}
+
+- (IBAction) zoomIn: (id) sender
+{
+	[sheetView zoomIn:sender];
+}
+
+- (IBAction) zoomOut: (id) sender
+{
+	[sheetView zoomOut:sender];
+}
+
+- (void) mouseMoved:(NSEvent *)event
+{
+	[sheetView mouseMoved:event];
 }
 
 @end

@@ -35,6 +35,8 @@
 	IBOutlet id		progressToolItem;
 	IBOutlet id		displayToolItem;
 
+	IBOutlet id		sheetView;
+
 	int					editNumTopLedgers;
 	int					editNumBotLedgers;
 	int					editNumStanzas;

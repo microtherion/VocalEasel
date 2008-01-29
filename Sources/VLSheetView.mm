@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2007 Matthias Neeracher
+// Copyright © 2005-2008 Matthias Neeracher
 //
 
 #import "VLSheetView.h"
@@ -217,7 +217,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 
 - (void) setTrackingRect
 {
-	NSRect	r		= [self bounds];
+	NSRect	r		= [self visibleRect];
 	NSPoint	mouse	= 
 		[self convertPoint:[[self window] mouseLocationOutsideOfEventStream]
 			  fromView: nil];
@@ -226,8 +226,6 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	fCursorTracking = [self addTrackingRect:r owner:self
 							userData:nil assumeInside:within];
 	[[self window] setAcceptsMouseMovedEvents:within];
-	if (within && ![self editTarget])
-		[[self window] makeFirstResponder:self];
 }
 
 - (void) clearTrackingRect
@@ -244,7 +242,8 @@ VLMusicElement sSemi2Accidental[12][12] = {
 
 -(void)viewWillMoveToWindow:(NSWindow *)win
 {
-	if (!win && [self window]) [self clearTrackingRect];
+	if (!win && [self window])
+		[self clearTrackingRect];
 }
 
 -(void)viewDidMoveToWindow
@@ -872,8 +871,8 @@ static int8_t sSharpAcc[] = {
 
 - (void) mouseExited:(NSEvent *)event
 {
-	[[self window] setAcceptsMouseMovedEvents:NO];
 	[self mouseMoved:event];
+	[[self window] setAcceptsMouseMovedEvents:NO];
 }
 
 - (void) mouseDown:(NSEvent *)event
