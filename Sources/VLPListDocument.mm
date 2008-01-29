@@ -219,6 +219,8 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 	VLFraction		at(0);
 	VLFraction		tiedStart(0);
 	VLLyricsNote	tiedNote;
+	uint8_t  		prevKind[20];
+	memset(prevKind, 0, 20);
 
 	for (NSEnumerator * ne 	  = [melody objectEnumerator];
 		 NSDictionary * ndict = [ne nextObject];
@@ -261,7 +263,18 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 				note.fLyrics.push_back(syll);
 			}
 		}
-		
+
+		//
+		// Sanitize syllabic information which was corrupt in early
+		// versions.
+		//
+		for (size_t i = 0; i<note.fLyrics.size(); ++i)
+			if (note.fLyrics[i].fText.size()) {
+				if (!(prevKind[i] & VLSyllable::kHasNext))
+					note.fLyrics[i].fKind &= ~VLSyllable::kHasPrev;
+				prevKind[i] = note.fLyrics[i].fKind;
+			}		
+
 		tiedStart	= at;
 		tiedNote	= note;
 		
