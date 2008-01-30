@@ -449,7 +449,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 				}
 				prevTriplets = 0;
 			}
-			if (at.fDenom > 4) { 
+			if (at.fDenom == 3 || at.fDenom > 4) { 
 				//
 				// Break up notes not starting on quarter beat
 				//  - Never cross middle of measure
