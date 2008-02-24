@@ -186,7 +186,7 @@ def parseLilypond
   tokens = []
   INFILE.each do |line|
     line.chomp!.sub!(/%.*/, "")
-    line.scan(%r$\G\s*(\{|\}|\(|\)|\||=|~|<<|>>|--|#'|#\(|##t|##f|\\\w+|\".*?\"|\w[-+\w\d.',:*/]+|.)$) do |token|
+    line.scan(%r$\G\s*(\{|\}|\(|\)|\||=|~|<<|>>|--|#'|#\(|##t|##f|\\\w+|\".*?\"|\w[-+^\w\d.',:*/]+|.)$) do |token|
       tokens.push(token[0])
     end
   end
@@ -237,7 +237,7 @@ def parseLilypond
                              (\d+                # 1, 2, 4, 8, 16 ...
                               \.*(?:\*\d+/\d+)?  # ., *3/4
                              )? 
-                             (?:\:([-+^:.a-z\d]+)?)? # :maj9.7-^2
+                             (?:\:([-+^:.a-z\d]*))? # :maj9.7-^2
                              (?:/\+?(             # /+
                               [a-g](?:[ei]?s)?   # Root: a, bes, fis, as
                              ))? 
@@ -476,9 +476,9 @@ def makeMeasures
         if len+chordLen > measureLen
           remLen               = len+chordLen-measureLen
           chordLen            -= remLen
-          remChord             = chord.dup
-          remChord['durNum']   = remLen.num
-          remChord['durDenom'] = remLen.denom
+          remChord             = {
+            'pitch' => VL::NoPitch, 'root' => VL::NoPitch, 
+            'durNum' => remLen.num, 'durDenom' => remLen.denom}
           CHORDS.unshift(remChord)
         end
         mchords.push(chord)
