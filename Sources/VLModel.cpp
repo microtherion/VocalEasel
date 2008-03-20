@@ -1942,7 +1942,7 @@ void VLSong::PasteMeasures(size_t beginMeasure, const VLSong & measures, int mod
 				++beginProp;
 			else 
 				++propOffset;
-			if (fProperties[propAt] == endProp[-1])
+			if (endProp > beginProp && fProperties[propAt] == endProp[-1])
 				--endProp;
 		}
 		int postOffset = endProp - beginProp;
