@@ -845,6 +845,7 @@ static int8_t sSharpAcc[] = {
 
 - (void) mouseMoved:(NSEvent *)event
 {
+	NSLog(@"Moved\n");
    	if ([event modifierFlags] & NSAlphaShiftKeyMask)
 		return; // Keyboard mode, ignore mouse
 
@@ -871,8 +872,9 @@ static int8_t sSharpAcc[] = {
 
 - (void) mouseExited:(NSEvent *)event
 {
-	[self mouseMoved:event];
+	fCursorPitch = VLNote::kNoPitch;
 	[[self window] setAcceptsMouseMovedEvents:NO];
+	[self setNeedsDisplay:YES];
 }
 
 - (void) mouseDown:(NSEvent *)event
@@ -898,11 +900,15 @@ static int8_t sSharpAcc[] = {
 
 - (void) mouseDragged:(NSEvent *)event
 {
-	if (fCursorRegion != kRegionMeasure)
+	bool inMeasureSelection = fCursorRegion == kRegionMeasure;
+
+	NSLog(@"Dragged\n");
+	if (!inMeasureSelection)
 		[super mouseDragged:event];
 	[self autoscroll:event];
-	if (fCursorRegion == kRegionMeasure)
+	if (inMeasureSelection)
 		[self adjustSelection:event];
+	NSLog(@"Region: %d\n", fCursorRegion);
 }
 
 - (void) keyDown:(NSEvent *)event
