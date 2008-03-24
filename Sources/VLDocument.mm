@@ -565,4 +565,12 @@
 	[self didChangeSong];
 }
 
+- (NSString *) displayName
+{
+	if ([songTitle isEqual:@""])
+		return [super displayName];
+	else
+		return songTitle;
+}
+
 @end
