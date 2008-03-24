@@ -78,6 +78,7 @@
 	}
 	fNextMeas = fMeasure;
 	fNextAt	  = fAt;
+	[fView scrollMeasureToVisible:fMeasure];
 }
 
 - (void) moveToPrev
@@ -91,6 +92,7 @@
 	fAt = at;
 	fNextMeas = fMeasure;
 	fNextAt	  = fAt;
+	[fView scrollMeasureToVisible:fMeasure];
 }
 
 - (void) highlightCursor

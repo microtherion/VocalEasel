@@ -12,7 +12,7 @@
 
  - Fixed numerous bugs.
  - Reorganized file import/export facilities.
-   - Now generating much more conformant VoiceXML.
+   - Now generating much more conformant MusicXML.
    - Now capable of importing Band-in-a-Box and Lilypond files.
 
 19May07		VocalEasel 1.0a3
