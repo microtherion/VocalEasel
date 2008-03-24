@@ -88,8 +88,7 @@ static VLSong	sPasteboard;
 
 	if (fSelEnd > -1) {
 		firstSection = song->fMeasures[fSelStart].fPropIdx;
-		lastSection = fSelEnd > fSelStart+1 ?
-			song->fMeasures[fSelEnd].fPropIdx : firstSection;
+		lastSection  = fSelEnd==fSelStart ? firstSection : song->fMeasures[fSelEnd-1].fPropIdx;
 	} else {
 		firstSection = 0;
 		lastSection  = song->fMeasures.back().fPropIdx;
