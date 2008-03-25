@@ -1,3 +1,108 @@
+2008-03-24 22:57 +0000 [r276]  Matthias Neeracher
+
+	* Sources/VLSheetViewSelection.mm: Don't crash in selection
+	  extension
+
+2008-03-24 22:48 +0000 [r274-275]  Matthias Neeracher
+
+	* Sources/VLSheetView.mm: Don't interrupt selection in autoscroll
+
+	* Sources/VLDocument.mm: Prefer Song Name in Window Title
+
+2008-03-24 01:04 +0000 [r273]  Matthias Neeracher
+
+	* Sources/VLSheetViewLyrics.mm, NEWS: Auto scroll lyrics
+
+2008-03-20 18:17 +0000 [r272]  Matthias Neeracher
+
+	* Sources/VLModel.cpp: Fix crash on paste in middle of single
+	  property song
+
+2008-02-24 20:14 +0000 [r271]  Matthias Neeracher
+
+	* BUGS, Filters/VLLilypondType.reader: Omit repeated chords. Fix
+	  omitted steps
+
+2008-01-30 00:37 +0000 [r270]  Matthias Neeracher
+
+	* BUGS, Sources/VLModel.cpp, Filters/VLLilypondType.reader: Accept
+	  chord/root, not just chord/+root
+
+2008-01-29 23:22 +0000 [r269]  Matthias Neeracher
+
+	* Sources/VLPListDocument.mm: Sanitize broken syllabic information
+
+2008-01-29 03:04 +0000 [r267-268]  Matthias Neeracher
+
+	* BUGS (added): Fix tracking / responder chain issues
+
+	* Sources/VLSheetWindow.mm, Sources/VLSheetView.h,
+	  English.lproj/VLDocument.xib, Sources/VLSheetView.mm,
+	  Sources/VLSheetWindow.h: Fix tracking / responder chain issues
+
+2008-01-27 21:59 +0000 [r266]  Matthias Neeracher
+
+	* Sources/VLDocument.mm: Force rebuild of pdf on size changes
+
+2008-01-27 21:34 +0000 [r265]  Matthias Neeracher
+
+	* Filters/VLMusicXMLType.reader: Fix reading of skipped stanzas
+
+2008-01-27 21:06 +0000 [r264]  Matthias Neeracher
+
+	* Filters/plistWriter.rb, Filters/VLLilypondType.reader: Fix import
+	  of accented characters
+
+2008-01-27 20:20 +0000 [r262-263]  Matthias Neeracher
+
+	* Filters/VLLilypondType.reader: Fix lyricsto import
+
+	* Resources/Info.plist: Bump version number
+
+2008-01-27 12:32 +0000 [r261]  Matthias Neeracher
+
+	* English.lproj/MainMenu.xib: Hidden menu item does not seem
+	  compatible with Tiger
+
+2008-01-27 11:47 +0000 [r260]  Matthias Neeracher
+
+	* TODO, NEWS: Updated NEWS / TODO
+
+2008-01-27 11:24 +0000 [r259]  Matthias Neeracher
+
+	* ChangeLog: Update ChangeLog
+
+2008-01-27 10:43 +0000 [r252-254]  Matthias Neeracher
+
+	* Resources/Info.plist, Sources/VLLilypondDocument.mm,
+	  Sources/VLXMLDocument.mm: Last pre-release tweaks
+
+	* English.lproj/VLDocument.xib, English.lproj/MainMenu.xib: Provide
+	  menu equivalents for toolbar buttons
+
+	* Resources/Help/about.html, Resources/Help/print.html,
+	  Resources/Help/edit.html, Resources/Help/play.html: Update Manual
+
+2008-01-26 20:56 +0000 [r251]  Matthias Neeracher
+
+	* Resources/Templates/default.lyt, Sources/VLLilypondDocument.mm,
+	  Sources/VLXMLDocument.mm: Store and load print properties
+
+2008-01-26 16:47 +0000 [r250]  Matthias Neeracher
+
+	* English.lproj/MainMenu.nib (removed),
+	  English.lproj/VLDocument.xib (added),
+	  English.lproj/VLLogWindow.nib (removed),
+	  English.lproj/VLGroove.xib (added), English.lproj/VLPDFWindow.xib
+	  (added), English.lproj/VLMirrorWindow.xib (added),
+	  VocalEasel.xcodeproj/project.pbxproj,
+	  English.lproj/VLDocument.nib (removed),
+	  English.lproj/VLGroove.nib (removed),
+	  English.lproj/VLPDFWindow.nib (removed),
+	  English.lproj/MainMenu.xib (added),
+	  English.lproj/VLMirrorWindow.nib (removed),
+	  English.lproj/VLLogWindow.xib (added): Switch to .xib
+
 2008-01-26 16:38 +0000 [r249]  Matthias Neeracher
 
 	* Sources/VLSheetView.mm, Resources/Templates/default.lyt,
