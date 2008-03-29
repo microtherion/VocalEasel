@@ -1375,7 +1375,11 @@ void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string w
 		AddMeasure();
 
 	uint8_t	kind = 0;
-	bool	cleanup = false;
+	enum State {
+		kFindFirst,
+		kOverwrite,
+		kCleanup
+	} 		state	= kFindFirst;
 
 	do {
 		VLMeasure & 			meas	= fMeasures[measure];
@@ -1384,24 +1388,15 @@ void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string w
 		VLFraction				now(0);
 
 		while (note != meas.fMelody.end()) {
-			if (now >= at && note->fPitch != VLNote::kNoPitch
-				&& !(note->fTied & VLNote::kTiedWithPrev)
-			) {
-				if (cleanup) {
-					//
-					// Make sure that following syllable doesn't have
-					// kHasPrev set
-					//
-					if (note->fLyrics.size() >= stanza)
-						note->fLyrics[stanza-1].fKind &= ~VLSyllable::kHasPrev;
-					
-					if (nextMeas)
-						*nextMeas = measure;
-					if (nextAt)
-						*nextAt	  = now;
-
-					return;
-				}
+			switch (state) {
+			case kFindFirst:
+				if (now < at || note->fPitch == VLNote::kNoPitch
+				 || (note->fTied & VLNote::kTiedWithPrev)
+				)
+					break; // Not yet there, skip this note
+				state = kOverwrite;
+				// Fall through
+			case kOverwrite: {
 				if (note->fLyrics.size()<stanza)
 					note->fLyrics.resize(stanza);
 				size_t sep = word.find_first_of(" \t-");
@@ -1426,7 +1421,7 @@ void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string w
 					// Last syllable in text
 					//
 					kind   &= ~VLSyllable::kHasNext;
-					cleanup = true;
+					state   = kCleanup;
 					break;
 				case ' ':
 					//
@@ -1444,6 +1439,26 @@ void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string w
 					kind |= VLSyllable::kHasPrev;
 				else 
 					kind &= ~VLSyllable::kHasPrev;
+				break; }
+			case kCleanup:
+				if (nextMeas) {
+					*nextMeas = measure;
+					nextMeas  = 0;
+				}
+				if (nextAt) {
+					*nextAt	  = now;
+					nextAt	  = 0;
+				}
+				//
+				// Delete all subsequent syllables with kHasPrev set
+				//
+				if (note->fLyrics.size() >= stanza
+				 && (note->fLyrics[stanza-1].fKind & VLSyllable::kHasPrev)
+				) {
+					note->fLyrics[stanza-1].fText = "";
+					note->fLyrics[stanza-1].fKind = 0;
+				} else	
+					return;
 			}
 			now += note->fDuration;
 			++note;
