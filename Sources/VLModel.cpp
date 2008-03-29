@@ -1353,7 +1353,8 @@ std::string VLSong::GetWord(size_t stanza, size_t measure, VLFraction at)
 					word += note->fLyrics[stanza-1].fText;
 					if (!(note->fLyrics[stanza-1].fKind & VLSyllable::kHasNext))
 						return word;
-				}
+				} else
+					return "";
 			}
 			now += note->fDuration;
 			++note;
