@@ -1282,7 +1282,9 @@ bool VLSong::PrevWord(size_t stanza, size_t & measure, VLFraction & at)
 		VLFraction				now(0);
 
 		while (note != meas.fMelody.end() && now < at) {
-			if (note->fPitch != VLNote::kNoPitch)
+			if (!(note->fTied & VLNote::kTiedWithPrev)
+             && note->fPitch != VLNote::kNoPitch
+			)
 				if (note->fLyrics.size() < stanza 
 			     || !(note->fLyrics[stanza-1].fKind & VLSyllable::kHasPrev)
 				) {
@@ -1316,7 +1318,10 @@ bool VLSong::NextWord(size_t stanza, size_t & measure, VLFraction & at)
 		VLFraction				now(0);
 
 		while (note != meas.fMelody.end()) {
-			if (note->fPitch != VLNote::kNoPitch && (!firstMeasure || now>at))
+			if (!(note->fTied & VLNote::kTiedWithPrev)
+             && note->fPitch != VLNote::kNoPitch 
+			 && (!firstMeasure || now>at)
+            )
 				if (note->fLyrics.size() < stanza 
 			     || !(note->fLyrics[stanza-1].fKind & VLSyllable::kHasPrev)
 				) {
