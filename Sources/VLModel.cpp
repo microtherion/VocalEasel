@@ -1388,78 +1388,79 @@ void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string w
 		VLFraction				now(0);
 
 		while (note != meas.fMelody.end()) {
-			switch (state) {
-			case kFindFirst:
-				if (now < at || note->fPitch == VLNote::kNoPitch
-				 || (note->fTied & VLNote::kTiedWithPrev)
-				)
-					break; // Not yet there, skip this note
-				state = kOverwrite;
-				// Fall through
-			case kOverwrite: {
-				if (note->fLyrics.size()<stanza)
-					note->fLyrics.resize(stanza);
-				size_t sep = word.find_first_of(" \t-");
-				size_t esp;
-				std::string syll;
-				char   type= 0;
-				if (sep == std::string::npos) {
-					esp = sep;
-					syll= word;
-				} else {
-					esp = word.find_first_not_of(" \t-", sep);
-					syll= word.substr(0, sep);
-					if (esp != std::string::npos) {
-						size_t tpos = word.substr(sep, esp-sep).find('-');
-						type = (tpos != std::string::npos) ? '-' : ' ';
-						word.erase(0, esp);
+			if (note->fPitch != VLNote::kNoPitch 
+			 && !(note->fTied & VLNote::kTiedWithPrev)
+			)
+				switch (state) {
+				case kFindFirst:
+					if (now < at)
+						break; // Not yet there, skip this note
+					state = kOverwrite;
+					// Fall through
+				case kOverwrite: {
+					if (note->fLyrics.size()<stanza)
+						note->fLyrics.resize(stanza);
+					size_t sep = word.find_first_of(" \t-");
+					size_t esp;
+					std::string syll;
+					char   type= 0;
+					if (sep == std::string::npos) {
+						esp = sep;
+						syll= word;
+					} else {
+						esp = word.find_first_not_of(" \t-", sep);
+						syll= word.substr(0, sep);
+						if (esp != std::string::npos) {
+							size_t tpos = word.substr(sep, esp-sep).find('-');
+							type = (tpos != std::string::npos) ? '-' : ' ';
+							word.erase(0, esp);
+						}
 					}
-				}
-				switch (type) {
-				default:
+					switch (type) {
+					default:
+						//
+						// Last syllable in text
+						//
+						kind   &= ~VLSyllable::kHasNext;
+						state   = kCleanup;
+						break;
+					case ' ':
+						//
+						// Last syllable in word
+						//
+						kind 	&= ~VLSyllable::kHasNext;	
+						break;
+					case '-':
+						kind   |= VLSyllable::kHasNext;
+						break;
+					}
+					note->fLyrics[stanza-1].fText = syll;
+					note->fLyrics[stanza-1].fKind = kind;
+					if (type == '-')
+						kind |= VLSyllable::kHasPrev;
+					else 
+						kind &= ~VLSyllable::kHasPrev;
+					break; }
+				case kCleanup:
+					if (nextMeas) {
+						*nextMeas = measure;
+						nextMeas  = 0;
+					}
+					if (nextAt) {
+						*nextAt	  = now;
+						nextAt	  = 0;
+					}
 					//
-					// Last syllable in text
+					// Delete all subsequent syllables with kHasPrev set
 					//
-					kind   &= ~VLSyllable::kHasNext;
-					state   = kCleanup;
-					break;
-				case ' ':
-					//
-					// Last syllable in word
-					//
-					kind 	&= ~VLSyllable::kHasNext;	
-					break;
-				case '-':
-					kind   |= VLSyllable::kHasNext;
-					break;
+					if (note->fLyrics.size() >= stanza
+				     && (note->fLyrics[stanza-1].fKind & VLSyllable::kHasPrev)
+					) {
+						note->fLyrics[stanza-1].fText = "";
+						note->fLyrics[stanza-1].fKind = 0;
+					} else	
+						return;
 				}
-				note->fLyrics[stanza-1].fText = syll;
-				note->fLyrics[stanza-1].fKind = kind;
-				if (type == '-')
-					kind |= VLSyllable::kHasPrev;
-				else 
-					kind &= ~VLSyllable::kHasPrev;
-				break; }
-			case kCleanup:
-				if (nextMeas) {
-					*nextMeas = measure;
-					nextMeas  = 0;
-				}
-				if (nextAt) {
-					*nextAt	  = now;
-					nextAt	  = 0;
-				}
-				//
-				// Delete all subsequent syllables with kHasPrev set
-				//
-				if (note->fLyrics.size() >= stanza
-				 && (note->fLyrics[stanza-1].fKind & VLSyllable::kHasPrev)
-				) {
-					note->fLyrics[stanza-1].fText = "";
-					note->fLyrics[stanza-1].fKind = 0;
-				} else	
-					return;
-			}
 			now += note->fDuration;
 			++note;
 		}	
