@@ -845,7 +845,6 @@ static int8_t sSharpAcc[] = {
 
 - (void) mouseMoved:(NSEvent *)event
 {
-	NSLog(@"Moved\n");
    	if ([event modifierFlags] & NSAlphaShiftKeyMask)
 		return; // Keyboard mode, ignore mouse
 
@@ -946,6 +945,15 @@ static int8_t sSharpAcc[] = {
 	return [[self editTarget] validValue:[fFieldEditor stringValue]];
 }
 
+- (void)updateFirstResponder
+{
+	NSWindow * 		win 			= [self window];
+	NSResponder * 	hasResponder	= [win firstResponder];
+	if ([self editTarget]) 
+		if (hasResponder != [win fieldEditor:NO forObject:nil])
+			[win makeFirstResponder:fFieldEditor];
+}
+
 - (void)controlTextDidEndEditing:(NSNotification *)note
 {
 	VLEditable * editable = [self editTarget];
@@ -963,9 +971,10 @@ static int8_t sSharpAcc[] = {
 	[self setEditTarget:editable];
 	if (editable) 
 		[fFieldEditor selectText:self];
-    [[self window] performSelectorOnMainThread:@selector(makeFirstResponder:)
-				   withObject:(editable ? fFieldEditor : self)
-				   waitUntilDone:NO];
+	else 
+		[[self window] makeFirstResponder:self];
+	[self performSelectorOnMainThread:@selector(updateFirstResponder)
+		  withObject:nil waitUntilDone:NO];
 	[self setNeedsDisplay: YES];
 }
 
