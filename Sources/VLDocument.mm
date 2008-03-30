@@ -199,6 +199,16 @@
 	return song;
 }
 
+- (void) setSongTitle:(NSString *)newTitle
+{
+	if (newTitle != songTitle) {
+		[songTitle release];
+		songTitle = [newTitle retain];
+	}
+	[[self windowControllers] makeObjectsPerformSelector:
+		         @selector(synchronizeWindowTitleWithDocumentName)];
+}
+
 - (NSNumber *)	songKey
 {
 	const VLProperties & prop = song->fProperties.front();
