@@ -997,7 +997,7 @@ static const uint8_t * sDiv4[] = {
 	NULL,     sDiv4_8,  NULL,     NULL,     NULL,     sDiv4_12};
 
 static const uint8_t sDiv6_2[] = {0, 0, 0, 1, 1, 1};
-static const uint8_t sDiv6_3[] = {0, 0, 1, 1, 2, 2};
+static const uint8_t sDiv6_3[] = {0, 0, 1, 2, 2, 2};
 static const uint8_t sDiv6_4[] = {0, 1, 2, 2, 3, 3};
 static const uint8_t sDiv6_8[] = {0, 2, 3, 4, 6, 7};
 static const uint8_t sDiv6_12[]= {0, 2, 4, 6, 8,10};
@@ -1851,7 +1851,13 @@ VLSong::iterator::iterator(const VLSong & song, bool end)
 	if (end) {
 		fMeasure	= fSong.CountMeasures()-fSong.EmptyEnding();
 	} else {
+		bool 	repeat;
 		fMeasure	= 0;
+		if (fSong.fCoda > 0 
+		 && !fSong.DoesEndRepeat(fMeasure)
+		 && !fSong.DoesEndEnding(fMeasure, &repeat)
+		)
+			fStatus.push_back(Repeat(fMeasure, 2));
 		AdjustStatus();
 	}
 }
@@ -1868,7 +1874,7 @@ void VLSong::iterator::AdjustStatus()
 {
 	int 	times;
 	size_t	volta;
-	bool 	repeat;
+	bool 	repeat = true;
 	if (fSong.DoesEndRepeat(fMeasure)
 	 || (fSong.DoesEndEnding(fMeasure, &repeat) && repeat)
 	) {
@@ -1880,6 +1886,8 @@ void VLSong::iterator::AdjustStatus()
 			
 			return;
 		} 
+	} else if (!repeat) {
+		fStatus.pop_back();
 	}
 	if (fSong.fCoda > 0 && fMeasure==fSong.fGoToCoda)
 		if (fStatus.size() && fStatus.back().fVolta == fStatus.back().fTimes-1) {
@@ -1887,7 +1895,9 @@ void VLSong::iterator::AdjustStatus()
 			
 			return;
 		}
-	if (fMeasure == fSong.CountMeasures()-fSong.EmptyEnding())
+	if (fMeasure == fSong.CountMeasures()-fSong.EmptyEnding() 
+		|| (fSong.fCoda > 0 && fMeasure == fSong.fCoda)
+	)
 		while (fStatus.size())
 			if (++fStatus.back().fVolta < fStatus.back().fTimes) {
 				fMeasure = fStatus.back().fBegin;
