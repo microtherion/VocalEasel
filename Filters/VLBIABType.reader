@@ -343,7 +343,7 @@ if biab.sub!(/^.*?\xA0\xB0\xC1/m, '')
     if channel==176 or channel==179 or channel==180
       pitch = VL::NoPitch
     end
-    onset = (onset / 10.0).floor
+    onset = ((onset+5) / 10.0).floor
     RAWNOTES.push([onset, pitch])
   end
 end
@@ -367,7 +367,7 @@ while RAWNOTES.size > 0 || CHORDS.size > 0
       RAWNOTES.unshift(note)
       if lastNote
         lastNote['tied'] ||= 0
-        lastNote['tied']   = VL::TiedWithNext
+        lastNote['tied']  |= VL::TiedWithNext
         RAWNOTES.unshift([nextMeas, lastNote['pitch'], true])
       else
         RAWNOTES.unshift([nextMeas, VL::NoPitch])
