@@ -82,14 +82,19 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 	int		times;
 	size_t	volta;
 	bool	repeat;
+	bool    hasBarLine = false;
 		
-	if (meas.fBreak == VLMeasure::kNewPage)
-		fAccum += fIndent+"\\pageBreak\n";
-	else if (meas.fBreak == VLMeasure::kNewSystem)
-		fAccum += fIndent+"\\break\n";
+	if (meas.fBreak == VLMeasure::kNewPage) {
+		fAccum 		+= fIndent+"\\pageBreak\n";
+		hasBarLine 	 = true;
+	} else if (meas.fBreak == VLMeasure::kNewSystem) {
+		fAccum 		+= fIndent+"\\break\n";
+		hasBarLine 	 = true;
+	}
 	if (fSong->DoesEndRepeat(m)) {
-		fAccum += "}\n";
-		fIndent = "";
+		fAccum 	   += "}\n";
+		fIndent 	= "";
+		hasBarLine	= true;
 	}
 	if (fSong->DoesBeginEnding(m, &repeat, &volta)) {
 		fAccum += fSeenEnding ? "}{\n" : "} \\alternative {{\n";
@@ -105,7 +110,8 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 		fAccum += "\")" + std::string(repeat ? "" : " end-repeat") + ")\n";
 		fSeenEnding	|= volta;
 		++fNumEndings;
-	} else if (fSong->DoesEndEnding(m)) {
+		hasBarLine 	 = true;
+	} else if (fSong->DoesEndEnding(m, &hasBarLine)) {
 		fAccum += "}}\n";
 		fIndent = "";
 	}
@@ -116,11 +122,15 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 		fIndent 	= "    ";
 		fSeenEnding = 0;
 		fNumEndings	= 0;
+		hasBarLine 	= true;
 	}
 	fAccum += fIndent;
-	if (fSong->fCoda == m)
+	if (fSong->fCoda == m) {
+		if (!hasBarLine)
+			fAccum += "\\bar \"|.\" ";
 		fAccum += "\\break \\mark \\markup { \\musicglyph #\"scripts.coda\" }\n"
 			+ fIndent;
+	}
 	fMelody += fAccum;
 
 	//
