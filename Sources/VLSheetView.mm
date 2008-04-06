@@ -159,8 +159,8 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	{_ F _ _ N _ F _ _ N _ N}, // Eb major - 3 flats
 	{_ F _ _ N _ F _ F _ _ N}, // Bb major - 2 flats
 	{_ F _ F _ _ F _ F _ _ N}, // F major  - 1 flat
+	{_ F _ F _ _ F _ F _ F _}, // C major
  //  C C#D D#E F F#G G#A A#B 	
-	{_ S _ S _ _ S _ S _ S _}, // C major
 	{_ S _ S _ N _ _ S _ S _}, // G major - 1 sharp
 	{N _ _ S _ N _ _ S _ S _}, // D major - 2 sharps
 	{N _ _ S _ N _ N _ _ S _}, // A major - 3 sharps
@@ -177,7 +177,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 {
 	int 	semi 		= pitch % 12;
 	int		key			= [self song]->fProperties.front().fKey;
-	bool 	useSharps	= key >= 0;
+	bool 	useSharps	= key > 0;
 	
 	return	sSemi2Pitch[useSharps][semi];
 }
@@ -901,13 +901,11 @@ static int8_t sSharpAcc[] = {
 {
 	bool inMeasureSelection = fCursorRegion == kRegionMeasure;
 
-	NSLog(@"Dragged\n");
 	if (!inMeasureSelection)
 		[super mouseDragged:event];
 	[self autoscroll:event];
 	if (inMeasureSelection)
 		[self adjustSelection:event];
-	NSLog(@"Region: %d\n", fCursorRegion);
 }
 
 - (void) keyDown:(NSEvent *)event

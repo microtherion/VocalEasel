@@ -40,7 +40,7 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 	else 	
 		measNo[0] = 0;
 
-	fUseSharps	= p.fKey >= 0;
+	fUseSharps	= p.fKey > 0;
 	fInPickup   = fInPickup && !m && meas.NoChords();
 
 	//
