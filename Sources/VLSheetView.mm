@@ -954,7 +954,9 @@ static int8_t sSharpAcc[] = {
 	NSWindow * 		win 			= [self window];
 	NSResponder * 	hasResponder	= [win firstResponder];
 	if ([self editTarget]) 
-		if (hasResponder != [win fieldEditor:NO forObject:nil])
+		if (hasResponder != [win fieldEditor:NO forObject:nil] 
+		 || [hasResponder delegate] != fFieldEditor
+		)
 			[win makeFirstResponder:fFieldEditor];
 }
 
