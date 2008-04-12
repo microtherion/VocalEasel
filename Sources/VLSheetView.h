@@ -103,6 +103,7 @@ enum VLRecalc {
 - (IBAction) endSheetWithButton:(id)sender;
 - (IBAction) selectGroove:(id)sender;
 - (IBAction) editDisplayOptions:(id)sender;
+- (IBAction) transposeOctave:(id)sender;
 
 - (VLDocument *) document;
 - (VLSong *) song;

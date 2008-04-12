@@ -964,6 +964,25 @@ void VLSong::ChangeKey(int section, int newKey, int newMode, bool transpose)
 	}
 }
 
+void VLSong::ChangeOctave(int section, bool transposeUp)
+{
+	int semi = transposeUp ? 12 : -12;
+
+	for (size_t measure=0; measure<fMeasures.size(); ++measure) {
+		if (fMeasures[measure].fPropIdx != section)
+			continue;
+
+		VLNoteList::iterator i = fMeasures[measure].fMelody.begin();
+		VLNoteList::iterator e = fMeasures[measure].fMelody.end();
+
+		for (; i!=e; ++i) {
+			if (i->fPitch == VLNote::kNoPitch)
+				continue;
+			i->fPitch	+= semi;
+		}
+	}
+}
+
 //
 // We try a table based approach for converting the beginning and end of
 // notes

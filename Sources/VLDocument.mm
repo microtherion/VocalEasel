@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2007 Matthias Neeracher
+// Copyright © 2005-2008 Matthias Neeracher
 //
 
 #import "VLDocument.h"
@@ -268,6 +268,14 @@
 	while (sections.length-- > 0)
 		song->fProperties[sections.location++].fGroove = grv;
 	[self didChangeValueForKey:@"songGroove"];
+	[self didChangeSong];
+}
+
+- (void) changeOctave:(BOOL)up inSections:(NSRange)sections
+{
+	[self willChangeSong];
+	while (sections.length-- > 0)
+		song->ChangeOctave(sections.location++, up);
 	[self didChangeSong];
 }
 

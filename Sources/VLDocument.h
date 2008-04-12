@@ -65,6 +65,7 @@ enum {
 - (void) setDivisions:(int)divisions inSections:(NSRange)sections;
 - (void) setGroove:(NSString *)groove inSections:(NSRange)sections; 
 - (void) playWithGroove:(NSString *)groove inSections:(NSRange)sections; 
+- (void) changeOctave:(BOOL)up inSections:(NSRange)sections;
 
 - (void) setRepeatVolta:(int)repeatVolta;
 

@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2007 Matthias Neeracher
+// Copyright © 2005-2008 Matthias Neeracher
 //
 
 #include <list>
@@ -346,6 +346,7 @@ public:
 	bool DoesTieWithNextRepeat(size_t measure) const;
 	bool IsNonEmpty() const;
 	void ChangeKey(int section, int newKey, int newMode, bool transpose);
+	void ChangeOctave(int section, bool transposeUp);
 	void ChangeDivisions(int section, int newDivisions);
 	void ChangeTime(int section, VLFraction newTime);
 

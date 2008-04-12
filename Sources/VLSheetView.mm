@@ -625,6 +625,12 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 	[self setKey:nil returnCode:NSAlertOtherReturn contextInfo:sender];
 }
 
+- (IBAction) transposeOctave:(id)sender
+{
+	[[self document] changeOctave:[sender tag] > 0 
+					 inSections:[self sectionsInSelection]];
+}
+
 - (IBAction) setTime:(id)sender
 {
 	int time = [[sender selectedItem] tag];
