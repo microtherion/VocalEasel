@@ -173,30 +173,33 @@ VLMusicElement sSemi2Accidental[12][12] = {
 #undef N
 #undef _
 
-- (int) stepWithPitch:(int)pitch
+- (int) stepInSection:(int)section withPitch:(int)pitch
 {
 	int 	semi 		= pitch % 12;
-	int		key			= [self song]->fProperties.front().fKey;
+	int		key			= [self song]->fProperties[section].fKey;
 	bool 	useSharps	= key > 0;
 	
 	return	sSemi2Pitch[useSharps][semi];
 }
 
-- (float) noteYWithPitch:(int)pitch accidental:(VLMusicElement*)accidental
+- (float) noteYInSection:(int)section 
+			   withPitch:(int)pitch accidental:(VLMusicElement*)accidental
 {
 	int 	semi 		= pitch % 12;
 	int		octave  	= (pitch / 12) - 5;
-	int		key			= [self song]->fProperties.front().fKey;
+	int		key			= [self song]->fProperties[section].fKey;
 
 	*accidental = sSemi2Accidental[key+6][semi];
 
-	return (octave*3.5f+[self stepWithPitch:pitch]*0.5f-1.0f)*kLineH;
+	return (octave*3.5f
+			+ [self stepInSection:section withPitch:pitch]*0.5f-1.0f)*kLineH;
 }
 
 - (float) noteYInMeasure:(int)measure withPitch:(int)pitch accidental:(VLMusicElement*)accidental
 {
 	return [self systemY:fLayout->SystemForMeasure(measure)]
-		+ [self noteYWithPitch:pitch accidental:accidental];
+		+ [self noteYInSection:[self song]->fMeasures[measure].fPropIdx
+				withPitch:pitch accidental:accidental];
 }
 
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at
@@ -716,7 +719,10 @@ static int8_t sSharpAcc[] = {
 		fCursorAccidental = kMusicExtendCursor;
 		return;
 	}
-	const VLProperties & 	prop = [self song]->fProperties.front();
+	int 					cursorSection	= 
+		[self song]->fMeasures[fCursorMeasure].fPropIdx;
+	const VLProperties &	prop 			= 
+		[self song]->fProperties[cursorSection];
 
 	if (prop.fKey >= 0) {
 		if (prop.fKey >= sSharpAcc[fCursorPitch % 12]) { // Sharp in Key

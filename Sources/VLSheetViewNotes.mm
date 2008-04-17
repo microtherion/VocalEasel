@@ -49,11 +49,11 @@
 	}
 }
 
-- (void) drawLedgerLinesWithPitch:(int)pitch at:(NSPoint)p
+- (void) drawLedgerLinesInSection:(int)section withPitch:(int)pitch at:(NSPoint)p
 {
 	p.x	   += kLedgerX;
 	int	octave	= (pitch / 12) - 5;
-	int step	= (octave*7+[self stepWithPitch:pitch]-2)/2;
+	int step	= (octave*7+[self stepInSection:section withPitch:pitch]-2)/2;
 	
 	for (int i=0; i-- > step; ) {
 		NSPoint p0	= p;
@@ -75,6 +75,7 @@
 {
 	int 			cursorX;
 	int				cursorY;
+	int				cursorSect;
 	VLMusicElement	accidental;
 	VLMusicElement	cursorElt;
 	
@@ -91,7 +92,8 @@
 			cursorY 	= 
 				[self noteYInMeasure:fCursorMeasure 
 					  withPitch:fCursorPitch accidental:&accidental] - kNoteY;
-			[self drawLedgerLinesWithPitch:fCursorPitch 
+			cursorSect  = [self song]->fMeasures[fCursorMeasure].fPropIdx;
+			[self drawLedgerLinesInSection:cursorSect withPitch:fCursorPitch 
 				  at:NSMakePoint(cursorX, 
 								 [self systemY:fLayout->SystemForMeasure(fCursorMeasure)])];
 			cursorElt 	= kMusicNoteCursor;
@@ -301,15 +303,17 @@
 				&& note->fTied & VLNote::kTiedWithPrev;
 			int		pitch = note->fPitch;
 			if (pitch != VLNote::kNoPitch) {
-				[self drawLedgerLinesWithPitch:pitch 
+				[self drawLedgerLinesInSection:measure.fPropIdx withPitch:pitch 
 					  at:NSMakePoint([self noteXInMeasure:measIdx at:at], kSystemY)];
 				VLMusicElement		accidental;
 				NSPoint pos = 
 					NSMakePoint([self noteXInMeasure:measIdx at:at],
-								kSystemY+[self noteYWithPitch:pitch 
+								kSystemY+[self noteYInSection:measure.fPropIdx
+											   withPitch:pitch 
 											   accidental:&accidental]);
 				VLMusicElement 	acc = accidental;
-				int				step= [self stepWithPitch:pitch];
+				int				step= [self stepInSection:measure.fPropIdx
+											withPitch:pitch];
 				if (acc == accidentals[step])
 					acc = kMusicNothing; 	// Don't repeat accidentals
 				else if (acc == kMusicNothing) 
@@ -326,7 +330,8 @@
 				VLMusicElement		accidental;
 				NSPoint pos = 
 					NSMakePoint([self noteXInMeasure:measIdx at:at],
-								kSystemY+[self noteYWithPitch:65 
+								kSystemY+[self noteYInSection:measure.fPropIdx
+											   withPitch:65 
 											   accidental:&accidental]);
 				[self drawRest:note->fVisual & VLNote::kNoteHead at: pos];
 			}

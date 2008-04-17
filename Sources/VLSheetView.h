@@ -109,9 +109,9 @@ enum VLRecalc {
 - (VLSong *) song;
 - (NSImage *) musicElement:(VLMusicElement)elt;
 
-- (int) stepWithPitch:(int)pitch;
+- (int) stepInSection:(int)section withPitch:(int)pitch;
 - (float) systemY:(int)system;
-- (float) noteYWithPitch:(int)pitch accidental:(VLMusicElement*)accidental;
+- (float) noteYInSection:(int)section withPitch:(int)pitch accidental:(VLMusicElement*)accidental;
 - (float) noteYInMeasure:(int)measure withPitch:(int)pitch accidental:(VLMusicElement*)accidental;
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at;
 
