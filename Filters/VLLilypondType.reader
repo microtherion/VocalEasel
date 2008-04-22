@@ -186,6 +186,7 @@ def parseLilypond
   tokens = []
   INFILE.each do |line|
     line.chomp!.sub!(/%.*/, "")
+    line.gsub!(/\\breve/, "1*8/4")
     line.scan(%r$\G\s*(\{|\}|\(|\)|\||=|~|<<|>>|--|#'|#\(|##t|##f|\\\w+|\".*?\"|\w[-+^\w\d.',:*/]+|.)$) do |token|
       tokens.push(token[0])
     end
