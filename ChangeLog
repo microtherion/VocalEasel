@@ -1,3 +1,114 @@
+2008-04-24  Matthias Neeracher <neeri@accelerando.local>
+
+	* .gitignore, VocalEasel.xcodeproj/.gitignore: Added git ignore
+	files
+
+2008-04-22  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Filters/VLLilypondType.reader: handle \breve  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@294
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-04-17  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	Sources/VLSheetViewNotes.mm: Fixed accidental handling in songs with
+	key changes  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@293
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-04-12  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLSheetView.mm: Fix responder on backward tabbing
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@292
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-04-12  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* English.lproj/MainMenu.xib, Sources/VLDocument.h,
+	Sources/VLDocument.mm, Sources/VLModel.cpp, Sources/VLModel.h,
+	Sources/VLSheetView.h, Sources/VLSheetView.mm: Add Octave
+	Transpositions  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@291
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-04-06  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLLilypondWriter.cpp, Sources/VLSheetView.mm: Use flats in
+	C major  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@290
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-04-05  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* English.lproj/VLDocument.xib: Add missing keys  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@289
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-04-05  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLLilypondWriter.cpp: Draw ending bar line before coda
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@288
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-04-05  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLModel.cpp: Fix coda handling  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@287
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-04-05  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Filters/VLBIABType.reader: Fix rounding  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@286
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-03-30  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* English.lproj/VLDocument.xib, Sources/VLSheetView.mm: Fix
+	responder handling in field editor  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@285
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-03-30  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLModel.cpp: Handle clicks on tied notes  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@284
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-03-30  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLModel.cpp: Still need to skip tied notes  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@283
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-03-30  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLDocument.mm: Synchronize window titles  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@282
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-03-29  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLModel.cpp: Always edit whole words  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@281
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-03-29  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLModel.cpp: Show empty word when clicking in gaps
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@280
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-03-25  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Bump version number / Copyright dates  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@279
+	6297c069-241d-0410-966f-f05c6a69f112
+
 2008-03-24 22:57 +0000 [r276]  Matthias Neeracher
 
 	* Sources/VLSheetViewSelection.mm: Don't crash in selection

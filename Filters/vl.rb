@@ -1,5 +1,5 @@
 #
-# vl - VocalEasel
+# vl - VocalEasel common filter infrastructure
 #
 
 class VL
