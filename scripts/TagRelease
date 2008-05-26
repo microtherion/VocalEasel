@@ -1,0 +1,25 @@
+#!/usr/bin/ruby
+
+def loud_system(command)
+  $stderr.puts command
+  system command or raise
+end
+
+releaseName = ARGV[0]
+releaseTag = releaseName.gsub(/(\d)(\w)/, '\1_\2').gsub('.', '_')
+IO.popen('svn info') do |svn|
+  svn.each_line do |line|
+    if line =~ /Repository Root:\s*(\S*)/
+      SVN = $1
+      break
+    end
+  end
+end
+
+TRUNK = File.join(SVN, 'trunk')
+TAG   = File.join(SVN, 'tags', releaseTag)
+
+loud_system "svn cp -m 'Releasing #{releaseName}' #{TRUNK} #{TAG}" 
+
+
+
