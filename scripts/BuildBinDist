@@ -1,0 +1,34 @@
+#!/usr/bin/ruby
+
+def loud_system(command)
+  $stderr.puts command
+  system command or raise
+end
+
+releaseName = ARGV[0]
+releaseTag = releaseName.gsub(/(\d)(\w)/, '\1_\2').gsub('.', '_')
+productName = releaseName.sub(/-.*/, '')
+IO.popen('svn info') do |svn|
+  svn.each_line do |line|
+    if line =~ /Repository Root:\s*(\S*)/
+      SVN = $1
+      break
+    end
+  end
+end
+
+TAG   = File.join(SVN, 'tags', releaseTag)
+
+BUILDDIR   = "Releases/#{releaseName}.build"
+RELEASE     = "Releases/#{releaseName}"
+
+loud_system "rm -rf #{BUILDDIR} #{RELEASE} #{RELEASE}.dmg"
+loud_system "svn export #{TAG} #{BUILDDIR}" 
+loud_system "cd #{BUILDDIR} && xcodebuild -configuration Deployment"
+loud_system "mkdir #{RELEASE}"
+loud_system "cp -R #{BUILDDIR}/{NEWS,README.rtf} #{BUILDDIR}/build/Deployment/#{productName}.app #{RELEASE}"
+loud_system "cd Releases && hdiutil create -srcfolder #{releaseName} #{releaseName}.dmg"
+loud_system "rm -rf #{RELEASE} #{BUILDDIR}"
+
+
+

@@ -1,0 +1,12 @@
+#
+# Things to do for a release
+#
+
+#
+# Update NEWS manually, then...
+#
+scripts/ChangeLogSince   VocalEasel-1.0b3
+scripts/TagRelease	 VocalEasel-1.0
+scripts/BuildSourceDist  VocalEasel-1.0
+scripts/BuildBinDist     VocalEasel-1.0
+
