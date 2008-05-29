@@ -145,12 +145,16 @@ struct VLNote {
 		k32nd		= 5,
 		
 		kNoteHead	= 0x07,
+		kWantSharp	= 0x20,
+		kWantFlat	= 0x40,
+		kAccidentals= 0x60,
 		kTriplet	= 0x80
 	};
 	VLNote(VLFraction dur=0, int pitch=kNoPitch);
 	VLNote(std::string name);
 	void Name(std::string & name, bool useSharps = false) const;
 	void MakeRepresentable();
+	void AdjustAccidentals();
 	void AlignToGrid(VLFraction at, VLFraction grid);
 };
 

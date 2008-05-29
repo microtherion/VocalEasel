@@ -97,6 +97,7 @@ static float sFlatPos[] = {
 		fNumBotLedgers 		= 2;
 		fNumStanzas    		= 2;
 		fLastMeasures		= 0;
+		fHighlightOne		= false;
 	}
     return self;
 }
@@ -138,7 +139,7 @@ static float sFlatPos[] = {
 	return kSystemBaseline+b.origin.y+b.size.height-(system+1)*kSystemH;
 }
 
-int8_t sSemi2Pitch[2][12] = {{
+int8_t sSemi2Pitch[4][12] = {{
  // C  Db D  Eb E  F  Gb G  Ab A  Bb B 
 	0, 1, 1, 2, 2, 3, 4, 4, 5, 5, 6, 6,
 },{
@@ -151,7 +152,7 @@ int8_t sSemi2Pitch[2][12] = {{
 #define N	kMusicNatural,
 #define _	kMusicNothing,
 
-VLMusicElement sSemi2Accidental[12][12] = {
+VLMusicElement sSemi2Accidental[13][12] = {
  //  C DbD EbE F GbG AbA BbB 
 	{N _ N _ N _ _ N _ N _ N}, // Gb major - 6 flats
 	{_ _ N _ N _ _ N _ N _ N}, // Db major - 5 flats
@@ -166,6 +167,7 @@ VLMusicElement sSemi2Accidental[12][12] = {
 	{N _ _ S _ N _ N _ _ S _}, // A major - 3 sharps
 	{N _ N _ _ N _ N _ _ S _}, // E major - 4 sharps
 	{N _ N _ _ N _ N _ N _ _}, // B major - 5 sharps
+	{N _ N _ N N _ N _ N _ _}, // F# major - 6 sharps
 };
 
 #undef S
@@ -173,33 +175,46 @@ VLMusicElement sSemi2Accidental[12][12] = {
 #undef N
 #undef _
 
-- (int) stepInSection:(int)section withPitch:(int)pitch
+- (int) stepInSection:(int)section withPitch:(int)pitch visual:(int)visual
 {
 	int 	semi 		= pitch % 12;
 	int		key			= [self song]->fProperties[section].fKey;
-	bool 	useSharps	= key > 0;
+	bool 	useSharps	= (visual & VLNote::kAccidentals)
+		? (visual & VLNote::kWantSharp) : (key > 0);
 	
 	return	sSemi2Pitch[useSharps][semi];
 }
 
-- (float) noteYInSection:(int)section 
-			   withPitch:(int)pitch accidental:(VLMusicElement*)accidental
+- (float) noteYInSection:(int)section withPitch:(int)pitch 
+				  visual:(int)visual accidental:(VLMusicElement*)accidental
 {
 	int 	semi 		= pitch % 12;
 	int		octave  	= (pitch / 12) - 5;
 	int		key			= [self song]->fProperties[section].fKey;
 
-	*accidental = sSemi2Accidental[key+6][semi];
+	switch (*accidental = sSemi2Accidental[key+6][semi]) {
+	case kMusicSharp:
+		if (visual & VLNote::kWantFlat) 
+			*accidental = kMusicFlat;
+		break;
+	case kMusicFlat:
+		if (visual & VLNote::kWantSharp) 
+			*accidental = kMusicSharp;
+		break;
+	}
 
 	return (octave*3.5f
-			+ [self stepInSection:section withPitch:pitch]*0.5f-1.0f)*kLineH;
+			+ [self stepInSection:section withPitch:pitch visual:visual]*0.5f
+			- 1.0f
+		   )* kLineH;
 }
 
-- (float) noteYInMeasure:(int)measure withPitch:(int)pitch accidental:(VLMusicElement*)accidental
+- (float) noteYInMeasure:(int)measure withPitch:(int)pitch
+				  visual:(int)visual accidental:(VLMusicElement*)accidental
 {
 	return [self systemY:fLayout->SystemForMeasure(measure)]
 		+ [self noteYInSection:[self song]->fMeasures[measure].fPropIdx
-				withPitch:pitch accidental:accidental];
+				withPitch:pitch visual:visual accidental:accidental];
 }
 
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at
@@ -492,20 +507,24 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 			withAttributes: sBreakFont];
 }
 
-- (void)drawBackgroundForSystem:(int)system
+- (NSColor *)notesBackgroundColorForSystem:(int)system
+{
+	NSArray * colors = [NSColor controlAlternatingRowBackgroundColors];
+	
+	return [colors objectAtIndex:0];
+}
+
+- (NSColor *)textBackgroundColorForSystem:(int)system
 {
 	const VLSong * 	song	   	= [self song];
-	const float 	kSystemY 	= [self systemY:system];
-	const float 	kLineW		= (*fLayout)[system].SystemWidth();
 	const bool		kAltColors  = song->fMeasures[fLayout->FirstMeasure(system)].fPropIdx & 1;
 
 	NSArray * colors = [NSColor controlAlternatingRowBackgroundColors];
-	NSColor * bgColor= [colors objectAtIndex:0];
-	NSColor * fgColor= [colors objectAtIndex:1];
+	NSColor * color= [colors objectAtIndex:1];
 	if (kAltColors) {
 		float hue, saturation, brightness, alpha;
 		
-		[[fgColor colorUsingColorSpaceName:NSCalibratedRGBColorSpace] getHue:&hue saturation:&saturation 
+		[[color colorUsingColorSpaceName:NSCalibratedRGBColorSpace] getHue:&hue saturation:&saturation 
 				 brightness:&brightness alpha:&alpha];
 
 		if (saturation) // Color
@@ -513,17 +532,25 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 		else 			// Black & white
 			brightness -= 0.05f;
 
-		fgColor = [NSColor colorWithCalibratedHue:hue saturation:saturation 
-						   brightness:brightness alpha:alpha];
+		color = [NSColor colorWithCalibratedHue:hue saturation:saturation 
+						 brightness:brightness alpha:alpha];
 	}
+	return color;
+}
+
+- (void)drawBackgroundForSystem:(int)system
+{
+	const float 	kSystemY 	= [self systemY:system];
+	const float 	kLineW		= (*fLayout)[system].SystemWidth();
+
 	[NSGraphicsContext saveGraphicsState];
-	[fgColor setFill];
+	[[self textBackgroundColorForSystem:system] setFill];
 	[NSBezierPath fillRect:
 	   NSMakeRect(kLineX, kSystemY-kSystemBaseline, 
 				  kLineW, fNumStanzas*kLyricsH)];
 	[NSBezierPath fillRect:
 	   NSMakeRect(kLineX, kSystemY+kChordY, kLineW, kChordH)];
-	[bgColor setFill];
+	[[self notesBackgroundColorForSystem:system] setFill];
 	[NSBezierPath fillRect:
 	   NSMakeRect(kLineX, kSystemY-kSystemBaseline+fNumStanzas*kLyricsH, 
 				  kLineW, kSystemBaseline+kChordY-fNumStanzas*kLyricsH)];
@@ -731,8 +758,10 @@ static int8_t sSharpAcc[] = {
 				fCursorAccidental	= kMusicFlatCursor; // G# -> Gb
 				fCursorActualPitch  = fCursorPitch-1;
 				break;
-			default:
 			case NSCommandKeyMask:
+				fCursorAccidental   = kMusicSharpCursor;
+				// Fall through
+			default:
 				fCursorActualPitch  = fCursorPitch+1;
 				break;				  // G# -> G#
 			case NSAlternateKeyMask|NSCommandKeyMask:
@@ -745,8 +774,10 @@ static int8_t sSharpAcc[] = {
 	} else {
 		if (prop.fKey <= -sFlatAcc[fCursorPitch % 12]) { // Flat in Key
 			switch ([event modifierFlags] & (NSAlternateKeyMask|NSCommandKeyMask)) {
-			default:
 			case NSAlternateKeyMask:
+				fCursorAccidental	= kMusicFlatCursor;
+				// Fall through
+			default:
 				fCursorActualPitch  = fCursorPitch-1;
 				break;				  // Gb -> Gb
 			case NSCommandKeyMask:
@@ -978,6 +1009,8 @@ static int8_t sSharpAcc[] = {
 		break;
 	default:
 		[editable autorelease];
+		fHighlightStanza = 0xFFFFFFFF;
+		fHighlightOne	 = false;
 		editable = nil;
 	}
 	[self setEditTarget:editable];

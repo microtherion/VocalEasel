@@ -39,6 +39,7 @@
 - (void) editLyrics;
 - (void) drawLyricsForSystem:(int)system stanza:(size_t)stanza;
 - (void) highlightLyricsInStanza:(size_t)stanza measure:(int)measure at:(VLFraction)at;
+- (void) highlightTextInStanza:(size_t)stanza measure:(int)measure at:(VLFraction)at one:(BOOL)one;
 
 @end
 

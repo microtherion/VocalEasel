@@ -13,12 +13,15 @@
 #import "VLLilypondDocument.h"
 #import "VLMMADocument.h"
 #import "VLMIDIDocument.h"
+#import "VLAIFFDocument.h"
+#import "VLMP3Document.h"
 #import "VLPDFDocument.h"
 #import "VLPListDocument.h"
 #import "VLPDFWindow.h"
 #import "VLLogWindow.h"
 #import "VLSheetWindow.h"
 #import "VLSoundOut.h"
+#import "VLMIDIWriter.h"
 
 #import <Quartz/Quartz.h>
 
@@ -88,6 +91,7 @@
 		vcsWrapper			= nil;
 		repeatVolta			= 2;
 		brandNew			= true;
+		playRate			= 1.0;
 		observers			= [[NSMutableArray alloc] init];
 		validTmpFiles		= [[NSMutableDictionary alloc] initWithCapacity:10];
 		[self setHasUndoManager:YES];
@@ -402,6 +406,10 @@
 		return [self mmaFileWrapperWithError:outError];
 	} else if ([typeName isEqual:@"VLMIDIType"]) {
 		return [self midiFileWrapperWithError:outError];
+	} else if ([typeName isEqual:@"VLAIFFType"]) {
+		return [self aiffFileWrapperWithError:outError];
+	} else if ([typeName isEqual:@"VLMP3Type"]) {
+		return [self mp3FileWrapperWithError:outError];
 	} else if ([typeName isEqual:@"VLPDFType"]) {
 		return [self pdfFileWrapperWithError:outError];
 	} else {
@@ -488,9 +496,29 @@
 - (IBAction) play:(id)sender
 {
 	[self createTmpFileWithExtension:@"mid" ofType:@"VLMIDIType"];
-	VLSoundOut::Instance()->PlayFile(
-	  CFDataRef([NSData dataWithContentsOfURL: 
-							[self fileURLWithExtension:@"mid"]]));
+
+	MusicSequence	music;
+	NewMusicSequence(&music);
+
+	FSRef			fsRef;
+	CFURLGetFSRef((CFURLRef)[self fileURLWithExtension:@"mid"], &fsRef);
+
+	MusicSequenceLoadSMFWithFlags(music, &fsRef, 
+								  kMusicSequenceLoadSMF_ChannelsToTracks);
+
+	size_t countIn = 0;
+	if (playElements & kVLPlayCountIn) 
+		switch ([[self songTime] intValue]) {
+		case 0x404:
+		case 0x304:
+		case 0x608:
+			countIn = 2;
+		}
+	VLMIDIWriter annotate(music, countIn);
+	annotate.Visit(*song);
+	
+	[sheetWin willPlaySequence:music];
+	VLSoundOut::Instance()->PlaySequence(music);
 }
 
 - (void) playWithGroove:(NSString *)groove inSections:(NSRange)sections
@@ -521,6 +549,42 @@
 	} else {
 		[self play:sender];
 		[sender setTitle:@"Stop"];
+	}
+}
+
+- (IBAction) playMusic:(id)sender
+{
+	const float kMaxRate	= 8.0f;
+	const float kMinRate	= 0.2f;
+	const float kUpScale	= 1.2f;
+	const float kDownScale  = 0.8f;
+	bool nowPlaying = VLSoundOut::Instance()->Playing();
+	switch (int tag = [sender tag]) {
+	case 0: // Play
+		VLSoundOut::Instance()->SetPlayRate(playRate = 1.0f);
+		if (!nowPlaying) 
+			[self play:sender];
+		break;
+	case 1: 	// Fwd
+	case -1:	// Rew
+		if (tag * playRate < 0)
+			playRate = tag;
+		else if (fabsf(playRate) >= kMaxRate)
+			playRate = tag*kDownScale;
+		else if (fabsf(playRate) <= kMinRate)
+			playRate = tag*kUpScale;
+		else if (fabsf(playRate) >= 1.0f)
+			playRate *= kUpScale;
+		else
+			playRate *= kDownScale;
+		VLSoundOut::Instance()->SetPlayRate(playRate);
+		break;
+	case -2: 	// To Start
+		VLSoundOut::Instance()->SetTime(0);		
+		break;
+	case 2: 	// To End
+		VLSoundOut::Instance()->SetTime(0x7FFFFFFF);		
+		break;
 	}
 }
 

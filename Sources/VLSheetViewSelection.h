@@ -8,6 +8,8 @@
 // Copyright © 2006-2007 Matthias Neeracher
 //
 
+#import "VLMIDIWriter.h"
+
 @interface VLSheetView (Selection)
 
 - (void)editSelection;
@@ -32,6 +34,8 @@
 - (void)updateGrooveMenu;
 
 - (void)updateMenus;
+
+- (void) willPlaySequence:(MusicSequence)music;
 
 @end
 

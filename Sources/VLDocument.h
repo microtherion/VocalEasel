@@ -51,6 +51,7 @@ enum {
 	VLKeyValueUndo*		undo;
 	PDFDocument *		printDoc;
 	NSRange				previewRange;
+	float				playRate;
 }
 
 - (VLSong *)	song;
@@ -74,8 +75,8 @@ enum {
 - (IBAction) play:(id)sender;
 - (IBAction) stop:(id)sender;
 - (IBAction) playStop:(id)sender;
+- (IBAction) playMusic:(id)sender;
 - (IBAction) togglePlayElements:(id)sender;
-- (IBAction) playStop:(id)sender;
 
 - (NSString *) tmpPath;
 - (NSString *) workPath;

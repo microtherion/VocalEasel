@@ -29,7 +29,6 @@
 		95009B830B0EDCD800EB33A4 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95009B820B0EDCD800EB33A4 /* CoreFoundation.framework */; };
 		95049CF30BDC32EB0015EE6E /* installLilypond.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 95049CF20BDC32CD0015EE6E /* installLilypond.scpt */; };
 		95049D020BDC436A0015EE6E /* installPython.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 95049D010BDC43510015EE6E /* installPython.scpt */; };
-		950795E10B4A34D9008911A6 /* stop.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 950795E00B4A34D9008911A6 /* stop.tiff */; };
 		95140E3C0C944F7F00966576 /* VLLilypondType.reader in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95140E3B0C944F7F00966576 /* VLLilypondType.reader */; };
 		9524DAFB0BE569C50002AC03 /* Help in Resources */ = {isa = PBXBuildFile; fileRef = 9524DAF70BE569C50002AC03 /* Help */; };
 		9524DB390BE5CA070002AC03 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9524DB380BE5CA070002AC03 /* Carbon.framework */; };
@@ -42,6 +41,9 @@
 		952CBBB6095FD37300434E43 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		952DCD78096BBB11001C2316 /* VLSheetViewChords.mm in Sources */ = {isa = PBXBuildFile; fileRef = 952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */; };
 		9530A7020BD9E16700635FEC /* display.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 9530A7010BD9E16700635FEC /* display.tiff */; };
+		9531F3510DE2B4CD004F78C2 /* VLAIFFDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9531F34E0DE2B4CD004F78C2 /* VLAIFFDocument.mm */; };
+		9531F3520DE2B4CD004F78C2 /* VLMP3Document.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9531F3500DE2B4CD004F78C2 /* VLMP3Document.mm */; };
+		9531F3670DE2B872004F78C2 /* lameWrapper in Copy Tools */ = {isa = PBXBuildFile; fileRef = 9531F3660DE2B872004F78C2 /* lameWrapper */; };
 		953722670AE9F0E100B6E483 /* VLLilypondDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */; };
 		9545C5C30C092F4600251547 /* VLMMAWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9545C5C10C092F4600251547 /* VLMMAWriter.cpp */; };
 		95498DBD0AE3812F006B5F81 /* VLSoundSched.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */; };
@@ -65,6 +67,14 @@
 		959408AD096922EA007CCCF8 /* TVLEdit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959408AC096922EA007CCCF8 /* TVLEdit.cpp */; };
 		959408AE096922F7007CCCF8 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		9599ED9D0B731CC500A6A2F7 /* VLGrooveController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9599ED9B0B731CC500A6A2F7 /* VLGrooveController.mm */; };
+		959A3A130DE64BA300EF207B /* play.icns in Resources */ = {isa = PBXBuildFile; fileRef = 959A3A110DE64BA300EF207B /* play.icns */; };
+		959A3A140DE64BA300EF207B /* stop.icns in Resources */ = {isa = PBXBuildFile; fileRef = 959A3A120DE64BA300EF207B /* stop.icns */; };
+		959A3A260DE78BCD00EF207B /* bck.icns in Resources */ = {isa = PBXBuildFile; fileRef = 959A3A220DE78BCD00EF207B /* bck.icns */; };
+		959A3A270DE78BCD00EF207B /* fwd.icns in Resources */ = {isa = PBXBuildFile; fileRef = 959A3A230DE78BCD00EF207B /* fwd.icns */; };
+		959A3A280DE78BCD00EF207B /* tobeg.icns in Resources */ = {isa = PBXBuildFile; fileRef = 959A3A240DE78BCD00EF207B /* tobeg.icns */; };
+		959A3A290DE78BCD00EF207B /* toend.icns in Resources */ = {isa = PBXBuildFile; fileRef = 959A3A250DE78BCD00EF207B /* toend.icns */; };
+		959A3A6E0DE8CB5B00EF207B /* VLMIDIWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959A3A6C0DE8CB5B00EF207B /* VLMIDIWriter.cpp */; };
+		959B77C20DE3139F004432E0 /* installLame.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 958139C20DE2FBE4003C00B4 /* installLame.scpt */; };
 		95A1C37C0AF1D4370076597D /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A1C37B0AF1D4370076597D /* Quartz.framework */; };
 		95A1C3860AF2ACE20076597D /* VLSheetWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */; };
 		95A55C540BD5E5770068A203 /* VLPDFDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A55C530BD5E5770068A203 /* VLPDFDocument.mm */; };
@@ -99,7 +109,6 @@
 		95FC66C40AF0A4D4003D9C11 /* music.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66BD0AF0A4D4003D9C11 /* music.tiff */; };
 		95FC66C50AF0A4D5003D9C11 /* nextpage.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66BE0AF0A4D4003D9C11 /* nextpage.tiff */; };
 		95FC66C60AF0A4D5003D9C11 /* prevpage.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66BF0AF0A4D4003D9C11 /* prevpage.tiff */; };
-		95FC66C70AF0A4D5003D9C11 /* run.icns in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66C00AF0A4D4003D9C11 /* run.icns */; };
 		95FC66C80AF0A4D5003D9C11 /* zoomin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66C10AF0A4D4003D9C11 /* zoomin.tiff */; };
 		95FC66C90AF0A4D5003D9C11 /* zoomout.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 95FC66C20AF0A4D4003D9C11 /* zoomout.tiff */; };
 		95FC66CE0AF0A591003D9C11 /* VLPDFView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95FC66CC0AF0A591003D9C11 /* VLPDFView.mm */; };
@@ -125,6 +134,7 @@
 			dstPath = bin;
 			dstSubfolderSpec = 7;
 			files = (
+				9531F3670DE2B872004F78C2 /* lameWrapper in Copy Tools */,
 				95D0C2FC0B785D020061080E /* rebuildGrooves in Copy Tools */,
 				95C462830B045CB700649F92 /* lilyWrapper in Copy Tools */,
 				95C462000B04472E00649F92 /* mmaWrapper in Copy Tools */,
@@ -184,7 +194,6 @@
 		95009B820B0EDCD800EB33A4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		95049CF20BDC32CD0015EE6E /* installLilypond.scpt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.scpt; name = installLilypond.scpt; path = Resources/installLilypond.scpt; sourceTree = "<group>"; };
 		95049D010BDC43510015EE6E /* installPython.scpt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.scpt; name = installPython.scpt; path = Resources/installPython.scpt; sourceTree = "<group>"; };
-		950795E00B4A34D9008911A6 /* stop.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = stop.tiff; path = Resources/stop.tiff; sourceTree = "<group>"; };
 		95140E3B0C944F7F00966576 /* VLLilypondType.reader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = VLLilypondType.reader; sourceTree = "<group>"; };
 		9524DAF70BE569C50002AC03 /* Help */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Help; path = Resources/Help; sourceTree = "<group>"; };
 		9524DB380BE5CA070002AC03 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
@@ -198,6 +207,11 @@
 		952DCD76096BBB11001C2316 /* VLSheetViewChords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSheetViewChords.h; path = Sources/VLSheetViewChords.h; sourceTree = "<group>"; };
 		952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetViewChords.mm; path = Sources/VLSheetViewChords.mm; sourceTree = "<group>"; };
 		9530A7010BD9E16700635FEC /* display.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = display.tiff; path = Resources/display.tiff; sourceTree = "<group>"; };
+		9531F34D0DE2B4CD004F78C2 /* VLAIFFDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLAIFFDocument.h; path = Sources/VLAIFFDocument.h; sourceTree = "<group>"; };
+		9531F34E0DE2B4CD004F78C2 /* VLAIFFDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLAIFFDocument.mm; path = Sources/VLAIFFDocument.mm; sourceTree = "<group>"; };
+		9531F34F0DE2B4CD004F78C2 /* VLMP3Document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLMP3Document.h; path = Sources/VLMP3Document.h; sourceTree = "<group>"; };
+		9531F3500DE2B4CD004F78C2 /* VLMP3Document.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLMP3Document.mm; path = Sources/VLMP3Document.mm; sourceTree = "<group>"; };
+		9531F3660DE2B872004F78C2 /* lameWrapper */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = lameWrapper; path = Tools/lameWrapper; sourceTree = "<group>"; };
 		953722650AE9F0E100B6E483 /* VLLilypondDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLLilypondDocument.h; path = Sources/VLLilypondDocument.h; sourceTree = "<group>"; };
 		953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLLilypondDocument.mm; path = Sources/VLLilypondDocument.mm; sourceTree = "<group>"; };
 		9545C5C10C092F4600251547 /* VLMMAWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = VLMMAWriter.cpp; path = Sources/VLMMAWriter.cpp; sourceTree = "<group>"; };
@@ -222,6 +236,7 @@
 		95784D860BFAD795009ABEA4 /* VLMirrorWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLMirrorWindow.mm; path = Sources/VLMirrorWindow.mm; sourceTree = "<group>"; };
 		95795CE40C88B25D00E4A21F /* vl.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = vl.rb; sourceTree = "<group>"; };
 		95795CE50C88B25D00E4A21F /* VLMusicXMLType.reader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = VLMusicXMLType.reader; sourceTree = "<group>"; };
+		958139C20DE2FBE4003C00B4 /* installLame.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; name = installLame.scpt; path = Resources/installLame.scpt; sourceTree = "<group>"; };
 		9588363A0C6F9C7D004B4162 /* VLPListDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLPListDocument.h; path = Sources/VLPListDocument.h; sourceTree = "<group>"; };
 		9588363B0C6F9C7D004B4162 /* VLPListDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPListDocument.mm; path = Sources/VLPListDocument.mm; sourceTree = "<group>"; };
 		9588365A0C6FABBA004B4162 /* VLDebugFlags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VLDebugFlags.cpp; path = Sources/VLDebugFlags.cpp; sourceTree = "<group>"; };
@@ -232,6 +247,14 @@
 		959408AC096922EA007CCCF8 /* TVLEdit.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = TVLEdit.cpp; path = Tests/TVLEdit.cpp; sourceTree = "<group>"; };
 		9599ED9A0B731CC500A6A2F7 /* VLGrooveController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLGrooveController.h; path = Sources/VLGrooveController.h; sourceTree = "<group>"; };
 		9599ED9B0B731CC500A6A2F7 /* VLGrooveController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLGrooveController.mm; path = Sources/VLGrooveController.mm; sourceTree = "<group>"; };
+		959A3A110DE64BA300EF207B /* play.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = play.icns; path = Resources/play.icns; sourceTree = "<group>"; };
+		959A3A120DE64BA300EF207B /* stop.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = stop.icns; path = Resources/stop.icns; sourceTree = "<group>"; };
+		959A3A220DE78BCD00EF207B /* bck.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = bck.icns; path = Resources/bck.icns; sourceTree = "<group>"; };
+		959A3A230DE78BCD00EF207B /* fwd.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = fwd.icns; path = Resources/fwd.icns; sourceTree = "<group>"; };
+		959A3A240DE78BCD00EF207B /* tobeg.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = tobeg.icns; path = Resources/tobeg.icns; sourceTree = "<group>"; };
+		959A3A250DE78BCD00EF207B /* toend.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = toend.icns; path = Resources/toend.icns; sourceTree = "<group>"; };
+		959A3A6C0DE8CB5B00EF207B /* VLMIDIWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VLMIDIWriter.cpp; path = Sources/VLMIDIWriter.cpp; sourceTree = "<group>"; };
+		959A3A6D0DE8CB5B00EF207B /* VLMIDIWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLMIDIWriter.h; path = Sources/VLMIDIWriter.h; sourceTree = "<group>"; };
 		95A1C37B0AF1D4370076597D /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
 		95A1C3840AF2ACE20076597D /* VLSheetWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSheetWindow.h; path = Sources/VLSheetWindow.h; sourceTree = "<group>"; };
 		95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetWindow.mm; path = Sources/VLSheetWindow.mm; sourceTree = "<group>"; };
@@ -274,7 +297,6 @@
 		95FC66BD0AF0A4D4003D9C11 /* music.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = music.tiff; path = Resources/music.tiff; sourceTree = "<group>"; };
 		95FC66BE0AF0A4D4003D9C11 /* nextpage.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = nextpage.tiff; path = Resources/nextpage.tiff; sourceTree = "<group>"; };
 		95FC66BF0AF0A4D4003D9C11 /* prevpage.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = prevpage.tiff; path = Resources/prevpage.tiff; sourceTree = "<group>"; };
-		95FC66C00AF0A4D4003D9C11 /* run.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = run.icns; path = Resources/run.icns; sourceTree = "<group>"; };
 		95FC66C10AF0A4D4003D9C11 /* zoomin.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = zoomin.tiff; path = Resources/zoomin.tiff; sourceTree = "<group>"; };
 		95FC66C20AF0A4D4003D9C11 /* zoomout.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = zoomout.tiff; path = Resources/zoomout.tiff; sourceTree = "<group>"; };
 		95FC66CC0AF0A591003D9C11 /* VLPDFView.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPDFView.mm; path = Sources/VLPDFView.mm; sourceTree = "<group>"; };
@@ -384,8 +406,14 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				95D059780D1E6B0D00E28FAE /* VLLayout.cpp */,
 				95D059790D1E6B0D00E28FAE /* VLLayout.h */,
+				95D059780D1E6B0D00E28FAE /* VLLayout.cpp */,
+				959A3A6D0DE8CB5B00EF207B /* VLMIDIWriter.h */,
+				959A3A6C0DE8CB5B00EF207B /* VLMIDIWriter.cpp */,
+				9531F34D0DE2B4CD004F78C2 /* VLAIFFDocument.h */,
+				9531F34E0DE2B4CD004F78C2 /* VLAIFFDocument.mm */,
+				9531F34F0DE2B4CD004F78C2 /* VLMP3Document.h */,
+				9531F3500DE2B4CD004F78C2 /* VLMP3Document.mm */,
 				9588365A0C6FABBA004B4162 /* VLDebugFlags.cpp */,
 				9588365B0C6FABBA004B4162 /* VLDebugFlags.h */,
 				9588363A0C6F9C7D004B4162 /* VLPListDocument.h */,
@@ -457,6 +485,10 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				959A3A220DE78BCD00EF207B /* bck.icns */,
+				959A3A230DE78BCD00EF207B /* fwd.icns */,
+				959A3A240DE78BCD00EF207B /* tobeg.icns */,
+				959A3A250DE78BCD00EF207B /* toend.icns */,
 				9524DAF70BE569C50002AC03 /* Help */,
 				95003B3F0D4B9A5D00C9849C /* MainMenu.xib */,
 				95003B410D4B9A5D00C9849C /* VLDocument.xib */,
@@ -465,14 +497,15 @@
 				95003B470D4B9A5D00C9849C /* VLMirrorWindow.xib */,
 				95003B490D4B9A5D00C9849C /* VLPDFWindow.xib */,
 				95049CF20BDC32CD0015EE6E /* installLilypond.scpt */,
+				958139C20DE2FBE4003C00B4 /* installLame.scpt */,
 				95049D010BDC43510015EE6E /* installPython.scpt */,
 				95FC66BC0AF0A4D4003D9C11 /* console.icns */,
 				9530A7010BD9E16700635FEC /* display.tiff */,
+				959A3A110DE64BA300EF207B /* play.icns */,
+				959A3A120DE64BA300EF207B /* stop.icns */,
 				95FC66BD0AF0A4D4003D9C11 /* music.tiff */,
-				950795E00B4A34D9008911A6 /* stop.tiff */,
 				95FC66BE0AF0A4D4003D9C11 /* nextpage.tiff */,
 				95FC66BF0AF0A4D4003D9C11 /* prevpage.tiff */,
-				95FC66C00AF0A4D4003D9C11 /* run.icns */,
 				95FC66C10AF0A4D4003D9C11 /* zoomin.tiff */,
 				95FC66C20AF0A4D4003D9C11 /* zoomout.tiff */,
 				95E04DCA0AEB4D9B006F30A0 /* Templates */,
@@ -529,6 +562,7 @@
 				95C4627A0B045C8E00649F92 /* lilyWrapper */,
 				95C461FF0B04472900649F92 /* mmaWrapper */,
 				95C461D50B04406300649F92 /* mma.py */,
+				9531F3660DE2B872004F78C2 /* lameWrapper */,
 				95D0C2FB0B785D020061080E /* rebuildGrooves */,
 			);
 			name = Tools;
@@ -673,6 +707,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				959B77C20DE3139F004432E0 /* installLame.scpt in Resources */,
 				95049D020BDC436A0015EE6E /* installPython.scpt in Resources */,
 				95049CF30BDC32EB0015EE6E /* installLilypond.scpt in Resources */,
 				8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */,
@@ -685,10 +720,8 @@
 				95FC66C40AF0A4D4003D9C11 /* music.tiff in Resources */,
 				95FC66C50AF0A4D5003D9C11 /* nextpage.tiff in Resources */,
 				95FC66C60AF0A4D5003D9C11 /* prevpage.tiff in Resources */,
-				95FC66C70AF0A4D5003D9C11 /* run.icns in Resources */,
 				95FC66C80AF0A4D5003D9C11 /* zoomin.tiff in Resources */,
 				95FC66C90AF0A4D5003D9C11 /* zoomout.tiff in Resources */,
-				950795E10B4A34D9008911A6 /* stop.tiff in Resources */,
 				9530A7020BD9E16700635FEC /* display.tiff in Resources */,
 				9524DAFB0BE569C50002AC03 /* Help in Resources */,
 				95003B4B0D4B9A5D00C9849C /* MainMenu.xib in Resources */,
@@ -697,6 +730,12 @@
 				95003B4E0D4B9A5D00C9849C /* VLLogWindow.xib in Resources */,
 				95003B4F0D4B9A5D00C9849C /* VLMirrorWindow.xib in Resources */,
 				95003B500D4B9A5D00C9849C /* VLPDFWindow.xib in Resources */,
+				959A3A130DE64BA300EF207B /* play.icns in Resources */,
+				959A3A140DE64BA300EF207B /* stop.icns in Resources */,
+				959A3A260DE78BCD00EF207B /* bck.icns in Resources */,
+				959A3A270DE78BCD00EF207B /* fwd.icns in Resources */,
+				959A3A280DE78BCD00EF207B /* tobeg.icns in Resources */,
+				959A3A290DE78BCD00EF207B /* toend.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -756,6 +795,9 @@
 				9588363C0C6F9C7D004B4162 /* VLPListDocument.mm in Sources */,
 				9588365C0C6FABBA004B4162 /* VLDebugFlags.cpp in Sources */,
 				95D0597A0D1E6B0D00E28FAE /* VLLayout.cpp in Sources */,
+				9531F3510DE2B4CD004F78C2 /* VLAIFFDocument.mm in Sources */,
+				9531F3520DE2B4CD004F78C2 /* VLMP3Document.mm in Sources */,
+				959A3A6E0DE8CB5B00EF207B /* VLMIDIWriter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

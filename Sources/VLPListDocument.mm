@@ -157,6 +157,7 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 		 [NSNumber numberWithInt:c.fDuration.fNum], @"durNum",
 		 [NSNumber numberWithInt:c.fDuration.fDenom], @"durDenom",
 		 [NSNumber numberWithInt:c.fPitch], @"pitch",
+		 [NSNumber numberWithInt:c.fVisual], @"visual",
 		 [NSNumber numberWithInt:c.fSteps], @"steps",
 		 [NSNumber numberWithInt:c.fRootPitch], @"root",
 		 nil];
@@ -230,8 +231,10 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 			VLFraction([[ndict objectForKey:@"durNum"] intValue],
 					   [[ndict objectForKey:@"durDenom"] intValue],
 					   true);
-		note.fPitch				= [[ndict objectForKey:@"pitch"] intValue];	
-		note.fTied				= 0;
+		note.fPitch	   = [[ndict objectForKey:@"pitch"] intValue];	
+		note.fVisual  |= [[ndict objectForKey:@"visual"] intValue]
+			& VLNote::kAccidentals;
+		note.fTied	   = 0;
 		
 		if ([[ndict objectForKey:@"tied"] intValue] & VLNote::kTiedWithPrev) {
 			if (at != 0) {

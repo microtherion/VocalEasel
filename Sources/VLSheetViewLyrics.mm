@@ -36,6 +36,7 @@
 	VLFraction At = fAt;
 	fSong->FindWord(fStanza, fMeasure, At);
 	fAt = At;
+	[fView highlightTextInStanza:fStanza measure:fMeasure at:fAt one:NO];
 
 	[fView setNeedsDisplay: YES];
 	
@@ -78,6 +79,7 @@
 	}
 	fNextMeas = fMeasure;
 	fNextAt	  = fAt;
+	[fView highlightTextInStanza:fStanza measure:fMeasure at:fAt];
 	[fView scrollMeasureToVisible:fMeasure];
 }
 
@@ -92,12 +94,15 @@
 	fAt = at;
 	fNextMeas = fMeasure;
 	fNextAt	  = fAt;
+	[fView highlightTextInStanza:fStanza measure:fMeasure at:fAt];
 	[fView scrollMeasureToVisible:fMeasure];
 }
 
 - (void) highlightCursor
 {
-	[fView highlightLyricsInStanza:fStanza measure:fMeasure at:fAt];
+	std::string word = fSong->GetWord(fStanza, fMeasure, fAt);
+	if (!word.size())
+		[fView highlightLyricsInStanza:fStanza measure:fMeasure at:fAt];
 }
 
 @end
@@ -106,7 +111,7 @@ class VLCocoaFontHandler : public VLFontHandler {
 public:
 	VLCocoaFontHandler(NSString * name, float size);
 
-	virtual void 	Draw(float x, float y, const char * utf8Text);
+	virtual void 	Draw(float x, float y, const char * utf8Text, bool highlight);
 	virtual float	Width(const char * utf8Text);
 private:
 	NSDictionary *	fTextAttr;
@@ -121,10 +126,20 @@ VLCocoaFontHandler::VLCocoaFontHandler(NSString * name, float size)
 			font, NSFontAttributeName, nil];
 }
 
-void VLCocoaFontHandler::Draw(float x, float y, const char * utf8Text)
+static NSColor * sHighlightColor;
+
+void VLCocoaFontHandler::Draw(float x, float y, 
+							  const char * utf8Text, bool highlight)
 {
-	NSString * t = [NSString stringWithUTF8String:utf8Text];
-	[t drawAtPoint:NSMakePoint(x,y) withAttributes:fTextAttr];
+	NSDictionary * attr = fTextAttr;
+	if (highlight) {
+		NSMutableDictionary * aa =
+			[NSMutableDictionary dictionaryWithDictionary:attr];
+		[aa setValue:sHighlightColor forKey:NSBackgroundColorAttributeName];
+		attr = aa;
+	}	
+	NSString * t 		= [NSString stringWithUTF8String:utf8Text];
+	[t drawAtPoint:NSMakePoint(x,y) withAttributes:attr];
 }
 
 float VLCocoaFontHandler::Width(const char * utf8Text)
@@ -171,14 +186,28 @@ float VLCocoaFontHandler::Width(const char * utf8Text)
 			) {
 				;
 			} else {
+				if (!fHighlightNow) {
+					fHighlightNow = stanza == fHighlightStanza
+						&& measIdx == fHighlightMeasure
+						&& at == fHighlightAt;
+					if (fHighlightNow && !sHighlightColor) 
+						sHighlightColor = 
+							[[self textBackgroundColorForSystem:system]
+								shadowWithLevel:0.2];
+				}
+
 				text.AddSyllable(note->fLyrics[stanza-1], 
-								 [self noteXInMeasure:measIdx at:at]);
+								 [self noteXInMeasure:measIdx at:at],	
+								 fHighlightNow);
+				fHighlightNow = fHighlightNow && !fHighlightOne &&
+					note->fLyrics[stanza-1].fKind & VLSyllable::kHasNext;
 			}
 			at += note->fDuration;
 		}
 	}
 
 	text.DrawLine(kSystemY+kLyricsY-stanza*kLyricsH);
+	sHighlightColor = nil;
 }
 
 - (void) editLyrics
@@ -196,6 +225,21 @@ float VLCocoaFontHandler::Width(const char * utf8Text)
 
 - (void) highlightLyricsInStanza:(size_t)stanza measure:(int)measure at:(VLFraction)at
 {
+	const float 	   	kSystemY = [self systemY:fLayout->SystemForMeasure(measure)];
+	NSRect 				r 	   	 =
+		NSMakeRect([self noteXInMeasure:measure at:at]-kNoteW*0.5f,
+				   kSystemY+kLyricsY-stanza*kLyricsH, kNoteW, kLyricsH);
+	[[NSColor colorWithCalibratedWhite:0.8f alpha:1.0f] setFill];
+	NSRectFillUsingOperation(r, NSCompositePlusDarker);	
+}
+
+- (void) highlightTextInStanza:(size_t)stanza measure:(int)measure at:(VLFraction)at one:(BOOL)one
+{
+	fHighlightStanza = stanza;
+	fHighlightMeasure= measure;
+	fHighlightAt	 = at;
+	fHighlightNow	 = false;
+	fHighlightOne	 = one;
 }
 
 @end

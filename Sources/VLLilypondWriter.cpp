@@ -224,9 +224,17 @@ static std::string EscapeSyllable(std::string syll)
 	return '"'+syll+'"';
 }
 
+static bool PreferSharps(bool globalSharps, int noteAccidentals)
+{
+	return (noteAccidentals & VLNote::kAccidentals)
+		? (noteAccidentals & VLNote::kWantSharp)
+		: globalSharps;
+}
+
 void VLLilypondWriter::VisitNote(VLLyricsNote & n)							   
 {
-	std::string nm = LilypondPitchName(n.fPitch, fUseSharps);
+	std::string nm = 
+		LilypondPitchName(n.fPitch, PreferSharps(fUseSharps, n.fVisual));
 	if (n.fPitch != VLNote::kNoPitch) {
 		int ref = VLNote::kMiddleC-VLNote::kOctave;
 		for (int ticks = (n.fPitch-ref)/VLNote::kOctave; ticks>0; --ticks)
@@ -248,7 +256,8 @@ void VLLilypondWriter::VisitNote(VLLyricsNote & n)
 		sprintf(duration, "%s\\times 2/3 { %s%d%s }", 
 				space, nm.c_str(), kValue[n.fVisual & VLNote::kNoteHead], tie);
 	else 
-		sprintf(duration, "%s%s%d%s", space, nm.c_str(), kValue[n.fVisual], tie); 
+		sprintf(duration, "%s%s%d%s", 
+				space, nm.c_str(), kValue[n.fVisual & VLNote::kNoteHead], tie); 
 
 	fAccum	+= duration;
 	fPrevNote= n;
@@ -271,7 +280,8 @@ static const char * kLilypondStepNames[] = {
 
 void VLLilypondWriter::VisitChord(VLChord & c)									
 {
-	std::string name = LilypondPitchName(c.fPitch, fUseSharps);
+	std::string name = 
+		LilypondPitchName(c.fPitch, PreferSharps(fUseSharps, c.fVisual));
 	char duration[16];
 	if (c.fDuration.fNum == 1 && !(c.fDuration.fDenom & (c.fDuration.fDenom-1))) // Power of two
 		sprintf(duration, "%d", c.fDuration.fDenom);

@@ -101,12 +101,13 @@ VLTextLayout::VLTextLayout(VLFontHandler * regular, VLFontHandler * narrow)
 {
 }
 
-void VLTextLayout::AddSyllable(const VLSyllable & syll, float x)
+void VLTextLayout::AddSyllable(const VLSyllable & syll, float x, bool highlight)
 {
 	VLLayoutSyll ls;
 
 	static_cast<VLSyllable &>(ls)    = syll;
-	ls.fX = x;
+	ls.fX 			= x;
+	ls.fHighlight	= highlight;
 
 	fSyllables.push_back(ls);
 }
@@ -130,10 +131,12 @@ void VLTextLayout::DrawLine(float y)
 	float		nextX	= syll->fX-0.5*nextW;
 
 	if (syll->fKind & VLSyllable::kHasPrev)
-		fRegularFont->Draw(nextX-fRegularFont->Width(PRE_DASH), y, PRE_DASH);
+		fRegularFont->Draw(nextX-fRegularFont->Width(PRE_DASH), y, PRE_DASH,
+						   false);
 
 	while (syll != end) {
 		std::string text = syll->fText;
+		bool		hl   = syll->fHighlight;
 		VLSyllIter  next = syll+1;
 		float       curW = nextW;
 		float		curX = nextX;
@@ -147,8 +150,8 @@ void VLTextLayout::DrawLine(float y)
 					// Plenty of space, draw dashes
 					//
 					float dashSpace = 0.5*(nextX-curX-curW-kDashW);
-					fRegularFont->Draw(curX, y, text.c_str());
-					fRegularFont->Draw(curX+curW+dashSpace, y, "-");
+					fRegularFont->Draw(curX, y, text.c_str(), hl);
+					fRegularFont->Draw(curX+curW+dashSpace, y, "-", hl);
 
 					goto nextText;
 				} else {
@@ -167,12 +170,12 @@ void VLTextLayout::DrawLine(float y)
 					//
 					// Enough space, draw regular
 					//
-					fRegularFont->Draw(curX, y, text.c_str());
+					fRegularFont->Draw(curX, y, text.c_str(), hl);
 				} else {
 					//
 					// Tight space, draw narrow & adjust
 					//
-					fNarrowFont->Draw(curX, y, text.c_str());
+					fNarrowFont->Draw(curX, y, text.c_str(), syll->fHighlight);
 					text += NARROW_SPACE;
 					nextX = std::max(nextX, curX+fNarrowFont->Width(text.c_str()));
 				}
@@ -184,7 +187,7 @@ void VLTextLayout::DrawLine(float y)
 		//
 		if ((end-1)->fKind & VLSyllable::kHasNext)
 			text += POST_DASH;
-		fRegularFont->Draw(curX, y, text.c_str());
+		fRegularFont->Draw(curX, y, text.c_str(), hl);
 	nextText:
 		syll = next;
 	}

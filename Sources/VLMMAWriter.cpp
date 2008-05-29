@@ -1,5 +1,5 @@
 //
-// File: VLMMAWriter.h
+// File: VLMMAWriter.cpp
 //
 // Author(s):
 //

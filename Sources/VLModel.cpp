@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2007 Matthias Neeracher
+// Copyright © 2005-2008 Matthias Neeracher
 //
 
 #include "VLModel.h"
@@ -104,15 +104,19 @@ VLNote::VLNote(std::string name)
 	name.erase(0, 1);
 	//
 	// Look for sharp / flat
-	//
+	//	
+	fVisual = 0;
 	if (name.size())
 		if (name[0] == '#') {
 			++fPitch;
+			fVisual |= kWantSharp;
 			name.erase(0);
 		} else if (name[0] == 'b') {
 			--fPitch;
+			fVisual |= kWantFlat;
 			name.erase(0, 1);
 		}
+	AdjustAccidentals();
 	if (name == "")
 		return;
 
@@ -127,14 +131,14 @@ VLNote::VLNote(VLFraction dur, int pitch)
 
 void VLNote::Name(std::string & name, bool useSharps) const
 {
-	name = PitchName(fPitch, useSharps);
+	name = PitchName(fPitch, useSharps && !(fVisual & kWantFlat));
 }
 
 void VLNote::MakeRepresentable()
 {
 	if (fDuration > 1)
 		fDuration = 1;
-	fVisual	= kWhole;
+	fVisual	= kWhole | (fVisual & kAccidentals);
 	VLFraction part(1,1);
 	VLFraction triplet(2,3);
 	//
@@ -157,6 +161,26 @@ void VLNote::MakeRepresentable()
 	fprintf(stderr, "Encountered preposterously brief note: %d/%d\n",
 			fDuration.fNum, fDuration.fDenom);
 	abort();
+}
+
+void VLNote::AdjustAccidentals()
+{
+	//
+	// Don't store accidental preferences for whole notes:
+	// There is no way to represent these in MusicXML, so saving and
+	// reloading would change behavior.
+	//
+	enum {
+		kC = 1<<0,
+		kD = 1<<2,
+		kE = 1<<4,
+		kF = 1<<5,
+		kG = 1<<7,
+		kA = 1<<9,
+		kB = 1<<11
+	};	
+	if ((1 << (fPitch % 12)) & (kC | kD | kE | kF | kG | kA | kB))
+		fVisual &= ~kAccidentals;
 }
 
 void VLNote::AlignToGrid(VLFraction at, VLFraction grid)
@@ -232,11 +256,14 @@ VLChord::VLChord(std::string name)
 	if (name.size())
 		if (name[0] == '#') {
 			++fPitch;
+			fVisual |= kWantSharp;
 			name.erase(0, 1);
 		} else if (name[0] == 'b') {
 			--fPitch;
+			fVisual |= kWantFlat;
 			name.erase(0, 1);
 		}
+	AdjustAccidentals();
 	//
 	// Root
 	//
@@ -300,7 +327,7 @@ static const char * kStepNames[] = {
 
 void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bool useSharps) const
 {
-	base = PitchName(fPitch, useSharps);
+	base = PitchName(fPitch, useSharps && !(fVisual & kWantFlat));
 	ext  = "";
 	root = "";
 	
@@ -372,7 +399,7 @@ void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bo
 	// Root
 	//
 	if (fRootPitch != kNoPitch)
-		root = PitchName(fRootPitch, useSharps);
+		root = PitchName(fRootPitch, useSharps && !(fVisual & kWantFlat));
 }
 
 VLMeasure::VLMeasure()
@@ -490,7 +517,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 						//
 						// First swing note (4th triplet -> 8th)
 						//
-						p.fVisual = (p.fVisual+1) & VLNote::kNoteHead;
+						p.fVisual = (p.fVisual+1) & ~VLNote::kTriplet;
 					}
 				} else if ((p.fDuration == sw12 && ((at+p.fDuration) % grid4 == 0))
 				 || (swing16 && p.fDuration == sw24 && ((at+p.fDuration) % grid8 == 0))
@@ -498,7 +525,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 					//
 					// Second swing note (8th triplet -> 8th)
 					//
-					p.fVisual &= VLNote::kNoteHead;
+					p.fVisual &= ~VLNote::kTriplet;
 				} else if ((at % p.fDuration != 0)
 				  || (p.fDuration != c.fDuration 
 				   && 2*p.fDuration != c.fDuration)
@@ -507,7 +534,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 					// Get rid of awkward triplets
 					//
 					p.fDuration *= VLFraction(3,4);
-					p.fVisual    = (p.fVisual+1) & VLNote::kNoteHead;
+					p.fVisual    = (p.fVisual+1) & ~VLNote::kTriplet;
 				}
 			}
 		haveDuration:
@@ -703,6 +730,8 @@ void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
 	//
 	while (measure+1 >= fMeasures.size())
 		AddMeasure();
+	
+	note.AdjustAccidentals();
 
 	VLNoteList::iterator	i = fMeasures[measure].fMelody.begin();
 	VLFraction			  	t(0);
@@ -863,6 +892,7 @@ void VLSong::ExtendNote(size_t measure, VLFraction at)
 					// Extend previous note
 					//
 					k->fPitch = i->fPitch;
+					k->fVisual= i->fVisual;
 					k->fTied  = VLNote::kTiedWithPrev;
 					i->fTied |= VLNote::kTiedWithNext;
 					k->fLyrics.clear();
@@ -935,6 +965,7 @@ void VLSong::ChangeKey(int section, int newKey, int newMode, bool transpose)
 		for (; i!=e; ++i) {
 			TransposePinned(i->fPitch, semi);
 			TransposePinned(i->fRootPitch, semi);
+			i->AdjustAccidentals();
 		}
 	}
 	for (int pass=0; pass<2 && semi;) {
@@ -953,6 +984,7 @@ void VLSong::ChangeKey(int section, int newKey, int newMode, bool transpose)
 				i->fPitch	+= semi;
 				low			 = std::min(low, i->fPitch);
 				high		 = std::max(high, i->fPitch);
+				i->AdjustAccidentals();
 			}
 		}
 		if (low < VLNote::kMiddleC-6 && high < VLNote::kMiddleC+7)

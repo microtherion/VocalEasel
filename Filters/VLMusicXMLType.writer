@@ -59,7 +59,7 @@ def _part_list
 end
 
 def _attributes(prop)
-  $USE_FLATS = prop['key'] < 0
+  $USE_FLATS = prop['key'] <= 0
   $DIVISIONS = prop['divisions']
   attr = REXML::Element.new('attributes')
   attr.add_element newTextElement('divisions', prop['divisions'])
@@ -75,7 +75,6 @@ def _attributes(prop)
     clef.add_element newTextElement('sign', 'G')
     clef.add_element newTextElement('line', 2)
   attr.add_element(clef)
-
   return attr
 end
 
@@ -103,13 +102,13 @@ end
 
 STEPS = 'C DbD EbE F GbG AbA BbB '
 
-def _pitch(name, pitch, prefix="")
+def _pitch(name, pitch, preferFlats, prefix="")
   oct  = pitch/12 - 1
   stp  = 2*(pitch%12)
   step = STEPS[stp]
   alt  = STEPS[stp+1] == ?b
   if alt
-    if $USE_FLATS
+    if preferFlats
       alt = -1
     else
       step = step == ?A ? ?G : step-1
@@ -131,9 +130,20 @@ def _pitch(name, pitch, prefix="")
   return pitch
 end
 
+def _addAccidental(note, pitch, preferFlats)
+  stp  = 2*(pitch%12)
+  alt  = STEPS[stp+1] == ?b 
+  if alt
+    note.add_element newTextElement('accidental', 
+                                    preferFlats ? 'flat' : 'sharp')
+  end
+end
+
 TYPE = %w[whole half quarter eighth 16th 32nd]
 
 def _note(pitch, dur, visual, tied)
+  preferFlats = (visual & VL::WantSharp) == 0 &&
+    ((visual & VL::WantFlat) != 0 || $USE_FLATS)
   note = REXML::Element.new('note')
   if pitch == VL::NoPitch
     note.add_element(REXML::Element.new('rest'))
@@ -141,7 +151,7 @@ def _note(pitch, dur, visual, tied)
     if (tied & VL::InChord) != 0
       note.add_element 'chord'
     end
-    note.add_element(_pitch('pitch', pitch))
+    note.add_element(_pitch('pitch', pitch, preferFlats))
   end
   note.add_element newTextElement('duration', dur)
   if (tied & VL::TiedWithPrev) != 0
@@ -152,6 +162,9 @@ def _note(pitch, dur, visual, tied)
   end
   note.add_element newTextElement('voice', 1)
   note.add_element newTextElement('type', TYPE[visual & 7]) 
+  if (visual & (VL::WantSharp | VL::WantFlat)) != 0
+    _addAccidental(note, pitch, preferFlats)
+  end
 
   return note
 end
@@ -229,7 +242,9 @@ DEGREE = [
   [VL::Dim13th+VL::Min13th+VL::Maj13th, VL::Maj13th]
 ];
 
-def _chord(pitch, steps, root)
+def _chord(pitch, visual, steps, root)
+  preferFlats = (visual & VL::WantSharp) == 0 &&
+    ((visual & VL::WantFlat) != 0 || $USE_FLATS)
   #
   # Pick kind. sus takes precedence
   #
@@ -264,10 +279,10 @@ def _chord(pitch, steps, root)
     end
   end
   harm = REXML::Element.new('harmony')
-  harm.add_element(_pitch('root', pitch, 'root'))
+  harm.add_element(_pitch('root', pitch, visual, 'root'))
   harm.add_element newTextElement('kind', kind)
   if root != VL::NoPitch
-    harm.add_element(_pitch('bass', root, 'bass'))
+    harm.add_element(_pitch('bass', root, visual, 'bass'))
   end
   needSteps = steps & ~CHORD[kind]
   extraSteps= CHORD[kind] & ~steps
@@ -390,7 +405,7 @@ def _melody
             m.add_element(fw)
             tempAt = chordAt
           end
-          m.add_element(_chord(chord['pitch'], chord['steps'], chord['root']))
+          m.add_element(_chord(chord['pitch'], chord['visual'], chord['steps'], chord['root']))
         end
         chordAt += (chord['durNum'] * $DIVISIONS * 4) / chord['durDenom']
         chordIx += 1

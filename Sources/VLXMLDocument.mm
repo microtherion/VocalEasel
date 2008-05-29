@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2006-2007 Matthias Neeracher
+// Copyright © 2006-2008 Matthias Neeracher
 //
 
 #import "VLXMLDocument.h"

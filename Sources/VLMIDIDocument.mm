@@ -9,6 +9,7 @@
 //
 
 #import "VLMIDIDocument.h"
+#import "VLMIDIWriter.h"
 
 @implementation VLDocument (MIDI)
 

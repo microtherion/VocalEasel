@@ -11,7 +11,6 @@
 #include "VLSoundOut.h"
 
 #include <AudioUnit/AudioUnit.h>
-#include <AudioToolbox/AudioToolbox.h>
 
 #include "CAAudioFileFormats.h"
 #include "AUOutputBL.h"
@@ -27,9 +26,11 @@ public:
 
 	virtual void 	PlayNote(const VLNote & note);
 	virtual void 	PlayChord(const VLChord & chord); 
-	virtual void 	PlayFile(CFDataRef file);
+	virtual void   	PlaySequence(MusicSequence music);
 	virtual void	Stop();
 	virtual bool	Playing();
+	virtual void 	SetPlayRate(float rate);
+	virtual void 	SetTime(MusicTimeStamp time);
 	
 	virtual 	   ~VLAUSoundOut();
 protected:
@@ -37,14 +38,15 @@ protected:
 
 	void			InitSoundOutput(bool fileOutput);
 	virtual void 	SetupOutput(AUNode outputNode);
-	virtual void   	PlaySequence(MusicSequence music);
 	MusicTimeStamp	SequenceLength(MusicSequence music);
 
 	AUGraph			fGraph;
 	MusicPlayer		fPlayer;
 private:
 	MusicSequence	fMusic;
+	MusicTimeStamp	fMusicLength;
 	bool			fRunning;
+	bool			fForward;
 
 	void 			Play(const int8_t * note, size_t numNotes = 1);
 };
@@ -95,12 +97,22 @@ VLSoundOut * VLSoundOut::FileWriter(CFURLRef file, OSType dataFormat)
 	return new VLAUFileSoundOut(file, dataFormat);
 }
 
+void VLSoundOut::PlayFile(CFDataRef file)
+{
+	MusicSequence	music;
+	
+	NewMusicSequence(&music);
+	MusicSequenceLoadSMFDataWithFlags(music, file,
+									  kMusicSequenceLoadSMF_ChannelsToTracks);
+	PlaySequence(music);
+}
+
 VLSoundOut::~VLSoundOut()
 {
 }
 
 VLAUSoundOut::VLAUSoundOut()
-	: fRunning(false), fMusic(0)
+	: fMusic(0), fRunning(false), fForward(true)
 {
 	InitSoundOutput(false);
 }
@@ -179,13 +191,33 @@ void VLAUSoundOut::PlaySequence(MusicSequence music)
 {
 	Stop();
 
-	fMusic	= music;
+	fMusic			= music;
+	fMusicLength	= SequenceLength(music);
 
 	R(MusicSequenceSetAUGraph(fMusic, fGraph));
 	R(MusicPlayerSetSequence(fPlayer, fMusic));
 	R(MusicPlayerStart(fPlayer));
 
 	fRunning	= true;
+}
+
+void VLAUSoundOut::SetPlayRate(float rate)
+{
+	if ((rate < 0) != fForward) {
+		fForward = !fForward;
+		
+		MusicTimeStamp rightNow;
+		MusicPlayerGetTime(fPlayer, &rightNow);
+		MusicSequenceReverse(fMusic);
+		MusicPlayerSetTime(fPlayer, fMusicLength - rightNow);
+	}
+	MusicPlayerSetPlayRateScalar(fPlayer, fabsf(rate));
+}
+
+void VLAUSoundOut::SetTime(MusicTimeStamp time)
+{
+	SetPlayRate(1.0f);
+	MusicPlayerSetTime(fPlayer, time);
 }
 
 void VLAUSoundOut::Stop()
@@ -237,16 +269,6 @@ void VLAUSoundOut::Play(const int8_t * note, size_t numNotes)
 		MusicTrackNewMIDINoteEvent(track, 0.0, &n);
 	}
 		
-	PlaySequence(music);
-}
-
-void VLAUSoundOut::PlayFile(CFDataRef file)
-{
-	MusicSequence	music;
-	
-	NewMusicSequence(&music);
-	MusicSequenceLoadSMFDataWithFlags(music, file,
-									  kMusicSequenceLoadSMF_ChannelsToTracks);
 	PlaySequence(music);
 }
 

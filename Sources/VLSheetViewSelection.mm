@@ -9,8 +9,66 @@
 //
 
 #import "VLSheetView.h"
+#import "VLSheetViewNotes.h"
 #import "VLSheetViewSelection.h"
+#import "VLSheetViewNotes.h"
+#import "VLSheetViewChords.h"
+#import "VLSheetViewLyrics.h"
+#import "VLSheetWindow.h"
 #import "VLDocument.h"
+
+@interface VLPlaybackEditable : VLEditable {
+	VLSheetView *	fView;
+	size_t 			fStanza;
+	size_t			fNoteMeasure;
+	VLFract			fNoteAt;
+	int				fNotePitch;
+	size_t 			fChordMeasure;
+	VLFract 		fChordAt;
+}
+
+- (VLPlaybackEditable *)initWithView:(VLSheetView *)view;
+- (void) userEvent:(VLMIDIUserEvent *)event;
+- (void) highlightCursor;
+
+@end
+
+@implementation VLPlaybackEditable
+
+- (VLPlaybackEditable *)initWithView:(VLSheetView *)view
+{
+	fView 			= view;
+	fStanza			= 1;
+	fNoteMeasure	= 0x80000000;
+	fChordMeasure	= 0x80000000;
+
+	return self;
+}
+
+- (void) userEvent:(VLMIDIUserEvent *)event
+{
+	if (event->fPitch) {
+		fNotePitch 		= event->fPitch;
+		fNoteMeasure	= event->fMeasure;
+		fNoteAt			= event->fAt;
+		[fView highlightTextInStanza:fStanza measure:fNoteMeasure at:fNoteAt one:YES]; 
+	} else {
+		fChordMeasure	= event->fMeasure;
+		fChordAt		= event->fAt;
+	}
+	[fView scrollMeasureToVisible:event->fMeasure];
+	[fView setNeedsDisplay:YES];
+}
+
+- (void) highlightCursor
+{
+	if (fNoteMeasure != 0x80000000)
+		[fView drawNoteCursor:fNotePitch inMeasure:fNoteMeasure at:fNoteAt];
+	if (fChordMeasure != 0x80000000)
+		[fView highlightChordInMeasure:fChordMeasure at:fChordAt];
+}
+
+@end
 
 @interface NSMenuItem (VLSetStateToOff)
 - (void) VLSetStateToOff;
@@ -29,6 +87,16 @@
 // We're too lazy to properly serialize our private pasteboard format.
 //
 static VLSong	sPasteboard;
+
+extern "C" void 
+VLSequenceCallback(
+				   void * inClientData, 
+				   MusicSequence inSequence, MusicTrack inTrack, 
+				   MusicTimeStamp inEventTime, const MusicEventUserData *inEventData, 
+				   MusicTimeStamp inStartSliceBeat, MusicTimeStamp inEndSliceBeat)
+{
+	[(id)inClientData userEvent:(VLMIDIUserEvent *)inEventData];
+}
 
 @implementation VLSheetView (Selection)
 
@@ -440,6 +508,14 @@ inline int TimeTag(const VLProperties & prop)
 	[self updateTimeMenu];
 	[self updateDivisionMenu];
 	[self updateGrooveMenu];
+}
+
+- (void) willPlaySequence:(MusicSequence)music
+{
+	VLEditable * e = 
+		[[VLPlaybackEditable alloc] initWithView:self];
+	[self setEditTarget:e];
+	MusicSequenceSetUserCallback(music, VLSequenceCallback, e);
 }
 
 @end

@@ -9,6 +9,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <AudioToolbox/AudioToolbox.h>
 
 #import "VLModel.h"
 #import "VLLayout.h"
@@ -83,6 +84,11 @@ enum VLRecalc {
 	size_t				fVolta;
 	size_t				fVoltaOK;
 	VLLayout *			fLayout;
+	int					fHighlightMeasure;
+	VLFract				fHighlightAt;
+	size_t				fHighlightStanza;
+	bool				fHighlightNow;
+	bool				fHighlightOne;
 
 	IBOutlet id			fFieldEditor;
 	IBOutlet id			fRepeatSheet;
@@ -109,10 +115,10 @@ enum VLRecalc {
 - (VLSong *) song;
 - (NSImage *) musicElement:(VLMusicElement)elt;
 
-- (int) stepInSection:(int)section withPitch:(int)pitch;
+- (int) stepInSection:(int)section withPitch:(int)pitch visual:(int)visual;
 - (float) systemY:(int)system;
-- (float) noteYInSection:(int)section withPitch:(int)pitch accidental:(VLMusicElement*)accidental;
-- (float) noteYInMeasure:(int)measure withPitch:(int)pitch accidental:(VLMusicElement*)accidental;
+- (float) noteYInSection:(int)section withPitch:(int)pitch visual:(int)visual accidental:(VLMusicElement*)accidental;
+- (float) noteYInMeasure:(int)measure withPitch:(int)pitch visual:(int)visual accidental:(VLMusicElement*)accidental;
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at;
 
 - (void) scrollMeasureToVisible:(int)measure;
@@ -130,6 +136,8 @@ enum VLRecalc {
 
 - (void) setGroove:(NSString *)groove;
 - (void) playWithGroove:(NSString *)groove;
+
+- (NSColor *)textBackgroundColorForSystem:(int)system;
 
 @end
 

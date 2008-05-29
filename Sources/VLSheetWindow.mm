@@ -49,6 +49,10 @@ static NSString*	sOutputToolbarItemIdentifier 	= @"Output Toolbar Item Identifie
 static NSString*	sLogToolbarItemIdentifier		= @"Log Toolbar Item Identifier";
 static NSString*	sPlayToolbarItemIdentifier		= @"Play Toolbar Item Identifier";
 static NSString*	sStopToolbarItemIdentifier		= @"Stop Toolbar Item Identifier";
+static NSString*	sFwdToolbarItemIdentifier		= @"Fwd Toolbar Item Identifier";
+static NSString*	sBckToolbarItemIdentifier		= @"Rew Toolbar Item Identifier";
+static NSString*	sToBegToolbarItemIdentifier		= @"Begin Toolbar Item Identifier";
+static NSString*	sToEndToolbarItemIdentifier		= @"End Toolbar Item Identifier";
 static NSString*	sZoomInToolbarItemIdentifier	= @"Zoom In Toolbar Item Identifier";
 static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identifier";
 static NSString*	sProgressToolbarItemIdentifier	= @"Progress Toolbar Item Identifier";
@@ -96,6 +100,14 @@ static NSString*	sDisplayToolbarItemIdentifier	= @"Display Toolbar Item Identifi
 		prototype = playToolItem;
     else if ([itemIdent isEqual: sStopToolbarItemIdentifier]) 
 		prototype = stopToolItem;
+    else if ([itemIdent isEqual: sFwdToolbarItemIdentifier]) 
+		prototype = fwdToolItem;
+    else if ([itemIdent isEqual: sBckToolbarItemIdentifier]) 
+		prototype = bckToolItem;
+    else if ([itemIdent isEqual: sToBegToolbarItemIdentifier]) 
+		prototype = tobegToolItem;
+    else if ([itemIdent isEqual: sToEndToolbarItemIdentifier]) 
+		prototype = toendToolItem;
     else if ([itemIdent isEqual: sZoomInToolbarItemIdentifier]) 
 		prototype = zoomInToolItem;
     else if ([itemIdent isEqual: sZoomOutToolbarItemIdentifier]) 
@@ -112,6 +124,7 @@ static NSString*	sDisplayToolbarItemIdentifier	= @"Display Toolbar Item Identifi
 		[toolbarItem setImage: [prototype image]];
 		[toolbarItem setTarget: [prototype target]];
 		[toolbarItem setAction: [prototype action]];
+		[toolbarItem setTag: [prototype tag]];
 	} else if ([itemIdent isEqual: sProgressToolbarItemIdentifier]) {
         toolbarItem = [[[NSToolbarItem alloc] initWithItemIdentifier: itemIdent] autorelease];
 		
@@ -126,8 +139,12 @@ static NSString*	sDisplayToolbarItemIdentifier	= @"Display Toolbar Item Identifi
     return [NSArray arrayWithObjects:	
 						sOutputToolbarItemIdentifier, 
 					NSToolbarSeparatorItemIdentifier,
+					sToBegToolbarItemIdentifier,
+					sBckToolbarItemIdentifier,
 					sPlayToolbarItemIdentifier,
 					sStopToolbarItemIdentifier,
+					sFwdToolbarItemIdentifier,
+					sToEndToolbarItemIdentifier,
 					NSToolbarSeparatorItemIdentifier,
 					sZoomInToolbarItemIdentifier, 
 					sZoomOutToolbarItemIdentifier, 
@@ -140,8 +157,12 @@ static NSString*	sDisplayToolbarItemIdentifier	= @"Display Toolbar Item Identifi
 
 - (NSArray *) toolbarAllowedItemIdentifiers: (NSToolbar *) toolbar {
     return [NSArray arrayWithObjects: 	
+					sToBegToolbarItemIdentifier,
+					sBckToolbarItemIdentifier,
 					sPlayToolbarItemIdentifier,
 					sStopToolbarItemIdentifier,
+					sFwdToolbarItemIdentifier,
+					sToEndToolbarItemIdentifier,
 					sZoomInToolbarItemIdentifier, 
 					sZoomOutToolbarItemIdentifier, 
 					sOutputToolbarItemIdentifier, 
@@ -177,6 +198,11 @@ static NSString*	sDisplayToolbarItemIdentifier	= @"Display Toolbar Item Identifi
 - (void) mouseMoved:(NSEvent *)event
 {
 	[sheetView mouseMoved:event];
+}
+
+- (void) willPlaySequence:(MusicSequence)music
+{
+	[sheetView willPlaySequence:music];
 }
 
 @end

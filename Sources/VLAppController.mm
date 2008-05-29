@@ -65,6 +65,7 @@
 	if (self = [super init]) {
 		toolPath	= nil;
 		appPath		= nil;
+		lamePath	= nil;
 	}
 	return self;
 }
@@ -267,6 +268,32 @@
 			runModal];
 		[NSApp terminate:self];
 	}
+}
+
+- (BOOL) lameIsInstalled
+{
+	if (!lamePath) {
+		lamePath = [self getLineFromCommand:@"bash -l which lame"];
+		if (!lamePath)
+			if ([self promptForSoftwareInstallation:@"Download"
+					  withTitle: @"LAME Not Found!"
+					  explanation: 
+						  @"The LAME MP3 encoder is needed to save songs in"
+					  " MP3 format.%@"
+					  script:@"installLame"
+				  url:[NSURL URLWithString:@"http://64.151.81.88/download/thalictrum/lame-3.97.dmg.gz"]]
+			) {
+				[[NSAlert alertWithMessageText:@"Quit and Restart"
+						  defaultButton: @"OK" alternateButton: @"" otherButton: @""
+						  informativeTextWithFormat:
+							  @"The software you have chosen to install will be "
+						  "available after you restart this application."]
+					runModal];
+				[NSApp terminate:self];
+			}
+		return NO;
+	}
+	return YES;
 }
 
 - (IBAction) playNewPitch:(id)sender

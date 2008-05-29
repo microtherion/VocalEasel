@@ -5,10 +5,11 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2007 Matthias Neeracher
+// Copyright © 2005-2008 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>
+#import <AudioToolbox/AudioToolbox.h>
 
 @interface VLEditable : NSObject 
 {
@@ -30,6 +31,10 @@
 	IBOutlet id 	logToolItem;
 	IBOutlet id		playToolItem;
 	IBOutlet id		stopToolItem;
+	IBOutlet id		fwdToolItem;
+	IBOutlet id		bckToolItem;
+	IBOutlet id		tobegToolItem;
+	IBOutlet id		toendToolItem;
 	IBOutlet id		zoomInToolItem;
 	IBOutlet id		zoomOutToolItem;
 	IBOutlet id		progressToolItem;
@@ -46,5 +51,6 @@
 - (void) setEditTarget:(VLEditable *)editable;
 - (void) startAnimation;
 - (void) stopAnimation;
+- (void) willPlaySequence:(MusicSequence)music;
 
 @end

@@ -7,6 +7,8 @@ class VL
   
   TiedWithNext = 1
   TiedWithPrev = 2
+  WantSharp    = 0x20
+  WantFlat     = 0x40
   InChord      = 4
 
   Unison       = 1<<0

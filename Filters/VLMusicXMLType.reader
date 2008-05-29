@@ -219,7 +219,7 @@ class MusicXMLListener
       @note['pitch'] = VL::NoPitch
     when 'mode', 'step', 'alter', 'octave', 'duration', 'syllabic', 'text',
          'root-step', 'root-alter', 'bass-step', 'bass-alter', 'kind',
-         'degree-value', 'degree-alter', 'degree-type'
+         'degree-value', 'degree-alter', 'degree-type', 'accidental'
       @kind = tag
     when 'tie' 
       @note['tied'] ||= 0
@@ -341,6 +341,13 @@ class MusicXMLListener
           @note['durDenom'] = @prop['divisions']*4
         else
           @duration = @text.to_i
+        end
+      when 'accidental'
+        case @text
+        when 'sharp'
+          @note['visual'] = VL::WantSharp
+        when 'flat'
+          @note['visual'] = VL::WantFlat
         end
       when 'root-step' 
         @note['pitch'] = PITCH[@text]

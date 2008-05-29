@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2007 Matthias Neeracher
+// Copyright © 2005-2008 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>
@@ -17,6 +17,7 @@
 
 	NSString *			toolPath;
 	NSString *			appPath;
+	NSString *			lamePath;
 }
 
 - (IBAction) playNewPitch:(id)sender;
@@ -24,6 +25,8 @@
 - (IBAction) goToHelpPage:(id)sender;							 
 - (IBAction) goToHelpURL:(id)sender;							 
 - (IBAction) showMirror:(id)sender;
+
+- (BOOL) lameIsInstalled;
 
 @end
 
