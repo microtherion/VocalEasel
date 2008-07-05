@@ -51,6 +51,7 @@
 		fNotePitch 		= event->fPitch;
 		fNoteMeasure	= event->fMeasure;
 		fNoteAt			= event->fAt;
+		fStanza			= event->fStanza;
 		[fView highlightTextInStanza:fStanza measure:fNoteMeasure at:fNoteAt one:YES]; 
 	} else {
 		fChordMeasure	= event->fMeasure;

@@ -15,6 +15,7 @@
 struct VLMIDIUserEvent {
 	uint32_t	fLength;
 	int8_t		fPitch;		// 0 -> Chord
+	uint8_t		fStanza;
 	int16_t		fMeasure;
 	VLFract		fAt;
 };
@@ -29,14 +30,16 @@ public:
 	virtual void VisitNote(VLLyricsNote & n);
 	virtual void VisitChord(VLChord & c);
 private:	
-	MusicSequence	fMusic;
-	size_t			fCountIn;
-	MusicTrack		fTrack;
-	size_t			fMeasure;
-	MusicTimeStamp	fChordTime;
-	MusicTimeStamp	fNoteTime;
-	VLFraction		fAt;
-	VLFraction		fTime;
+	MusicSequence			fMusic;
+	size_t					fCountIn;
+	MusicTrack				fTrack;
+	size_t					fMeasure;
+	size_t					fStanza;
+	MusicTimeStamp			fChordTime;
+	MusicTimeStamp			fNoteTime;
+	VLFraction				fAt;
+	VLFraction				fTime;
+	std::vector<uint8_t>	fVolta;
 };
 
 // Local Variables:
