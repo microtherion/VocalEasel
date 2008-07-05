@@ -57,7 +57,7 @@
 		fChordMeasure	= event->fMeasure;
 		fChordAt		= event->fAt;
 	}
-	[fView scrollMeasureToVisible:event->fMeasure];
+	[fView scrollMeasureToVisible:event->fMeasure+1];
 	[fView setNeedsDisplay:YES];
 }
 
