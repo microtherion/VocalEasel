@@ -45,6 +45,7 @@ enum {
 	NSMutableDictionary*validTmpFiles;
 	int					repeatVolta;
 	bool				brandNew;
+	bool				hasMusicSequence;
 	VLSheetWindow *		sheetWin;
 	VLLogWindow *		logWin;
 	VLPDFWindow *		pdfWin;

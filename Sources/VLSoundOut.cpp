@@ -27,7 +27,7 @@ public:
 	virtual void 	PlayNote(const VLNote & note);
 	virtual void 	PlayChord(const VLChord & chord); 
 	virtual void   	PlaySequence(MusicSequence music);
-	virtual void	Stop();
+	virtual void	Stop(bool pause);
 	virtual bool	Playing();
 	virtual void 	SetPlayRate(float rate);
 	virtual void 	SetTime(MusicTimeStamp time);
@@ -125,7 +125,7 @@ VLAUSoundOut::VLAUSoundOut(bool)
 VLAUSoundOut::~VLAUSoundOut()
 {
 	DisposeMusicPlayer(fPlayer);
-	Stop();
+	Stop(false);
 	DisposeAUGraph(fGraph);
 }
 
@@ -189,13 +189,15 @@ void VLAUSoundOut::SetupOutput(AUNode)
 
 void VLAUSoundOut::PlaySequence(MusicSequence music)
 {
-	Stop();
+	if (music) {
+		Stop(false);
+	
+		fMusic			= music;
+		fMusicLength	= SequenceLength(music);
 
-	fMusic			= music;
-	fMusicLength	= SequenceLength(music);
-
-	R(MusicSequenceSetAUGraph(fMusic, fGraph));
-	R(MusicPlayerSetSequence(fPlayer, fMusic));
+		R(MusicSequenceSetAUGraph(fMusic, fGraph));
+		R(MusicPlayerSetSequence(fPlayer, fMusic));
+	}
 	R(MusicPlayerStart(fPlayer));
 
 	fRunning	= true;
@@ -220,16 +222,14 @@ void VLAUSoundOut::SetTime(MusicTimeStamp time)
 	MusicPlayerSetTime(fPlayer, time);
 }
 
-void VLAUSoundOut::Stop()
+void VLAUSoundOut::Stop(bool pause)
 {
 	MusicPlayerStop(fPlayer);
-	if (fRunning) {
-		fRunning	= false;
-		if (fMusic) {
-			MusicPlayerSetSequence(fPlayer, NULL);
-			DisposeMusicSequence(fMusic);
-			fMusic = 0;
-		}
+	fRunning	= false;
+	if (!pause && fMusic) {
+		MusicPlayerSetSequence(fPlayer, NULL);
+		DisposeMusicSequence(fMusic);
+		fMusic = 0;
 	}
 }
 

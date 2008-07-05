@@ -91,6 +91,7 @@
 		vcsWrapper			= nil;
 		repeatVolta			= 2;
 		brandNew			= true;
+		hasMusicSequence	= false;
 		playRate			= 1.0;
 		observers			= [[NSMutableArray alloc] init];
 		validTmpFiles		= [[NSMutableDictionary alloc] initWithCapacity:10];
@@ -112,6 +113,7 @@
 
 - (void)updateChangeCount:(NSDocumentChangeType)changeType
 {
+	hasMusicSequence = true;
 	[validTmpFiles removeAllObjects];
 	[super updateChangeCount:changeType];
 }
@@ -495,30 +497,35 @@
 
 - (IBAction) play:(id)sender
 {
-	[self createTmpFileWithExtension:@"mid" ofType:@"VLMIDIType"];
+	if (hasMusicSequence) {
+		VLSoundOut::Instance()->PlaySequence(NULL);
+	} else {
+		[self createTmpFileWithExtension:@"mid" ofType:@"VLMIDIType"];
 
-	MusicSequence	music;
-	NewMusicSequence(&music);
+		MusicSequence	music;
+		NewMusicSequence(&music);
 
-	FSRef			fsRef;
-	CFURLGetFSRef((CFURLRef)[self fileURLWithExtension:@"mid"], &fsRef);
+		FSRef			fsRef;
+		CFURLGetFSRef((CFURLRef)[self fileURLWithExtension:@"mid"], &fsRef);
 
-	MusicSequenceLoadSMFWithFlags(music, &fsRef, 
-								  kMusicSequenceLoadSMF_ChannelsToTracks);
+		MusicSequenceLoadSMFWithFlags(music, &fsRef, 
+									  kMusicSequenceLoadSMF_ChannelsToTracks);
 
-	size_t countIn = 0;
-	if (playElements & kVLPlayCountIn) 
-		switch ([[self songTime] intValue]) {
-		case 0x404:
-		case 0x304:
-		case 0x608:
-			countIn = 2;
-		}
-	VLMIDIWriter annotate(music, countIn);
-	annotate.Visit(*song);
+		size_t countIn = 0;
+		if (playElements & kVLPlayCountIn) 
+			switch ([[self songTime] intValue]) {
+			case 0x404:
+			case 0x304:
+			case 0x608:
+				countIn = 2;
+			}
+		VLMIDIWriter annotate(music, countIn);
+		annotate.Visit(*song);
 	
-	[sheetWin willPlaySequence:music];
-	VLSoundOut::Instance()->PlaySequence(music);
+		hasMusicSequence = true;
+		[sheetWin willPlaySequence:music];
+		VLSoundOut::Instance()->PlaySequence(music);
+	}
 }
 
 - (void) playWithGroove:(NSString *)groove inSections:(NSRange)sections
