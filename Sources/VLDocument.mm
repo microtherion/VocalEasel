@@ -566,8 +566,8 @@
 {
 	const float kMaxRate	= 8.0f;
 	const float kMinRate	= 0.2f;
-	const float kUpScale	= 1.2f;
-	const float kDownScale  = 0.8f;
+	const float kUpScale	= 1.1f;
+	const float kDownScale  = 1.0f/kUpScale;
 	bool nowPlaying = VLSoundOut::Instance()->Playing();
 	switch (int tag = [sender tag]) {
 	case 0: // Play
@@ -666,3 +666,4 @@
 }
 
 @end
+
