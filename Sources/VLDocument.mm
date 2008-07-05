@@ -113,7 +113,7 @@
 
 - (void)updateChangeCount:(NSDocumentChangeType)changeType
 {
-	hasMusicSequence = true;
+	hasMusicSequence = false;
 	[validTmpFiles removeAllObjects];
 	[super updateChangeCount:changeType];
 }
@@ -319,6 +319,7 @@
 	playElements ^= [sender tag];
 	[validTmpFiles removeObjectForKey:@"mma"]; 
 	[validTmpFiles removeObjectForKey:@"mid"]; 
+	hasMusicSequence = false;
 }
 
 - (BOOL) validateMenuItem:(NSMenuItem *)menuItem
@@ -533,6 +534,7 @@
 	NSString * savedGroove	= songGroove;
 	[validTmpFiles removeObjectForKey:@"mma"]; 
 	[validTmpFiles removeObjectForKey:@"mid"]; 
+	hasMusicSequence = false;
 	songGroove	   	 = groove;
 	previewRange	 = sections;
 	playElements	|= kVLPlayGroovePreview;
@@ -541,6 +543,7 @@
 	songGroove		 = savedGroove;
 	[validTmpFiles removeObjectForKey:@"mma"]; 
 	[validTmpFiles removeObjectForKey:@"mid"]; 
+	hasMusicSequence = false;
 }
 
 - (IBAction) stop:(id)sender
