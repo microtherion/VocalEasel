@@ -24,6 +24,7 @@ struct VLMetaEvent : MIDIMetaEvent {
 
 void VLMIDIWriter::Visit(VLSong & song)
 {
+	fChordTime = 0.0f;
 	fVolta.clear();
 	MusicSequenceNewTrack(fMusic, &fTrack);
 	VLMetaEvent meta("VocalEasel");
@@ -40,7 +41,7 @@ void VLMIDIWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 	fMeasure	= m;
 	fStanza		= ++fVolta[m];
 
-	if (!m) 
+	if (!fChordTime) 
 		fChordTime = fNoteTime = fCountIn*fTime.fNum;
 	
 	fAt			= 0;
