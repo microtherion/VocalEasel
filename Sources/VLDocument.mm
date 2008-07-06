@@ -80,6 +80,7 @@
 		songArranger		= @"";
 		songGroove			= @"Swing";
 		songTempo			= [[NSNumber alloc] initWithInt:120];
+		baseTempo			= 120.0f;
 		chordSize			= 6.0f;
 		lyricSize			= 0.0f;
 		staffSize			= 20.0f;
@@ -263,6 +264,16 @@
 	while (sections.length-- > 0)
 		song->ChangeDivisions(sections.location++, divisions);
 	[self didChangeValueForKey:@"songDivisions"];
+	[self didChangeSong];
+}
+
+- (void) setSongTempo:(int)tempo
+{
+	[self willChangeSong];
+	[songTempo autorelease];
+	songTempo = [[NSNumber numberWithInt:tempo] retain];
+	if (VLSoundOut::Instance()->Playing()) 
+		VLSoundOut::Instance()->SetPlayRate(playRate*tempo/baseTempo);
 	[self didChangeSong];
 }
 
@@ -523,8 +534,10 @@
 		VLMIDIWriter annotate(music, countIn);
 		annotate.Visit(*song);
 	
-		hasMusicSequence = true;
+		hasMusicSequence 	= true;
 		[sheetWin willPlaySequence:music];
+		baseTempo			= [songTempo floatValue];
+		VLSoundOut::Instance()->SetPlayRate(playRate);
 		VLSoundOut::Instance()->PlaySequence(music);
 	}
 }
@@ -568,7 +581,8 @@
 	const float kMinRate	= 0.2f;
 	const float kUpScale	= 1.1f;
 	const float kDownScale  = 1.0f/kUpScale;
-	bool nowPlaying = VLSoundOut::Instance()->Playing();
+	bool 		nowPlaying 	= VLSoundOut::Instance()->Playing();
+	const float	tempoRate 	= [songTempo floatValue] / baseTempo;
 	switch (int tag = [sender tag]) {
 	case 0: // Play
 		VLSoundOut::Instance()->SetPlayRate(playRate = 1.0f);
@@ -587,7 +601,7 @@
 			playRate *= kUpScale;
 		else
 			playRate *= kDownScale;
-		VLSoundOut::Instance()->SetPlayRate(playRate);
+		VLSoundOut::Instance()->SetPlayRate(playRate*tempoRate);
 		break;
 	case -2: 	// To Start
 		VLSoundOut::Instance()->SetTime(0);		

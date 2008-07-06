@@ -53,6 +53,7 @@ enum {
 	PDFDocument *		printDoc;
 	NSRange				previewRange;
 	float				playRate;
+	float				baseTempo;
 }
 
 - (VLSong *)	song;
