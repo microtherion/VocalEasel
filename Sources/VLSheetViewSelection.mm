@@ -64,7 +64,7 @@
 
 - (void) highlightCursor
 {
-	if (fNoteMeasure != 0x80000000)
+	if (fNoteMeasure != 0x80000000 && fNotePitch != VLNote::kNoPitch)
 		[fView drawNoteCursor:fNotePitch inMeasure:fNoteMeasure at:fNoteAt];
 	if (fChordMeasure != 0x80000000)
 		[fView highlightChordInMeasure:fChordMeasure at:fChordAt];

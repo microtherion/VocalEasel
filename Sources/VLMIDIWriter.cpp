@@ -53,7 +53,7 @@ void VLMIDIWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 
 void VLMIDIWriter::VisitNote(VLLyricsNote & n)
 {
-	if (n.fPitch != VLNote::kNoPitch && !(n.fTied & VLNote::kTiedWithPrev)) {
+	if (!(n.fTied & VLNote::kTiedWithPrev)) {
 		VLMIDIUserEvent	event = {8, n.fPitch, fStanza, fMeasure, fAt};
 		MusicTrackNewUserEvent(fTrack, fNoteTime, 
 			 reinterpret_cast<const MusicEventUserData *>(&event));
