@@ -577,9 +577,7 @@
 
 - (IBAction) playMusic:(id)sender
 {
-	const float kMaxRate	= 8.0f;
-	const float kMinRate	= 0.2f;
-	const float kUpScale	= 1.1f;
+	const float kUpScale	= 1.41f;
 	const float kDownScale  = 1.0f/kUpScale;
 	bool 		nowPlaying 	= VLSoundOut::Instance()->Playing();
 	const float	tempoRate 	= [songTempo floatValue] / baseTempo;
@@ -595,14 +593,10 @@
 	case -1:	// Rew
 		if (tag * playRate < 0)
 			playRate = tag;
-		else if (fabsf(playRate) >= kMaxRate)
-			playRate = tag*kDownScale;
-		else if (fabsf(playRate) <= kMinRate)
-			playRate = tag*kUpScale;
-		else if (fabsf(playRate) >= 1.0f)
-			playRate *= kUpScale;
-		else
+		else if ([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)
 			playRate *= kDownScale;
+		else 
+			playRate *= kUpScale;
 		VLSoundOut::Instance()->SetPlayRate(playRate*tempoRate);
 		break;
 	case -2: 	// To Start
