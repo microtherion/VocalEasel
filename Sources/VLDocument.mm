@@ -269,6 +269,9 @@
 
 - (void) setSongTempo:(int)tempo
 {
+	if (tempo == [songTempo intValue])
+		return;
+	
 	[self willChangeSong];
 	[songTempo autorelease];
 	songTempo = [[NSNumber numberWithInt:tempo] retain];
