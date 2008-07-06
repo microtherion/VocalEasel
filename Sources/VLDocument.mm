@@ -613,6 +613,11 @@
 	}
 }
 
+- (IBAction) adjustTempo:(id)sender
+{
+	[self setSongTempo:[songTempo intValue]+[sender tag]];
+}
+
 - (IBAction) showOutput:(id)sender
 {
 	[self createTmpFileWithExtension:@"pdf" ofType:@"VLPDFType"];

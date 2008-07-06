@@ -78,6 +78,7 @@ enum {
 - (IBAction) stop:(id)sender;
 - (IBAction) playStop:(id)sender;
 - (IBAction) playMusic:(id)sender;
+- (IBAction) adjustTempo:(id)sender;
 - (IBAction) togglePlayElements:(id)sender;
 
 - (NSString *) tmpPath;
