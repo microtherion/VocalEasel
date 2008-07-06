@@ -588,6 +588,8 @@
 		VLSoundOut::Instance()->SetPlayRate(playRate = 1.0f);
 		if (!nowPlaying) 
 			[self play:sender];
+		else if (VLSoundOut::Instance()->AtEnd())
+			VLSoundOut::Instance()->SetTime(0);					
 		break;
 	case 1: 	// Fwd
 	case -1:	// Rew
@@ -604,6 +606,8 @@
 		VLSoundOut::Instance()->SetPlayRate(playRate*tempoRate);
 		break;
 	case -2: 	// To Start
+		if (playRate < 0)
+			VLSoundOut::Instance()->SetPlayRate(playRate = -playRate);			
 		VLSoundOut::Instance()->SetTime(0);		
 		break;
 	case 2: 	// To End

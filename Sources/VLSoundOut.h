@@ -41,6 +41,7 @@ public:
 	virtual void PlaySequence(MusicSequence music) = 0;
 	virtual void Stop(bool pause=true) = 0;
 	virtual bool Playing() = 0;
+	virtual bool AtEnd() = 0;
 	virtual void SetPlayRate(float rate) = 0;
 	virtual void SetTime(MusicTimeStamp time) = 0;
 

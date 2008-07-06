@@ -29,6 +29,7 @@ public:
 	virtual void   	PlaySequence(MusicSequence music);
 	virtual void	Stop(bool pause);
 	virtual bool	Playing();
+	virtual bool	AtEnd();
 	virtual void 	SetPlayRate(float rate);
 	virtual void 	SetTime(MusicTimeStamp time);
 	
@@ -218,7 +219,6 @@ void VLAUSoundOut::SetPlayRate(float rate)
 
 void VLAUSoundOut::SetTime(MusicTimeStamp time)
 {
-	SetPlayRate(1.0f);
 	MusicPlayerSetTime(fPlayer, time);
 }
 
@@ -236,6 +236,13 @@ void VLAUSoundOut::Stop(bool pause)
 bool VLAUSoundOut::Playing()
 {
 	return fRunning;
+}
+
+bool VLAUSoundOut::AtEnd()
+{
+	MusicTimeStamp time;
+
+	return !MusicPlayerGetTime(fPlayer, &time) && time >= fMusicLength;
 }
 
 void VLAUSoundOut::PlayNote(const VLNote & note)
