@@ -201,6 +201,9 @@ VLMusicElement sSemi2Accidental[13][12] = {
 		if (visual & VLNote::kWantSharp) 
 			*accidental = kMusicSharp;
 		break;
+	default:
+		visual = 0;
+		break;
 	}
 
 	return (octave*3.5f
