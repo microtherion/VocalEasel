@@ -131,7 +131,12 @@ VLNote::VLNote(VLFraction dur, int pitch)
 
 void VLNote::Name(std::string & name, bool useSharps) const
 {
-	name = PitchName(fPitch, useSharps && !(fVisual & kWantFlat));
+	if (fVisual & kWantSharp)
+		useSharps = true;
+	else if (fVisual & kWantFlat)
+		useSharps = false;
+
+	name = PitchName(fPitch, useSharps);
 }
 
 void VLNote::MakeRepresentable()
@@ -327,7 +332,12 @@ static const char * kStepNames[] = {
 
 void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bool useSharps) const
 {
-	base = PitchName(fPitch, useSharps && !(fVisual & kWantFlat));
+	if (fVisual & kWantSharp)
+		useSharps = true;
+	else if (fVisual & kWantFlat)
+		useSharps = false;
+
+	base = PitchName(fPitch, useSharps);
 	ext  = "";
 	root = "";
 	
@@ -399,7 +409,7 @@ void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bo
 	// Root
 	//
 	if (fRootPitch != kNoPitch)
-		root = PitchName(fRootPitch, useSharps && !(fVisual & kWantFlat));
+		root = PitchName(fRootPitch, useSharps);
 }
 
 VLMeasure::VLMeasure()
