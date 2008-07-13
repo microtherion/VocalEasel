@@ -1,3 +1,9 @@
+13Jul08		VocalEasel 1.1
+
+ - Respect user choices of accidentals instead of forcing sharps/flats according to key signature
+ - Much improved audio playback system, including visual feedback
+ - Support saving song as MP3 if LAME encoder is installed
+
 26May08		VocalEasel 1.0
 
  - No more serious problems found, releasing as it was in b3.

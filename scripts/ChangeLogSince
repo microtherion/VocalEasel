@@ -8,7 +8,7 @@ end
 releaseName = ARGV[0]
 releaseTag = releaseName.gsub(/(\d)(\w)/, '\1_\2').gsub('.', '_')
 
-loud_system "git log tags/#{releaseTag}.. | scripts/git2cl" 
+loud_system "git log --pretty --numstat --summary tags/#{releaseTag}.. | scripts/git2cl" 
 
 
 

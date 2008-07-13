@@ -1,3 +1,257 @@
+2008-07-13  Matthias Neeracher <neeri@accelerando.local>
+
+	* Resources/Help/about.html, Resources/Help/edit.html,
+	Resources/Help/files.html, Resources/Help/play.html: Updated
+	documentation
+
+2008-07-13  Matthias Neeracher <neeri@accelerando.local>
+
+	* Sources/VLModel.cpp: Fix interaction between useSharps and
+	fVisuals
+
+2008-07-12  Matthias Neeracher <neeri@accelerando.local>
+
+	* Sources/VLSheetView.mm: Fix interaction between key signature and
+	accidentals preference
+
+2008-07-10  Matthias Neeracher <neeri@accelerando.local>
+
+	* Sources/VLSheetViewLyrics.mm: Fix text highlighting
+
+2008-07-10  Matthias Neeracher <neeri@accelerando.local>
+
+	* Sources/VLModel.cpp: Fix switch to 3/4, 6/8
+
+2008-07-06  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLMIDIWriter.cpp, Sources/VLSheetViewSelection.mm: 
+	Unhighlight playback note on pause   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@330
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-06  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* English.lproj/MainMenu.xib, Sources/VLDocument.h,
+	Sources/VLDocument.mm: Adjust tempo through menu   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@329
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-06  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLDocument.mm: Prevent spurious dirtying   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@328
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-06  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLDocument.mm: Yet another ffwd/rev model   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@327
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-06  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLDocument.mm, Sources/VLSoundOut.cpp,
+	Sources/VLSoundOut.h: Restart play when at end   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@326
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-06  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLDocument.h, Sources/VLDocument.mm: Track tempo while
+	playing   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@325
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-05  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLDocument.mm: Gentler rate scaling  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@324
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-05  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLDocument.mm: Rebuild music sequence on style change
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@323
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-05  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLDocument.h, Sources/VLDocument.mm,
+	Sources/VLSoundOut.cpp, Sources/VLSoundOut.h: Implement Stop/Restart
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@322
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-05  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLMIDIWriter.cpp: Fix mistimed events on repeat starting
+	at measure 0   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@321
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-05  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLSheetViewSelection.mm: Smooth callbacks   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@320
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-05  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLSheetViewSelection.mm: Make playback scroll anticipatory
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@319
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-05  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLMIDIWriter.cpp, Sources/VLMIDIWriter.h,
+	Sources/VLSheetViewSelection.mm,
+	VocalEasel.xcodeproj/project.pbxproj: Handle stanzas   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@318
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-29  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Merge 1.1-dev  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@317
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLSheetView.h, Sources/VLSheetView.mm,
+	Sources/VLSheetViewLyrics.h, Sources/VLSheetViewLyrics.mm,
+	Sources/VLSheetViewNotes.h, Sources/VLSheetViewNotes.mm,
+	Sources/VLSheetViewSelection.h, Sources/VLSheetViewSelection.mm: 
+	Highlight note/chord/lyrics   git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@312 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLDocument.mm, Sources/VLMIDIDocument.mm,
+	Sources/VLMIDIWriter.cpp, Sources/VLMIDIWriter.h,
+	Sources/VLMMAWriter.cpp, Sources/VLSheetView.h,
+	Sources/VLSheetViewSelection.h, Sources/VLSheetViewSelection.mm,
+	Sources/VLSheetWindow.h, Sources/VLSheetWindow.mm,
+	Sources/VLSoundOut.cpp, Sources/VLSoundOut.h,
+	VocalEasel.xcodeproj/project.pbxproj: Highlight notes while playing
+	git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@311 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* English.lproj/VLDocument.xib, Sources/VLDocument.h,
+	Sources/VLDocument.mm, Sources/VLSheetWindow.h,
+	Sources/VLSheetWindow.mm, Sources/VLSoundOut.cpp,
+	Sources/VLSoundOut.h: Hook up all audio controls, reverse sounds
+	incorrect   git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@310 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* English.lproj/VLDocument.xib, Resources/bck.icns,
+	Resources/fwd.icns, Resources/play.icns, Resources/run.icns,
+	Resources/stop.icns, Resources/stop.tiff, Resources/tobeg.icns,
+	Resources/toend.icns, Sources/VLDocument.h, Sources/VLDocument.mm,
+	Sources/VLSheetWindow.h, Sources/VLSheetWindow.mm,
+	VocalEasel.xcodeproj/project.pbxproj: Designed set of audio playing
+	icons   git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@309 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-21  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Resources/installLame.scpt, Resources/installLilypond.scpt,
+	Sources/VLAppController.h, Sources/VLAppController.mm,
+	Sources/VLMP3Document.mm, VocalEasel.xcodeproj/project.pbxproj: 
+	Guide installation of LAME   git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@308 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-21  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* .gitignore: Ignore emacs tmp files   git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@307 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-21  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* English.lproj/InfoPlist.strings, Resources/Info.plist,
+	Sources/VLAIFFDocument.h, Sources/VLAIFFDocument.mm,
+	Sources/VLDocument.mm, Sources/VLMP3Document.h,
+	Sources/VLMP3Document.mm, Tools/lameWrapper, Tools/lilyWrapper,
+	VocalEasel.xcodeproj/project.pbxproj: Save as AIFF & MP3
+	git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@306 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-21  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLLayout.cpp, Sources/VLLayout.h, Sources/VLSheetView.h,
+	Sources/VLSheetView.mm, Sources/VLSheetViewLyrics.h,
+	Sources/VLSheetViewLyrics.mm: Highlight selected lyrics
+	git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@305 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-17  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Filters/VLMusicXMLType.writer: Fix accidentals logic in saving
+	git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@304 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-17  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLLilypondWriter.cpp: Deal with explicit accidentals in
+	Lilypond output   git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@303 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-12  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Filters/VLMusicXMLType.reader, Filters/VLMusicXMLType.writer,
+	Filters/vl.rb, Sources/VLPListDocument.mm, Sources/VLXMLDocument.mm: 
+	Persist accidentals choices   git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@302 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-12  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Resources/Info.plist: Bump version number   git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@301 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-12  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLModel.cpp, Sources/VLModel.h, Sources/VLSheetView.h,
+	Sources/VLSheetView.mm, Sources/VLSheetViewNotes.mm: Respect
+	accidentals choices   git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@300 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-11  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* : Starting development of VocalEasel 1.1  git-svn-id:
+
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/branches/VocalEasel-1_1-dev@299 6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-10  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* NEWS: Mention adding of remaining keys   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@297
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-05-10  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* ChangeLog, Filters/vl.rb, NEWS, scripts/git2cl: Getting ready to
+	stage 1.0b3   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@296
+	6297c069-241d-0410-966f-f05c6a69f112
+
 2008-04-24  Matthias Neeracher <neeri@accelerando.local>
 
 	* .gitignore, VocalEasel.xcodeproj/.gitignore: Added git ignore
