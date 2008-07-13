@@ -1,5 +1,26 @@
 2008-07-13  Matthias Neeracher <neeri@accelerando.local>
 
+	* Sources/VLDocument.mm: Fix disastrous playback problem
+
+2008-07-13  Matthias Neeracher <neeri@accelerando.local>
+
+	* Resources/Info.plist: Fix version number
+
+2008-07-13  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* scripts/ReleaseActions: Getting ready to stage 1.1   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@337
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-13  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* ChangeLog, NEWS, scripts/ChangeLogSince: Update ChangeLog, NEWS
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@336
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-07-13  Matthias Neeracher <neeri@accelerando.local>
+
 	* Resources/Help/about.html, Resources/Help/edit.html,
 	Resources/Help/files.html, Resources/Help/play.html: Updated
 	documentation
