@@ -587,7 +587,7 @@
 	switch (int tag = [sender tag]) {
 	case 0: // Play
 		VLSoundOut::Instance()->SetPlayRate(playRate = 1.0f);
-		if (!nowPlaying) 
+		if (!hasMusicSequence || !nowPlaying) 
 			[self play:sender];
 		else if (VLSoundOut::Instance()->AtEnd())
 			VLSoundOut::Instance()->SetTime(0);					
