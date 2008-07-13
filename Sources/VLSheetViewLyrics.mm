@@ -79,7 +79,7 @@
 	}
 	fNextMeas = fMeasure;
 	fNextAt	  = fAt;
-	[fView highlightTextInStanza:fStanza measure:fMeasure at:fAt];
+	[fView highlightTextInStanza:fStanza measure:fMeasure at:fAt one:NO];
 	[fView scrollMeasureToVisible:fMeasure];
 }
 
@@ -94,7 +94,7 @@
 	fAt = at;
 	fNextMeas = fMeasure;
 	fNextAt	  = fAt;
-	[fView highlightTextInStanza:fStanza measure:fMeasure at:fAt];
+	[fView highlightTextInStanza:fStanza measure:fMeasure at:fAt one:NO];
 	[fView scrollMeasureToVisible:fMeasure];
 }
 
