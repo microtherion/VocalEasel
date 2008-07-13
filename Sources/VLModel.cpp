@@ -1145,9 +1145,10 @@ static VLNoteList Realign(const VLNoteList & notes,
 {
 	if (fromProp.fTime == toProp.fTime && fromProp.fDivisions == toProp.fDivisions)
 		return notes;
-	VLNoteList newNotes(notes);
+	VLNoteList newNotes;
 	if (fromProp.fTime < toProp.fTime) {
 		VLNote	rest(toProp.fTime-fromProp.fTime);
+		newNotes = notes;
 		newNotes.push_back(rest);
 	} else if (fromProp.fTime > toProp.fTime) {
 		VLNoteList::const_iterator i = notes.begin();
@@ -1222,8 +1223,10 @@ void VLSong::ChangeDivisions(int section, int newDivisions)
 void VLSong::ChangeTime(int section, VLFraction newTime)
 {
 	VLProperties & prop = fProperties[section];
-	if (prop.fTime == newTime)
-		return; // No change
+	if (prop.fTime == newTime) {
+		prop.fTime = newTime; // Handle changes like 3/4 -> 6/8 
+		return; 			  // Trivial or no change
+	}
 	VLProperties newProp = prop;
 	newProp.fTime   = newTime;
 	for (size_t measure=0; measure<fMeasures.size(); ++measure) 
