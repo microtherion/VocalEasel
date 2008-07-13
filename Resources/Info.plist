@@ -241,7 +241,7 @@
 	<key>CFBundleSignature</key>
 	<string>VçEz</string>
 	<key>CFBundleVersion</key>
-	<string>1.1b1</string>
+	<string>1.1</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
