@@ -31,7 +31,7 @@ private:
 	bool						fUseSharps;
 	bool						fInPickup;
 	bool						fAutomaticLayout;
-	int							fNumPickup;
+	int							fPrevBreak;
 	size_t						fSeenEnding;
 	int							fNumEndings;
 	VLNote						fPrevNote;

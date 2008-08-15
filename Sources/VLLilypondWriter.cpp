@@ -23,7 +23,7 @@ void VLLilypondWriter::Visit(VLSong & song)
 	fSeenEnding	= 0;
 	fNumEndings	= 0;
 	fLastProp   = 0;
-	fNumPickup	= 0;
+	fPrevBreak	= 0;
 	
 	fAutomaticLayout = true;
 	for (int i=0; i<song.fMeasures.size(); ++i)
@@ -50,7 +50,7 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 
 	fUseSharps	= p.fKey > 0;
 	if (fInPickup = fInPickup && !m && meas.NoChords())
-		++fNumPickup;
+		++fPrevBreak;
 
 	//
 	// Generate chords
@@ -92,19 +92,17 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 	size_t	volta;
 	bool	repeat;
 	bool    hasBarLine = false;
-	
-	if (fAutomaticLayout) {
-		if (m > fNumPickup && !((m-fNumPickup) % 4)) {
-			fAccum 		+= fIndent+"\\break\n";
-			hasBarLine 	 = true;
-		}
-	} else if (meas.fBreak & VLMeasure::kNewPage) {
+
+	if (meas.fBreak & VLMeasure::kNewPage) {
 		fAccum 		+= fIndent+"\\pageBreak\n";
 		hasBarLine 	 = true;
-		fNumPickup	 = m;
-	} else if (meas.fBreak & VLMeasure::kNewSystem) {
+		fPrevBreak 	 = m;
+	} else if ((meas.fBreak & VLMeasure::kNewSystem)
+			|| (fAutomaticLayout && m == fPrevBreak+4)
+	) {
 		fAccum 		+= fIndent+"\\break\n";
 		hasBarLine 	 = true;
+		fPrevBreak	 = m;
 	}
 	if (fSong->DoesEndRepeat(m)) {
 		fAccum 	   += "}\n";
