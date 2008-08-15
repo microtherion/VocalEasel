@@ -20,7 +20,7 @@
 
 - (void) addNoteAtCursor
 {	
-	if (fCursorMeasure > -1) {
+	if (fCursorMeasure > -1 && fCursorActualPitch) {
 		VLNote	newNote(1, fClickMode==' ' ? fCursorActualPitch : VLNote::kNoPitch);
 		switch (fCursorAccidental) {
 		case kMusicFlatCursor:
