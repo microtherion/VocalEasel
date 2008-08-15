@@ -204,6 +204,7 @@ def parseLilypond
   tied      = false
   repeat    = 0
   lyricFlags= 0
+  slur      = false
 
   while tokens.length > 0
     token = tokens.shift
@@ -274,11 +275,28 @@ def parseLilypond
         lastDur = dur
         d       = lyDur(dur)
 
+        if slur 
+          #
+          # We don't support slurs, so we turn them into tied notes at the
+          # final pitch
+          #
+          ix = NOTES.size
+          tie= true
+          while tie do
+            break if ix == 0
+            note = NOTES[ix -= 1]
+            note['pitch'] = pitch;
+            note['tied'] ||= 0
+            note['tied']  |= VL::TiedWithNext
+            tie = (note['tied'] & VL::TiedWithPrev) != 0
+          end 
+          tied = true
+        end
         note = {'pitch' => pitch, 'durNum'=> d[0], 'durDenom' => d[1]}
         note['tied'] = VL::TiedWithPrev if tied
         p token, note if $DEBUG
-        NOTES.push(note)
         tied = false
+        NOTES.push(note)
         redo
       elsif token == '~' 
         if note = NOTES.last
@@ -286,6 +304,10 @@ def parseLilypond
           note['tied'] |= VL::TiedWithNext
         end
         tied = true
+      elsif token == '('
+        slur = true
+      elsif token == ')'
+        slur = false
       elsif token == '\repeat' && (tokens[0] == 'volta' || tokens[0] == fold) &&
           tokens[1] =~ /^\d+$/
         stack.push([block, level, "repeat"])
