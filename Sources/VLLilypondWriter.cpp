@@ -202,10 +202,12 @@ static std::string	LilypondPitchName(int8_t pitch, bool useSharps)
 
 static std::string EscapeSyllable(std::string syll)
 {
+	bool seenAlpha = false;
 	for (size_t i=0; i<syll.size(); ++i)
-		if (isalpha(syll[i]))
+		if (isalpha(syll[i])) {
+			seenAlpha = true;
 			continue;
-		else 
+		} else {
 			switch (syll[i]) {
 			case '-':
 			case ':':
@@ -214,10 +216,13 @@ static std::string EscapeSyllable(std::string syll)
 			case ';':
 			case '\'':
 			case '_':
-				continue;
+				if (seenAlpha)
+					continue;
+				/* Else fall through */
 			default:
 				goto escape;
 			}
+		}
 	//
 	// Purely alphabetic syllable, no need to escape.
 	//
@@ -225,6 +230,11 @@ static std::string EscapeSyllable(std::string syll)
 
  escape:
 	size_t q=0;
+	while ((q = syll.find_first_of('\\', q)) != std::string::npos) {
+		syll.replace(q, 1, "\\\\", 2);
+		q += 2;
+	}
+	q = 0;
 	while ((q = syll.find_first_of('"', q)) != std::string::npos) {
 		syll.replace(q, 1, "\\\"", 2);
 		q += 2;
