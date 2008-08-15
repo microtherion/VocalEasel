@@ -101,6 +101,7 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 	} else if (meas.fBreak & VLMeasure::kNewPage) {
 		fAccum 		+= fIndent+"\\pageBreak\n";
 		hasBarLine 	 = true;
+		fNumPickup	 = m;
 	} else if (meas.fBreak & VLMeasure::kNewSystem) {
 		fAccum 		+= fIndent+"\\break\n";
 		hasBarLine 	 = true;
