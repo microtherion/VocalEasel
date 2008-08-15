@@ -604,7 +604,7 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 		// on top.
 		//
 		if (fSelStart <= fSelEnd 
-			&& fLayout->FirstMeasure(system+1) > fSelStart 
+			&& fLayout->FirstMeasure(system+1) > fSelStart-(fSelStart==fSelEnd) 
 			&& fLayout->FirstMeasure(system) < fSelEnd+(fSelStart==fSelEnd)
 		)
 			[self highlightSelectionForSystem:system];
