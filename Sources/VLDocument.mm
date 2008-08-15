@@ -272,12 +272,10 @@
 	if (tempo == [songTempo intValue])
 		return;
 	
-	[self willChangeSong];
 	[songTempo autorelease];
 	songTempo = [[NSNumber numberWithInt:tempo] retain];
 	if (VLSoundOut::Instance()->Playing()) 
 		VLSoundOut::Instance()->SetPlayRate(playRate*tempo/baseTempo);
-	[self didChangeSong];
 }
 
 - (void) setGroove:(NSString *)groove inSections:(NSRange)sections
