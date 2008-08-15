@@ -30,6 +30,8 @@ private:
 	VLSong *					fSong;
 	bool						fUseSharps;
 	bool						fInPickup;
+	bool						fAutomaticLayout;
+	int							fNumPickup;
 	size_t						fSeenEnding;
 	int							fNumEndings;
 	VLNote						fPrevNote;
