@@ -1178,6 +1178,8 @@ static VLNoteList Realign(const VLNoteList & notes,
 				at += n.fDuration;
 			}
 		}
+	} else {
+		newNotes = notes;
 	}	
 	if (fromProp.fDivisions != toProp.fDivisions) {
 		VLRealigner realign(fromProp.fDivisions, toProp.fDivisions);
