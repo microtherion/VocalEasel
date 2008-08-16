@@ -168,7 +168,7 @@
 - (void) drawNoteCursor
 {
 	[self drawNoteCursor:fCursorPitch inMeasure:fCursorMeasure at:fCursorAt
-		  accidental:kMusicNothing mode:' '];	
+		  accidental:fCursorAccidental mode:fClickMode];	
 }
 
 - (void) drawNote:(int)visual at:(NSPoint)p 
