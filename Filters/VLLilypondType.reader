@@ -187,7 +187,7 @@ def parseLilypond
   INFILE.each do |line|
     line.chomp!.sub!(/%.*/, "")
     line.gsub!(/\\breve/, "1*8/4")
-    line.scan(%r$\G\s*(\{|\}|\(|\)|\||=|~|<<|>>|--|#'|#\(|##t|##f|\\\w+|\".*?\"|\w[-+^\w\d.',:*/?!]+|.)$) do |token|
+    line.scan(%r$\G\s*(\{|\}|\(|\)|\||=|~|<<|>>|--|#'|#\(|##t|##f|\\\w+|\".*?\"|(\w|'|`)[-+^\w\d.'`,:*/?!]+|.)$) do |token|
       tokens.push(token[0])
     end
   end
@@ -349,7 +349,13 @@ def parseLilypond
         p [$1, lyricFlags] if $DEBUG
         lyrics.push [$1, lyricFlags]
         lyricFlags     = 0      
-      elsif token =~ /^\w.*/
+      elsif token =~ /^(\w|'|`).*/
+        #
+        # Handle smart quotes
+        #
+        token.gsub!(/``/, "\xE2\x80\x9C");
+        token.gsub!(/''/, "\xE2\x80\x9D");
+        token.gsub!(/'/, "\xE2\x80\x99");
         p [token, lyricFlags] if $DEBUG
         lyrics.push [token, lyricFlags]
         lyricFlags     = 0
