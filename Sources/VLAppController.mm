@@ -135,7 +135,7 @@
 				absolutePathForAppBundleWithIdentifier:@"org.lilypond.lilypond"]
 				stringByAppendingPathComponent:@"Contents/Resources/bin/lilypond"];
 	if (!toolPath) 
-		toolPath = [self getLineFromCommand:@"bash -l which lilypond"];
+		toolPath = [self getLineFromCommand:@"bash -l -c 'which lilypond'"];
 
 	NSString * appVersion  = nil;
 	NSString * toolVersion = nil;
@@ -196,7 +196,7 @@
 							   script:(NSString *)script
 								  url:(NSURL *)url
 {
-	NSString * hasFink = [self getLineFromCommand:@"bash -l which fink"];
+	NSString * hasFink = [self getLineFromCommand:@"bash -l -c 'which fink'"];
 
 	int response = 
 		[[NSAlert alertWithMessageText:title
@@ -246,7 +246,7 @@
 				  url:[NSURL URLWithString:@"http://lilypond.org/web/install"]]
 		)
 			quit = YES;
-	if (![self getLineFromCommand:@"bash -l which python2.5"]) 
+	if (![self getLineFromCommand:@"bash -l -c 'which python2.5'"]) 
 		if ([self promptForSoftwareInstallation:@"Download from python.org"
 				  withTitle: @"Python 2.5 Not Found!"
 				  explanation: 
@@ -273,7 +273,7 @@
 - (BOOL) lameIsInstalled
 {
 	if (!lamePath) {
-		lamePath = [self getLineFromCommand:@"bash -l which lame"];
+		lamePath = [self getLineFromCommand:@"bash -l -c 'which lame'"];
 		if (!lamePath)
 			if ([self promptForSoftwareInstallation:@"Download"
 					  withTitle: @"LAME Not Found!"
