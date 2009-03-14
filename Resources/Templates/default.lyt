@@ -64,6 +64,7 @@ vlExceptionMusic =  {
     <c e g bes d' fis'>1-\markup { \super { "9" \vlSharp "11" } }
     <c e g bes des' fis'>1-\markup { \super  "7" \vlStack \line {\vlSharp "11"} \line {\vlFlat "9"}}
     <c e g bes dis' fis'>1-\markup { \super  "7" \vlStack \line {\vlSharp "11"} \line {\vlSharp "9"}}
+    <c e g bes des' as'>1-\markup { \super  "7" \vlStack \line {\vlFlat "13"} \line {\vlFlat "9"}}
 }
 
 vlExceptions = #(append
