@@ -471,7 +471,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 			// Don't try to further shrink a minimal note
 			//
 			if (p.fDuration == kMinDuration)
-				goto haveDuration;
+				goto checkTriplets;
 			//
 			// Prefer further triplets
 			//
@@ -522,6 +522,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 				else
 					p.AlignToGrid(inBeat, kQuarterDur); // Align all others
 			}
+		checkTriplets:
 			if (p.fVisual & VLNote::kTriplet) {
 				//
 				// Distinguish swing 8ths/16ths from triplets
@@ -552,12 +553,13 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 					// Second swing note (8th triplet -> 8th)
 					//
 					p.fVisual &= ~VLNote::kTriplet;
-				} else if ((at % p.fDuration != 0)
-				  || (p.fDuration != c.fDuration 
-				   && 2*p.fDuration != c.fDuration)
-				  || (n!=e && n->fDuration != c.fDuration
+				} else if ((p.fDuration > kMinDuration) && 
+				  ((at % p.fDuration != 0)
+				   || (p.fDuration != c.fDuration 
+				    && 2*p.fDuration != c.fDuration)
+				   || (n!=e && n->fDuration != c.fDuration
 					       && n->fDuration != 2*c.fDuration
-					       && 2*n->fDuration != c.fDuration)
+					   && 2*n->fDuration != c.fDuration))
 				  ) {
 					//
 					// Get rid of awkward triplets
