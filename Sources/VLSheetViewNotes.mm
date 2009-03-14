@@ -312,14 +312,41 @@
 		  operation: NSCompositeSourceOver];
 }
 
+- (void) drawTripletBracketFrom:(int)startX to:(int)endX atY:(int)y
+{
+	static NSDictionary * sTripletFont 	 = nil;
+	if (!sTripletFont)
+		sTripletFont =
+			[[NSDictionary alloc] initWithObjectsAndKeys:
+				[NSFont fontWithName: @"Helvetica" size: 12],
+                NSFontAttributeName,
+				nil];
+
+	NSBezierPath * bz = [NSBezierPath bezierPath];
+
+	[bz moveToPoint: NSMakePoint(startX, y-kTripletH)];
+	[bz lineToPoint: NSMakePoint(startX, y)];
+	[bz lineToPoint: NSMakePoint(endX, y)];
+	[bz lineToPoint: NSMakePoint(endX, y-kTripletH)];
+	[bz stroke];
+
+	[@"3" drawAtPoint: NSMakePoint((startX+endX)*0.5f, y+kTripletH)
+	   withAttributes: sTripletFont];
+}
+
 - (void) drawNotesForSystem:(int)system
 {
 	const int   			kFirstMeas	= fLayout->FirstMeasure(system);
 	const VLSong 		*	song 	  	= [self song];
 	const VLProperties & 	kProp 	  	= song->Properties(kFirstMeas);
 	const VLSystemLayout & 	kLayout 	= (*fLayout)[system];
+	const float 			kSystemY 	= [self systemY:system];
 
-	float kSystemY = [self systemY:system];
+	float	tripletStartX;
+	float	tripletEndX;
+	float	tripletY;
+	bool	hasTriplets	= false;
+
 	for (int m = 0; m<kLayout.NumMeasures(); ++m) {
 		VLMusicElement accidentals[7];
 		memset(accidentals, 0, 7*sizeof(VLMusicElement));
@@ -337,18 +364,18 @@
 			BOOL	tied  = (note != melody.begin() || m) 
 				&& note->fTied & VLNote::kTiedWithPrev;
 			int		pitch = note->fPitch;
+			NSPoint pos;
 			if (pitch != VLNote::kNoPitch) {
 				[self drawLedgerLinesInSection:measure.fPropIdx withPitch:pitch 
 					  visual:note->fVisual
 					  at:NSMakePoint([self noteXInMeasure:measIdx at:at], 
 									 kSystemY)];
 				VLMusicElement		accidental;
-				NSPoint pos = 
-					NSMakePoint([self noteXInMeasure:measIdx at:at],
-								kSystemY+[self noteYInSection:measure.fPropIdx
-											   withPitch:pitch 
-											   visual:note->fVisual
-											   accidental:&accidental]);
+				pos = NSMakePoint([self noteXInMeasure:measIdx at:at],
+								  kSystemY+[self noteYInSection:measure.fPropIdx
+												 withPitch:pitch 
+												 visual:note->fVisual
+												 accidental:&accidental]);
 				VLMusicElement 	acc = accidental;
 				int				step= [self stepInSection:measure.fPropIdx
 											withPitch:pitch 	
@@ -367,15 +394,31 @@
 				accidentals[step] = accidental;
 			} else {
 				VLMusicElement		accidental;
-				NSPoint pos = 
-					NSMakePoint([self noteXInMeasure:measIdx at:at],
-								kSystemY+[self noteYInSection:measure.fPropIdx
-											   withPitch:65 visual:0
-											   accidental:&accidental]);
+				pos = NSMakePoint([self noteXInMeasure:measIdx at:at],
+								  kSystemY+[self noteYInSection:measure.fPropIdx
+												 withPitch:65 visual:0
+												 accidental:&accidental]);
 				[self drawRest:note->fVisual & VLNote::kNoteHead at: pos];
 			}
+			if (note->fVisual & VLNote::kTriplet) {
+				tripletEndX	= pos.x+kNoteW*0.5f;
+				if (hasTriplets) {
+					tripletY = std::max(tripletY, pos.y+kLineH);
+				} else {
+					tripletY 		= std::max(kSystemY+5.0f*kLineH, pos.y+kLineH);
+					tripletStartX	= pos.x-kNoteW*0.5f;
+					hasTriplets		= true;
+				}
+			} else if (hasTriplets) {
+				[self drawTripletBracketFrom:tripletStartX to:tripletEndX atY:tripletY];
+				hasTriplets	= false;
+			}
+
 			at	   += note->fDuration;
 		}
+	}
+	if (hasTriplets) {
+		[self drawTripletBracketFrom:tripletStartX to:tripletEndX atY:tripletY];
 	}
 	if (fCursorPitch != VLNote::kNoPitch && fLayout->SystemForMeasure(fCursorMeasure) == system)
 		[self drawNoteCursor];
