@@ -215,9 +215,23 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 	}
 }
 
+//
+// We try to keep the number of divisions as small as possible, so we keep track
+// of all note onsets per quarter note. In addition, we keep track of potential
+// swing 8ths [0, 1/8]->[0,1/6] and 
+// swing 16ths [0,1/16]->[0,1/12] [1/8,3/16]->[1/8,1/6]
+// so we can recognize swing songs containing triplets and note them with 3 (6)
+// divisions instead of 6 (12)
+//
+enum {
+	kPotentialSwing8th = 12,
+	kPotentialSwing16th
+};
+
 - (void)readMelody:(NSArray *)melody inMeasure:(size_t)measNo onsets:(int *)onsets
 {
 	VLFraction		at(0);
+	int				lastOnset = 0;
 	VLFraction		tiedStart(0);
 	VLLyricsNote	tiedNote;
 	uint8_t  		prevKind[20];
@@ -284,8 +298,23 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 		song->AddNote(note, measNo, at);
 
 		if (!(note.fTied & VLNote::kTiedWithPrev)) {
-			VLFraction inQuarter = at % VLFraction(1,4);
-			++onsets[inQuarter.fNum * 48 / inQuarter.fDenom];
+			VLFraction 	inQuarter	= at % VLFraction(1,4);
+			int 		onset 		= inQuarter.fNum * 48 / inQuarter.fDenom;
+			++onsets[onset];
+			switch (onset) {
+			case 3:
+				if (lastOnset == 0)
+					++onsets[kPotentialSwing16th];
+				break;					
+			case 6:
+				if (lastOnset == 0)
+					++onsets[kPotentialSwing8th];
+				break;
+			case 9:
+				if (lastOnset == 6 || lastOnset == 3 || lastOnset == 0)
+					++onsets[kPotentialSwing16th];
+				break;
+			}
 		}
 advanceAt:
 		at += note.fDuration;		
@@ -319,7 +348,7 @@ advanceAt:
 	std::vector<size_t>	repeatStack;
 
 	size_t measNo = 0;
-	int onsets[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	int onsets[14] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	for (NSEnumerator * me 	  = [measures objectEnumerator];
 		 NSDictionary * mdict = [me nextObject];
 		 ++measNo
@@ -389,13 +418,23 @@ advanceAt:
 		song->fMeasures.pop_back();
 	if (!song->fProperties.back().fDivisions) {
 		if (!(onsets[1]+onsets[5]+onsets[7]+onsets[11]))
-			if (!(onsets[3]+onsets[9]))
-				if (!(onsets[2]+onsets[4]+onsets[8]+onsets[10]))
+			if (!(onsets[3]+onsets[9]-onsets[kPotentialSwing16th]))
+				if (onsets[kPotentialSwing16th]) {
+					song->fProperties.back().fDivisions = 12;
+					song->ChangeDivisions(song->fProperties.size()-1, 6);
+				} else if (!(onsets[2]+onsets[4]+onsets[8]+onsets[10])) {
 					song->fProperties.back().fDivisions = 2;
-				else if (!(onsets[2]+onsets[6]+onsets[10]))
-					song->fProperties.back().fDivisions = 3;
-				else	
+				} else if (!(onsets[2]+onsets[10]
+						   + onsets[6]-onsets[kPotentialSwing8th])) {
+					if (onsets[kPotentialSwing8th]) {
+						song->fProperties.back().fDivisions = 6;
+						song->ChangeDivisions(song->fProperties.size()-1, 3);
+					} else {
+						song->fProperties.back().fDivisions = 3;
+					}
+				} else {
 					song->fProperties.back().fDivisions = 6;
+		        }
 			else if (!(onsets[2]+onsets[4]+onsets[8]+onsets[10]))
 				song->fProperties.back().fDivisions = 4;
 			else	
