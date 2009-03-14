@@ -460,7 +460,9 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 			// Prefer further triplets
 			//
 			if (prevTriplets) {
-				if (p.fDuration >= 2*prevTripDur) {
+				if (p.fDuration > 3*prevTripDur) {
+					; // Not part of triplets
+				} else if (p.fDuration >= 2*prevTripDur) {
 					p.fDuration = 2*prevTripDur;
 					if (prevTriplets == 1) {
 						p.fVisual   = prevVisual-1;
@@ -539,7 +541,10 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 				} else if ((at % p.fDuration != 0)
 				  || (p.fDuration != c.fDuration 
 				   && 2*p.fDuration != c.fDuration)
-				) {
+				  || (n!=e && n->fDuration != c.fDuration
+					       && n->fDuration != 2*c.fDuration
+					       && 2*n->fDuration != c.fDuration)
+				  ) {
 					//
 					// Get rid of awkward triplets
 					//
@@ -1204,10 +1209,11 @@ static VLNoteList Realign(const VLNoteList & notes,
 			}
 			at += n.fDuration;
 		}
-		if (lastAt == at)
+		if (lastAt == at) {
 			alignedNotes.pop_back();
-		else
+		} else {
 			alignedNotes.back().fDuration = at-lastAt;
+		}
 
 		return alignedNotes;
 	} else
