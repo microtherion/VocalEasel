@@ -437,6 +437,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 	const VLFraction kQuarterDur(1,4);
 	const VLFraction kEighthLoc(1,8);
 	const VLFraction kQuarTripLoc(1,6);
+	const VLFraction kMinDuration(1,4*prop.fDivisions);
 
 	VLFraction 	at(0);
 	VLNoteList::const_iterator 	i 	= fMelody.begin();
@@ -451,18 +452,31 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 		
 		VLLyricsNote c	= *i;	// Current note, remaining duration
 		VLLyricsNote p  = c;	// Next partial note
+		VLFraction   r(0);
 		do {
 			//
 			// Start with longest possible note
 			//
 			p.MakeRepresentable(); 
 			//
+			// Don't paint ourselves into a corner by leaving a non-representable
+			// remainder.
+			//
+			if (p.fDuration != c.fDuration && (c.fDuration-p.fDuration) % kMinDuration != 0) {
+				r          += kMinDuration;
+				p.fDuration = c.fDuration-r;
+				continue;
+			}
+			//
+			// Don't try to further shrink a minimal note
+			//
+			if (p.fDuration == kMinDuration)
+				goto haveDuration;
+			//
 			// Prefer further triplets
 			//
 			if (prevTriplets) {
-				if (p.fDuration > 3*prevTripDur) {
-					; // Not part of triplets
-				} else if (p.fDuration >= 2*prevTripDur) {
+				if (p.fDuration >= 2*prevTripDur) {
 					p.fDuration = 2*prevTripDur;
 					if (prevTriplets == 1) {
 						p.fVisual   = prevVisual-1;
