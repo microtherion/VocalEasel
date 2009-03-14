@@ -552,7 +552,8 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 					//
 					// Second swing note (8th triplet -> 8th)
 					//
-					p.fVisual &= ~VLNote::kTriplet;
+					if (!prevTriplets)
+						p.fVisual &= ~VLNote::kTriplet;
 				} else if ((p.fDuration > kMinDuration) && 
 				  ((at % p.fDuration != 0)
 				   || (p.fDuration != c.fDuration 
