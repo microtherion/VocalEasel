@@ -53,7 +53,7 @@ A  = Bbb= 9
 As = Bb = 10
 B  = Cb = 11
 
-chords = {
+chordlist = {
     'M':    ((C,    E,      G ),
              (C, D, E, F, G, A, B),
              "Major triad. This is the default and is used in  "
@@ -399,8 +399,8 @@ chords = {
 
 
 """ Extend our table with common synomyns. These are real copies,
-not pointers. This is done so that a user redefine only affects
-the original.
+    not pointers. This is done so that a user redefine only affects
+    the original.
 """
 
 aliases = (
@@ -448,14 +448,15 @@ aliases = (
     ('9sus',     'sus9',     ''),
     ('9-5',      '9b5',      ''),
     ('dim3',     'mb5',      'Diminished triad (non-standard notation).'),
-    ('omit3(add9)','omit3add9', '')
+    ('omit3(add9)','omit3add9', ''),
+    ('9sus4',    'sus9',     '')
     )
 
 for a,b,d in aliases:
-    n=chords[b][0]
-    s=chords[b][1]
+    n=chordlist[b][0]
+    s=chordlist[b][1]
     if not d:
-        d=chords[b][2]
+        d=chordlist[b][2]
 
-    chords[a] = (n, s, d)
+    chordlist[a] = (n, s, d)
 

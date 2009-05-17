@@ -22,14 +22,14 @@ Bob van der Poel <bob@mellowood.ca>
 """
 
 
-
-
-import gbl
-from   MMA.common import *
 from   MMA.midiM  import intToWord, intTo3Byte, intToLong, intToVarNumber
 import MMA.midiC
 
+import gbl
+from   MMA.common import *
+
 splitChannels = []
+
 
 def setSplitChannels(ln):
     """ Parser routine, sets up list of track to split. Overwrites existing. """
@@ -39,10 +39,10 @@ def setSplitChannels(ln):
     splitChannels = []
 
     for a in ln:
-        c = stoi(a)
-        if c < 1 or c >16:
-            error("SplitChannels: Expecting value 1 to 16, not %s" % c)
-        splitChannels.append(c)
+        a = stoi(a)
+        if a < 1 or a >16:
+            error("SplitChannels: Expecting value 1 to 16, not %s" % a)
+        splitChannels.append(a)
 
     if gbl.debug:
         print "SplitChannels: ",
@@ -106,15 +106,16 @@ def writeTracks(out):
 
 
 def writeSplitTrack(channel, out):
-    """ Split a drum track into a separate track for the non-note
-        stuff and then a track for each note.
+    """ Split a track. In drum tracks this puts different instruments
+        into individual tracks (useful!); for instrument tracks it puts
+        each pitch into a track (probably not useful).
     """
 
     tr = gbl.mtrks[channel].miditrk   # track to split
 
     """ A dict to store the split midi tracks. We'll end out with
         a track for each pitch which appears in the track and
-        a track (labeled -1) to store every other than note on data.
+        a track (labeled -1) to store every other-than-note-on data.
     """
 
     notes={}
@@ -130,7 +131,7 @@ def writeSplitTrack(channel, out):
             else:
                 n = -1      # special value for non-note on events
 
-            if not notes.has_key(n):   # create a new mtrk if needed
+            if not n in notes:   # create a new mtrk if needed
                 notes[n]=Mtrk(10)
 
             if offset in notes[n].miditrk:  # copy event to new track
@@ -149,7 +150,7 @@ def writeSplitTrack(channel, out):
         if channel == 10:
             m = "%s" % MMA.midiC.valueToDrum(a)
         else:
-            m= "%s-%s" % (gbl.mtrks[channel].trackname, a)
+            m = "%s-%s" % (gbl.mtrks[channel].trackname, a)
 
         notes[a].addTrkName(0, m)
 
@@ -166,8 +167,7 @@ def writeSplitTrack(channel, out):
 
 def mkHeader(count, tempo, Mtype):
 
-    return "MThd" + intToLong(6) + intToWord(Mtype) + \
-        intToWord(count) + intToWord(tempo)
+    return "MThd" + intToLong(6) + intToWord(Mtype) + intToWord(count) + intToWord(tempo)
 
 
 """ Midi track class. All the midi creation is done here.
@@ -188,7 +188,7 @@ class Mtrk:
 
         tr=self.miditrk
         lg=len(cmd)
-        if tr.has_key(offset):
+        if offset in tr:
             for i,a in enumerate(tr[offset]):
                 if a[0:lg] == cmd:
                     del tr[offset][i]
@@ -221,10 +221,12 @@ class Mtrk:
         self.delDup(offset, cmd)
         self.addToTrack(offset, cmd + chr(0x02) + chr(n) + chr(mi) )
 
+
     def addMarker(self, offset, msg):
         """ Create a midi MARKER event."""
 
         self.addToTrack(offset, chr(0xff) + chr(0x06) + intToVarNumber(len(msg)) + msg )
+
 
     def addText(self, offset, msg):
         """ Create a midi TextEvent."""
@@ -251,16 +253,25 @@ class Mtrk:
         self.addToTrack(offset, cmd + intToVarNumber(len(msg)) + msg )
 
 
-    def addProgChange( self, offset, program):
-        """ Create a midi program change.
+    def addProgChange( self, offset, program, oldprg):
+        """ Create a midi program change (handles extended voicing).
 
-            program - midi program
-
-            Returns - packed string
+            program - The MIDI program (voice) value
+            oldprg  - existing MIDI program
         """
 
-        self.addToTrack(offset,
-            chr(0xc0 | self.channel) + chr(program) )
+        v1, lsb1, msb1 = MMA.midiC.voice2tup(oldprg)
+        v2, lsb2, msb2 = MMA.midiC.voice2tup(program)
+
+        if msb1 != msb2:   # only if CTRL32 has changed
+            self.addToTrack(offset, chr(0xb0 | self.channel) + chr(0x20) + chr(msb2) )
+
+        if lsb1 != lsb2:   # only if CTRL0 has changed
+            self.addToTrack(offset, chr(0xb0 | self.channel) + chr(0x00) + chr(lsb2) )
+
+        # Always do voice change. Maybe not necessary, but let's be safe.
+
+        self.addToTrack(offset, chr(0xc0 | self.channel) + chr(v2) )
 
 
     def addGlis(self, offset, v):
@@ -272,22 +283,17 @@ class Mtrk:
         """
 
         if v == 0:
-            self.addToTrack(offset,
-                chr(0xb0 | self.channel) + chr(0x41) + chr(0x00) )
+            self.addToTrack(offset, chr(0xb0 | self.channel) + chr(0x41) + chr(0x00) )
 
         else:
-            self.addToTrack(offset,
-                chr(0xb0 | self.channel) + chr(0x41) + chr(0x7f) )
-            self.addToTrack(offset,
-                chr(0xb0 | self.channel) + chr(0x05) + chr(v) )
-
+            self.addToTrack(offset, chr(0xb0 | self.channel) + chr(0x41) + chr(0x7f) )
+            self.addToTrack(offset, chr(0xb0 | self.channel) + chr(0x05) + chr(v) )
 
 
     def addPan(self, offset, v):
         """ Set the lsb of the pan setting."""
 
-        self.addToTrack(offset,
-            chr(0xb0 | self.channel) + chr(0x0a) + chr(v) )
+        self.addToTrack(offset, chr(0xb0 | self.channel) + chr(0x0a) + chr(v) )
 
 
     def addCtl(self, offset, l):
@@ -316,9 +322,9 @@ class Mtrk:
     def addTempo(self, offset, beats):
         """ Create a midi tempo meta event.
 
-        beats - beats per second
+             beats - beats per second
 
-        Return - packed midi string
+             Return - packed midi string
         """
 
         cmd = chr(0xff) + chr(0x51)
@@ -329,10 +335,25 @@ class Mtrk:
     def writeMidiTrack(self, out):
         """ Create/write the MIDI track.
 
-        We convert timing offsets to midi-deltas.
+            We convert timing offsets to midi-deltas.
         """
 
         tr=self.miditrk
+
+        """ If the -1 flag is set we need to add a terminate
+            to the end of each track. This is done to make looping
+            software like seq24 happy. We do this by truncating all
+            data in the file past the current tick pointer and inserting
+            an all-notes-off at that position.
+        """
+
+        if gbl.endsync and self.channel>=0:
+            eof = gbl.tickOffset
+            for offset in tr.keys():
+                if offset > eof:
+                    del tr[offset]
+            self.addToTrack(eof, chr(0xb0 | self.channel) + chr(0x7b) + chr(0))
+            
 
         """ To every MIDI track we generate we add (if the -0 flag
             was set) an on/off beep at offset 0. This makes for
@@ -360,19 +381,19 @@ class Mtrk:
         # Convert all events to MIDI deltas and store in
         # the track array/list
 
-        tdata=[]        # empty track container
-        lastSts=None    # Running status tracker
+        tdata = []        # empty track container
+        lastSts = None    # Running status tracker
 
         for a in sorted(tr.keys()):
             delta = a-last
             for d in tr[a]:
 
                 """ Running status check. For each packet compare
-                the first byte with the first byte of the previous
-                packet. If it is can be converted to running status
-                we strip out byte 0. Note that valid running status
-                byte are 0x80..0xef. 0xfx are system messages
-                and are note suitable for running status.
+                    the first byte with the first byte of the previous
+                    packet. If it is can be converted to running status
+                    we strip out byte 0. Note that valid running status
+                    byte are 0x80..0xef. 0xfx are system messages
+                    and are note suitable for running status.
                 """
 
                 if len(d) > 1:
@@ -404,35 +425,34 @@ class Mtrk:
     def addPairToTrack(self, boffset, startRnd, duration, note, v, unify):
         """ Add a note on/off pair to a track.
 
-        boffset      - offset into current bar
-        startRnd  - rand val start adjustment
-        duration  - note len
-        note      - midi value of note
-        v      - midi velocity
-        unify      - if set attempt to unify/compress on/offs
+            boffset      - offset into current bar
+            startRnd  - rand val start adjustment
+            duration  - note len
+            note      - midi value of note
+            v      - midi velocity
+            unify      - if set attempt to unify/compress on/offs
 
-        This function tries its best to handle overlapping events.
-        Easy to show effect with a table of note ON/OFF pairs. Both
-        events are for the same note pitch.
+            This function tries its best to handle overlapping events.
+            Easy to show effect with a table of note ON/OFF pairs. Both
+            events are for the same note pitch.
 
-        Offsets     |     200  |      300  |  320  |  420
-        ---------|--------|--------|-------|--------
-        Pair1     |     on      |       |  off  |
-        Pair2     |      |      on   |       |  off
+            Offsets     |     200  |      300  |  320  |  420
+            ---------|--------|--------|-------|--------
+            Pair1     |     on      |       |  off  |
+            Pair2     |      |      on   |       |  off
 
-        The logic here will delete the OFF event at 320 and
-        insert a new OFF at 300. Result is that when playing
-        Pair1 will turn off at 300 followed by the same note
-        in Pair2 beginning sounded right after. Why the on/off?
-        Remember: Velocities may be different!
+            The logic here will delete the OFF event at 320 and
+            insert a new OFF at 300. Result is that when playing
+            Pair1 will turn off at 300 followed by the same note
+            in Pair2 beginning sounded right after. Why the on/off?
+            Remember: Velocities may be different!
 
-        However, if the unify flag is set we should end up with:
+            However, if the unify flag is set we should end up with:
 
-        Offsets     |     200  |      300  |  320  |  420
-        ---------|--------|--------|-------|--------
-        Pair1     |     on      |       |       |
-        Pair2     |      |       |       |  off
-
+            Offsets     |     200  |      300  |  320  |  420
+            ---------|--------|--------|-------|--------
+            Pair1     |     on      |       |       |
+            Pair2     |      |       |       |  off
 
         """
 
@@ -442,31 +462,31 @@ class Mtrk:
         offOffset = onOffset + duration
 
         # ON/OFF events
-
-        onEvent     = chr(0x90 | self.channel) + chr(note) + chr(v)
+        
+        onEvent  = chr(0x90 | self.channel) + chr(note) + chr(v)
         offEvent = onEvent[:-1] + chr(0)
 
         """ Check for overlap on last event set for this track and
-        do some ugly trickry.
+            do some ugly trickry.
 
-        - The noOnFlag is set if we don't want to have the main
-        routine add in the ON event. This is set when UNIFY is
-        set and we have an overlap.
+            - The noOnFlag is set if we don't want to have the main
+              routine add in the ON event. This is set when UNIFY is
+              set and we have an overlap.
 
-        - We set F to the stored event time for this note and,
-        if it's in the same event range as the current event
-        we loop though the saved events for this track. We are
-        looking for a NOTE OFF event.
+            - We set F to the stored event time for this note and,
+              if it's in the same event range as the current event
+              we loop though the saved events for this track. We are
+              looking for a NOTE OFF event.
 
-        - If we get a matching event we then delete it from the
-        track. This requires 2 statements: one for an event
-        list with only 1 event, a 2nd for multiple events.
+            - If we get a matching event we then delete it from the
+              track. This requires 2 statements: one for an event
+              list with only 1 event, a 2nd for multiple events.
 
-        - If UNIFY is NOT set we insert a NOTE OFF at the current
-        on time. This replaces the OFF we just deleted.
+             - If UNIFY is NOT set we insert a NOTE OFF at the current
+               on time. This replaces the OFF we just deleted.
 
-        - If UNIFY is SET we skip the above step, and we set the
-        noOnFlag so that the ON event isn't set.
+             - If UNIFY is SET we skip the above step, and we set the
+               noOnFlag so that the ON event isn't set.
 
         """
 
@@ -499,10 +519,10 @@ class Mtrk:
     def zapRangeTrack(self, start, end):
         """ Clear NoteOn events from track in range: start ... end.
 
-        This is called from the fermata function.
+            This is called from the fermata function.
 
-        We delete the entire event list (3 bytes) from the buffer. This
-        can result in empty directory enteries, but that isn't a problem.
+            We delete the entire event list (3 bytes) from the buffer. This
+            can result in empty directory enteries, but that isn't a problem.
         """
 
         trk=self.miditrk
@@ -517,14 +537,14 @@ class Mtrk:
     def addToTrack(self, offset, event):
         """ Add an event to a track.
 
-        MIDI data is saved as created in track structures.
-        Each track has a miditrk dictionary entry which used
-        the time offsets and keys and has the various events
-        as data. Each event is packed string of bytes and
-        the events are stored as a list in the order they are
-        created. Our storage looks like:
+            MIDI data is saved as created in track structures.
+            Each track has a miditrk dictionary entry which used
+            the time offsets and keys and has the various events
+            as data. Each event is a packed string of bytes and
+            the events are stored as a list in the order they are
+            created. Our storage looks like:
 
-        miditrk[123] = [event1, event2, ...]
+            miditrk[OFFSET_VALUE] = [event1, event2, ...]
         """
 
         if offset<0:
@@ -536,8 +556,6 @@ class Mtrk:
             tr[offset].append(event)
         else:
             tr[offset]=[event]
-
-
 
 
 class TimeSig:

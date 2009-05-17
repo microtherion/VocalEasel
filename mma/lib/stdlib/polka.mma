@@ -183,6 +183,34 @@ Walk            Sequence    -
 
 DefGroove PolkaIntro    A nice little 4 bar intro.
 
+Groove Polka
+SeqSize 8
+
+Chord            Sequence  C13    /    /   /     /    /    /   C1
+Chord-Guitar     Sequence  C13    /    /   /     /    /    /   C1
+Drum             Sequence  D13    /    /   D1234 D13  /    /   D1
+Drum-HH          Sequence  D13    /    /   /     /    /    /   D1
+Drum-Snare       Sequence  D24    /    /   D1234 D24  /    /   D2
+Begin Drum-Cym 
+                 Sequence  z      z    z   z     z    z    z   D1 
+                 RVolume   0
+                 RSkip     0
+                 Volume    mf
+End
+
+Begin Bass
+	Voice       Tuba
+	Sequence    B13   /    /   /  /  /  / {1 4 5 80; 2 4 4 90; 3 4 3 100; 4 4 2 120}
+	Octave      3
+	Articulate  70
+	Rvolume     0
+	Volume      f
+End
+
+Walk            Sequence    -
+
+DefGroove PolkaIntro8    Expanded version of PolkaIntro for 8 bars.
+
 
 //////////////////////////////////
 // PolkaEnd

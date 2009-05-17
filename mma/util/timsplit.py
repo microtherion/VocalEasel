@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 
-# Create a set of wav files from MMA using timidity.
+
+# This program will take a mma file and use timidity to split it into
+# a series of .wav files. 1 wav for each track in the file.
+
 
 import sys, os, commands
 
+tmpname = "tmp-%s" % os.getpid()
+tmpmid  = "%s.mid" % tmpname 
+bgtrack = "bg.wav"
 
 def usage():
     print "timsplit, (c) Bob van der Poel"
@@ -16,40 +22,79 @@ if len(sys.argv[1:]) != 1:
     print "timsplit: requires 1 filename argument."
     usage()
 
-filename = sys.argv[1]
+mmafile = sys.argv[1]
 
-status, txt = commands.getstatusoutput("mma -c %s" % filename)
+if mmafile.endswith(".mma"):
+    basemid = mmafile[:-4]
+else:
+    basemid = mmafile
 
+basemid += ".mid"
+
+
+# Create the background midi and wav. FIXME: have a command line option to skip
+
+status, txt = commands.getstatusoutput("mma -0 %s -f %s" % (mmafile, basemid))
 if status:
     print "timsplit error", status
     print txt
     sys.exit(1)
 
-# Get the track list
+# create a wav of the base file. This should get copied to your mixer
 
-ch=[]
-for a in txt.split('\n'):
-    a=a.strip().split()
+print "Creating background track:", bgtrack
+status, txt = commands.getstatusoutput("timidity -Ow -o %s %s" % (bgtrack, basemid ))
+if status:
+    print "timsplit error", status
+    print txt
+    sys.exit(1)
+
+# Get the tracks generated in the file
+
+status, txt = commands.getstatusoutput("mma -c %s" % mmafile)
+txt = txt.split()
+txt=txt[txt.index('assignments:')+1:]
+tracklist=[]
+for a in sorted(txt):
     try:
-        ch.append(int(a[0]))
+        int(a)
     except:
-        pass
+        tracklist.append(a)
 
-ch.sort()
-print "Found channels:",
-for a in ch:
+print "MMA file '%s' being split to: " % mmafile,
+for a in tracklist:
     print a,
 print
 
-# Create midi file
 
-status = os.system("mma -0 %s -foutfile.mid" % filename)
+# Do the magic. For each track call mma and timidity.
 
-if status:
-    sys.exit(1)
+for trackname in tracklist:
+  
+    trackname = trackname.title()
+    status, txt = commands.getstatusoutput ("mma -0 %s -T %s -f %s " % (mmafile, trackname, tmpmid) )
+    if status:
+        if txt.startswith("No data created"):
+            print "NO DATA for '%s', skipping" % trackname
+            continue
+        print "timsplit error", status
+        print txt
+        sys.exit(1)
 
-# Create wav tracks with timidity
+    # create wav file
+    # Options for timidity:  Ow -- output to wave
+    #                         M -- mono
 
-for a in ch:
-    os.system("timidity -Ow -Q0 -Q-%s -o%s.wav outfile.mid" % (a,a) ) 
-    
+    print "Creating: %s.wav" % trackname
+    status, txt = commands.getstatusoutput ("timidity -OwM -o%s.wav %s" % (trackname, tmpmid) )
+    if status:
+        print "timsplit error", status
+        print txt
+        sys.exit(1)
+ 
+    os.remove(tmpmid)
+
+
+
+
+

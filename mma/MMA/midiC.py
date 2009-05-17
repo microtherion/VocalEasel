@@ -26,64 +26,101 @@ This module contains interface for MIDI constants and conversion routines.
 from MMA.common import *
 from MMA.miditables import *
 
-def drumToValue(name):
-    """ Get the value of the drum tone (-1==error). """
 
-    try:
-        v=int(name, 0)
-    except:
-        try:
-            v = upperDrumNames.index(name.upper()) + 27
-        except ValueError:
-            error("Expecting a valid drum name or value for drum tone, not '%s'" % name)
+def voice2tup(x):
+    """ Convert integer into 3 byte tuple: Voice, LSB, MSB. """
 
-    if v <0 or v > 127:
-        error("Note in Drum Tone list must be 0..127, not %s" % v)
+    if x>0xffff:
+        msb = x >> 16
+        x &= 0xffff
+    else:
+        msb = 0
 
+    if x>0xff:
+        lsb = x >> 8
+        x &= 0xff
+    else:
+        lsb = 0
+
+    return (x, lsb, msb)
+
+
+def extVocStr(v):
+    
+    v = "%s.%s.%s" % voice2tup(v)
+    if v[-2:] == '.0':
+        v=v[:-2]
+    if v[-2:] == '.0':
+        v=v[:-2]
     return v
 
+###############################
+
+def drumToValue(name):
+    """ Get the value of the drum tone (-1==error).
+        Note that this is quite different from instToValue() ... in that
+        case the caller does a bunch of validation stuff for controllers, etc.
+    """
+    
+    try:  # assuming that 'name' is an integer
+        i = int(name, 0)
+        if i>=0 and i<=127:
+            return int(name)
+        else:
+            return -1
+    except:
+        try:
+            return drumInx[ name.upper() ]
+        except KeyError:
+            return -1
+
+
+def valueToDrum(val):
+    """ Get the name of the drum tone.  """
+    
+    try:
+        return drumNames[val]
+    except KeyError:
+        return str(val)
 
 def instToValue(name):
     """ Get the value of the instrument name (-1==error). """
 
     try:
-        return    upperVoiceNames.index(name.upper())
-    except ValueError:
+        return voiceInx[name.upper()]
+    except KeyError:
         return    -1
 
-def ctrlToValue(name):
-    """ Get the value of the controler name (-1==error). """
-
-    try:
-        return    upperCtrlNames.index(name.upper())
-    except ValueError:
-        return    -1
 
 def valueToInst(val):
     """ Get the name of the inst. (or 'ERR'). """
 
     try:
-        return    voiceNames[val]
-    except IndexError:
-        return "ERROR"
+        return  voiceNames[val]
+    except KeyError:
+        try:
+            int(val)
+        except:
+            return "ERROR"
+        return extVocStr(val)
 
 
-def valueToDrum(val):
-    """ Get the name of the drum tone.
+                                   
 
-        We return the NAME of the tone, or the original value if there is
-        no name associated with the value (only value 27 to 86 have names).
-    """
+def ctrlToValue(name):
+    """ Get the value of the controler name (-1==error). """
 
-    if val<27 or val>86:
-        return str(val)
-    else:
-        return    drumNames[val-27]
+    try:
+        return ctrlInx[name.upper()]
+    except keyError:
+        return -1
+
+                        
 
 def valueToCtrl(val):
     """ Get the name of the controller (or 'ERR'). """
 
     try:
-        return    ctrlNames[val]
-    except IndexError:
+        return ctrlNames[val]
+    except KeyError:
         return "ERROR"

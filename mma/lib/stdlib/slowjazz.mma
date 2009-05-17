@@ -257,6 +257,24 @@ End
 DefGroove SlowJazz2Sus   Straight guitar with sustained Hammond-like organ.
 
 ////////////////////////
+///////////  Fills. All 1 bar long
+
+Groove SlowJazz
+SeqSize 1
+Drum-HH     Sequence  D8
+Drum-Shake  Sequence  D8
+
+Bass        Sequence  {1 4 5 90; 2 4 3 80; 3 4 2 70; 4 4 1 60}
+Walk        Sequence  -
+Arpeggio    Sequence  -
+Chord       Sequence  L2
+
+
+DefGroove SlowJazzFill    One bar fill with a decending bass walk.
+
+
+
+////////////////////////
 ///////////  Intros
 
 

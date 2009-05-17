@@ -23,15 +23,15 @@ Bob van der Poel <bob@mellowood.ca>
 
 """
 
+import random
 
+import MMA.notelen 
+import MMA.harmony
 
 import gbl
-from   MMA.notelen import getNoteLen
 from   MMA.common import *
-from   MMA.harmony import harmonize
-from   MMA.pat import PC, seqBump
+from   MMA.pat import PC
 
-import random
 
 class Aria(PC):
     """ Pattern class for an aria (auto-melody) track. """
@@ -70,7 +70,7 @@ class Aria(PC):
         a = struct()
 
         a.offset   = self.setBarOffset(ev[0])
-        a.duration = getNoteLen( ev[1] )
+        a.duration = MMA.notelen.getNoteLen( ev[1] )
         a.vol =  stoi(ev[2], "Note volume in Aria definition not int")
 
         return a
@@ -79,7 +79,7 @@ class Aria(PC):
     def setScaletype(self, ln):
         """ Set scale type. """
 
-        ln = self.lnExpand(ln, "ScaleType")
+        ln = lnExpand(ln, "%s ScaleType" % self.name)
         tmp = []
 
         for n in ln:
@@ -213,7 +213,7 @@ class Aria(PC):
 
 
             if self.harmony[sc]:
-                h = harmonize(self.harmony[sc], note, ct.chord.noteList)
+                h = MMA.harmony.harmonize(self.harmony[sc], note, ct.chord.noteList)
                 for n in h:
                     self.sendNote(
                         p.offset,

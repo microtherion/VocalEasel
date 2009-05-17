@@ -230,8 +230,10 @@ for b in bars:
             lyric = ''
         
         out.write('\n')
-        
-        
+
+        if int(bnum) % 4 == 0:   # put in blank line every 4 bars
+            out.write('\n')
+
         if key == 'repeatend':
             out.write( "\n// RepeatEnd\n\n")
         if key == 'repeatboth':

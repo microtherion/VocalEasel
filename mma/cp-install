@@ -136,6 +136,9 @@ os.system("%s -G" % bin)
 print "Setting permissions on MMADIR database file for user update."
 os.system("chmod a+w " + dest+"/lib/stdlib/.mmaDB")
 
+## man pages
+
+print "There are some man pages in %s/docs/man that you may wish to install." % dest
 
 
-
+print "Install complete. Have fun!"

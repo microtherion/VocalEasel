@@ -25,12 +25,12 @@ Bob van der Poel <bob@mellowood.ca>
 
 import random
 
-from   MMA.harmony import harmonize
-from   MMA.notelen import getNoteLen
+import MMA.harmony
+import MMA.notelen
+from   MMA.pat  import PC
+
 import gbl
 from   MMA.common import *
-from   MMA.pat import PC, seqBump
-
 
 class Scale(PC):
     """ Pattern class for a Scale track. """
@@ -60,7 +60,7 @@ class Scale(PC):
         a = struct()
 
         a.offset   = self.setBarOffset(ev[0])
-        a.duration = getNoteLen(ev[1])
+        a.duration = MMA.notelen.getNoteLen(ev[1])
         a.vol      = stoi(ev[2], "Type error in Scale definition")
 
 
@@ -69,7 +69,7 @@ class Scale(PC):
     def setScaletype(self, ln):
         """ Set scale type. """
 
-        ln = self.lnExpand(ln, "ScaleType")
+        ln = lnExpand(ln, "%s ScaleType" % self.name)
         tmp = []
 
         for n in ln:
@@ -220,7 +220,7 @@ class Scale(PC):
 
             if self.harmony[sc]:
                 ch = self.getChordInPos(p.offset, ctable).chord.noteList
-                h = harmonize(self.harmony[sc], note, ch)
+                h = MMA.harmony.harmonize(self.harmony[sc], note, ch)
                 for n in h:
                     self.sendNote(
                         p.offset,

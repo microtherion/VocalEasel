@@ -25,19 +25,19 @@ Bob van der Poel <bob@mellowood.ca>
 import sys
 import os
 
+
 # Ensure a proper version is available.
 
 pyMaj=2
 pyMin=4
 
 if sys.version_info[0] < pyMaj or sys.version_info[1] < pyMin:
-	print
-	print "You need a more current version of Python to run MMA."
-	print "We're looking for something equal or greater than version %s.%s" % \
-		  (pyMaj,pyMin)
-	print "Current Python version is ", sys.version
-	print
-	sys.exit(0)
+    print
+    print "You need a more current version of Python to run MMA."
+    print "We're looking for something equal or greater than version %s.%s" % (pyMaj,pyMin)
+    print "Current Python version is ", sys.version
+    print
+    sys.exit(0)
 
 """ MMA uses a number of application specific modules. These should
     be installed in a mma modules directory or in your python
@@ -46,9 +46,15 @@ if sys.version_info[0] < pyMaj or sys.version_info[1] < pyMin:
 """
 
 for d in ("c:\\mma", "/usr/local/share/mma", "/usr/share/mma", "."):
-	if os.path.isdir(d):
-		sys.path.insert(0, d)
-		break;
+    if os.path.isdir(d):
+        sys.path.insert(0, d)
+        break
+
+try:
+   import psyco
+   psyco.full()
+except ImportError:
+    print "Running without pysco support, installation of pysco recommended."
 
 # Call the mainline code. Hopefully, byte-compiled.
 

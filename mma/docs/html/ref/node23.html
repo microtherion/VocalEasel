@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
 <!--Converted with LaTeX2HTML 2002-2-1 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Documentation Strings</TITLE>
-<META NAME="description" CONTENT="Documentation Strings">
+<TITLE>Other Commands and Directives</TITLE>
+<META NAME="description" CONTENT="Other Commands and Directives">
 <META NAME="keywords" CONTENT="mma">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -25,204 +25,1326 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 </HEAD>
 
 <BODY  bgcolor="#ffffff">
-<!--Navigation Panel-->
-<A NAME="tex2html695"
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html707"
   HREF="node24.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html693"
+<A NAME="tex2html705"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html687"
+<A NAME="tex2html699"
   HREF="node22.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html696"
-  HREF="node24.html">Paths, Files and Libraries</A>
-<B> Up:</B> <A NAME="tex2html694"
+<B> Next:</B> <A NAME="tex2html708"
+  HREF="node24.html">Begin/End Blocks</A>
+<B> Up:</B> <A NAME="tex2html706"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html688"
-  HREF="node22.html">Begin/End Blocks</A>
+<B> Previous:</B> <A NAME="tex2html700"
+  HREF="node22.html">Fine Tuning (Translations)</A>
 <BR>
-<BR>
+<BR></DIV>
 <!--End of Navigation Panel-->
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html709"
+  HREF="node23.html#SECTION002310000000000000000">AllTracks</A>
+<LI><A NAME="tex2html710"
+  HREF="node23.html#SECTION002320000000000000000">Articulate</A>
+<LI><A NAME="tex2html711"
+  HREF="node23.html#SECTION002330000000000000000">Copy</A>
+<LI><A NAME="tex2html712"
+  HREF="node23.html#SECTION002340000000000000000">Comment</A>
+<LI><A NAME="tex2html713"
+  HREF="node23.html#SECTION002350000000000000000">Debug</A>
+<LI><A NAME="tex2html714"
+  HREF="node23.html#SECTION002360000000000000000">Delete</A>
+<LI><A NAME="tex2html715"
+  HREF="node23.html#SECTION002370000000000000000">Direction</A>
+<LI><A NAME="tex2html716"
+  HREF="node23.html#SECTION002380000000000000000">Mallet</A>
 <UL>
-<LI><A NAME="tex2html697"
-  HREF="node23.html#SECTION002310000000000000000">Doc</A>
-<LI><A NAME="tex2html698"
-  HREF="node23.html#SECTION002320000000000000000">Author</A>
-<LI><A NAME="tex2html699"
-  HREF="node23.html#SECTION002330000000000000000">DocVar</A>
+<LI><A NAME="tex2html717"
+  HREF="node23.html#SECTION002381000000000000000">Rate</A>
+<LI><A NAME="tex2html718"
+  HREF="node23.html#SECTION002382000000000000000">Decay</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html719"
+  HREF="node23.html#SECTION002390000000000000000">Octave</A>
+<LI><A NAME="tex2html720"
+  HREF="node23.html#SECTION0023100000000000000000">Off</A>
+<LI><A NAME="tex2html721"
+  HREF="node23.html#SECTION0023110000000000000000">On</A>
+<LI><A NAME="tex2html722"
+  HREF="node23.html#SECTION0023120000000000000000">Print</A>
+<LI><A NAME="tex2html723"
+  HREF="node23.html#SECTION0023130000000000000000">PrintActive</A>
+<LI><A NAME="tex2html724"
+  HREF="node23.html#SECTION0023140000000000000000">ScaleType</A>
+<LI><A NAME="tex2html725"
+  HREF="node23.html#SECTION0023150000000000000000">Seq</A>
+<LI><A NAME="tex2html726"
+  HREF="node23.html#SECTION0023160000000000000000">Strum</A>
+<LI><A NAME="tex2html727"
+  HREF="node23.html#SECTION0023170000000000000000">Synchronize</A>
+<LI><A NAME="tex2html728"
+  HREF="node23.html#SECTION0023180000000000000000">Transpose</A>
+<LI><A NAME="tex2html729"
+  HREF="node23.html#SECTION0023190000000000000000">Unify</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION002300000000000000000">
-Documentation Strings</A>
-</H1>
-
-<P>
-It has been mentioned a few times already the importance of clearly
-documenting your files and library files. For the most part, you can
-use comments in your files; but in library files you use the
-D<SMALL>OC</SMALL> directive.
-
-<P>
-In addition to the commands listed in this chapter, you should also
-note <A HREF="node6.html#sec-grooves">D<SMALL>EF</SMALL>G<SMALL>ROOVES</SMALL></A>).
-
-<P>
-For some real-life examples of how to document your library files,
-look at any of the library files supplied with this distribution.
-
-<P>
-
-<H1><A NAME="SECTION002310000000000000000"></A> <A NAME="sec-docs"></A>
+<H1><A NAME="SECTION002300000000000000000"></A>
+<A NAME="sec-directives"></A>
 <BR>
-Doc
+Other Commands and Directives
 </H1>
 
 <P>
-A D<SMALL>OC</SMALL> command is pretty simple: 
+In addition to the ``Pattern'', ``Sequence'', ``Groove'' and
+``Repeat'' and other directives discussed earlier, and chord data,
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  supports a number of directives which affect the flavor of your
+music.
+
+<P>
+The subjects presented in this chapter are ordered alphabetically.
+
+<P>
+
+<H1><A NAME="SECTION002310000000000000000"></A>  <A NAME="alltracks"></A>
+<BR>
+AllTracks
+</H1>
+
+<P>
+Sometimes you want to apply the same command to all the currently
+defined tracks; for example, you might want to ensure that <SPAN  CLASS="textit">no</SPAN>
+tracks have S<SMALL>EQ</SMALL>R<SMALL>ND</SMALL> set. Yes, you could go though each track
+(and hope you don't miss any) and explicitly issue the command:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Doc This is a documentation string!   </B> 
+    <B>Bass SeqRnd Off
+  ...
+<BR>
+Chord SeqRnd Off  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-In most cases, D<SMALL>OC</SMALL>s are treated as C<SMALL>OMMENT</SMALL>s.  However,
-if the <I>-Dx</I><A NAME="tex2html68"
-  HREF="#foot10621"><SUP>23.1</SUP></A> option is given
-on the command line, D<SMALL>OC</SMALL>s are processed and printed to standard
-output.
-
-<P>
-For producing the <I>
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  Standard Library Reference</I> a trivial
-Python program is used to collate the output generated with a command
-like:
+But,
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>$ mma -Dxl -w /usr/local/lib/mma/swing  </B> 
+    <B>AllTracks SeqRnd  Off  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-Note,  the '-w' option has been used to suppress the printing of warning
-messages.
+is much simpler. Similarly, you can set the articulation for all
+tracks with:
 
 <P>
 
-<H1><A NAME="SECTION002320000000000000000">
-Author</A>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>AllTracks Articulate 80  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+You can even combine this with a B<SMALL>EGIN</SMALL>/E<SMALL>ND</SMALL> like:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Begin AllTracks 
+<BR>&nbsp;&nbsp;Articulate 80 
+<BR>&nbsp;&nbsp;SeqRnd Off 
+<BR>&nbsp;&nbsp;Rskip 0 
+<BR>
+End  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This command is handy when you are changing an existing G<SMALL>ROOVE</SMALL>.
+
+<P>
+Note that <SPAN  CLASS="textit">only</SPAN> currently defined tracks are effected by this command.
+
+<P>
+A further option is to limit A<SMALL>LL</SMALL>T<SMALL>RACKS</SMALL> to specific tracks
+type. For example, you might want to set all the D<SMALL>RUM</SMALL> track
+volumes to ``FF'':
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>AllTracks Drum Volume ff  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Or to set the articulation on B<SMALL>ASS</SMALL> and W<SMALL>ALK</SMALL> tracks:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>AllTracks Bass Walk Articulate 55  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+It is assumed that all the arguments following the initial command
+which are valid track types (Bass, Chord, Arpeggio, Scale, Drum, Walk,
+Melody, or Solo) are track type limiters.
+
+<P>
+
+<H1><A NAME="SECTION002320000000000000000"></A>  <A NAME="articulate"></A>
+<BR>
+Articulate
 </H1>
 
 <P>
-As part of the documentation package, there is a A<SMALL>UTHOR</SMALL>
-command:
+When 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  processes a music file, all the note lengths specified in a
+pattern are converted to MIDI lengths.
+
+<P>
+For example in:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Author Bob van der Poel  </B> 
+    <B>Bass Define BB 1 4 1 100; 2 4 5 90; 3 4 1 80; 4 4 5 90   </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-Currently A<SMALL>UTHOR</SMALL> lines are processed and the data is saved, but
-never used. It may be used in a future library documentation
-procedures, so you should use it in any library files you write.
+bass notes on beats 1, 2, 3 and 4 are define. All are quarter notes.
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> , being quite literal about things, will make each note exactly
+192 MIDI ticks long--which means that the note on beat 2 will start
+at the same time as the note on beat 1 ends.
 
 <P>
 
-<H1><A NAME="SECTION002330000000000000000">
-DocVar</A>
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  has an articulate setting for each voice. This value is applied
+to shorten or lengthen the note length. By default, the setting is 90.
+Each generated note duration is taken to be a percentage of this
+setting, So, a quarter note with a MIDI tick duration of 192 will
+become 172 ticks long.
+
+<P>
+If articulate is applied to a short note, you are guaranteed that the
+note will never be less than 1 MIDI tick in length.
+
+<P>
+To set the value, use a line like:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord-1 Articulate 96   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Articulate values must be greater than 0 and less than or
+equal to 200. Values over 100 will lengthen the note. Settings
+greater than 120 will generate a warning.
+
+<P>
+You can specify a different A<SMALL>RTICULATE</SMALL> for each bar in a
+sequence. Repeated values can be represented with a ``/'':
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord Articulate 50 60 / 30   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Notes: The full values for the notes are saved with the
+pattern definition. The articulation adjustment is applied at
+run time. The A<SMALL>RTICULATE</SMALL> setting is saved with a
+G<SMALL>ROOVE</SMALL>.
+
+<P>
+
+<H1><A NAME="SECTION002330000000000000000"></A> <A NAME="copy"></A>
+<BR>
+Copy
 </H1>
 
 <P>
-If any variables are used to change the behavior of a library file
-they should be documented with a D<SMALL>OC</SMALL>V<SMALL>AR</SMALL> command. Normally these
-lines are treated as comments, but when processing with the -Dxl or
--Dxh command line options the data is parsed and written to the output
-documentation files.
-
-<P>
-Assuming that you are using the 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  variable $C<SMALL>HORD</SMALL>V<SMALL>OICE</SMALL> as
-an optional voice setting in your file, you might have the following
-in a library file:
+Sometimes it is useful to duplicate the settings from one voice to
+another. The C<SMALL>OPY</SMALL> command does just that:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Begin DocVar
-<BR>
-ChordVoice  Voice used in Chord tracks (defaults to Piano2).
-<BR>
-End
-<BR> 
-<BR>
-If NDef ChordVoice 
-<BR>
-Set ChordVoice Piano2 
-<BR>
-Endif  </B> 
+    <B>Bass-1 Copy Bass  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-All variables used in the library file should be documented. You
-should list the user variables first, and then any variables internal
-to the library file. To double check to see what variables are used
-you can add a S<SMALL>HOW</SMALL>V<SMALL>ARS</SMALL> to the end of the library file and
-compile. Then document the variables and remove the S<SMALL>HOW</SMALL>V<SMALL>ARS</SMALL>.
+will copy the settings from the <SPAN  CLASS="textit">Bass</SPAN> track to the <SPAN  CLASS="textit">Bass-1</SPAN> track.
 
 <P>
+The C<SMALL>OPY</SMALL> command only works between tracks of the same type.
+
+<P>
+The following settings are copied:
+
+<P>
+
+<UL>
+<LI><A HREF="#articulate">Articulate</A>
+</LI>
+<LI><A HREF="node13.html#compress">Compress</A>
+</LI>
+<LI><A HREF="#scale-direction">Direction</A>
+</LI>
+<LI><A HREF="node14.html#harmony">Harmony</A>
+</LI>
+<LI><A HREF="node13.html#chord-invert">Invert</A>
+</LI>
+<LI><A HREF="#octave">Octave</A>
+</LI>
+<LI><A HREF="node12.html#rskip">RSkip</A>
+</LI>
+<LI><A HREF="node12.html#rtime">RTime</A>
+</LI>
+<LI><A HREF="node17.html#rvolume">RVolume</A>
+</LI>
+<LI><A HREF="#scale-type">ScaleType</A>
+</LI>
+<LI><A HREF="#strum">Strum</A>
+</LI>
+<LI><A HREF="node21.html#set-voice">Voice</A> or
+    <A HREF="node4.html#drum-tone">Tone</A>
+</LI>
+<LI><A HREF="node17.html#volume">Volume</A>
+
+<P>
+</LI>
+</UL>
+
+<P>
+Warning: You are probably better off to use internal macros for
+this. 
+
+<P>
+
+<H1><A NAME="SECTION002340000000000000000"></A><A NAME="comment"></A>
+<BR>
+Comment
+</H1>
+
+<P>
+As previously discussed, a comment in 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  is anything following a
+``//'' in a line. A second way of marking a comment is with the
+C<SMALL>OMMENT</SMALL> directive. This is quite useful in combination the
+B<SMALL>EGIN</SMALL> and E<SMALL>ND</SMALL> directives. For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Begin Comment 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;This is a description spanning 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;several lines which will be
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignored by MMA. 
+<BR>
+End   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+You could achieve the same with:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>// This is a description spanning 
+<BR>  // several lines which will be
+<BR>  // ignored by MMA.   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+or even:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Comment This is a description spanning 
+<BR>
+Comment several lines which will be
+<BR>
+Comment ignored by MMA.   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+One minor difference between <SPAN  CLASS="textbf">//</SPAN> and
+C<SMALL>OMMENT</SMALL> is that the first is discarded when the
+input stream is read; the more verbose version is
+discarded during line processing.
+
+<P>
+Quite often it is handy to delete large sections of a song with a
+B<SMALL>EGIN </SMALL>C<SMALL>OMMENT/</SMALL>E<SMALL>ND</SMALL> on a temporary basis.
+
+<P>
+
+<H1><A NAME="SECTION002350000000000000000"></A> <A NAME="debug"></A>
+<BR>
+Debug
+</H1>
+
+<P>
+To enable you to find problems in your song files (and, perhaps, even
+find problems with 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  itself) various debugging messages can be
+displayed. These are normally set from the command line
+<A HREF="node2.html#sec-running">command line</A>.
+
+<P>
+However, it is possible to enable various debugging messages
+dynamically in a song file using the D<SMALL>EBUG</SMALL> directive. In a
+debug statement you can enable or disable any of a variety of
+messages. A typical directive is:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Debug Debug=On Expand=Off Patterns=On  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Each section of the debug directive consists of a <SPAN  CLASS="textit">mode</SPAN>
+and the command word ON or O<SMALL>FF</SMALL>. The two parts
+must be joined by a single ``<SPAN  CLASS="textit"><SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$=$"></SPAN></SPAN>''. You may use the
+values ``0'' for ``Off'' and ``1'' for ``On'' if desired.
+
+<P>
+The available modes with the equivalent command line switches  are:
+
+<P>
+<BLOCKQUOTE>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT"><SPAN  CLASS="textit">Mode</SPAN></TD>
+<TD ALIGN="LEFT" COLSPAN=2><SPAN><SPAN  CLASS="textit">Command Line Equivalent</SPAN></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Debug</TD>
+<TD ALIGN="LEFT">-d</TD>
+<TD ALIGN="LEFT">debugging messages</TD>
+</TR>
+<TR><TD ALIGN="LEFT">Filenames</TD>
+<TD ALIGN="LEFT">-o</TD>
+<TD ALIGN="LEFT">display file names</TD>
+</TR>
+<TR><TD ALIGN="LEFT">Patterns</TD>
+<TD ALIGN="LEFT">-p</TD>
+<TD ALIGN="LEFT">pattern creation</TD>
+</TR>
+<TR><TD ALIGN="LEFT">Sequence</TD>
+<TD ALIGN="LEFT">-s</TD>
+<TD ALIGN="LEFT">sequence creation</TD>
+</TR>
+<TR><TD ALIGN="LEFT">Runtime</TD>
+<TD ALIGN="LEFT">-r</TD>
+<TD ALIGN="LEFT">running progress</TD>
+</TR>
+<TR><TD ALIGN="LEFT">Warnings</TD>
+<TD ALIGN="LEFT">-w</TD>
+<TD ALIGN="LEFT">warning messages</TD>
+</TR>
+<TR><TD ALIGN="LEFT">Expand</TD>
+<TD ALIGN="LEFT">-e</TD>
+<TD ALIGN="LEFT">display expanded lines</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>
+The modes and command are case-insensitive (although the command line switches are not).
+
+<P>
+The current state of the debug flags is saved in the variable
+$_Debug and the state prior to a change is saved in $_LastDebug.
+
+<P>
+
+<H1><A NAME="SECTION002360000000000000000"></A>  <A NAME="sec-delete"></A>
+<BR>
+Delete
+</H1>
+
+<P>
+If you are using a track in only one part of your song, especially if
+it is at the start, it may be wise to free that track's resources when
+you are done with it. The D<SMALL>ELETE</SMALL> command does just that:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Solo Delete  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+If a MIDI channel has been assigned to that track, it is
+marked as ``available'' and the track is deleted. Any data
+already saved in the MIDI track will be written when 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  is
+finished processing the song file.
+
+<P>
+
+<H1><A NAME="SECTION002370000000000000000"></A> <A NAME="scale-direction"></A>
+<BR>
+Direction
+</H1>
+
+<P>
+In tracks using chords or scales you can change the direction in which
+they are applied:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Scale Direction UP  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+The effects differ in different track types. For S<SMALL>CALE</SMALL> and A<SMALL>RPEGGIO</SMALL> tracks:
+
+<P>
+<BLOCKQUOTE>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="RIGHT">UP</TD>
+<TD ALIGN="LEFT">Plays in upward direction only</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">DOWN</TD>
+<TD ALIGN="LEFT">Plays in downward direction only</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">BOTH</TD>
+<TD ALIGN="LEFT">Plays  upward and downward (<SPAN  CLASS="textit">default</SPAN>)</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">RANDOM</TD>
+<TD ALIGN="LEFT">Plays notes from the chord or scale randomly</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<P>
+<BLOCKQUOTE>When this command is encountered in a S<SMALL>CALE</SMALL> track the start
+point of the scale is reset.
+</BLOCKQUOTE>
+<P>
+
+<P>
+A W<SMALL>ALK</SMALL> track recognizes the following option settings:
+
+<P>
+<BLOCKQUOTE>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="RIGHT">BOTH</TD>
+<TD ALIGN="LEFT">The default. The bass pattern
+      will go  up and down a partial scale. Some notes may be repeated.</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">UP</TD>
+<TD ALIGN="LEFT">Notes will be chosen sequentially from an ascending, partial scale.</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">DOWN</TD>
+<TD ALIGN="LEFT">Notes will be chosen sequentially from a descending, partial scale.</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">RANDOM</TD>
+<TD ALIGN="LEFT">Notes will be chosen in a random direction from a partial scale.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<P>
+<BLOCKQUOTE>All four patterns are useful and create quite different effects.
+
+</BLOCKQUOTE>
+
+<P>
+The C<SMALL>HORD</SMALL> tracks D<SMALL>IRECTION</SMALL> only has an effect when the
+S<SMALL>TRUM</SMALL> setting has a non-zero value. In this case the following
+applies:
+
+<P>
+<BLOCKQUOTE>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="RIGHT">UP</TD>
+<TD ALIGN="LEFT">The default. Notes are sounded from the lowest tone to the highest.</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">DOWN</TD>
+<TD ALIGN="LEFT">Notes are sounded from the highest to the lowest.</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">BOTH</TD>
+<TD ALIGN="LEFT">The UP and DOWN values are alternated.</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">RANDOM</TD>
+<TD ALIGN="LEFT">Ignored (uses UP).</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>
+You can specify a different D<SMALL>IRECTION</SMALL> for each bar in a
+sequence. Repeated values can be represented with a ``/'':
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Arpeggio Direction Up Down / Both  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+The setting is ignored by  B<SMALL>ASS</SMALL>, D<SMALL>RUM</SMALL> and S<SMALL>OLO</SMALL> tracks.
+
+<P>
+
+<H1><A NAME="SECTION002380000000000000000">
+Mallet</A>
+</H1>
+
+<P>
+Some instruments (Steel-drums, banjos, marimbas, etc.) are normally
+played with rapidly repeating notes. Instead of painfully inserting
+long lists of these notes, you can use the M<SMALL>ALLET</SMALL> directive.
+The M<SMALL>ALLET</SMALL> directive accepts a number of options, each an
+OPTION=VALUE pair. For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Solo-Marimba Mallet Rate=16 Decay=-5  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This command is also useful in creating drum rolls. For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Begin Drum-Snare2 
+<BR>	&nbsp;&nbsp;Tone      SnareDrum1 
+<BR>	&nbsp;&nbsp;Volume    F 
+<BR>	&nbsp;&nbsp;Mallet    Rate=32 Decay=-3 
+<BR>	&nbsp;&nbsp;Rvolume   3 
+<BR>	&nbsp;&nbsp;Sequence  z  z  z 1 1 100 
+<BR>
+End	   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+The following options are supported:
+
+<P>
+
+<H2><A NAME="SECTION002381000000000000000">
+Rate</A>
+</H2>
+
+<P>
+The R<SMALL>ATE</SMALL> must be a valid note length (i.e., 8, 16, or even
+16.+8).
+
+<P>
+For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Solo-Marimba Mallet Rate=16  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will set all the notes in the ``Solo-Marimba'' track to be sounded a
+series of 16th notes.
+
+<P>
+
+<UL>
+<LI>Note duration modifiers such as articulate are applied to each
+  resultant note,
+
+<P>
+</LI>
+<LI>It is guaranteed that the note will sound at least once,
+
+<P>
+</LI>
+<LI>The use of note lengths assures a consistent sound independent
+  of the song tempo.
+
+<P>
+</LI>
+</UL>
+
+<P>
+To disable this setting use a value of ``0''.
+
+<P>
+
+<H2><A NAME="SECTION002382000000000000000">
+Decay</A>
+</H2>
+
+<P>
+You can adjust the volume (velocity) of the notes being repeated when
+M<SMALL>ALLET</SMALL> is enabled:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Drum-Snare Mallet Decay=-15  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+The argument is a percentage of the current value to add to the note
+each time it is struck. In this example, assuming that the note length
+calls for 4 ``strikes'' and the initial velocity is 100, the note will
+be struck with a velocity of 100, 85, 73 and 63.
+
+<P>
+Important: a positive value will cause the notes to get louder,
+negative values cause the notes to get softer.
+
+<P>
+Note velocities will never go below 1 or above 255. Note, however,
+that notes with a velocity of 1 will most likely be inaudible.
+
+<P>
+The decay option value must be in the range -50 to 50; however, be
+cautious using any values outside the range -5 to 5 since the volume
+(velocity) of the notes will change quite quickly. The default
+value is 0 (no decay).
+
+<P>
+
+<H1><A NAME="SECTION002390000000000000000"></A>  <A NAME="octave"></A>
+<BR>
+Octave
+</H1>
+
+<P>
+When 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  initializes and after the S<SMALL>EQ</SMALL>C<SMALL>LEAR</SMALL> command all track
+octaves are set to ``4''. This will place most chord and bass notes in
+the region of middle C.
+
+<P>
+You can change the octave for any voice with O<SMALL>CTAVE</SMALL> command. For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Bass-1 Octave 3  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Sets the notes used in the ``Bass-1'' track one octave lower than normal.
+
+<P>
+The octave specification can be any value from 0 to 10. Various
+combinations of I<SMALL>NVERT</SMALL>, T<SMALL>RANSPOSE</SMALL> and O<SMALL>CTAVE</SMALL> can
+force notes to be out of the valid MIDI range. In this case the lowest
+or highest available note will be used.
+
+<P>
+You can specify a different O<SMALL>CTAVE</SMALL> for each bar in a sequence.
+Repeated values can be represented with a ``/'':
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord Octave 4 5 / 4  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+
+<H1><A NAME="SECTION0023100000000000000000"></A>  <A NAME="set-off"></A>
+<BR>
+Off
+</H1>
+
+<P>
+To disable the generation of MIDI output on a specific track:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Bass Off  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This can be used anywhere in a file. Use it to override the effect of
+a predefined groove, if you wish. This is simpler than resetting a
+voice in a groove. The only way to reset this command is with a
+O<SMALL>N</SMALL> directive.
+
+<P>
+
+<H1><A NAME="SECTION0023110000000000000000"></A>  <A NAME="set-on"></A>
+<BR>
+On
+</H1>
+
+<P>
+To enable the generation of MIDI output on a specific track which has
+been disabled with an O<SMALL>FF</SMALL> directive:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Bass On  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Attempts to enable tracks disabled with the -T command line option
+generate a warning (the command is ignored).
+
+<P>
+
+<H1><A NAME="SECTION0023120000000000000000">
+Print</A>
+</H1>
+
+<P>
+The P<SMALL>RINT</SMALL> directive will display its argument to the screen
+when it is encountered. For example, if you want to print the file name
+of the input file while processing, you could insert:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Print Making beautiful music for MY SONG  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+No control characters are supported.
+
+<P>
+This can be useful in debugging input files.
+
+<P>
+
+<H1><A NAME="SECTION0023130000000000000000">
+PrintActive</A>
+</H1>
+
+<P>
+The P<SMALL>RINT</SMALL>A<SMALL>CTIVE</SMALL> directive will the currently active
+G<SMALL>ROOVE</SMALL> and the active tracks. This can be quite useful when
+writing groove files and you want to modify and existing groove.
+
+<P>
+Any parameters given are printed as single comment at the end of the header line.
+
+<P>
+This is strictly a debugging tool. No P<SMALL>RINT</SMALL>A<SMALL>CTIVE</SMALL> statements
+should appear in finalized grooves or song files.
+
+<P>
+
+<H1><A NAME="SECTION0023140000000000000000"></A>  <A NAME="scale-type"></A>
+<BR>
+ScaleType
+</H1>
+
+<P>
+This option is only used by S<SMALL>CALE</SMALL> tracks. It can be set for
+other tracks, but the setting is not used.
+
+<P>
+By default, the S<SMALL>CALE</SMALL>T<SMALL>YPE</SMALL> is set to A<SMALL>UTO</SMALL>. The settings
+permissible are:
+
+<P>
+<BLOCKQUOTE>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="RIGHT">CHROMATIC</TD>
+<TD ALIGN="LEFT">Forces use of a chromatic scale</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">AUTO</TD>
+<TD ALIGN="LEFT">Uses scale based on the current chord (default)</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>
+When this command is encountered in a S<SMALL>CALE</SMALL> track the start
+point of the scale is reset.
+
+<P>
+
+<H1><A NAME="SECTION0023150000000000000000"></A>
+  <A NAME="seqnumber"></A>
+<BR>
+Seq
+</H1>
+
+<P>
+If your sequence, or groove, has more than one pattern (i.e., you have
+set SeqSize to a value other than 1), you can use this directive to
+force a particular pattern point to be used. The directive:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Seq  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+resets the <SPAN  CLASS="textit">sequence counter</SPAN> to 1. This means that the next bar
+will use the first pattern in the current sequence. You can force a
+specific pattern point by using an optional value after the directive.
+For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Seq 8  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+forces the use of pattern point 8 for the next bar. This can be quite
+useful if you have a multi-bar sequence and, perhaps, the eight bar is
+variation which you want used every eight bars, but also for a
+transition bar, or the final bar. Just put a <SMALL>SEQ 8</SMALL> at those
+points. You might also want to put a <SMALL>SEQ</SMALL> at the start of
+sections to force the restart of the count.
+
+<P>
+If you have enable sequence randomization with the S<SMALL>EQ</SMALL>R<SMALL>ND </SMALL>O<SMALL>N</SMALL>
+command, the randomization will be disabled by a S<SMALL>EQ</SMALL>
+command.<A NAME="tex2html75"
+  HREF="#foot10756"><SUP><SPAN CLASS="arabic">23</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>  However,
+settings of track S<SMALL>EQ</SMALL>R<SMALL>ND</SMALL> will not be effected. One difference
+between S<SMALL>EQ</SMALL>R<SMALL>ND </SMALL>O<SMALL>FF</SMALL> and S<SMALL>EQ</SMALL> is that the current sequence
+point is set with the latter; with S<SMALL>EQ</SMALL>R<SMALL>ND </SMALL>O<SMALL>FF</SMALL> it is left at a
+random point.
+
+<P>
+Note: Using a value greater than the current S<SMALL>EQ</SMALL>S<SMALL>IZE</SMALL> is not
+permitted.
+
+<P>
+This is a very useful command! For example, look at the four bar
+introduction of the song ``Exactly Like You'':
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Groove BossanovaEnd 
+<BR>
+seq 3 
+<BR>
+1       C     
+<BR>
+seq 2 
+<BR>
+2       Am7  
+<BR>
+seq 1 
+<BR>
+3       Dm7  
+<BR>
+seq 3 
+<BR>
+4 G7 / G7#5   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+In this example the four bar ``ending groove'' has been used to create
+an interesting introduction.
+
+<P>
+
+<H1><A NAME="SECTION0023160000000000000000"></A>  <A NAME="strum"></A>
+<BR>
+Strum
+</H1>
+
+<P>
+By default 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  plays all the notes in a chord at the same time. To
+make the chord more like something a guitar or banjo might play, use
+the S<SMALL>TRUM</SMALL> directive. For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord-1 Strum 5  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+sets the strumming factor to 5 for track Chord-1.
+
+<P>
+Setting the S<SMALL>TRUM</SMALL> in any track other than a C<SMALL>HORD</SMALL> track
+will generate a warning message and the command will be ignored.
+
+<P>
+The strum factor is specified in MIDI ticks. Usually values around 10
+to 15 work just fine. The valid range for S<SMALL>TRUM</SMALL> is 0 to 100.
+
+<P>
+You can specify a different S<SMALL>TRUM</SMALL> for each bar in a sequence.
+Repeated values can be represented with a ``/'':
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord Strum 20 5 / 10  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Note: When chords have both a <SMALL>STRUM</SMALL> and <SMALL>INVERT</SMALL> applied,
+the order of the notes played will not necessarily be root, third,
+etc. The notes are sorted into ascending order, so for a C major scale
+with and <SMALL>INVERT</SMALL> of 1 the notes played would be ``E G C''. That
+is, unless the <A HREF="#scale-direction">D<SMALL>IRECTION</SMALL></A> has been set to ``DOWN'' in which case
+the order would be reversed (but the notes would be the same).
+
+<P>
+
+<H1><A NAME="SECTION0023170000000000000000"></A> <A NAME="synchronize"></A>
+<BR>
+Synchronize
+</H1>
+
+<P>
+The MIDI tracks generated by 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  are perfectly ``legit'' and should be
+playable in any MIDI file player. However, there are a few programs
+and/or situations in which you might need to use the <SMALL>SYNCHRONIZE</SMALL>
+options.
+
+<P>
+First, when a program is expecting all tracks to start at the same
+location, or is intolerant of ``emptiness'' at the start of a track,
+you can add a ``tick note'' at the start of each
+track.<A NAME="tex2html76"
+  HREF="#foot10784"><SUP><SPAN CLASS="arabic">23</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A>
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Synchronize START  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will insert a one tick note on/off event at MIDI offset 1. You can
+also generate this with the ``-0'' command line option.
+
+<P>
+Second, some programs think (wrongly) that all tracks should end at
+the same point.<A NAME="tex2html77"
+  HREF="#foot10786"><SUP><SPAN CLASS="arabic">23</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A> Adding the command:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Synchronize END  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will delete all MIDI data past the end of the last bar in your input
+file and insert MIDI ``all notes off'' events at that point. You can
+also generate this effect with the ``-1'' command line option.
+
+<P>
+The commands can be combined in any order:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Synchronize End Start  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+is perfectly valid.
+
+<P>
+
+<H1><A NAME="SECTION0023180000000000000000">
+Transpose</A>
+</H1>
+
+<P>
+You can change the key of a piece with the ``Transpose'' command. For
+example, if you have a piece notated in the key of ``C'' and you want
+it played back in the key of ``D'':
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Transpose 2  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will raise the playback by 2 semi-tones. Since 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> 's author plays tenor saxophone
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Transpose -2  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+which puts the MIDI keyboard into the same key as the horn, is not an
+uncommon directive
+
+<P>
+You can use any value between -12 and 12. All tracks (with the logical
+exception of the drum tracks) are effected by this command.
+
+<P>
+
+<H1><A NAME="SECTION0023190000000000000000">
+Unify</A>
+</H1>
+
+<P>
+The U<SMALL>NIFY</SMALL> command is used to force multiple notes of the same
+voice and pitch to be combined into a single, long, tone. This is very
+useful when creating a sustained voice track. For example, consider
+the following which might be used in real groove file:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Begin Bass-Sus 
+<BR>
+Sequence  1 1 1 90  4  
+<BR>
+Articulate 100 
+<BR>
+Unify On 
+<BR>
+Voice TremoloStrings 
+<BR>
+End   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Without the U<SMALL>NIFY </SMALL>O<SMALL>N</SMALL> command the strings would be sounded (or
+hit) four times during each bar; with it enabled the four hits are
+combined into one long tone. This tone can span several bars if the
+note(s) remain the same.
+
+<P>
+The use of this command depends on a number of items:
+
+<P>
+
+<UL>
+<LI>The V<SMALL>OICE</SMALL> being used. It makes sense to use enable the
+  setting if using a sustained tone like ``Strings"; it probably
+  doesn't make sense if using a tone like ``Piano1''.
+
+<P>
+</LI>
+<LI>For tones to be combined you will need to have A<SMALL>RTICULATE</SMALL>
+  set to a value of 100. Otherwise the on/off events will have small
+  gaps in them which will cancel the effects of U<SMALL>NIFY</SMALL>.
+
+<P>
+</LI>
+<LI>Ensure that R<SMALL>TIME</SMALL> is not set for U<SMALL>NIFY</SMALL> tracks
+  since the start times may cause gaps.
+
+<P>
+</LI>
+<LI>If your pattern or sequence has different volumes in different
+  beats (or bars) the effect of a U<SMALL>NIFY</SMALL> will be to ignore
+  volumes other than the first. Only the first N<SMALL>OTE </SMALL>O<SMALL>N</SMALL> and the
+  last N<SMALL>OTE </SMALL>O<SMALL>FF</SMALL> events will appear in the MIDI file.
+
+<P>
+</LI>
+</UL>
+
+<P>
+You can specify a different U<SMALL>NIFY</SMALL> for each bar in a sequence.
+Repeated values can be represented with a ``/'':
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord Unify On / / Off  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+But, you probably don't want to use this particular feature.
+
+<P>
+Valid arguments are ``On'' or ``1'' to enable; ``Off'' or ``0'' to
+disable.
 <BR><HR><H4>Footnotes</H4>
 <DL>
-<DT><A NAME="foot10621">...-Dx</A><A
- HREF="node23.html#tex2html68"><SUP>23.1</SUP></A></DT>
-<DD>See the <A HREF="node2.html#cmd-summary">command
-    summary</A>.
+<DT><A NAME="foot10756">...
+command.</A><A
+ HREF="node23.html#tex2html75"><SUP><SPAN CLASS="arabic">23</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
+<DD>A warning message will also be displayed.
 
 </DD>
-</DL><HR>
+<DT><A NAME="foot10784">...
+track.</A><A
+ HREF="node23.html#tex2html76"><SUP><SPAN CLASS="arabic">23</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A></DT>
+<DD>Timidity truncates the start of tracks up to the
+  first MIDI event when splitting out single tracks.
+
+</DD>
+<DT><A NAME="foot10786">... point.</A><A
+ HREF="node23.html#tex2html77"><SUP><SPAN CLASS="arabic">23</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A></DT>
+<DD>Seq24 does strange looping if all tracks
+  don't end identically.
+
+</DD>
+</DL>
+<DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html695"
+<A NAME="tex2html707"
   HREF="node24.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html693"
+<A NAME="tex2html705"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html687"
+<A NAME="tex2html699"
   HREF="node22.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html696"
-  HREF="node24.html">Paths, Files and Libraries</A>
-<B> Up:</B> <A NAME="tex2html694"
+<B> Next:</B> <A NAME="tex2html708"
+  HREF="node24.html">Begin/End Blocks</A>
+<B> Up:</B> <A NAME="tex2html706"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html688"
-  HREF="node22.html">Begin/End Blocks</A>
+<B> Previous:</B> <A NAME="tex2html700"
+  HREF="node22.html">Fine Tuning (Translations)</A></DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 bob
-2007-03-07
+2008-09-28
 </ADDRESS>
 </BODY>
 </HTML>

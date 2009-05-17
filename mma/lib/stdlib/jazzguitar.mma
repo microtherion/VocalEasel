@@ -106,6 +106,7 @@ DefGroove JazzGuitar2   Basic pattern with more strum and syncopation.
 Groove JazzGuitar2
 	Bass Sequence -
 	Walk Groove JazzGuitarWalk
+
 DefGroove JazzGuitar2Walk  The strum pattern with walking bass
 
 /////////

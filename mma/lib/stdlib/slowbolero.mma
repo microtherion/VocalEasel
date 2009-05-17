@@ -140,7 +140,7 @@ Drum-LConga   Sequence * * * D1234
 Begin Drum-OHH
 	Sequence * D16 * D16
 	Rskip  0
-	Cresc  mp 4
+	Volume pp p mp mp
 End
 Drum-SQ       Sequence * * * D2
 Drum-Snare    Sequence * * * D13

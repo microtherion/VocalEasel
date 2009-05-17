@@ -26,10 +26,12 @@ Bob van der Poel <bob@mellowood.ca>
 
 import random
 
+
+import MMA.notelen
+
 import gbl
-from   MMA.notelen import getNoteLen
 from   MMA.common import *
-from   MMA.pat import PC, seqBump
+from   MMA.pat import PC
 
 
 
@@ -136,7 +138,7 @@ class Chord(PC):
         """ set/unset root duplication. Only for CHORDs """
 
 
-        ln=self.lnExpand(ln, 'DupRoot')
+        ln = lnExpand(ln, '%s DupRoot' % self.name)
         tmp = []
 
         for n in ln:
@@ -157,7 +159,7 @@ class Chord(PC):
     def setStrum(self, ln):
         """ Set Strum time. """
 
-        ln=self.lnExpand(ln, 'Strum')
+        ln = lnExpand(ln, '%s Strum' % self.name)
         tmp = []
 
         for n in ln:
@@ -187,7 +189,7 @@ class Chord(PC):
         a = struct()
 
         a.offset = self.setBarOffset(ev[0])
-        a.duration = getNoteLen(ev[1])
+        a.duration = MMA.notelen.getNoteLen(ev[1])
 
         vv = ev[2:]
         if len(vv)>8:
@@ -399,6 +401,5 @@ class Chord(PC):
 
         if self.voicing.bcount:
             self.voicing.bcount -= 1
-
 
 

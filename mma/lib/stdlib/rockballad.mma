@@ -76,6 +76,7 @@ Begin Chord
 	Volume mp
 	Octave 5
 	Articulate 80
+	Voicing mode=optimal
 End
 
 DefGroove RockBallad   Basic beat with triplet Hi-Hats.
@@ -127,8 +128,8 @@ End
 DefGroove RockBalladVoice   Adds some cheese with choir voices.
 
 Groove RockBallad1
-Chord-Sus Groove RockBalladVoice
-DefGroove RockBallad1Voice
+Chord-Sus Groove RockBalladVoice 
+DefGroove RockBallad1Voice   Cheese without 4th bar triplets.
 
 /////////////////////////////
 //// Intro
@@ -136,22 +137,43 @@ DefGroove RockBallad1Voice
 Groove RockBallad
 
 Begin Drum
-        Sequence   {D1234 * 3} / / {1 1 55}
-        Tone  ClosedHiHat / / CrashCymbal1 
+        Sequence   {D1234 * 3}   /     /   {1 1 55}
+        Tone       ClosedHiHat   /     /   CrashCymbal1 
 End
 
-Drum-Snare  Sequence   D1234  / / D1
+Drum-Snare  Sequence   D1234  /    /   D1
 Drum-Kick   Sequence   D1
-Bass        Sequence B13 / / z
-Walk        Sequence z z z W1234 
+Bass        Sequence   B13    /    /   {1 4 1 90; 2 4 3 90; 3 4 5 90; 4 4 1+ 90}
+Walk        Sequence   -
 
 Begin  Chord
-       Sequence  { C1234 * 3 } / C1234 L1
-       Articulate  80 / / 105
+       Sequence  { C1234 * 3 } /  C1234 L1
+       Articulate  80          /   /    105
 End
 
 
 DefGroove RockBalladIntro 4 bar intro.
+
+Groove RockBalladIntro
+
+Chord-Sus Groove RockBalladVoice
+
+Begin Chord
+	  Volume -10
+	  Sequence  C13 / / L1
+	  Articulate 110
+End
+
+Drum  Volume -20
+Drum-Snare Volume -20
+Drum-Kick  Volume -10
+
+Bass Volume -20
+Walk Volume -20
+
+
+DefGroove RockBalladSusIntro  4 bar intro with mostly strings.
+
 
 ///////////////////////////////////////////////
 /// 4 bar ending

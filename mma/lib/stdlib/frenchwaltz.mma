@@ -121,7 +121,7 @@ Debug $_StackValue
 
 // Now we look at the value in BassRegister and turn off the voices
 // we're not using. You might think that you can do with by setting
-// empty sequences (nope, we change the seqeunce for other grooves and
+// empty sequences (nope, we change the sequence for other grooves and
 // you'd have to do this stuff again); deleting the track (same nope)
 // or doing a 'OFF' (nope, on a re-read after a GrooveClear it stays OFF).
 // All of these complications come with ChShare :) But turning the
@@ -187,7 +187,7 @@ Begin Chord-Guitar
 	Voice       NylonGuitar
 	Accent      1 10
 	Octave      5
-	Volume      pp
+	Volume      p
 	Articulate  90
 End
 
@@ -264,13 +264,23 @@ Begin Scale
 	Volume      m
 End
 
-Chord-L       Sequence L1
-Chord-M       Sequence L1
-Chord-H       Sequence L1
+Begin Chord-L
+       Sequence L1
+	   Volume -30
+End
+Begin Chord-M 
+      Sequence L1
+	  Volume -30
+End
+Begin Chord-H
+       Sequence L1
+	   Volume -30
+End
 Bass-L        Sequence -
 Bass-M	      Sequence -
 Bass-H        Sequence -
 Chord-Guitar  Sequence -
+
 
 DefGroove FrenchWaltz1Fill       Adds an accending run.
 
@@ -313,9 +323,18 @@ Begin Scale
 	Volume     mp
 End
 
-Chord-L       Sequence L1
-Chord-M       Sequence L1
-Chord-H       Sequence L1
+Begin Chord-L
+       Sequence L1
+	   Volume -30
+End
+Begin Chord-M
+       Sequence L1
+	   Volume -30
+End
+Begin Chord-H 
+      Sequence L1
+	  Volume -30
+End
 Bass-L        Sequence -
 Bass-M	      Sequence -
 Bass-H        Sequence -
@@ -362,9 +381,18 @@ Begin Scale
 	Volume    mp
 End
 
-Chord-L       Sequence L1
-Chord-M       Sequence L1
-Chord-H       Sequence L1
+Begin Chord-L
+       Sequence L1
+	   Volume -30
+End
+Begin Chord-M
+       Sequence L1
+	   Volume -30
+End
+Begin Chord-H
+       Sequence L1
+	   Volume -30
+End
 Bass-L        Sequence -
 Bass-M	      Sequence -
 Bass-H        Sequence - 
@@ -374,7 +402,7 @@ DefGroove FrenchWaltz3Fill       Add a string run to the counter melody.
 
 Groove FrenchWaltz3
 Chord-Sus Groove FrenchWaltzSus
-DefGroove FrenchWaltz2Sus        Viola counter melody and sustained strings.
+DefGroove FrenchWaltz3Sus        Viola counter melody and sustained strings.
 
 Groove FrenchWaltz3Fill
 Chord-Sus Groove FrenchWaltzSus
@@ -438,7 +466,7 @@ Begin Scale
 	Voice     Accordion
 	Direction Down
 	Range     3
-	Octave    3
+	Octave    4
 End
 
 DefGroove FrenchWaltz1End    Same ending as FrenchWaltzEnd but with \

@@ -139,6 +139,44 @@ DefGroove BoleroSus   Bolero with sustained strings.
 Arpeggio Groove BoleroFill
 DefGroove BoleroSusFill  Sustained Bolero with flute fill.
 
+///// Add arpeggiated guitars
+
+Groove Bolero
+
+Begin Arpeggio-Guitar
+	Voice NylonGuitar 
+	Articulate 150
+	Volume  mp    m   mf   f
+	Harmony OpenBelow
+	Sequence A8 
+	Octave $_Chord_Octave
+	Rskip   10   25   34   50
+	Rvolume 20
+	Rtime 10
+End
+
+Begin Chord 
+	Volume -40
+	Rskip 30
+End
+
+DefGroove BoleroAlt   Arpeggiated guitars.
+
+Groove BoleroSus
+Arpeggio-Guitar Groove BoleroAlt
+Chord    Groove BoleroAlt
+DefGroove BoleroAltSus    Sustain with Arpeggiated guitars.
+
+Groove BoleroFill
+Arpeggio-Guitar Groove BoleroAlt
+Chord    Groove BoleroAlt
+DefGroove BoleroAltFill   Arpeggiated flutes and guitars.
+
+Groove BoleroSusFill
+Arpeggio-Guitar Groove BoleroAlt
+Chord    Groove BoleroAlt
+DefGroove BoleroAltSusFill   Sustain with arpeggiated flutes and guitars.
+
 
 /////////  Intro
 

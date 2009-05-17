@@ -133,11 +133,11 @@ Begin Arpeggio
 	Rskip 5
 End
 
-DefGroove JivePlus          Add some additional apreggios.
+DefGroove JivePlus          Add some additional arpeggios.
 
 Chord-Sus Groove JiveSus
 
-DefGroove JiveSusPlus       Apreggios plus strings.
+DefGroove JiveSusPlus       Arpeggios plus strings.
  
 
 /////// This is a little less shuffle-style
@@ -187,6 +187,20 @@ Drum-Clap  Sequence  D1234 / / D1
 DefGroove JiveIntro    4 bar intro.
 
 
+Groove Jive
+AllTracks SeqRnd Off
+AllTracks Rskip 0
+Seqsize 8
+
+Drum-Kick  Sequence  D13    / / / / / / D1
+Drum-Snare Sequence  D24    / / / / / / D1
+Drum-HH    Sequence  D1234  / / / / / / D1
+Bass       Sequence  B13    / / / / / / {1 4 1 90; 2 4 3 90; 3 2 1 90}
+Bass-Sax   Sequence  B11    / / / / / / {1 2 1 90}
+Chord      Sequence  C24    / / / / / / L1
+Drum-Clap  Sequence  D1234  / / / / / / D1
+
+DefGroove JiveIntro8   8 bar intro.
 
 ////////////////////////
 /// Ending

@@ -27,7 +27,7 @@ import copy
 
 
 from MMA.common import *
-from MMA.chordtable import chords
+from MMA.chordtable import chordlist
 
 
 
@@ -42,7 +42,7 @@ def defChord(ln):
     if not len(ln):
         error(emsg)
     name = ln.pop(0)
-    if name in chords.keys():
+    if name in chordlist.keys():
         warning("Redefining chordtype '%s'" % name)
 
     if '/' in name:
@@ -77,27 +77,28 @@ def defChord(ln):
         scale[i]=v
 
 
-    chords[name] = ( notes, scale, "User Defined")
+    chordlist[name] = ( notes, scale, "User Defined")
 
     if gbl.debug:
-        print "ChordType '%s', %s" % (name, chords[name])
+        print "ChordType '%s', %s" % (name, chordlist[name])
 
 
 def printChord(ln):
     """ Display the note/scale/def for chord(s). """
 
     for c in ln:
-        if not chords.has_key(c):
+        try:
+            print c, ':', chordlist[c][0], chordlist[c][1], chordlist[c][2]
+        except:
             error("Chord '%s' is unknown" % c)
-        print c, ':', chords[c][0], chords[c][1], chords[c][2]
+        
 
 
-"""
-Table of chord adjustment factors. Since the initial chord is based
-on a C scale, we need to shift the chord for different degrees. Note,
-that with C as a midpoint we shift left for G/A/B and right for D/E/F.
+""" Table of chord adjustment factors. Since the initial chord is based
+    on a C scale, we need to shift the chord for different degrees. Note,
+    that with C as a midpoint we shift left for G/A/B and right for D/E/F.
 
-Should the shifts take in account the current key signature?
+    Should the shifts take in account the current key signature?
 """
 
 cdAdjust = {
@@ -288,14 +289,14 @@ class ChordNotes:
             ctype='M'
 
         try:
-            notes = chords[ctype][0]
+            notes = chordlist[ctype][0]
             adj =    cdAdjust[tonic] + octave
         except:
             error( "Illegal/Unknown chord name: '%s'" % name )
 
         self.noteList     = [ x + adj for x in notes ]
         self.bnoteList     = tuple(self.noteList)
-        self.scaleList     = tuple([ x + adj for x in chords[ctype][1] ])
+        self.scaleList     = tuple([ x + adj for x in chordlist[ctype][1] ])
         self.chordType     = ctype
         self.tonic         = tonic
         self.rootNote     = self.noteList[0]
@@ -311,10 +312,10 @@ class ChordNotes:
         # Do inversions if there is a valid slash notation.
 
         if slash:
-            if not cdAdjust.has_key(slash):
+            try:
+                r=cdAdjust[slash]    # r = -6 to 6
+            except KeyError:
                 error("The note '%s' in the slash chord is unknown" % slash)
-
-            r=cdAdjust[slash]    # r = -6 to 6
 
             # If the slash note is in the chord we invert
             # the chord so the slash note is in root position.

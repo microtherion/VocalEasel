@@ -29,9 +29,11 @@ import sys
 import pickle
 
 import MMA.midi
-import gbl
 import MMA.parse
+
+import gbl
 from   MMA.common import *
+
 
 grooveDir = {}
 mmadir = ".mmaDB"    # constant, name of the lib database file
@@ -52,8 +54,8 @@ def updateGrooveList(n):
 def libUpdate():
     """ Update the mma library database file(s) with -g or -G option.
 
-    This is called from the main program after the initialization
-    and other option parsing. No RETURN.
+        This is called from the main program after the initialization
+        and other option parsing. No RETURN.
     """
 
     global fileCount, gdDate, grooveDir, processedfiles
@@ -137,9 +139,9 @@ def dolibupdate(root, subdir):
 
 
     """ Get a list of the files in this directory. If the list
-    includes a file called 'MMAIGNORE' the entire directory
-    (and subdirs) is ignored. Otherwise, each file in the
-    directory ending in 'mma' is parsed for groove defs.
+        includes a file called 'MMAIGNORE' the entire directory
+        (and subdirs) is ignored. Otherwise, each file in the
+        directory ending in 'mma' is parsed for groove defs.
     """
 
     p = os.path.join(root,subdir)
@@ -156,9 +158,7 @@ def dolibupdate(root, subdir):
         if fn.startswith('.') or fn.startswith('#'):
             continue
 
-        # Create full path name
-
-        f=os.path.join(root, subdir, fn)
+        f=os.path.join(root, subdir, fn)      # Create full path name
 
         if os.path.isdir(f):
             dolibupdate(root, os.path.join(subdir,fn))    # recursive!
@@ -168,18 +168,18 @@ def dolibupdate(root, subdir):
 
             processedFiles.append(ename)
 
-            if gdDate and grooveDir.has_key(ename) and \
-                    os.path.getmtime(f) < gdDate:
+            if gdDate and ename in grooveDir and os.path.getmtime(f) < gdDate:
                 print "       Existing: %s" % f
                 grooveCount += len(grooveDir[ename])
                 continue
 
-            if grooveDir.has_key(ename):
+            if ename in grooveDir:
                 print "       Updating: %s" % f
             else:
                 print "       Creating: %s" % f
             mkGrooveList = []
             gbl.mtrks = {}
+            MMA.grooves.aliaslist = {}
             for c in gbl.midiAssigns.keys():
                 gbl.midiAssigns[c]=[]
             for a,v in enumerate(gbl.midiAvail):

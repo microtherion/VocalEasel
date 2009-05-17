@@ -2,15 +2,35 @@
 Short usage file for timsplit.py.
 
 This program is used to create a set of wav tracks from a MMA
-input file. You need MMA, the input file and timidity. The command:
+input file. You need MMA, the input file and timidity.
+The command:
 
 	  timsplit.py somefile.mma
 
-will create a MIDI file (the name is hardcoded to outfile.mid) and
-then create a wav file for each track using timidity. 
+will determine the tracks in the MMA file, create temporary MIDIs for
+each track and then wav files using timidity. 
+
+Also created is a mix file with all the tracks. This is called "bg.wav".
+It is a mono file to save on some transfer times between the computer
+and the recorder. Change if you want.
 
 Conversion takes a few minutes, depending on the soundfont you're using
 and the size of the MIDI file. Be patient.
 
-bvdp, March 2007.
+Note that this is a total re-write of the original program. It now 
+uses the new -T option in MMA to limit the track generation.
+
+The nice thing about this new timsplit is that it will split percussion tracks.
+
+I've had good success with the following:
+
+  1. use timsplit with a decent soundfont to create tracks,
+  2. use timidity to create a mix track of the mma file,
+  3. copy the mix to my Zoom H4 recorder into a project file,
+  4. play/create lots of sax tracks while listening to the mix (4 track mode on the H4),
+  5. copy the sax tracks the split tracks from (1) into audacity,
+  6. edit the tracks,
+  7. publish the song and become rich and famous!
+
+bvdp, March 2008.
 

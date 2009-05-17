@@ -153,7 +153,7 @@ DefGroove Waltz1WalkSus    Walking bass, arpeggios and sustained strings.
 
 
 /////////////////////////
-/// Intro
+/// Intro (4 bar)
 
 Groove Waltz
 
@@ -177,6 +177,33 @@ Begin Arpeggio
 End
 
 DefGroove Waltz1Intro     Waltz intro with piano arpeggios.
+
+
+/////  Intro (8 bar)
+
+Groove Waltz
+SeqSize 8
+   
+Drum-CHH  Sequence *   *   *   *   *   *   *   D123
+Drum-Tri  Sequence D1  z   z   D1 
+
+Chord     Sequence  *  *   *   *   *   *   *  {1 2. 100}
+
+
+DefGroove WaltzIntro8       8 bar waltz intro with piano chords.
+
+Chord Sequence -
+
+Begin Arpeggio
+	Sequence	A6	/	/  /  /  /  /  A3
+	Voice Piano1 
+	Octave 4
+	Range 2
+	Volume p
+	Articulate 99
+End
+
+DefGroove  Waltz1intro8    8 bar wWaltz intro with piano arpeggios.
 
 ////////////////////////
 ///// Ending

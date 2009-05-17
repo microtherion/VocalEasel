@@ -23,12 +23,12 @@ Bob van der Poel <bob@mellowood.ca>
 
 """
 
+import MMA.notelen
+import MMA.translate
+
 import gbl
 from   MMA.common import *
-from   MMA.notelen import getNoteLen
-import MMA.translate
-from   MMA.pat import PC, seqBump
-
+from   MMA.pat import PC
 
 class Drum(PC):
     """ Pattern class for a drum track. """
@@ -51,7 +51,7 @@ class Drum(PC):
         ln[] is not nesc. the right length.
         """
 
-        ln=self.lnExpand(ln, 'Tone')
+        ln = lnExpand(ln, '%s Tone' % self.name)
         tmp = []
 
         for n in ln:
@@ -77,7 +77,7 @@ class Drum(PC):
         a = struct()
 
         a.offset   = self.setBarOffset(ev[0])
-        a.duration = getNoteLen(ev[1])
+        a.duration = MMA.notelen.getNoteLen(ev[1])
         a.vol      = stoi(ev[2], "Type error in Drum volume")
 
         return a

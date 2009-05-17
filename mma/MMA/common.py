@@ -56,8 +56,17 @@ def error(msg):
 
     if ln:
         ln += '\n'
-
+    
     print "ERROR:%s     %s" % (ln, msg)
+
+    # Parse though the error message and check for illegal characters.
+    # Report (first only) if any found.
+
+    for a in msg:
+        a=ord(a)
+        if a<0x20 or a >=0x80:
+            print "Corrupt input file? Illegal character 0x%2x found." % a
+            break
 
     sys.exit(1)
 
@@ -65,20 +74,16 @@ def error(msg):
 def warning(msg):
     """ Print warning message and return. """
 
+    if not gbl.noWarn:
+        ln = ""
 
-    if gbl.noWarn:
-        return
+        if gbl.lineno >= 0:
+            ln = "<Line %d>" % gbl.lineno
 
-    ln = ""
+        if gbl.inpath:
+            ln += "<File:%s>" % gbl.inpath.fname
 
-    if gbl.lineno >= 0:
-        ln = "<Line %d>" % gbl.lineno
-
-    if gbl.inpath:
-        ln += "<File:%s>" % gbl.inpath.fname
-
-    print "Warning:%s\n        %s" % (ln, msg)
-
+        print "Warning:%s\n        %s" % (ln, msg)
 
 
 def getOffset(ticks, ran=None):
@@ -124,10 +129,13 @@ def stof(s, errmsg=None):
     try:
         return float(s)
     except:
-        if errmsg:
-            error(errmsg)
-        else:
-            error("Expecting a  value, not %s" % s)
+        try:
+            return int(s,0)
+        except:
+            if errmsg:
+                error(errmsg)
+            else:
+                error("Expecting a  value, not %s" % s)
 
 
 
@@ -144,15 +152,15 @@ def printList(l):
 def pextract(s, open, close, onlyone=None):
     """ Extract a parenthesized set of substrings.
 
-    s        - original string
-    open    - substring start tag \ can be multiple character
-    close   - substring end tag   / strings (ie. "<<" or "-->")
-    onlyone - optional, if set only the first set is extracted
+        s        - original string
+        open    - substring start tag \ can be multiple character
+        close   - substring end tag   / strings (ie. "<<" or "-->")
+        onlyone - optional, if set only the first set is extracted
 
-    returns ( original sans subs, [subs, ...] )
+        returns ( original sans subs, [subs, ...] )
 
-    eg: pextract( "x{123}{666}y", '{',    '}' )
-        Returns:  ( 'xy', [ '123', '666' ] )
+        eg: pextract( "x{123}{666}y", '{',    '}' )
+            Returns:  ( 'xy', [ '123', '666' ] )
 
     """
 
@@ -171,3 +179,34 @@ def pextract(s, open, close, onlyone=None):
 
     return s.strip(), subs
 
+
+
+def seqBump(l):
+    """ Expand/contract an existing sequence list to the current seqSize."""
+
+    while len(l) < gbl.seqSize:
+        l += l
+    return l[:gbl.seqSize]
+
+
+
+def lnExpand(ln, msg):
+    """ Validate and expand a list passed to a set command. """
+
+
+    if len(ln) > gbl.seqSize:
+        warning("%s list truncated to %s patterns" % (msg, gbl.seqSize) )
+        ln = ln[:gbl.seqSize]
+
+    last = None
+
+    for i,n in enumerate(ln):
+        if n == '/':
+            if not last:
+                error ("%s cannot use a '/' as the first item in list." % cmd)
+            else:
+                ln[i] = last
+        else:
+            last = n
+
+    return ln

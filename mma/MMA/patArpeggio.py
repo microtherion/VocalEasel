@@ -25,13 +25,12 @@ Bob van der Poel <bob@mellowood.ca>
 
 import random
 
+import MMA.notelen 
+import MMA.harmony
+
 import gbl
-from   MMA.notelen import getNoteLen
 from   MMA.common import *
-from   MMA.harmony import harmonize
 from   MMA.pat import PC
-
-
 
 class Arpeggio(PC):
     """ Pattern class for an arpeggio track. """
@@ -52,7 +51,7 @@ class Arpeggio(PC):
                   "for apreggio define, not '%s'" % ' '.join(ev) )
 
         a.offset    = self.setBarOffset(ev[0])
-        a.duration  = getNoteLen(ev[1])
+        a.duration  = MMA.notelen.getNoteLen(ev[1])
         a.vol       = stoi(ev[2], "Type error in Arpeggio definition")
 
         return a
@@ -147,7 +146,7 @@ class Arpeggio(PC):
 
 
             if self.harmony[sc]:
-                h = harmonize(self.harmony[sc], note, ourChord)
+                h = MMA.harmony.harmonize(self.harmony[sc], note, ourChord)
                 for n in h:
                     self.sendNote(
                         p.offset,

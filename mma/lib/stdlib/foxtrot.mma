@@ -10,6 +10,13 @@ End
 
 Author Bob van der Poel
 
+NewSet ArpeggioVoice Piano1
+
+Begin DocVar
+	  ArpeggioVoice  Voice for the alternating apreggios in the Plus versions \
+        (Default=Piano1). Also used in Introduction and Ending.
+End
+
 SeqClear
 Time 4
 Timesig 4 4
@@ -116,7 +123,7 @@ Defgroove FoxtrotSus    Adds sustained strings to Foxtrot.
 Groove Foxtrot
 
 Begin Arpeggio
-	Voice     Piano1
+	Voice     $ArpeggioVoice
 	Sequence  { 1 2 90 * 4; 3.5 4 90 * 4 }
 	Harmony   Open
 	Articulate 80

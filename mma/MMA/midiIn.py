@@ -23,11 +23,15 @@ Bob van der Poel <bob@mellowood.ca>
 
 """
 
+import os
+
 import MMA.midiM
-from   MMA.alloc import trackAlloc
+
 import gbl
 from   MMA.common import *
-import os
+from   MMA.alloc import trackAlloc
+
+
 
 # The following 2 variables are global. A bit ugly :)
 
@@ -149,7 +153,10 @@ def midiinc(ln):
     iend = 0xffffff
 
     for a in ln:
-        cmd, opt = a.split('=')
+        try:
+            cmd, opt = a.split('=')
+        except:
+            error("MidiInc expecting cmd=opt pairs, not '%s'." % a)
 
         cmd=cmd.upper()
 
@@ -497,7 +504,7 @@ def midiinc(ln):
 
         t.clearPending()
         if t.voice[0] != t.ssvoice:
-            gbl.mtrks[t.channel].addProgChange( gbl.tickOffset, t.voice[0])
+            gbl.mtrks[t.channel].addProgChange( gbl.tickOffset, t.voice[0], t.ssvoice)
 
         channel = t.channel
         track = gbl.mtrks[channel]

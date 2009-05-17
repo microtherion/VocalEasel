@@ -184,6 +184,34 @@ Chord-Sus Groove BalladSus
 DefGroove Ballad1Sus  Add sustained strings to Ballad1.
 
 
+////////////////////
+/// Fills
+
+Groove Ballad
+SeqSize 1
+
+// Drum-Kick
+// Drum-HH
+// Drum-Cym
+Drum-Tamb  Sequence D1234
+// Drum-Bongo
+Drum-HiConga Sequence D24
+// Drum-LoConga
+// Drum-Cabasa
+// Drum-MuteTri
+// Drum-OpenTri
+// Drum-Shake
+Begin Chord
+    Volume m
+	Articulate 80
+End
+Bass Sequence {1 4 5 90; 2 4 5 90; 3 4 1 90; 4 4 1 90	}
+
+Arpeggio Sequence -
+
+DefGroove BalladFill    1 bar fill, good for endings.
+
+
 ///////////////////
 /// 4 bar Intro
 

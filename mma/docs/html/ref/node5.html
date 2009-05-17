@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
 <!--Converted with LaTeX2HTML 2002-2-1 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
@@ -25,39 +25,40 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 </HEAD>
 
 <BODY  bgcolor="#ffffff">
-<!--Navigation Panel-->
-<A NAME="tex2html392"
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html416"
   HREF="node6.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html390"
+<A NAME="tex2html414"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html384"
+<A NAME="tex2html408"
   HREF="node4.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html393"
+<B> Next:</B> <A NAME="tex2html417"
   HREF="node6.html">Grooves</A>
-<B> Up:</B> <A NAME="tex2html391"
+<B> Up:</B> <A NAME="tex2html415"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html385"
+<B> Previous:</B> <A NAME="tex2html409"
   HREF="node4.html">Patterns</A>
 <BR>
-<BR>
+<BR></DIV>
 <!--End of Navigation Panel-->
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<UL>
-<LI><A NAME="tex2html394"
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html418"
   HREF="node5.html#SECTION00510000000000000000">Defining Sequences</A>
-<LI><A NAME="tex2html395"
+<LI><A NAME="tex2html419"
   HREF="node5.html#SECTION00520000000000000000">SeqClear</A>
-<LI><A NAME="tex2html396"
+<LI><A NAME="tex2html420"
   HREF="node5.html#SECTION00530000000000000000">SeqRnd</A>
-<LI><A NAME="tex2html397"
+<LI><A NAME="tex2html421"
   HREF="node5.html#SECTION00540000000000000000">SeqRndWeight</A>
-<LI><A NAME="tex2html398"
+<LI><A NAME="tex2html422"
   HREF="node5.html#SECTION00550000000000000000">SeqSize</A>
 </UL>
 <!--End of Table of Child-Links-->
@@ -87,7 +88,7 @@ each track in your song:
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Track Sequence Pattern1 Pattern2 ...  </B> 
+    <B>Track Sequence Pattern1 Pattern2 ...</B> 
    
 	    </td></tr>
       </Table>
@@ -106,7 +107,7 @@ definition in a set of curly brackets ``{ }''.
 
 		<Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="#efefef" Border=3>
 		   <tr><td Align="CENTER" BGColor="White">
-	      <B><FONT SIZE="+2">Simple Sequence</FONT></B>  <A NAME="eg:seq1"></A>	
+	      <SPAN  CLASS="textbf"><BIG CLASS="XLARGE">Simple Sequence</BIG></SPAN>  <A NAME="eg:seq1"></A>	
 	 	   </tr> </td>
            <tr> <td >
 		     
@@ -149,12 +150,12 @@ Arpeggio Sequence { 1 1 100 * 8 } { 1 1 80 * 4 }   </B>
 pattern. The Drum, Chord and Bass patterns repeat on every bar; the
 Drum-1 sequence repeats after 2 bars. Note how the Arpeggio pattern is
 defined at run-time.<A NAME="tex2html29"
-  HREF="#foot2157"><SUP>5.1</SUP></A>
+  HREF="#foot2222"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>
 <P>
 If there are fewer patterns than S<SMALL>EQ</SMALL>S<SMALL>IZE</SMALL>, the sequence will be
 filled out to correct size. If the number of patterns used is greater
 than S<SMALL>EQ</SMALL>S<SMALL>IZE</SMALL> (see
-<A HREF="node21.html#sec-directives">directives</A>) a warning
+<A HREF="node23.html#sec-directives">directives</A>) a warning
 message will be printed and the pattern list will be truncated.
 
 <P>
@@ -209,14 +210,14 @@ Walk Sequence z / / Walk4-4   </B>
 
 <P>
 If you already have a sequence defined<A NAME="tex2html30"
-  HREF="#foot2172"><SUP>5.2</SUP></A> you can repeat or copy the existing pattern by
+  HREF="#foot2237"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A> you can repeat or copy the existing pattern by
 using a single ``*'' as the pattern name. This is useful when you are
-modifying an exisiting sequence.
+modifying an existing sequence.
 
 <P>
 For example, assume that we have created a four bar G<SMALL>ROOVE</SMALL>
 called ``Neato''. Now, we want to change the C<SMALL>HORD</SMALL> pattern to
-use for an introduction ... but, we really only want to change the
+use for an introduction ...but, we really only want to change the
 fourth bar in the pattern:
 
 <P>
@@ -235,7 +236,7 @@ Defgroove NeatoIntro   </B>
 <P>
 When a sequence is created a series of pointers to the existing
 patterns are created. If you change the definition of a particular
-pattern later in your file the new definition will have <I>no</I>
+pattern later in your file the new definition will have <SPAN  CLASS="textit">no</SPAN>
 effect on your existing sequences.
 
 <P>
@@ -285,7 +286,7 @@ Alternately, the command:
       </Table>
 
 <P>
-deletes <I>all</I> drum sequences. This includes the track ``Drum'',
+deletes <SPAN  CLASS="textit">all</SPAN> drum sequences. This includes the track ``Drum'',
 ``Drum1'', etc.
 
 <P>
@@ -302,7 +303,7 @@ If you use a sub-track:
 
 <P>
 only the sequence for that track is cleared.<A NAME="tex2html31"
-  HREF="#foot2254"><SUP>5.3</SUP></A>
+  HREF="#foot2321"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A>
 <P>
 In addition to clearing the sequence pattern, the following other
 settings are restored to a default condition:
@@ -362,7 +363,7 @@ C<SMALL>HORD</SMALL> using this command. The command
       </Table>
 
 <P>
-resets <I>all</I> C<SMALL>HORD</SMALL> tracks, whereas the command:
+resets <SPAN  CLASS="textit">all</SPAN> C<SMALL>HORD</SMALL> tracks, whereas the command:
 
 <P>
 
@@ -374,13 +375,16 @@ resets <I>all</I> C<SMALL>HORD</SMALL> tracks, whereas the command:
       </Table>
 
 <P>
-resets the C<SMALL>HORD-</SMALL>F<SMALL>OO</SMALL> track. If you need to clear <I>only</I>
+resets the C<SMALL>HORD-</SMALL>F<SMALL>OO</SMALL> track. If you need to clear <SPAN  CLASS="textit">only</SPAN>
 the C<SMALL>HORD</SMALL> track use the ``-'' option.
 
 <P>
 
-<H1><A NAME="SECTION00530000000000000000">
-SeqRnd</A>
+<H1><A NAME="SECTION00530000000000000000"></A>
+  
+   <A NAME="seqrnd"></A>
+<BR>
+SeqRnd
 </H1>
 
 <P>
@@ -739,13 +743,16 @@ tracks) randomization.
 
 <P>
 
-<H1><A NAME="SECTION00540000000000000000">
-SeqRndWeight</A>
+<H1><A NAME="SECTION00540000000000000000"></A>
+ 
+ <A NAME="seqrndweight"></A>
+<BR>
+SeqRndWeight
 </H1>
 
 <P>
 When S<SMALL>EQ</SMALL>R<SMALL>ND</SMALL> is enabled each sequence for the track (or globally) has an equal chance
-of being selected. There are times when you may want to change this behaviour. For example,
+of being selected. There are times when you may want to change this behavior. For example,
 you might have a sequence like this:
 
 <P>
@@ -807,7 +814,7 @@ For example:
 sets it to 4 bars. The SeqSize applies to all tracks.
 
 <P>
-This command resets the <I>sequence counter</I> to 1.
+This command resets the <SPAN  CLASS="textit">sequence counter</SPAN> to 1.
 
 <P>
 If some sequences have already been defined, they will be truncated or
@@ -818,8 +825,8 @@ until it is long enough.
 <P>
 <BR><HR><H4>Footnotes</H4>
 <DL>
-<DT><A NAME="foot2157">... run-time.</A><A
- HREF="node5.html#tex2html29"><SUP>5.1</SUP></A></DT>
+<DT><A NAME="foot2222">... run-time.</A><A
+ HREF="node5.html#tex2html29"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
 <DD>If you run 
 <FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  with the ``-s'' option
   you'll see pattern names in the format ``_1''. The leading
@@ -827,15 +834,15 @@ until it is long enough.
   sequence.
 
 </DD>
-<DT><A NAME="foot2172">... defined</A><A
- HREF="node5.html#tex2html30"><SUP>5.2</SUP></A></DT>
+<DT><A NAME="foot2237">... defined</A><A
+ HREF="node5.html#tex2html30"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A></DT>
 <DD>In reality there is
   always a sequence defined for every track, but it might be a series
   of ``rest'' bars.
 
 </DD>
-<DT><A NAME="foot2254">... cleared.</A><A
- HREF="node5.html#tex2html31"><SUP>5.3</SUP></A></DT>
+<DT><A NAME="foot2321">... cleared.</A><A
+ HREF="node5.html#tex2html31"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A></DT>
 <DD>It is probably
   easier to use the command: 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
@@ -845,32 +852,33 @@ until it is long enough.
 	    </td></tr>
       </Table>
  if that is
-  what you want to do. In this case <I>only</I> sequence pattern is
+  what you want to do. In this case <SPAN  CLASS="textit">only</SPAN> sequence pattern is
   cleared.
 
 </DD>
-</DL><HR>
+</DL>
+<DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html392"
+<A NAME="tex2html416"
   HREF="node6.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html390"
+<A NAME="tex2html414"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html384"
+<A NAME="tex2html408"
   HREF="node4.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html393"
+<B> Next:</B> <A NAME="tex2html417"
   HREF="node6.html">Grooves</A>
-<B> Up:</B> <A NAME="tex2html391"
+<B> Up:</B> <A NAME="tex2html415"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html385"
-  HREF="node4.html">Patterns</A>
+<B> Previous:</B> <A NAME="tex2html409"
+  HREF="node4.html">Patterns</A></DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 bob
-2007-03-07
+2008-09-28
 </ADDRESS>
 </BODY>
 </HTML>

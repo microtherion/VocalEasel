@@ -28,23 +28,22 @@ Bob van der Poel <bob@mellowood.ca>
 import getopt
 import sys
 
-import gbl
-from   MMA.common import *
 import MMA.docs
 import MMA.parse
-import MMA.alloc
 import MMA.chords
-from   MMA.macro import macros
+import MMA.alloc
+import MMA.volume
 
+import gbl
+from   MMA.common import *
+from   MMA.macro  import macros
 
 def opts():
     """ Option parser. """
 
     try:
         opts, args = getopt.gnu_getopt(sys.argv[1:],
-            "dpsS:ri:wneom:f:M:cgGvD:0", [] )
-
-
+            "dpsS:ri:wneom:f:M:cgGvD:01PT:", [] )
     except getopt.GetoptError:
         usage()
 
@@ -110,24 +109,32 @@ def opts():
             else:
                 error("Only a '0' or '1' is permitted for the -M arg")
 
+        elif o == '-T':   # set tracks to generate, mute all others
+            gbl.muteTracks = a.upper().split(',')
+            
+
         elif o == '-D':
             if a == 'xl':
-                gbl.docs = 1
+                gbl.createDocs = 1
 
             elif a == 'xh':
-                gbl.docs = 2
+                gbl.createDocs = 2
+
+            elif a == 'v':
+                gbl.createDocs = 3
 
             elif a == 'k':
 
-                def pl(msg, lst):
+                def pl(msg, lst, adds):
                     print msg,
-                    for i in sorted(lst.keys()):
+                    for i in sorted(lst.keys() + adds):
                         print i,
                     print "\n"
 
-                pl("Base track names:", MMA.alloc.trkClasses )
-                pl("Commands:", MMA.parse.simpleFuncs)
-                pl("TrackCommands:", MMA.parse.trackFuncs)
+                pl("Base track names:", MMA.alloc.trkClasses, [])
+                pl("Commands:", MMA.parse.simpleFuncs,
+                   ["BEGIN", "END",] )
+                pl("TrackCommands:", MMA.parse.trackFuncs, [])
                 print "Not complete ... subcommands, comments, chords..."
                 sys.exit(0)
 
@@ -138,14 +145,25 @@ def opts():
         elif o == '-0':
             gbl.synctick = 1
 
+        elif o == '-1':
+            gbl.endsync = 1
+
+        elif o == '-P':
+            gbl.playFile = 1
+
         else:
             usage()      # unreachable??
 
-    if args:
-        if gbl.infile:
-            usage("Only one input filename is permitted.")
-        gbl.infile = args.pop(0)
+    # we have processed all the args. Should just have a filename left
 
+    if len(args)>1:
+        usage("Only one input filename is permitted, %s given on command line." % len(args) )
+
+    if gbl.infile:
+        usage("Input filename already assigned ... should not happen.")
+
+    if args:
+        gbl.infile = args[0]
 
 def usage(msg=''):
     """ Usage message. """
@@ -162,6 +180,7 @@ def usage(msg=''):
         " -Dk   print list of MMA keywords",
         " -Dxl  eXtract Latex doc blocks from file",
         " -Dxh  eXtract HTML doc blocks from file",
+        " -Dv   extract lots of info about the grooves/seqs in file",
         " -e    show parsed/Expanded lines",
         " -f <file>  set output Filename",
         " -g    update Groove dependency database",
@@ -175,9 +194,11 @@ def usage(msg=''):
         " -r    display Running progress",
         " -s    display Sequence info during run",
         " -S <var[=data]>  Set macro 'var' to 'data'",
+        " -T <tracks> Limit generation to specified tracks",
         " -v    display Version number",
         " -w    disable Warning messages",
-        " -0    create sync at start of all channel tracks" ]
+        " -0    create sync at start of all channel tracks",
+        " -1    create sync at end of all channel tracks" ]
 
 
     for a in txt:

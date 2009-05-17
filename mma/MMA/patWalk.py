@@ -26,12 +26,13 @@ Bob van der Poel <bob@mellowood.ca>
 
 import random
 
-from   MMA.harmony import harmonize
-from   MMA.notelen import getNoteLen
+
+import MMA.harmony
+import MMA.notelen
+
 import gbl
 from   MMA.common import *
 from   MMA.pat import PC
-
 
 class Walk(PC):
     """ Pattern class for a walking bass track. """
@@ -52,7 +53,7 @@ class Walk(PC):
         a = struct()
 
         a.offset   = self.setBarOffset(ev[0])
-        a.duration = getNoteLen(ev[1])
+        a.duration = MMA.notelen.getNoteLen(ev[1])
         a.vol      = stoi(ev[2], "Type error in Walking Bass definition")
 
         return a
@@ -152,7 +153,7 @@ class Walk(PC):
 
             if self.harmony[sc]:
                 ch = self.getChordInPos(p.offset, ctable).chord.noteList
-                h = harmonize(self.harmony[sc], note, ch)
+                h = MMA.harmony.harmonize(self.harmony[sc], note, ch)
                 for n in h:
                     self.sendNote(
                         p.offset,

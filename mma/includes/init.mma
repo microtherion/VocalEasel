@@ -1,22 +1,19 @@
-// Synth initialize
+// Synth initialize. This is my personal file
 
-// Can be included in mma files with the MMAStart directive.
-// Just add "MMAstart init" to you mmarc file.
 
-// The following code is placed in the metatrack to get
-// the synth in a sane condition before a song is played.
+// GM Reset. May or may not be a good idea. See reset.mma for comments.
 
-Set Channel 0xb0
+MIDI 0xF0 0x05 0x7E 0x7F 0x09 0x01 0xF7
+
+// Loop to set channel volume to 80
+
+Set Channel 0xb0 
 10
-	MIDI $Channel 0x7b 0         // all notes off
-	MIDI $Channel 0x0a 0x40      // channel pan == center
 	MIDI $Channel 0x07 0x50      // channel volume == 80 
 	Inc Channel
-	If LE $Channel 0xbf
+	If LE $Channel 0xbf 
 		goto 10
 	Endif 
-
-Unset Channel
 
 MIDI 0xb0 0x07 0x7f   // set track 0 volume to max
 
@@ -24,6 +21,4 @@ MIDI 0xb0 0x07 0x7f   // set track 0 volume to max
 // Probably not needed for most syths, but doesn't hurt.
 
 beatadjust 1
-
-
 

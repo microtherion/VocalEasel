@@ -121,6 +121,7 @@ End
 
 ///////// Swing patterns
 
+
 StackValue $_SwingMode
 SwingMode On
 

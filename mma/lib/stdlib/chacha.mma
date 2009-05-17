@@ -228,6 +228,24 @@ Chord            Sequence   *       *       C1234     L1
 
 DefGroove ChaChaIntro  A plain 4 bar introduction.
 
+Groove ChaCha
+SeqSize 8
+
+Drum-Clave       Sequence   *       *       *     *  *  *  *  D14
+Drum-LGuiro      Sequence   *       *       *     *  *  *  *  D1
+Drum-SGuiro      Sequence   *       *       *     *  *  *  * {D12 Shift .5}
+Drum-HConga      Sequence   D13
+Drum-LConga      Sequence   D24
+Drum-Snare       Sequence   D1
+Drum-HH          Sequence   *       *       *     *   * *  D16    D123
+//Drum-MTom        Sequence D4
+//Drum-HTom        Sequence {D4 Shift .5}
+Bass             Sequence   *       *       *      *  * *  *      B11
+Chord            Sequence   *       *       *      *  * *  C1234     L1 
+
+DefGroove ChaChaIntro8		  Same intro expanded to 8 bars.
+
+
 /////////////////////////
 ///// Ending
 

@@ -26,18 +26,21 @@ class. At the top of MMAparse an instance in created with
 something like:     macros=MMMmacros.Macros().
 """
 
-import gbl
-from   MMA.common import *
-from   MMA.notelen import getNoteLen
+import random
+
 import MMA.midiC
-import MMA.lyric
 import MMA.translate
 import MMA.patSolo
 import MMA.patAria
 import MMA.volume
-import MMA.notelen
+import MMA.grooves
+import MMA.parse
+import MMA.seqrnd
 
-import random
+import gbl
+from   MMA.lyric import lyric
+from   MMA.common import *
+from   MMA.safe_eval import safe_eval
 
 
 class Macros:
@@ -90,15 +93,15 @@ class Macros:
             return str(int(MMA.volume.lastVolume * 100))
 
         elif s == 'GROOVE':
-            return gbl.currentGroove
+            return MMA.grooves.currentGroove
 
         elif s == 'LASTGROOVE':
-            return gbl.lastGroove
+            return MMA.grooves.lastGroove
 
         elif s == 'SEQRND':
-            if gbl.seqRnd[0] == 0: return "Off"
-            if gbl.seqRnd[0] == 1: return "On"
-            return ' '.join(gbl.seqRnd[1:])
+            if MMA.seqrnd.seqRnd[0] == 0: return "Off"
+            if MMA.seqrnd.seqRnd[0] == 1: return "On"
+            return ' '.join(MMA.seqrnd.seqRnd[1:])
 
         elif s == 'SEQSIZE':
             return str(gbl.seqSize)
@@ -141,7 +144,7 @@ class Macros:
             return ' '.join([str(x) for x in MMA.midi.splitChannels])
 
         elif s == 'SEQRNDWEIGHT':
-            return ' '.join([str(x) for x in MMA.parse.seqRndWeight])
+            return ' '.join([str(x) for x in MMA.seqrnd.seqRndWeight])
 
         elif s == 'AUTOLIBPATH':
             return gbl.autoLib
@@ -168,7 +171,7 @@ class Macros:
             return str(gbl.lineno)
 
         elif s == 'LYRIC':
-            return MMA.lyric.lyric.setting()
+            return lyric.setting()
 
         # Track vars ... these are in format TRACKNAME_VAR
 
@@ -179,10 +182,10 @@ class Macros:
         tname = s[:a]
         func = s[a+1:]
 
-        if gbl.tnames.has_key(tname):
+        try:
             t=gbl.tnames[tname]
-        else:
-            error("System variable $_%s refers to nonexistent track" % s)
+        except:
+            error("System variable $_%s refers to nonexistent track." % s )
 
 
         if func == 'ACCENT':
@@ -246,6 +249,12 @@ class Macros:
 
         elif func == 'RVOLUME':
             return ' '.join([str(int(a * 100)) for a in t.rVolume])
+      
+        elif func == 'SEQUENCE':
+            tmp = []
+            for a in range(gbl.seqSize):
+                tmp.append('{' + t.formatPattern(t.sequence[a]) + '}')
+            return ' '.join(tmp)
 
         elif func == 'SEQRND':
             if t.seqRnd: return 'On'
@@ -271,7 +280,8 @@ class Macros:
             return ' '.join([str(x) for x in t.unify])
 
         elif func == 'VOICE':
-            return ' '.join([MMA.midiC.voiceNames[a] for a in t.voice])
+            return ' '.join([MMA.midiC.valueToInst(a) for a in t.voice])
+
 
         elif func == 'VOICING':
             if t.vtype != 'CHORD':
@@ -287,7 +297,6 @@ class Macros:
             error("Unknown system track variable %s" % s)
 
 
-
     def expand(self, l):
         """ Loop though input line and make variable subsitutions.
             MMA variables are pretty simple ... any word starting
@@ -301,23 +310,36 @@ class Macros:
         if not self.expandMode:
             return l
 
+        gotmath=0
+
         while 1:          # Loop until no more subsitutions have been done
             sub=0
+            
             for i,s in enumerate(l):
-                if s[:2] == '$$':
-                    continue
-
                 if s[0]=='$':
-                    s=s[1:].upper()
 
-                    if s.startswith('_'):
+                    s = s[1:].upper()
+                    frst = s[0]
+
+                    if frst == '$':     #  $$ - don't expand (done in IF clause)
+                        continue
+
+                    elif frst == '(':   # flag math macro
+                        gotmath = 1
+                        continue
+
+                    # we have a var, see if system or user. Set 'ex'
+
+                    elif frst ==  '_':   # system var
                         ex=self.sysvar(s[1:])
+                    
+                    
+                    elif s in self.vars:  # user var?
+                        ex = self.vars[s]
 
-                    elif not s in self.vars:
+                    else:                 # unknown var...error
                         error("User variable '%s'  has not been defined" % s )
 
-                    else:
-                        ex=self.vars[s]
 
                     if type(ex) == type([]):    # MSET variable
                         if len(ex):
@@ -335,6 +357,35 @@ class Macros:
 
             if not sub:
                 break
+
+        # all the mma internal and system macros are expanded. Now check for math.
+
+        if gotmath:
+            l = ' '.join(l)   # join back into one line
+            
+            while 1:
+                try:
+                    s1 = l.index('$(')  # any '$(' left?
+                except:
+                    break               # nope, done
+                # find trailing )
+                nest=0
+                s2 = s1+2
+                max = len(l)
+                while 1:
+                    if l[s2] == '(': nest+=1
+                    if l[s2] == ')':
+                        if not nest:
+                            break
+                        else:
+                            nest-=1
+                    s2 += 1
+                    if s2 >= max:
+                        error("Unmatched delimiter in '%s'." % l)
+                
+                l = l[:s1] + str(safe_eval( l[s1+2:s2].strip())) + l[s2+1:]
+                
+            l=l.split()
 
         return l
 
@@ -567,6 +618,7 @@ class Macros:
             l=l.upper()
 
             if l[:2] == '$$':
+                l=l.upper()
                 l=l[2:]
                 if not l in self.vars:
                     error("String Variable '%s' does not exist" % l)
@@ -575,9 +627,12 @@ class Macros:
             try:
                 v=float(l)
             except:
-                v=None
+                try:
+                    v=int(l,0)   # this lets us convert HEX/OCTAL
+                except: 
+                    v=None
 
-            return ( l, v )
+            return ( l.upper(), v )
 
 
         def readblk():
@@ -626,9 +681,9 @@ class Macros:
             retpoint = 2
 
             if action == 'DEF':
-                compare = self.vars.has_key(v)
+                compare = v in self.vars
             elif action == 'NDEF':
-                compare = ( not self.vars.has_key(v))
+                compare = ( v not in self.vars )
             else:
                 error("Unreachable unary conditional")
 
@@ -691,6 +746,21 @@ class Macros:
 
         if compare:
             gbl.inpath.push( q, qnum )
+
+
+
+def domath(s):
+    """ A simple math factoring func. Just does add, sub, mult, divide. """
+    print '>>>',s        
+    s = ' '.join(s)
+
+    try:
+        s = eval(s)
+
+    except:
+        error("Error in '%s' expression." % s)
+    print s
+    return str(s)
 
 
 macros = Macros()

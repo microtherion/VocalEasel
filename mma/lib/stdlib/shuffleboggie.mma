@@ -202,3 +202,27 @@ Bass          Sequence  *    B13
 	  
 
 DefGroove ShuffleBoggieEnd   Very simple ending, hits on 1, 2 and 3 of last bar.
+
+
+///////////////////////////////
+/// 1 bar fill
+
+
+Groove ShuffleBoggie
+SeqSize 1
+
+Drum-Kick     Sequence   D1234
+Drum-Clap     Sequence   D13
+Drum-Snare    Sequence   D13
+Drum-CHH      Sequence   z
+Drum-OHH      Sequence   D1234
+
+Chord-Sax     Sequence   C13
+
+Chord-Piano   Sequence   C1234
+Bass-Piano    Sequence   z
+Chord-Guitar  Sequence   C1234
+
+Bass          Sequence   {1 4 5 110; 2 4 3 100; 3 4 2 90; 4 4 1 100;}
+
+DefGroove ShuffleBoggieFill   Single bar fill.

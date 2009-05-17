@@ -3,7 +3,7 @@
 
 Begin Doc
 
- Soft guitar strumming. Great of tunes like "Beyond The Sea"
+ Soft guitar strumming. Great for tunes like "Beyond The Sea"
  and "Summertime".
   
 End
@@ -58,10 +58,18 @@ Begin Drum-HH
 	Tone OpenHihat
 	Volume p
 End	
+
 Begin Drum-PHH
 	Sequence	D24
 	Tone PedalHiHat
 	Volume p
+End
+
+Begin Drum-Kick
+	Copy Drum
+	Sequence D13
+	Tone KickDrum1
+	Volume m
 End
 
 DefGroove EasySwing       Nice/simple jazz guitar in 4.
@@ -73,7 +81,7 @@ Begin Chord-Sus
 	Volume p
 	Voice TremoloStrings
 	Octave 5
-	Articulate 100
+	Articulate 99
 	Unify On
 End
 

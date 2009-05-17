@@ -32,11 +32,11 @@ from   MMA.common import *
 def locFile(name, lib):
     """ Locate a filename.
 
-    This checks, in order:
-       lib/name + .mma
-       lib/name
-       name + .mma
-       name
+        This checks, in order:
+          lib/name + .mma
+          lib/name
+          name + .mma
+          name
     """
 
     ext=gbl.ext
@@ -52,7 +52,7 @@ def locFile(name, lib):
         t=os.path.join(lib, name)
         if exists(t):
             return t
-
+    
     if not name.endswith(ext):
         t = name + ext
         if exists(t):
@@ -73,7 +73,7 @@ class ReadFile:
 
     class FileData:
         """ After reading the file in bulk it is parsed and stored in this
-        data structure. Blanks lines and comments are removed.
+            data structure. Blanks lines and comments are removed.
         """
 
         def __init__(self, lnum, data, label):
@@ -97,7 +97,6 @@ class ReadFile:
 
         try:
             inpath = file(fname, 'r')
-
         except:
             error("Unable to open '%s' for input" % fname)
 
@@ -107,7 +106,6 @@ class ReadFile:
         self.fname = fname
 
         """ Read entire file, line by line:
-
              - strip off blanks, comments
              - join continuation lines
              - parse out LABELS
@@ -131,11 +129,18 @@ class ReadFile:
             if not l:
                 continue
 
+            # join lines ending in '\' (the strip() makes this the last char
+          
             while l[-1] == '\\':
                 l = l[0:-1] + ' ' + inpath.readline().strip()
                 lcount +=1
 
+            """ input cleanup ... for now the only cleanup is to convert
+                0xa0 (non-breakable space) to 0x20 (regular space).
+            """
 
+            l=l.replace('\xa0', '\x20')
+            
             """ This next line splits the line at the first found
                 comment '//', drops the comment, and splits the
                 remaining line into tokens using whitespace delimiters.
@@ -200,6 +205,7 @@ class ReadFile:
             else:
                 label = None
 
+
             # Save the line, linenumber and (maybe) the label.
 
             fdata.append( dataStore(lcount, l, label))
@@ -222,15 +228,15 @@ class ReadFile:
     def goto(self, l):
         """ Do a goto jump.
 
-        This isn't perfect, but is probably the way most GOTOs work. If
-        inside a repeat/if then nothing more is processed. The jump is
-        immediate. Of course, you'll run into problems with missing
-        repeat/repeatend if you try it. Since all repeats are stacked
-        back into the que, we just delete the que. Then we look for a
-        matching label in the file line array.
+            This isn't perfect, but is probably the way most GOTOs work. If
+            inside a repeat/if then nothing more is processed. The jump is
+            immediate. Of course, you'll run into problems with missing
+            repeat/repeatend if you try it. Since all repeats are stacked
+            back into the que, we just delete the que. Then we look for a
+            matching label in the file line array.
 
-        Label search is linear. Not too efficient, but the lists
-        will probably never be that long either.
+            Label search is linear. Not too efficient, but the lists
+            will probably never be that long either.
 
         """
 
@@ -251,13 +257,13 @@ class ReadFile:
     def push(self, q, nums):
         """ Push a list of lines back into the input stream.
 
-        Note: This is a list of semi-processed lines, no comments, etc.
+            Note: This is a list of semi-processed lines, no comments, etc.
 
-        It's quicker to extend a list than to insert, so add to the end.
-        Note: we reverse the original, extend() then reverse again, just
-        in case the caller cares.
+            It's quicker to extend a list than to insert, so add to the end.
+            Note: we reverse the original, extend() then reverse again, just
+            in case the caller cares.
 
-        nums is a list of linenumbers. Needed to report error lines.
+            nums is a list of linenumbers. Needed to report error lines.
         """
 
         if not self.que:
@@ -276,8 +282,8 @@ class ReadFile:
     def read(self):
         """ Return a line.
 
-        This will return either a queued line or a line from the
-        file (which was stored/processed earlier).
+            This will return either a queued line or a line from the
+            file (which was stored/processed earlier).
         """
 
         while 1:

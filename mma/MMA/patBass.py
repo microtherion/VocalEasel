@@ -24,11 +24,11 @@ Bob van der Poel <bob@mellowood.ca>
 """
 
 
+import MMA.notelen
+import MMA.harmony
 
 import gbl
-from   MMA.notelen import getNoteLen
 from   MMA.common import *
-from   MMA.harmony import harmonize
 from   MMA.pat import PC
 
 
@@ -51,7 +51,7 @@ class Bass(PC):
         a = struct()
 
         a.offset   = self.setBarOffset(ev[0])
-        a.duration = getNoteLen( ev[1] )
+        a.duration = MMA.notelen.getNoteLen( ev[1] )
 
         offset = ev[2]
         n=offset[0]
@@ -119,7 +119,7 @@ class Bass(PC):
 
 
             if self.harmony[sc]:
-                h = harmonize(self.harmony[sc], note, ct.chord.noteList)
+                h = MMA.harmony.harmonize(self.harmony[sc], note, ct.chord.noteList)
                 for n in h:
                     self.sendNote(
                         p.offset,

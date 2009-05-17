@@ -175,19 +175,34 @@ Groove LightTango
 
 AllTracks SeqRnd Off
 
-Drum-Kick  	Sequence *  *  *  D1
-Drum-Snare  Sequence *  *  D8 D12
-Drum-PHH    Sequence *  *  *  D13
-Drum-Tam    Sequence *  *  *  D13
-Drum-Clave  Sequence *  *  *  D1
+Drum-Kick  	     Sequence   *     *     *    D1
+Drum-Snare       Sequence   *     *     D8   D12
+Drum-PHH         Sequence   *     *     *    D13
+Drum-Tam         Sequence   *     *     *    D13
+Drum-Clave       Sequence   *     *     *    D1
 
-Chord-Accordion  Sequence   *  *  * L1
-Chord-Guitar     Sequence   *  *  * C1
-Bass-Piano       Sequence   Bp1  Bp2  Bp3  B1
-Bass             Sequence   *   *  *  B1
+Chord-Accordion  Sequence   *     *     *    L1
+Chord-Guitar     Sequence   *     *     *    C1
+Bass-Piano       Sequence   Bp1   Bp2   Bp3  B1
+Bass             Sequence   *     *     *    B1
 
 
 DefGroove LightTangoIntro   Simple introduction.
+
+Groove LightTangoIntro
+
+
+Begin Chord-Sus
+  Groove LightTangoSus 
+  Sequence *  *  *  L2
+End
+
+Drum-Snare       Sequence   *     *     D1  D12
+Bass-Piano       Sequence   -
+Chord-Accordion  Sequence   -
+
+DefGroove LightTangoIntro1  Smoother version of basic introduction.
+
 
 ////////////// Ending
 
@@ -207,8 +222,20 @@ Drum-Tam         Sequence     -
 
 DefGroove LightTangoEnd     A fast single bar ending.
                            
+Groove LightTangoSus
 
-	 
-	   
-	    
-	    
+Bass             Sequence     Btang     B13     Btang    B11
+Bass-Piano       Sequence     -
+Chord-Accordion  Sequence     *         *       C13      /
+Chord-Guitar     Sequence     *         *       C13      /
+
+Drum-Clave       Sequence     *         *       D13      -
+Drum-Kick        Sequence     *         D13     *        D1
+Drum-PHH         Sequence     *         *     {D123; D12 Shift .5}   /
+Drum-Snare       Sequence     *         D13     D1       /
+Drum-Tam         Sequence     *         *       -        /
+
+Chord-Sus        Volume       p     pp    ppp   pppp
+
+DefGroove LightTango4End    Smoother 4 bar ending.
+

@@ -6,7 +6,7 @@ import sys, os, commands
 
 sys.path.insert(0, "/usr/local/share/mma/MMA/")
 from miditables import *
-from chordtable import chords
+from chordtable import chordlist
 
 err, version = commands.getstatusoutput( "mma -v")
 if err:
@@ -19,50 +19,55 @@ def dodrums(order):
     notenames = ['E\\flat', 'E', 'F', 'G\\flat', 'G', 'A\\flat',
                  'A', 'B\\flat', 'B', 'C', 'D\\flat', 'D'] * 5
 
-    n=zip( drumNames, range(27,len(drumNames)+27), notenames )
 
-    if order == "a":
-        for a,v,m in sorted(n):
-            outfile.write ("\\insline{%s} {%s$^{%s}$}\n" % (a, v, m ))
+    if order == "m":
+        for a in sorted(drumNames.keys()):
+            n = drumNames[a].replace('&', '\&')
+            outfile.write("\\insline{%s} {%s$^{%s}$}\n" % (a, n,notenames[a-27]))
 
     else:
-        for a,v,m in n:
-            outfile.write ("\\insline{%s} {%s$^{%s}$}\n" % (v, a, m))
+        for a in sorted(drumInx.keys()):
+            v=drumInx[a]
+            n=drumNames[v].replace('&', '\&')
+            outfile.write( "\\insline{%s} {%s$^{%s}$}\n" % (n, v, notenames[v-27]))
+
 
 def docrtls(order):
     """ Print LaTex table of MIDI controller names. """
-
-    n=zip( ctrlNames, range(len(ctrlNames)) )
-
-    if order == "a":
-        for a,v in sorted(n):
-            outfile.write ("\\insline{%s} {%02x}\n" % (a, v))
+   
+    if order == "m":
+        for a in sorted(ctrlNames.keys()):
+            n = ctrlNames[a].replace('&', '\&')
+            outfile.write("\\insline{%s} {%s}\n" % (a, n))
 
     else:
-        for a,v in n:
-            outfile.write("\\insline{%02x} {%s}\n" % (v, a))
+        for a in sorted(ctrlInx.keys()):
+            v=ctrlInx[a]
+            n=ctrlNames[v].replace('&', '\&')
+            outfile.write( "\\insline{%s} {%s}\n" % (n, v))
+
 
 def doinsts(order):
     """ Print LaTex table of instrument names. """
 
-    n=zip( voiceNames, range(len(voiceNames)) )
-    if order == "a":
-        for a,v in sorted(n):
-            a=a.replace('&', '\&')
-            outfile.write("\\insline{%s} {%s}\n" % (a, v))
+    if order == "m":
+        for a in sorted(voiceNames.keys()):
+            n = voiceNames[a].replace('&', '\&')
+            outfile.write("\\insline{%s} {%s}\n" % (a, n))
 
     else:
-        for a,v in n:
-            a=a.replace('&', '\&')
-            outfile.write( "\\insline{%s} {%s}\n" % (v, a))
+        for a in sorted(voiceInx.keys()):
+            v=voiceInx[a]
+            n=voiceNames[v].replace('&', '\&')
+            outfile.write( "\\insline{%s} {%s}\n" % (n, v))
 
 def dochords():
     """ Print out a list of chord names and docs in LaTex. """
 
-    for n in sorted(chords.keys()):
+    for n in sorted(chordlist.keys()):
         nm=n.replace("#", '$\\sharp$')
         nm=nm.replace('b', '$\\flat$')
-        outfile.write( "\\insline{%s}{%s}\n" % (nm, chords[n][2]) )
+        outfile.write( "\\insline{%s}{%s}\n" % (nm, chordlist[n][2]) )
 
 
 for a,f,o in (

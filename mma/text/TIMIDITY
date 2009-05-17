@@ -5,7 +5,7 @@ The program timidity is pretty neat. It lets people who don't have a
 real, external sequencer (or a sequencer built in to a sound card) play
 MIDI files though the computer sound system. Most distributions already
 have this program installed. This file attempts to show a few tricks
-I've learned. It is not a timidity how to or primer.
+I've learned. It is not a timidity how-to or primer.
 
 Begin by making sure that you have timidity installed. Typing something like
 
@@ -59,6 +59,14 @@ To get timidity to use an sf2 file you have to do 2 things:
 
              cd /etc/timidity; ln -s /usr/share/timidity/timidity.cfg
 
+
+A simpler method I'm now using is to store the sound fonts in my personal
+directory. I'm doing this mainly to make backups simpler (my backup
+procedures don't know about files in /usr). So, I have a directory
+"/home/bob/sounds/sfx-lib" into which my various soundfonts go. And
+a one line /etc/timidity/timidity.cfg file with a line like
+"soundfont /home/bob/....".
+
 Of course, you'll have to do the above as root.
 
 
@@ -86,12 +94,13 @@ Assuming that you have MIDI data on tracks 10, 15 and 16:
      for a in 10 15 16;do timidity -Ow -Q0 -Q-$a -o$a.wav;done
 
 A little program, timsplit.py, which does all the above for you
-has been included in the the MMA distribution in the util directory.
-Read the file README.timsplit for details.
+in a slightly different manner has been included in the the MMA
+distribution in the util directory. Read the file README.timsplit
+for details.
 
 Have fun,
 
-Bvdp, March/2007
+Bvdp, March/2008
 
   
 

@@ -134,7 +134,7 @@ Begin Drum-Whistle
 	Rvolume 10
 End
 
-DefGroove SambaFill     Adds a whistle to the sandard beat.
+DefGroove SambaFill     Adds a whistle to the standard beat.
 
 Groove Samba
 

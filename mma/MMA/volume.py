@@ -42,6 +42,9 @@ vols={ 'OFF': 0.00,  'PPPP': 0.05,  'PPP':  0.10,
        'FF':  1.60,  'FFF':  1.80,  'FFFF': 2.00  }
 
 volume = vols['M']        # default global volume
+nextVolume = None         # main parser sets this to the next volume
+                          # when future volumes are stacked. It's used
+                          # by the volume adjust to smooth out (de)crescendos.
 lastVolume = volume
 futureVol = []
 vTRatio = .6
@@ -141,14 +144,56 @@ def setVolume(ln):
         print "Volume: %s%%" % volume
 
 
-# The next 2 are called from the parser.
+# The next 3 are called from the parser.
+
 
 def setCresc(ln):
+    """ Master Crescendo. """
+
     setCrescendo(1, ln)
 
 def setDecresc(ln):
+    """ Master Decrescendo (Diminuendo). """
     setCrescendo(-1, ln)
 
+def setSwell(ln):
+    """ Set a swell (cresc<>decresc). """
+
+    global futureVol, volume, lastVolume
+
+    lastVolume = volume
+
+    if len(ln) == 3:            # 3 args, 1st is intial setting
+        setVolume([ln[0]])
+        ln=ln[1:]
+
+    if len(ln) != 2:
+        error("Swell expecting 2 or 3 args.")
+
+    count = stoi(ln[1])
+    if count < 2:
+        error("Swell bar count must be 2 or greater.")
+
+    if count % 2:
+        c=(count+1)/2
+        offset=1
+    else:
+        c=count/2
+        offset=0
+
+    c=str(c)
+
+    futureVol = fvolume(0, volume, [ ln[0], c ] )
+    futureVol.extend(fvolume(0, futureVol[-1], 
+              [str(int(volume*100)), c ])[offset:])
+    
+    
+    if gbl.debug:
+        print "Set Swell to:",
+        for a in futureVol:
+            print int(a*100),
+        print
+         
 
 def setCrescendo(dir, ln):
     """ Combined (de)cresc() """
@@ -165,7 +210,14 @@ def setCrescendo(dir, ln):
         ln=ln[1:]
 
     futureVol = fvolume(dir, volume, ln)
+    
+    if gbl.debug:
+        print "Set (De)Cresc to:",
+        for a in futureVol:
+            print int(a*100),
+        print
 
+    
 
 # Used by both the 2 funcs above and from TRACK.setCresc()
 
@@ -173,13 +225,16 @@ def fvolume(dir, startvol, ln):
     """ Create a list of future vols. Called by (De)Cresc. """
 
     # Get destination volume
-
+    
     destvol = calcVolume(ln[0], startvol)
 
     bcount = stoi(ln[1], "Type error in bar count for (De)Cresc, '%s'" % ln[1] )
-
+    
     if bcount <= 0:
         error("Bar count for (De)Cresc must be postive")
+
+    # Test to see if (de)cresc is contrary to current settings.
+    # Using 'dir' of 0 will bypass this (used by SWELL).
 
     if dir > 0 and destvol < startvol:
         warning("Cresc volume less than current setting" )
@@ -190,17 +245,17 @@ def fvolume(dir, startvol, ln):
     elif destvol == startvol:
         warning("(De)Cresc volume equal to current setting" )
 
-    bcount -= 1
-    step = ( destvol-startvol ) / bcount
-
+    if bcount> 1:
+        bcount -= 1
+    step = ( destvol-startvol ) / bcount        
     volList=[startvol]
-
+ 
     for a in range(bcount-1):
         startvol += step
         volList.append( startvol)
 
     volList.append(destvol)
-
+ 
     return volList
 
 

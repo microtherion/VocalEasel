@@ -138,6 +138,27 @@ Groove 60sRock1
 Chord-Sus Groove 60sRockSus
 DefGroove 60sRock1Sus   Alternate 60s Rock with strings.
 
+//////////////////////
+/// Intro
+
+Groove 60sRock
+
+Begin Drum-Kick
+	Sequence * * * D13
+	Rtime 0
+	Rvolume 0
+End
+// Drum-Snare
+Drum-OHH Sequence * * * D13
+
+Bass  Sequence -
+Walk  Sequence W13 / /  W1234
+
+Chord Sequence *  *  * L1
+Chord-Straight Sequence *  *  * C13
+
+DefGroove 60sRockIntro   4 bar intro.
+
 //////////////
 // Ending
 

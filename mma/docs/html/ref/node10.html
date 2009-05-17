@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
 <!--Converted with LaTeX2HTML 2002-2-1 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
@@ -25,46 +25,47 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 </HEAD>
 
 <BODY  bgcolor="#ffffff">
-<!--Navigation Panel-->
-<A NAME="tex2html464"
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html490"
   HREF="node11.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html462"
+<A NAME="tex2html488"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html456"
+<A NAME="tex2html482"
   HREF="node9.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html465"
+<B> Next:</B> <A NAME="tex2html491"
   HREF="node11.html">Automatic Melodies: Aria Tracks</A>
-<B> Up:</B> <A NAME="tex2html463"
+<B> Up:</B> <A NAME="tex2html489"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html457"
+<B> Previous:</B> <A NAME="tex2html483"
   HREF="node9.html">Lyrics</A>
 <BR>
-<BR>
+<BR></DIV>
 <!--End of Navigation Panel-->
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<UL>
-<LI><A NAME="tex2html466"
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html492"
   HREF="node10.html#SECTION001010000000000000000">Note Data Format</A>
 <UL>
-<LI><A NAME="tex2html467"
+<LI><A NAME="tex2html493"
   HREF="node10.html#SECTION001011000000000000000">Long Notes</A>
-<LI><A NAME="tex2html468"
+<LI><A NAME="tex2html494"
   HREF="node10.html#SECTION001012000000000000000">Using Defaults</A>
-<LI><A NAME="tex2html469"
+<LI><A NAME="tex2html495"
   HREF="node10.html#SECTION001013000000000000000">Other Commands</A>
 </UL>
 <BR>
-<LI><A NAME="tex2html470"
+<LI><A NAME="tex2html496"
   HREF="node10.html#SECTION001020000000000000000">KeySig</A>
-<LI><A NAME="tex2html471"
+<LI><A NAME="tex2html497"
   HREF="node10.html#SECTION001030000000000000000">AutoSoloTracks</A>
-<LI><A NAME="tex2html472"
+<LI><A NAME="tex2html498"
   HREF="node10.html#SECTION001040000000000000000">Drum Solo Tracks</A>
 </UL>
 <!--End of Table of Child-Links-->
@@ -130,7 +131,7 @@ in a song file:
     <B>Melody Voice TenorSax
 <BR>
 Groove Blues
-<BR>  ... musical data  </B> 
+<BR>  ...musical data  </B> 
    
 	    </td></tr>
       </Table>
@@ -211,7 +212,7 @@ The notes in a S<SMALL>OLO</SMALL> or M<SMALL>ELODY</SMALL> track are specified 
 series of ``chords''. Each chord can be a single note, or several
 notes (all with the same duration). Each chord in the bar is delimited
 with a single semicolon.<A NAME="tex2html42"
-  HREF="#foot4027"><SUP>10.1</SUP></A>
+  HREF="#foot4273"><SUP><SPAN CLASS="arabic">10</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>
 <P>
 Each chord can have several parts. All missing parts will default to
 the value in the previous chord. The various parts of a chord must be
@@ -230,7 +231,7 @@ specified in the order given in the following table.
 <DT><STRONG>Pitch</STRONG></DT>
 <DD>The note in standard musical notation. The lowercase
   letters ``a'' to ``g'' are recognized as well as ``r'' to specify a
-  rest (please note the exception for <I>Drum Solo Tracks</I>,
+  rest (please note the exception for <SPAN  CLASS="textit">Drum Solo Tracks</SPAN>,
   <A HREF="#drumtype">here</A>).
 
 <P>
@@ -240,7 +241,7 @@ specified in the order given in the following table.
   (sharp), ``&amp;'' (flat) or ``n'' (natural). Please note that an
   accidental will override the current K<SMALL>EYSIG</SMALL> for the current
   bar (just like in real musical notation). Unlike standard musical
-  notation the accidental <I>will</I> apply to similarly named notes
+  notation the accidental <SPAN  CLASS="textit">will</SPAN> apply to similarly named notes
   in different octaves.
 
 <P>
@@ -263,21 +264,23 @@ Please note that when you specify a chord in
 </DD>
 <DT><STRONG>Volume</STRONG></DT>
 <DD>A volume can be specified. The volume is a string like
-  ``ff'' surrounded by ``<IMG
+  ``ff'' surrounded by ``<SPAN CLASS="MATH"><IMG
  WIDTH="33" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
  SRC="img2.png"
- ALT="$&lt; &gt;$">'' brackets. For example, to set the
+ ALT="$&lt; &gt;$"></SPAN>'' brackets. For example, to set the
   volume of a chord to ``very loud'', you could use the string
-  <IMG
+  <SPAN CLASS="MATH"><IMG
  WIDTH="19" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
  SRC="img3.png"
- ALT="$&lt;$">ffff<IMG
+ ALT="$&lt;$"></SPAN>ffff<SPAN CLASS="MATH"><IMG
  WIDTH="19" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
  SRC="img4.png"
- ALT="$&gt;$"> in the chord specification
-  (<A HREF="node16.html#sec-volume">here</A>) Of course, it is
+ ALT="$&gt;$"></SPAN> in the chord specification
+  (<A HREF="node17.html#sec-volume">here</A>) Of course, it is
   probably easier to set accented beats with the A<SMALL>CCENT</SMALL>
-  directive (<A HREF="node16.html#accent">here</A>).
+  directive (<A HREF="node17.html#accent">here</A>). A volume setting
+  applies to all the notes in the current chord and will be in effect
+  for the duration of the current bar. 
 
 <P>
 </DD>
@@ -293,10 +296,10 @@ Please note that when you specify a chord in
 </DD>
 <DT><STRONG>Null</STRONG></DT>
 <DD>You can set a ``ignore'' or ``do nothing'' chord with the
-  simple notation ``<IMG
+  simple notation ``<SPAN CLASS="MATH"><IMG
  WIDTH="33" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
  SRC="img2.png"
- ALT="$&lt; &gt;$">''. If this is the only item in the chord
+ ALT="$&lt; &gt;$"></SPAN>''. If this is the only item in the chord
   then that chord will be ignored This means that no tones will be
   generated, and the offset into the bar will not be changed. The use
   of the notation is mainly for tilde notation with notes held over
@@ -315,7 +318,7 @@ space and tab characters (which are ignored by
 
 		<Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="#efefef" Border=3>
 		   <tr><td Align="CENTER" BGColor="White">
-	      <B><FONT SIZE="+2">Solo Notation</FONT></B>  <A NAME="eg:solo"></A>	
+	      <SPAN  CLASS="textbf"><BIG CLASS="XLARGE">Solo Notation</BIG></SPAN>  <A NAME="eg:solo"></A>	
 	 	   </tr> </td>
            <tr> <td >
 		     
@@ -531,8 +534,8 @@ The argument consists of a single digit ``0'' to ``7'' followed by a
 As an alternate, you can use a musical name like ``F'' or ``G#''.
 
 <P>
-The optional keywords ``Major'' or ``Minor'' (these can be abreviated
-to ``Maj'' or ``Min'' ... and case doesn't count) can be added to this
+The optional keywords ``Major'' or ``Minor'' (these can be abbreviated
+to ``Maj'' or ``Min'' ...and case doesn't count) can be added to this
 command. This will accomplish two things:
 
 <P>
@@ -552,7 +555,7 @@ command. This will accomplish two things:
 <P>
 Setting the key signature effects the notes used in S<SMALL>OLO</SMALL> or
 M<SMALL>ELODY</SMALL> tracks and sets a MIDI Key Signature event.<A NAME="tex2html44"
-  HREF="#foot4032"><SUP>10.2</SUP></A>
+  HREF="#foot4278"><SUP><SPAN CLASS="arabic">10</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A>
 <P>
 To summarize, the following are all valid K<SMALL>EY</SMALL>S<SMALL>IG</SMALL> directives:
 
@@ -587,8 +590,8 @@ of ``{ }'' expressions in a chord line. They will be assigned to the
 tracks specified in the A<SMALL>UTO</SMALL>S<SMALL>OLO</SMALL>T<SMALL>RACKS</SMALL> directive.
 
 <P>
-By default, four tracks are assigned: <I>Solo</I>, <I>Solo-1</I>,
-<I>Solo-2</I>, and <I>Solo-3</I>. This order can be changed:
+By default, four tracks are assigned: <SPAN  CLASS="textit">Solo</SPAN>, <SPAN  CLASS="textit">Solo-1</SPAN>,
+<SPAN  CLASS="textit">Solo-2</SPAN>, and <SPAN  CLASS="textit">Solo-3</SPAN>. This order can be changed:
 
 <P>
 
@@ -634,14 +637,14 @@ Of course, some voicing is also set ...and a chord line:
       </Table>
 
 <P>
-The note data <I>{4a;b;c;d;} </I> will be set to the <I>Solo-1</I>
+The note data <SPAN  CLASS="textit">{4a;b;c;d;} </SPAN> will be set to the <SPAN  CLASS="textit">Solo-1</SPAN>
 track.  But, if you've not set any other note data by way of
-R<SMALL>IFF</SMALL> commands to <I>Solo-2</I> and <I>Solo-3</I>, the note data
+R<SMALL>IFF</SMALL> commands to <SPAN  CLASS="textit">Solo-2</SPAN> and <SPAN  CLASS="textit">Solo-3</SPAN>, the note data
 will also be copied to these two tracks. Note that the track
-<I>Solo-4</I> is unaffected since it is <I>not</I> a
+<SPAN  CLASS="textit">Solo-4</SPAN> is unaffected since it is <SPAN  CLASS="textit">not</SPAN> a
 H<SMALL>ARMONY</SMALL>O<SMALL>NLY</SMALL> track. This feature can be very useful in creating
 harmony lines with the harmonies going to different instruments. The
-supplied file <TT><B>egs/harmony.mma</B></TT> shows an example.
+supplied file <TT><SPAN  CLASS="textbf">egs/harmony.mma</SPAN></TT> shows an example.
 
 <P>
 
@@ -665,7 +668,7 @@ first thing to do is to set a track as a drum solo type:
 
 <P>
 This will create a new S<SMALL>OLO</SMALL> track with the name
-<I>Solo-MyDrums</I> and set its ``Drum'' flag. If the track already
+<SPAN  CLASS="textit">Solo-MyDrums</SPAN> and set its ``Drum'' flag. If the track already
 exists and has data in it, the command will fail. The MIDI channel 10
 is automatically assigned to all tracks created in this manner. You
 cannot change a ``drum'' track back to a normal track.
@@ -752,10 +755,10 @@ the following example:
 <BR>&nbsp;&nbsp;Tone LowWoodBlock 
 <BR>
 End 
-<BR>&nbsp;&nbsp; ... 
+<BR>&nbsp;&nbsp; ...
 <BR>
 Solo-Block Riff 4r; SnareDrum; * ; ; 
-<BR>&nbsp;&nbsp; ... 
+<BR>&nbsp;&nbsp; ...
 <BR>
 Solo-Block Riff 4;;;;   </B> 
    
@@ -770,8 +773,8 @@ on each beat.
 <P>
 <BR><HR><H4>Footnotes</H4>
 <DL>
-<DT><A NAME="foot4027">... semicolon.</A><A
- HREF="node10.html#tex2html42"><SUP>10.1</SUP></A></DT>
+<DT><A NAME="foot4273">... semicolon.</A><A
+ HREF="node10.html#tex2html42"><SUP><SPAN CLASS="arabic">10</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
 <DD>I have borrowed heavily from the
   notation program MUP for the syntax used here. For notation I highly
   recommend MUP and use it for most of my notation tasks, including
@@ -780,36 +783,37 @@ on each beat.
   HREF="http://www.Arkkra.com/">http://www.Arkkra.com/</A></TT>.
 
 </DD>
-<DT><A NAME="foot4032">... event.</A><A
- HREF="node10.html#tex2html44"><SUP>10.2</SUP></A></DT>
+<DT><A NAME="foot4278">... event.</A><A
+ HREF="node10.html#tex2html44"><SUP><SPAN CLASS="arabic">10</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A></DT>
 <DD>For
   the most part, MIDI Key Signature events are ignored by playback
-  programs. However, they <I>may</I> be used in other MIDI programs
+  programs. However, they <SPAN  CLASS="textit">may</SPAN> be used in other MIDI programs
   which handle notation.
 
 </DD>
-</DL><HR>
+</DL>
+<DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html464"
+<A NAME="tex2html490"
   HREF="node11.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html462"
+<A NAME="tex2html488"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html456"
+<A NAME="tex2html482"
   HREF="node9.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html465"
+<B> Next:</B> <A NAME="tex2html491"
   HREF="node11.html">Automatic Melodies: Aria Tracks</A>
-<B> Up:</B> <A NAME="tex2html463"
+<B> Up:</B> <A NAME="tex2html489"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html457"
-  HREF="node9.html">Lyrics</A>
+<B> Previous:</B> <A NAME="tex2html483"
+  HREF="node9.html">Lyrics</A></DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 bob
-2007-03-07
+2008-09-28
 </ADDRESS>
 </BODY>
 </HTML>

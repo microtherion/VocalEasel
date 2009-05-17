@@ -26,9 +26,12 @@ the sequences for later recall.
 
 """
 
+import MMA.midiC
+
 import gbl
 from   MMA.common import *
-import MMA.midiC
+
+
 class Mdefine:
 
     def __init__(self):

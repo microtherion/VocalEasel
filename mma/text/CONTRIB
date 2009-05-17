@@ -33,3 +33,10 @@ Eric Le Bras has packaged MMA for the Archlinux distibution
 Rony Steelandt of Kara Music Production wrote the "creating a library"
 	tutorial, lots of debugging, suggestions on random ordering,
     and encouragement.
+
+Igor Kaplan for instructions on how to run MMA on a windows pc/phone.
+
+Gek S. Low for his contribution of a GUI frontend:
+	   http://xenon.stanford.edu/~geksiong/lemma.html
+    and an abc to mma conversion:
+       http://xenon.stanford.edu/~geksiong/abc2mma .

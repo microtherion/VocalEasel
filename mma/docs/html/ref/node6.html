@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
 <!--Converted with LaTeX2HTML 2002-2-1 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
@@ -25,43 +25,48 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 </HEAD>
 
 <BODY  bgcolor="#ffffff">
-<!--Navigation Panel-->
-<A NAME="tex2html407"
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html431"
   HREF="node7.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html405"
+<A NAME="tex2html429"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html399"
+<A NAME="tex2html423"
   HREF="node5.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html408"
+<B> Next:</B> <A NAME="tex2html432"
   HREF="node7.html">Riffs</A>
-<B> Up:</B> <A NAME="tex2html406"
+<B> Up:</B> <A NAME="tex2html430"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html400"
+<B> Previous:</B> <A NAME="tex2html424"
   HREF="node5.html">Sequences</A>
 <BR>
-<BR>
+<BR></DIV>
 <!--End of Navigation Panel-->
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<UL>
-<LI><A NAME="tex2html409"
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html433"
   HREF="node6.html#SECTION00610000000000000000">Creating A Groove</A>
-<LI><A NAME="tex2html410"
+<LI><A NAME="tex2html434"
   HREF="node6.html#SECTION00620000000000000000">Using A Groove</A>
 <UL>
-<LI><A NAME="tex2html411"
+<LI><A NAME="tex2html435"
   HREF="node6.html#SECTION00621000000000000000">Overlay Grooves</A>
 </UL>
 <BR>
-<LI><A NAME="tex2html412"
-  HREF="node6.html#SECTION00630000000000000000">Deleting Grooves</A>
-<LI><A NAME="tex2html413"
-  HREF="node6.html#SECTION00640000000000000000">Library Issues</A>
+<LI><A NAME="tex2html436"
+  HREF="node6.html#SECTION00630000000000000000">Groove Aliases</A>
+<LI><A NAME="tex2html437"
+  HREF="node6.html#SECTION00640000000000000000">AllGrooves</A>
+<LI><A NAME="tex2html438"
+  HREF="node6.html#SECTION00650000000000000000">Deleting Grooves</A>
+<LI><A NAME="tex2html439"
+  HREF="node6.html#SECTION00660000000000000000">Library Issues</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -118,15 +123,15 @@ command:
 A groove name can include any character, including digits and
 punctuation. However, it cannot include a space character (used as a
 delimiter) or a '/'<A NAME="tex2html32"
-  HREF="#foot2578"><SUP>6.1</SUP></A>, nor can consist solely of digits<A NAME="tex2html33"
-  HREF="#foot2662"><SUP>6.2</SUP></A>
+  HREF="#foot2645"><SUP><SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>, nor can consist solely of digits<A NAME="tex2html33"
+  HREF="#foot2767"><SUP><SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A>
 <P>
 In normal operation the documentation strings are ignored. However,
 when 
 <FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  is run with the -Dx command line option these strings are
-printed to the terminal screen in L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X format. The standard library
-document is generated from this data. The comments <I>must</I> be
-suitable for L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X: this means that special symbols like ``#'',
+printed to the terminal screen in <SPAN CLASS="logo,LaTeX">L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X</SPAN> format. The standard library
+document is generated from this data. The comments <SPAN  CLASS="textit">must</SPAN> be
+suitable for <SPAN CLASS="logo,LaTeX">L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X</SPAN>: this means that special symbols like ``#'',
 ``&amp;'', etc. must be ``quoted'' with a preceding `` &#92;''.
 
 <P>
@@ -243,7 +248,7 @@ A few cautions:
 <P>
 
 <UL>
-<LI>Pattern definitions are <I>not</I> saved in grooves. Redefining
+<LI>Pattern definitions are <SPAN  CLASS="textit">not</SPAN> saved in grooves. Redefining
   a pattern results in a new pattern definition. Sequences use the
   pattern definition in effect when the sequence is declared.
 
@@ -296,7 +301,7 @@ except by going though it.
 
 <P>
 You might find this handy if you have a piece with an alternating time
-signature. For example, you might have a <B>3/4</B> <B>4/4</B>
+signature. For example, you might have a <SPAN  CLASS="textbf">3/4</SPAN> <SPAN  CLASS="textbf">4/4</SPAN>
 song. Rather than creating a 2 bar groove, you could do something
 like:
 
@@ -327,12 +332,12 @@ When you use the ``list'' feature of G<SMALL>ROOVE</SMALL>s you should be
 aware of what happens with the bar sequence number. Normally the
 sequence number is incremented after each bar is processed; and, when
 a new groove is selected the sequence number is reset (see S<SMALL>EQ</SMALL>,
-<A HREF="node21.html#seqnumber">discussed here)</A>. When
+<A HREF="node23.html#seqnumber">discussed here)</A>. When
 you use a list which changes the G<SMALL>ROOVE</SMALL> after each bar the
-sequence number is reset after each bar ...with one exeption: if
+sequence number is reset after each bar ...with one exception: if
 the same G<SMALL>ROOVE</SMALL> is being used for two or more bars the sequence
 will not be reset.<A NAME="tex2html34"
-  HREF="#foot2663"><SUP>6.3</SUP></A>
+  HREF="#foot2768"><SUP><SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A>
 <P>
 Another way to select G<SMALL>ROOVE</SMALL>s is to use a list of grooves with a leading value. This lets you select the G<SMALL>ROOVE</SMALL> to use based on the value of a variable ...handy if you want different sounds for repeated sections. Again, an example:
 
@@ -344,7 +349,7 @@ Another way to select G<SMALL>ROOVE</SMALL>s is to use a list of grooves with a 
 <BR>
 Repeat
 <BR>&nbsp;&nbsp;Groove $loop BossaNovaSus BossaNova1Sus BossaNovaFill
-<BR>&nbsp;&nbsp;print This is loop $Loop ... Groove is $_Groove
+<BR>&nbsp;&nbsp;print This is loop $Loop ...Groove is $_Groove
 <BR>&nbsp;&nbsp;1 A / Am
 <BR>&nbsp;&nbsp;Inc Loop  // Bump the counter value
 <BR>
@@ -355,7 +360,7 @@ RepeatEnd 4
       </Table>
 
 <P>
-If you use this option, make sure the value of the counter is greater than 0. Also, note that the values larger than the list count are ``looped'' to be valid. The use of ``/''s for repeated names is also permitted. For an example have a look at the file <TT><B>grooves.mma</B></TT>, included in this distribution. You could get the same results with various ``if'' statements, but this is easier.
+If you use this option, make sure the value of the counter is greater than 0. Also, note that the values larger than the list count are ``looped'' to be valid. The use of ``/''s for repeated names is also permitted. For an example have a look at the file <TT><SPAN  CLASS="textbf">grooves.mma</SPAN></TT>, included in this distribution. You could get the same results with various ``if'' statements, but this is easier.
 
 <P>
 
@@ -401,9 +406,9 @@ appropriate function is called and file parsing continues. If it is
 not a simple command 
 <FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  tests to see if it is a track specific
 command. But to do that, it first has to test the first word to see if
-it is a valid track name like <I>Bass</I> or <I>Chord-Major</I>. And,
+it is a valid track name like <SPAN  CLASS="textit">Bass</SPAN> or <SPAN  CLASS="textit">Chord-Major</SPAN>. And,
 if it is a valid track name and that track doesn't exist, the track is
-created...this is done <I>before</I> the rest of the command is
+created...this is done <SPAN  CLASS="textit">before</SPAN> the rest of the command is
 processed. So, if you have a command like:
 
 <P>
@@ -433,20 +438,20 @@ you'll have a number of things happening:
 <P>
 
 <OL>
-<LI>The track <I>Bass-Foo</I> will be created. This is not an issue
+<LI>The track <SPAN  CLASS="textit">Bass-Foo</SPAN> will be created. This is not an issue
   to be concerned over since no data will be created for this new
   track unless you set a S<SMALL>EQUENCE</SMALL> for it.
 
 <P>
 </LI>
 <LI>As part of the creation, all the existing G<SMALL>ROOVE</SMALL>s will
-  have the <I>Bass-Foo</I> track (with its default/empty settings)
+  have the <SPAN  CLASS="textit">Bass-Foo</SPAN> track (with its default/empty settings)
   added to them.
 
 <P>
 </LI>
 <LI>And the current setting you think you're modifying with the
-  <I>Bass-Foe</I> settings will be created with the <I>Bass-Foo</I>
+  <SPAN  CLASS="textit">Bass-Foe</SPAN> settings will be created with the <SPAN  CLASS="textit">Bass-Foo</SPAN>
   settings (which are nothing).
 
 <P>
@@ -469,6 +474,260 @@ you will get a warning.
 <P>
 
 <H1><A NAME="SECTION00630000000000000000">
+Groove Aliases</A>
+</H1>
+
+<P>
+In an attempt to make the entire groove naming issue simpler, an
+additional command has been added. More complication to make life
+simpler. 
+
+<P>
+You can create an alias for any defined G<SMALL>ROOVE</SMALL> name with:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>DefAlias NewAlias SomeGroove  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Now you can refer to the groove ``SomeGroove'' with the name
+``NewAlias''. 
+
+<P>
+A few rules:
+
+<P>
+
+<UL>
+<LI>the alias name must not be the name of a currently defined
+  groove,
+</LI>
+<LI>when defining a new groove you cannot use the name of an alias.
+</LI>
+</UL>
+
+<P>
+Groove aliases are a tool designed to make it possible to have a
+standard set of groove names in 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  usable at the same time as the
+standard library. 
+
+<P>
+There is a major difference between a groove alias and the simple act
+of assigning two names to the same groove. Consider this snippet:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>...define some things ...
+<BR>
+Defgroove Good 
+<BR>
+Defgroove Good2   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+You now have both ``good'' and ``good2'' assigned to the same set of
+sequences, etc. Now, lets change something:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Groove Good 
+<BR>
+Chord Voice Accordion 
+<BR>     ...
+<BR>  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Now, the groove ``good'' has an accordion voicing; ``good2'' still has
+whatever the old ``good'' had. Compare this with:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>...define some things ...
+<BR>
+DefGroove Good 
+<BR>
+DefAlias  Good2 Good   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Now, make the same change:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Groove Good 
+<BR>
+Chord Voice Accordion   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+By using an alias ``good2'' now points to the changed ``good''.
+
+<P>
+
+<H1><A NAME="SECTION00640000000000000000">
+AllGrooves</A>
+</H1>
+
+<P>
+There are times when you wish to change a setting in a set of library
+files. For example, you like the <SPAN  CLASS="textit">Rhumba</SPAN> library sounds, but,
+for a particular song you'd like a punchier bass sound. Now, it is
+fairly easy to create a new library file for this; or you can set the
+new bass settings each time you select a different G<SMALL>ROOVE</SMALL>.
+
+<P>
+Much easier is to apply your changes to all the G<SMALL>ROOVE</SMALL>s in the
+file. For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Use Rhumba 
+<BR>
+Begin AllGrooves 
+<BR>
+Bass Articulate 50 
+<BR>
+Bass Volume +20 
+<BR>
+Walk Articulate 50 
+<BR>
+Walk Volume +10 
+<BR>
+End 
+<BR> ...</B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+The A<SMALL>LL</SMALL>G<SMALL>ROOVES</SMALL> command operates by applying its arguments to each
+G<SMALL>ROOVE</SMALL> currently defined. This includes the environment you are
+currently in, even if this is not a defined G<SMALL>ROOVE</SMALL>.
+
+<P>
+You can use the command with or without a track modifier:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>AllGrooves Volume p  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+or
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>AllGrooves Chord Octave 5  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Everything after the directive is interpreted as a legitimate 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  command. A warning message will be displayed if the command had no
+effect. The warning ``No tracks affected with ...'' will be
+displayed if nothing was done. This could be due to a misspelt command
+or track name, or the fact that the specified track does not exist.
+
+<P>
+If you want to ``undo'' the effect of the A<SMALL>LL</SMALL>G<SMALL>ROOVES</SMALL> just import
+the library file again with:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Use stdlib/rhumba
+<BR>
+Groove Rhumba  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+or remove all the current G<SMALL>ROOVE</SMALL>s from memory with:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>GrooveClear
+<BR>
+Groove Rhumba  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+In both cases you'll end up with the original G<SMALL>ROOVE</SMALL> settings.
+
+<P>
+A few notes:
+
+<P>
+
+<UL>
+<LI>This command only effects G<SMALL>ROOVE</SMALL>s which have
+been loaded into memory either by loading a library file or otherwise
+creating a G<SMALL>ROOVE</SMALL>. 
+
+<P>
+</LI>
+<LI>Be careful what commands you use since they are applied rather
+  blindly. For example, the command:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>AllTracks BeatAdjust 2  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will insert 2 additional beats for each G<SMALL>ROOVE</SMALL> you have. So, if
+you have 10 G<SMALL>ROOVE</SMALL>s you would insert 20 beats. Not what you
+intended. T<SMALL>EMPO</SMALL> and other commands will cause similar problems.
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<H1><A NAME="SECTION00650000000000000000">
 Deleting Grooves</A>
 </H1>
 
@@ -509,18 +768,21 @@ Endif  </B>
 In this case you could set the variable ``ChordVoice'' before loading
 any of the G<SMALL>ROOVE</SMALL>s in the file. All works! Now, assume that you
 have a repeated section and want to change the voice. Simply changing
-the variable <I>does not work</I>. The library file isn't re-read
-since the exisiting G<SMALL>ROOVE</SMALL> data is already in memory. Using
+the variable <SPAN  CLASS="textit">does not work</SPAN>. The library file isn't re-read
+since the existing G<SMALL>ROOVE</SMALL> data is already in memory. Using
 G<SMALL>ROOVE</SMALL>C<SMALL>LEAR</SMALL> erases the existing data and forces a re-reading of
 the library file.
 
 <P>
 Please note that low-level setting like MIDI track assignments are
-<I>not</I> changed by this command.
+<SPAN  CLASS="textit">not</SPAN> changed by this command.
+
+<P>
+Groove aliases are also deleted with this command.
 
 <P>
 
-<H1><A NAME="SECTION00640000000000000000">
+<H1><A NAME="SECTION00660000000000000000">
 Library Issues</A>
 </H1>
 
@@ -541,12 +803,12 @@ something like:
 at the appropriate position in your input file.
 
 <P>
-One minor problem which <I>may</I> arise is that more than one library
+One minor problem which <SPAN  CLASS="textit">may</SPAN> arise is that more than one library
 file has defined the same groove name. This might happen if you have a
 third-party library file. For the proposes of this example, lets
 assume that the standard library file ``rhumba.mma'' and a second file
 ``xyz-rhumba.mma'' both define the groove ``Rhumba2''. The
-<A HREF="node24.html#lib-use">auto-load</A> routines
+<A HREF="node26.html#lib-use">auto-load</A> routines
 which search the library database will load the first ``Rhumba2'' it
 finds, and the search order cannot be determined. To overcome this
 possible problem, do a explicit loading of the correct file. In this
@@ -579,51 +841,53 @@ just before the groove call. The U<SMALL>SE</SMALL> will read the specified
 file and overwrite the old definition of ``Rhumba2'' with its own.
 
 <P>
-This issue in covered in more detail on page <A HREF="node24.html#library-maint"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
-of this manual.
+This issue in covered in more detail <A HREF="node26.html#library-maint">here in</A> this manual.
+
+<P>
 <BR><HR><H4>Footnotes</H4>
 <DL>
-<DT><A NAME="foot2578">... '/'</A><A
- HREF="node6.html#tex2html32"><SUP>6.1</SUP></A></DT>
+<DT><A NAME="foot2645">... '/'</A><A
+ HREF="node6.html#tex2html32"><SUP><SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
 <DD>The '/' is reserved for future
   enhancements.
 
 </DD>
-<DT><A NAME="foot2662">... digits</A><A
- HREF="node6.html#tex2html33"><SUP>6.2</SUP></A></DT>
-<DD><B>12345</B> and <B>2</B> are invalid; <B>11foo11</B> and <B>a2-2</B> are permitted.
+<DT><A NAME="foot2767">... digits</A><A
+ HREF="node6.html#tex2html33"><SUP><SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A></DT>
+<DD><SPAN  CLASS="textbf">12345</SPAN> and <SPAN  CLASS="textbf">2</SPAN> are invalid; <SPAN  CLASS="textbf">11foo11</SPAN> and <SPAN  CLASS="textbf">a2-2</SPAN> are permitted.
 
 </DD>
-<DT><A NAME="foot2663">... reset.</A><A
- HREF="node6.html#tex2html34"><SUP>6.3</SUP></A></DT>
+<DT><A NAME="foot2768">... reset.</A><A
+ HREF="node6.html#tex2html34"><SUP><SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A></DT>
 <DD>Actually, 
 <FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  checks to see the next
   G<SMALL>ROOVE</SMALL> in the list is the same as the current one, and if it
   is then no change is done.
 
 </DD>
-</DL><HR>
+</DL>
+<DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html407"
+<A NAME="tex2html431"
   HREF="node7.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html405"
+<A NAME="tex2html429"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html399"
+<A NAME="tex2html423"
   HREF="node5.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html408"
+<B> Next:</B> <A NAME="tex2html432"
   HREF="node7.html">Riffs</A>
-<B> Up:</B> <A NAME="tex2html406"
+<B> Up:</B> <A NAME="tex2html430"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html400"
-  HREF="node5.html">Sequences</A>
+<B> Previous:</B> <A NAME="tex2html424"
+  HREF="node5.html">Sequences</A></DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 bob
-2007-03-07
+2008-09-28
 </ADDRESS>
 </BODY>
 </HTML>

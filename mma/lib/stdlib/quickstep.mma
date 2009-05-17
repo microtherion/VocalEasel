@@ -164,6 +164,23 @@ Chord-Guitar    Sequence   C1   /   /       L1
 
 Defgroove QuickStepIntro  Four bar intro.
 
+Groove QuickStep
+SeqSize 8
+
+Alltracks Rskip 0
+
+Drum-OpenHH     Sequence   *    *   *   *    *   D8    D16    D12
+Drum-ClosedHH   Sequence   *    *   *   *    *   D8    D16    D12
+Drum-Kick       Sequence   *    *   *   *    *   *     *      D1
+Bass            Sequence   B13  /   /   B11  /   /     /     {1 1 1 90}
+Chord-Piano     Sequence   *    *   *   *    *   *    C1234   L1
+Chord-Guitar    Sequence   C1   /   /   C13  C1  /    /       L1
+
+
+DefGroove QuickStepIntro8  The 4 bar intro stretched to 8.
+
+
+
 //////////////////////////////////////////////////////////
 // Ending
 

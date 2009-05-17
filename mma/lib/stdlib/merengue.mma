@@ -11,6 +11,12 @@ End
 
 Author Bob van der Poel
 
+NewSet BandoneonOctave  6
+
+Begin DocVar
+  BandoneonOctave   The Octave setting for the bandoneon (default=6)
+End
+
 SeqClear
 Time 4
 Timesig 4 4
@@ -89,7 +95,7 @@ Begin Chord
 	Voice Bandoneon
 	Voicing Mode=Optimal
 	Volume pp
-	Octave 8
+	Octave  $BandoneonOctave
 End
 
 DefGroove Merengue1      Substitute bandoneon for first piano.
@@ -116,7 +122,7 @@ Alltracks Volume -20
 Begin Chord-Sus
 	Voice Bandoneon
 	Sequence   { 1 1 90 0 80 0 * 2}  // Root and fifth notes only.
-	Octave     6
+	Octave     $BandoneonOctave
 	Voicing   Mode=Optimal
 	Articulate 100
 	Unify      On

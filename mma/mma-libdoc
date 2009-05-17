@@ -4,6 +4,14 @@
 
 import os, sys, time
 
+if len(sys.argv)>1:
+    print """mma-libdoc is a MMA maintenance program to parse library
+ files and create/maintain the html library documentation.
+ This program should be run as 'root' and it takes no
+ command options. For more details see the file
+ "README.mma-libdoc" which is distributed with MMA."""
+    sys.exit(0)
+
 installdir = ( "c:\\mma\\", "/usr/local/share/mma", "/usr/share/mma", ".")
 
 libpath = ''

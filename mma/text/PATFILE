@@ -1,0 +1,98 @@
+
+*** TEMP FILE, will become part of ref manual ***
+
+to be added to VOICE section:
+
+By default MMA uses the 127 GM MIDI voices. In most cases you'll find these
+more than sufficient. But, if you want to get more out your keyboard/synth you
+may want to use some of the other voices it may have.
+
+Warning: all of this section is highly dependent on the features of your hardware.
+Midi files you create will sound different (or even awful) on other hardware. We
+do not recommend that you use this feature to create files you want to share!
+
+Keyboards store voice data in different voice banks. By default they use voices
+0 to 127 in a default bank. You can select different banks, each with a variety
+of voices, by changing the current voice bank. This switching is done by changing
+the value of Controller 0, 32 or both. You'll need to read the manual for you hardware
+to figure this out.
+
+MMA voices are normally set as a GM value (3, 100, etc) or with a symbolic name like
+(PIANO1, Trumpet, etc.) However, you can also use "extended values" to select the
+other voices on your keyboard.
+
+Extended values are specified like this: 22.33.44 or 22.33. This is three numeric values
+separated by "."s. The first value is the Patch Number, the second is a value for
+Controller 0. The third value, if present, is the setting for Controller 32.
+
+An example: my Casio Wk-3000 uses Controller 0 for selecting voice banks. The manual
+lists Bank-53, Program-27 as "Rotary Guitar". To use this voice I can do:
+
+	  Chord Voice 27.53
+
+Much easier than using these "funny" numbers is to read a .pat file which has
+the names and extended voice values. See page xxx.
+
+If you use any extended voices in a track MMA will generate code at the end of the track
+to reset the controllers and program to 0. 
+
+===========
+
+new section: READPAT
+
+To use the extended voice selection (described on page xxx) it is easiest to
+read an .pat file. These files are available on the internet for many different
+keyboards and synthesizers. Due to copyright we don't include them with MMA.
+
+If you can find an existing .pat file for your device it is easy to use it in MMA.
+
+First, copy the file to your MMA includes directory. By default this is
+ /usr/local/share/mma/includes.
+
+Second, include a line in your song file (or in a global rc file) like:
+
+		ReadPat casio_wk3200.pat
+
+Note, this filename is case sensitive and must include the filename extension. If you
+don't want to use the includes directory you can use a complete path name.
+
+The file will be read and the various definitions in that file will be appended to the
+voice tables in MMA.
+
+Since MMA can't handle space characters in voice names, spaces in names will be deleted. 
+So, the name "Reso Saw Bass 3" will become "ResoSawBass3".   *** I may need a mechanism
+to display names??? External program??? ***
+
+Two types of lines are parsed.
+
+First, is a line containing the single keyword: ZEROBASED.
+This must be uppercase and the only item on a line. In this case all subsequent program change
+values will have 1 subtracted. Use this for Yamaha and other synths.
+
+Second, are lines starting with a digit. These lines must be in the format:
+
+		<value> = name
+
+where <value> can be vv, vv.cc0 or vv.cc0.cc32.
+
+In all cases "vv" is the patch number, "cc0" is the setting for controller 0, and
+"cc32" is the setting for controller 32. 
+
+In many cases you can just use an existing .pat file "as is". However, you may want to
+edit the file to reflect MMA naming.
+
+Please note that using extended voicing can leave your synth in an unexpected
+condition. For this reason we highly recommend that you include a "reset" sequence
+at the start of each generated MIDI file. This is easy to do! For example, in our
+global .mmarc file we have a line "include init". This file resets the volume
+levels and controller 0 to a known state.
+
+When reading a pat file warnings will be displayed if either:
+
+ - an attempt is made to change an existing program change value,
+ - an attempt is made to change or duplicate an exiting program name.
+
+If this happens you should edit your pat file.
+
+
+

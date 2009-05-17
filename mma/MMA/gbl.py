@@ -24,7 +24,7 @@ Bob van der Poel <bob@mellowood.ca>
 
 import os
 
-version = "1.1"        # Version -- March 7/2007
+version = "1.4"        # Version -- Sept/2008
 
 """ mtrks is storage for the MIDI data as it is created.
     It is a dict of class Mtrk() instances. Keys are the
@@ -56,7 +56,7 @@ for c in range(0,17):
     is inc/decremented.
 """
 
-midiAvail=[ 0 ] * 17   # slots 0..16, slot 0 is not used.
+midiAvail     = [ 0 ] * 17   # slots 0..16, slot 0 is not used.
 
 deletedTracks = []    # list of deleted tracks for -c report
 
@@ -64,28 +64,14 @@ deletedTracks = []    # list of deleted tracks for -c report
     are names, data is a channel. Eg. midiChPrefs['BASS-SUS']==9
 """
 
-midiChPrefs={}
+midiChPrefs = {}
 
 
-
-""" Groove storage. Each entry in settingsGroove{} has a keyname
-    of a saved groove.
-
-    lastGroove and currentGroove are used by macros
+""" Is the -T option is used only the tracks in this list
+    are generated. All other tracks are muted (OFF)
 """
 
-settingsGroove    = {}
-lastGroove = ''
-currentGroove = ''
-
-
-""" SeqRnd variable is a list. The first entry is a flag:(0, 1 or x):
-      0 - not set
-      1 - set
-      2 - set for specific tracks, track list starts at position [1]
-"""
-
-seqRnd = [0]       # set if SEQRND has been set
+muteTracks = []
 
 
 ############# String constants ####################
@@ -98,28 +84,31 @@ ext = ".mma"        # extension for song/lib files.
 
 
 BperQ       =  192    # midi ticks per quarter note
-QperBar       =  4        # Beats/bar, set with TIME
-tickOffset =  0        # offset of current bar in ticks
+QperBar     =  4      # Beats/bar, set with TIME
+tickOffset  =  0      # offset of current bar in ticks
 tempo       =  120    # current tempo
-seqSize       =  1        # variation sequence table size
-seqCount   =  0        # running count of variation
+seqSize     =  1      # variation sequence table size
+seqCount    =  0      # running count of variation
 
-transpose  =  0        # Transpose is global (ignored by drum tracks)
+totTime     = 0.0     # running duration count in seconds
 
-lineno       = -1        # used for error reporting
+transpose   =  0      # Transpose is global (ignored by drum tracks)
 
-swingMode  =  0     # defaults to 0, set to 1 for swing mode
-swingSkew  =  None  # this is just for $_SwingMode macro
+lineno      = -1      # used for error reporting
 
-barNum     =  0     # Current line number
+swingMode   =  0      # defaults to 0, set to 1 for swing mode
+swingSkew   =  None   # this is just for $_SwingMode macro
 
-synctick   =  0     # flag, set if we want a tick on all tracks at offset 0
+barNum      =  0      # Current line number
+
+synctick    =  0      # flag, set if we want a tick on all tracks at offset 0
+endsync     =  0      # flag, set if we want a eof sync
+
 
 #############   Path and search variables. #############
 
-
 libPath = ''
-for     p in ( "c:\\mma\\lib", "/usr/local/share/mma/lib", "/usr/share/mma/lib", "./lib"):
+for p in ( "c:\\mma\\lib", "/usr/local/share/mma/lib", "/usr/share/mma/lib", "./lib"):
     if os.path.isdir(p):
         libPath=p
         break
@@ -139,8 +128,8 @@ mmaEnd     =   []      # list of END files
 mmaRC      =   None    # user specified RC file, overrides defaults
 inpath     =   None    # input file
 
-midiFileType   = 1      # type 1 file, SMF command can change to 0
-runningStatus  = 1      # running status enabled
+midiFileType   = 1     # type 1 file, SMF command can change to 0
+runningStatus  = 1     # running status enabled
 
 
 #############  Options. #############
@@ -163,9 +152,11 @@ chshow         =     Lchshow = 0
 
 outfile        =     None
 infile         =     None
-docs           =     0
+createDocs     =     0
 maxBars        =     500
 makeGrvDefs    =     0
 cmdSMF         =     None
 
+playFile       =     0       # set if we want to call a player
+midiPlayer     =     "aplaymidi"
 

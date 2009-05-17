@@ -196,10 +196,15 @@ SeqSize 1
 Alltracks SeqRnd Off
 
 Drum-HH       Sequence 	D6 
-Drum-Snare    Sequence	D1
+Begin Drum-Snare
+    Sequence	D123
+	Volume f
+End
 Drum-HH       Sequence  {D123 shift .5}
-Drum-Cym      Sequence	D123
-
+Begin Drum-Cym 
+     Sequence	D123
+     Volume f
+End
 Chord         Sequence 	{C123 * 2}
 Chord-Guitar  Sequence	C123
 Bass          Sequence  {1 4 5 100; 3 8 3 110; 3 4 1 100}

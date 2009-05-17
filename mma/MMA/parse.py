@@ -34,34 +34,38 @@ import random
 import copy
 
 import gbl
+from   MMA.common import *
+
 import MMA.notelen
 import MMA.chords
 import MMA.file
-import MMA.docs
 import MMA.midi
 import MMA.midiIn
+import MMA.grooves
+import MMA.docs
 import MMA.auto
-from   MMA.alloc import trackAlloc
-from   MMA.common import *
 import MMA.translate
-from   MMA.lyric import lyric
 import MMA.patSolo
-from   MMA.macro import macros
 import MMA.mdefine
 import MMA.volume
-from   MMA.pat import seqBump
+import MMA.seqrnd
+import MMA.patch
+
+import gbl
+
+from   MMA.common import *
+from   MMA.lyric import lyric
+from   MMA.macro import macros
+from   MMA.alloc import trackAlloc
 
 lastChord = None   # tracks last chord for "/ /" data lines.
 
 beginData = []      # Current data set by a BEGIN statement
 beginPoints = []    # since BEGINs can be nested, we need ptrs for backing out of BEGINs
 
-seqRndWeight = [1]
-
-groovesList = None
-groovesCount = 0
-
 gmagic = 9988   # magic name for groove saved with USE
+
+
 
 """ This table is passed to the track classes. It has
     an instance for each chord in the current bar.
@@ -105,15 +109,14 @@ def parse(inpath):
     """ Process a mma input file. """
 
     global beginData, lastChord
-    global groovesList, groovesCount
-
+ 
     gbl.inpath = inpath
 
     curline = None
 
     while 1:
         curline = inpath.read()
-
+        
         if curline == None:
             MMA.docs.docDump()
             break
@@ -130,18 +133,22 @@ def parse(inpath):
             encountered.
 
             The placement here is pretty deliberate. Variable expand comes
-            later so you can't macorize BEGIN ... I think this makes sense.
+            later so you can't macroize BEGIN ... I think this makes sense.
+
+            The tests for 'begin', 'end' and the appending of the current
+            begin[] stuff have to be here, in this order.
         """
 
-        key=l[0].upper()
-        if key == 'BEGIN':
+        action=l[0].upper()      # 1st arg in line
+
+        if action == 'BEGIN':
             if not l:
                 error("Use: Begin STUFF")
             beginPoints.append(len(beginData))
             beginData.extend(l[1:])
             continue
 
-        if key == 'END':
+        if action == 'END':
             if len(l) > 1:
                 error("No arguments permitted for END")
             if not beginData:
@@ -151,9 +158,9 @@ def parse(inpath):
 
         if beginData:
             l = beginData + l
+            action = l[0].upper()
 
-        action = l[0].upper()
-
+        
         if gbl.showExpand and action !='REPEAT':
             print l
 
@@ -180,7 +187,7 @@ def parse(inpath):
             if len(l) < 2:
                 error("Expecting argument after '%s'" % name)
             action = l[1].upper()
-
+            
             if action in trackFuncs:
                 trackFuncs[action](name, l[2:])
             else:
@@ -197,7 +204,7 @@ def parse(inpath):
             a line number on a line by itself it okay.
         """
 
-        if l[0].isdigit():
+        if action.isdigit():   # isdigit() matches '1', '1234' but not '1a'!
             l = l[1:]
             if not l:        # ignore empty lines
                 continue
@@ -221,26 +228,28 @@ def parse(inpath):
         l = ' '.join(l)
         l = MMA.patSolo.extractSolo(l, rptcount)
 
-        """ Set lyrics from [stuff] in the current line or
-            stuff previously stored with LYRICS SET.
+        """ Set lyrics from [stuff] in the current line.
+            NOTE: lyric.extract() inserts previously created
+                  data from LYRICS SET and inserts the chord names
+                  if that flag is active.
         """
 
         l, lyrics = lyric.extract(l, rptcount)
+
+        l = l.split()
 
         """ At this point we have only chord info. A number
             of sanity checks are made:
               1. Make sure there is some chord data,
               2. Ensure the correct number of chords.
         """
-
-        l = l.split()
-
+ 
         if not l:
             error("Expecting music (chord) data. Even lines with\n"
                   "  lyrics or solos still need a chord")
 
         i = gbl.QperBar - len(l)
-        if i<0:
+        if i < 0:
             error("Too many chords in line. Max is %s, not %s" %
                   (gbl.QperBar, len(l) ) )
         if i:
@@ -249,7 +258,7 @@ def parse(inpath):
 
         """ We now have a valid line. It'll look something like:
 
-              ['Cm', '/', 'z', 'F#']
+              ['Cm', '/', 'z', 'F#'] or ['C', '/', '/', '/' ]
 
             For each bar we create a ctable structure. This is just
             a list of CTables, one for each beat division.
@@ -275,19 +284,24 @@ def parse(inpath):
 
         # Create MIDI data for the bar
 
-        for rpt in range(rptcount):
+        for rpt in range(rptcount):   # for each bar in the repeat count ( Cm * 3)
+
+            """ Handle global (de)cresc by popping a new volume off stack. """
+
             if MMA.volume.futureVol:
                 MMA.volume.volume = MMA.volume.futureVol.pop(0)
+            if MMA.volume.futureVol:
+                MMA.volume.nextVolume = MMA.volume.futureVol[0]
+            else:
+                MMA.volume.nextVolume = None
 
-            tmp = []
-            for x, i in enumerate(seqRndWeight):
-                tmp.extend([x] * i)
-            if not len(tmp):
-                error("SeqRndWeight has generated an empty list")
-            randomSeq = random.choice(tmp)
+            
+            """ Set up for rnd seq. This may set the current seq point. If return
+                is >=0 then we're doing track rnd. 
+            """
 
-            if gbl.seqRnd[0] == 1:
-                gbl.seqCount = randomSeq
+            rsq, seqlist = MMA.seqrnd.setseq()
+
 
             """ Process each track. It is important that the track classes
                 are written so that the ctable passed to them IS NOT MODIFIED.
@@ -296,15 +310,19 @@ def parse(inpath):
             """
 
             for a in gbl.tnames.values():
-                seqSave = gbl.seqCount
-                if a.name in gbl.seqRnd:
-                    gbl.seqCount = randomSeq
-
+                if rsq >= 0:
+                    seqSave = gbl.seqCount
+                    if a.name in seqlist:   # for seqrnd with tracklist
+                        gbl.seqCount = rsq
+                
                 a.bar(ctable)    ## process entire bar!
 
-                gbl.seqCount = seqSave
+                if rsq >= 0:
+                    gbl.seqCount = seqSave
 
             # Adjust counters
+
+            gbl.totTime += float(gbl.QperBar) / gbl.tempo
 
             gbl.barNum += 1
 
@@ -316,27 +334,7 @@ def parse(inpath):
 
             gbl.seqCount = (gbl.seqCount+1) % gbl.seqSize
 
-            """ Handle groove lists. If there is more than 1 entry
-                in the groove list, advance (circle). We don't have
-                to qualify grooves since they were verified when
-                this list was created. groovesList==None if there
-                is only one groove (or none).
-            """
-
-            if groovesList:
-                groovesCount += 1
-                if groovesCount > len(groovesList)-1:
-                    groovesCount = 0
-                slot = groovesList[groovesCount]
-
-                if slot !=  gbl.currentGroove:
-                    grooveDo(slot)
-
-                    gbl.lastGroove = gbl.currentGroove
-                    gbl.currentGroove = slot
-
-                    if gbl.debug:
-                        print "Groove (list) setting restored from '%s'." % slot
+            MMA.grooves.nextGroove()   # using groove list? Advance.
 
             # Enabled with the -r command line option
 
@@ -519,7 +517,7 @@ def repeat(ln):
     while 1:
         if act in ('REPEATEND', 'ENDREPEAT'):
             if l:
-                l=macros.expand(l)
+                l = macros.expand(l)
                 if len(l) == 2 and l[0].upper() == 'NOWARN':
                     l=l[1:]
                     warn=0
@@ -561,7 +559,7 @@ def repeat(ln):
             ending = 1
 
             if l:
-                l=macros.expand(l)
+                l = macros.expand(l)
                 if len(l) == 2 and l[0].upper() == 'NOWARN':
                     warn=0
                     l=l[1:]
@@ -701,6 +699,9 @@ def tempo(ln):
             print "Set future Tempo to %s over %s beats" % \
                 ( int(tempo), numbeats)
 
+    if gbl.tempo <=0:
+        error("Tempo setting must be greater than 0.")
+
 
 def beatAdjust(ln):
     """ Delete or insert some beats into the sequence.
@@ -716,6 +717,8 @@ def beatAdjust(ln):
     adj = stof(ln[0], "Expecting a value (not %s) for BeatAdjust" % ln[0])
 
     gbl.tickOffset += int(adj * gbl.BperQ)
+
+    gbl.totTime += adj / gbl.tempo   # adjust total time
 
     if gbl.debug:
         print "BeatAdjust: inserted %s at bar %s." % (adj, gbl.barNum + 1)
@@ -803,205 +806,7 @@ def fermata(ln):
                   % (start, end)
 
 
-#######################################
-# Groove stuff
 
-
-def grooveDefine(ln):
-    """ Define a groove.
-
-        Current settings are assigned to a groove name.
-    """
-
-    if not len(ln):
-        error("Use: DefGroove  Name")
-
-    slot=ln[0].upper()
-
-    # Slot names can't contain a '/' (reserved) or be an integer (used in groove select).
-
-    if '/' in slot:
-        error("The '/' is not permitted in a groove name")
-
-    if slot.isdigit():
-        error("Invalid slot name '%s'. Cannot be only digits" % slot)
-
-    grooveDefineDo(slot)
-
-    if gbl.debug:
-        print "Groove settings saved to '%s'." % slot
-
-    if gbl.makeGrvDefs:
-        MMA.auto.updateGrooveList(slot)
-
-    if len(ln) > 1:
-        MMA.docs.docDefine(ln)
-
-
-def grooveDefineDo(slot):
-
-    for n in gbl.tnames.values():
-        n.saveGroove(slot)
-
-    gbl.settingsGroove[slot] = {
-        'SEQSIZE':   gbl.seqSize,
-        'SEQRNDWT':  seqRndWeight[:],
-        'QPERBAR':   gbl.QperBar,
-        'SEQRND':    gbl.seqRnd[:],
-        'TIMESIG':   MMA.midi.timeSig.get(),
-        '81':        MMA.notelen.noteLenTable['81'],
-        '82':        MMA.notelen.noteLenTable['82'],
-        'SWINGMODE': gbl.swingMode ,
-        'SWINGSKEW': gbl.swingSkew,
-        'VRATIO':    (MMA.volume.vTRatio, MMA.volume.vMRatio)}
-
-
-def groove(ln):
-    """ Select a previously defined groove. """
-
-    global groovesList, groovesCount
-
-    if not ln:
-        error("Groove: needs agrument(s)")
-
-    tmpList =[]
-
-    if ln[0].isdigit():
-        wh=stoi(ln[0])
-        if wh<1:
-            error("Groove selection must be > 0, not '%s'" % wh)
-        ln=ln[1:]
-    else:
-        wh = None
-
-    for slot in ln:
-        slot = slot.upper()
-        if slot == "/":
-            if len(tmpList):
-                slot=tmpList[-1]
-            else:
-                error("A previous groove name is needed before a '/'")
-
-        if not slot in gbl.settingsGroove:
-
-            if gbl.debug:
-                print "Groove '%s' not defined. Trying auto-load from libraries" \
-                      % slot
-
-            l=MMA.auto.loadGrooveDir(slot)    # name of the lib file with groove
-
-            if l:
-                if gbl.debug:
-                    print "Attempting to load groove '%s' from '%s'." \
-                      % (slot, l)
-
-                usefile([os.path.join(gbl.autoLib, l)])
-
-                if not slot in gbl.settingsGroove:
-                    error("Groove '%s' not found. Have libraries changed "
-                          "since last 'mma -g' run?" % slot)
-
-            else:
-                error("Groove '%s' could not be found in memory or library files" % slot )
-
-        tmpList.append(slot)
-
-    if not len(tmpList):
-        error("Use: Groove [selection] Name [...]")
-
-    """ If the first arg to list was an int() (ie: 3 groove1 groove2 grooveFoo)
-        we select from the list. After the selection, we reset the list to be
-        just the selected entry. This was, if there are multiple groove names without
-        a leading int() we process the list as groove list changing with each bar.
-    """
-
-    if wh:
-        wh = (wh-1) % len(tmpList)
-        tmpList=tmpList[wh:wh+1]
-
-    slot=tmpList[0]
-    grooveDo(slot)
-
-    groovesCount = 0
-    if len(tmpList)==1:
-        groovesList=None
-    else:
-        groovesList=tmpList
-
-    gbl.lastGroove = gbl.currentGroove
-    gbl.currentGroove = slot
-    if gbl.lastGroove == '':
-        gbl.lastGroove = slot
-
-    if gbl.debug:
-        print "Groove settings restored from '%s'." % slot
-
-def grooveDo(slot):
-    """ This is separate from groove() so we can call it from
-        usefile() with a qualified name. """
-
-    global seqRndWeight
-
-    oldSeqSize = gbl.seqSize
-
-    g=gbl.settingsGroove[slot]
-
-    gbl.seqSize      = g['SEQSIZE']
-    seqRndWeight  = g['SEQRNDWT']
-    gbl.QperBar      = g['QPERBAR']
-    gbl.seqRnd    = g['SEQRND']
-    MMA.midi.timeSig.set( *g['TIMESIG'])  # passing tuple as 2 args.
-    MMA.notelen.noteLenTable['81'] = g['81']
-    MMA.notelen.noteLenTable['82'] = g['82']
-    gbl.swingMode = g['SWINGMODE']
-    gbl.swingSkew = g['SWINGSKEW']
-    MMA.volume.vTRatio, MMA.volume.vMRatio = g['VRATIO']
-
-    for n in gbl.tnames.values():
-        n.restoreGroove(slot)
-
-    """ This is important! Tracks NOT overwritten by saved grooves way
-        have the wrong sequence length. I don't see any easy way to hit
-        just the unchanged/unrestored tracks so we do them all.
-        Only done if a change in seqsize ... doesn't take long to be safe.
-    """
-
-    if oldSeqSize != gbl.seqSize:
-        for a in gbl.tnames.values():
-            a.setSeqSize()
-
-    seqRndWeight = MMA.pat.seqBump(seqRndWeight)
-
-    gbl.seqCount = 0
-
-def grooveClear(ln):
-    """ Delete all previously loaded grooves from memory."""
-
-    global groovesList, groovesCount
-
-    if ln:
-        error("GrooveClear does not have any arguments.")
-
-    groovesList = {}
-    groovesCount = 0
-    
-    try:
-        a= gbl.settingsGroove[gmagic]
-    except:
-        a=None
-
-    gbl.settingsGroove={}
-
-    if a:
-        gbl.settingsGroove[gmagic]=a
-
-    gbl.lastGroove = ''
-    gbl.currentGroove = ''
-
-
-    if gbl.debug:
-        print "All grooves deleted."
-    
 #######################################
 # File and I/O
 
@@ -1047,10 +852,9 @@ def usefile(ln):
     """
 
     slot = gmagic
-    grooveDefineDo(slot)
+    MMA.grooves.grooveDefineDo(slot)
     parseFile(fn)
-    grooveDo(slot)
-
+    MMA.grooves.grooveDo(slot)
 
 def mmastart(ln):
     if not ln:
@@ -1099,9 +903,9 @@ def setAutoPath(ln):
 
     # To avoid conflicts, delete all existing grooves (current seq not effected)
 
-    gbl.settingsGroove = {}
-    gbl.lastGroove = ''
-    gbl.currentGroove = ''
+    MMA.grooves.glist = {}
+    MMA.grooves.lastGroove = ''
+    MMA.grooves.currentGroove = ''
 
     if gbl.debug:
         print "AutoLibPath set to", f
@@ -1135,6 +939,20 @@ def setOutPath(ln):
     else:
         gbl.outPath = os.path.expanduser(ln[0])
 
+    if gbl.debug:
+        print "OutPath set to", gbl.outPath
+
+
+def setMidiPlayer(ln):
+    """ Set the MIDI file player (used with -P). """
+
+    if len(ln) != 1:
+        error("Use: MidiPlayer <program name>")
+    
+    gbl.midiPlayer = ln[0]
+
+    if gbl.debug:
+        print "MidiPlayer set to", gbl.MidiPlayer
 
 
 #######################################
@@ -1143,12 +961,13 @@ def setOutPath(ln):
 def seqsize(ln):
     """ Set the length of sequences. """
 
-    global seqRndWeight
-
     if len(ln) !=1:
         error("Usage 'SeqSize N'")
 
     n = stoi(ln[0], "Argument for SeqSize must be integer")
+
+    if n < 1:
+        error("SeqSize: sequence size must be 1 or greater, not '%s'." % n)
 
     # Setting the sequence size always resets the seq point
 
@@ -1164,7 +983,7 @@ def seqsize(ln):
         for a in gbl.tnames.values():
             a.setSeqSize()
 
-        seqRndWeight = seqBump(seqRndWeight)
+        MMA.seqrnd.seqRndWeight = seqBump(MMA.seqrnd.seqRndWeight)
 
     if gbl.debug:
         print "Set SeqSize to ", n
@@ -1193,9 +1012,9 @@ def seq(ln):
 
     gbl.seqCount = s-1
 
-    if gbl.seqRnd[0] == 1:
+    if MMA.seqrnd.seqRnd[0] == 1:
         warning("SeqRnd has been disabled by a Seq command")
-        seqRnd = [0]
+        MMA.seqrnd.seqRnd = [0]
 
 
 def seqClear(ln):
@@ -1209,66 +1028,8 @@ def seqClear(ln):
             n.clearSequence()
     MMA.volume.futureVol = []
 
-    setSeqRndWeight(['1'])
+    MMA.seqrnd.setSeqRndWeight(['1'])
 
-
-def setSeqRnd(ln):
-    """ Set random order for all tracks. """
-
-    emsg =  "use [ON, OFF | TrackList ]"
-    if not ln:
-        error("SeqRnd:" + emsg)
-
-    a=ln[0].upper()
-
-    if a in ("ON", "1") and len(ln) == 1:
-        gbl.seqRnd = [1]
-
-    elif a in ("OFF", "0") and len(ln) == 1:
-        gbl.seqRnd = [0]
-
-    else:
-        gbl.seqRnd=[2]
-        for a in ln:
-            a = a.upper()
-            if not a in gbl.tnames:
-                error("SeqRnd: Track '%s' does not exist, %s" % (a, emsg))
-            if a in gbl.seqRnd:
-                error("SeqRnd: Duplicate track '%s' specified, %s" % (a, emsg))
-            gbl.seqRnd.append(a)
-
-    if gbl.debug:
-        print "SeqRnd:",
-        if gbl.seqRnd[0] == 2:
-            for a in gbl.seqRnd[1:]:
-                print a,
-            print
-        else:
-            if gbl.seqRnd[0] == 1:
-                print "On"
-            else:
-                print "Off"
-
-
-def setSeqRndWeight(ln):
-    """ Set global rnd weight. """
-
-    global seqRndWeight
-
-    if not ln:
-        error("Use: RndWeight <weight factors>")
-
-    tmp = []
-    for n in ln:
-        n = stoi(n)
-        if n < 0: error("RndWeight: Values must be 0 or greater")
-        tmp.append(n)
-
-    seqRndWeight = seqBump(tmp)
-
-    if gbl.debug:
-        print "RndWeight: ",
-        printList(seqRndWeight)
 
 
 def restart(ln):
@@ -1448,6 +1209,20 @@ def setTimeSig(ln):
 #######################################
 # Misc
 
+def synchronize(ln):
+    """ Set synchronization in the MIDI. A file mode for -0 and -1. """
+
+    if not ln:
+        error("SYNCHRONIZE: requires args END and/or START.")
+    
+    for a in ln:
+        if a.upper() == 'END':
+            gbl.endsync =  1
+        elif a.upper() == 'START':
+            gbl.synctick = 1
+        else:
+            error("SYNCHRONIZE: expecting END or START")
+
 
 def rndseed(ln):
     """ Reseed the random number generator. """
@@ -1486,7 +1261,7 @@ def lnPrint(ln):
 def printActive(ln):
     """ Print a list of the active tracks. """
 
-    print "Active tracks, groove:", gbl.currentGroove, ' '.join(ln)
+    print "Active tracks, groove:", MMA.grooves.currentGroove, ' '.join(ln)
 
     for a in sorted(gbl.tnames.keys()):
         f=gbl.tnames[a]
@@ -1700,31 +1475,6 @@ def trackRestart(name, ln):
     gbl.tnames[name].restart()
 
 
-
-def trackGroove(name, ln):
-    """ Select a previously defined groove for a single track. """
-
-    if len(ln) != 1:
-        error("Use: %s Groove Name" % name)
-
-
-    slot = ln[0].upper()
-
-    if not slot in gbl.settingsGroove:
-        error("Groove '%s' not defined" % slot)
-
-    g=gbl.tnames[name]
-    g.restoreGroove(slot)
-
-    if g.sequence == [None] * len(g.sequence):
-        warning("'%s' Track Groove has no sequence. Track name error?" % name)
-
-    g.setSeqSize()
-
-    if gbl.debug:
-        print "%s Groove settings restored from '%s'." % (name, slot)
-
-
 def trackRiff(name, ln):
     """ Set a riff for a track. """
 
@@ -1776,6 +1526,8 @@ def trackRvolume(name, ln):
 
     gbl.tnames[name].setRVolume(ln)
 
+def trackSwell(name, ln):
+    gbl.tnames[name].setSwell(ln)
 
 def trackCresc(name, ln):
     gbl.tnames[name].setCresc(1, ln)
@@ -2125,11 +1877,10 @@ def trackVoice(name, ln):
 def trackPan(name, ln):
     """ Set the Midi Pan value for a track."""
 
-    if len(ln) != 1:
-        error("Use: %s PAN NN" % name)
-
-    gbl.tnames[name].setPan(ln[0])
-
+    if len(ln)==1 or len(ln)==3:
+        gbl.tnames[name].setPan(ln)
+    else:
+        error("Use %s MidiPAN [Value] OR [Initvalue DestValue Beats]." % name)
 
 def trackOff(name, ln):
     """ Turn a track off """
@@ -2253,19 +2004,22 @@ def trackUnify(name, ln):
 
 simpleFuncs={
     'ADJUSTVOLUME':     MMA.volume.adjvolume,
+    'ALLGROOVES':       MMA.grooves.allgrooves,
     'ALLTRACKS':        allTracks,
     'AUTHOR':           MMA.docs.docAuthor,
     'AUTOSOLOTRACKS':   MMA.patSolo.setAutoSolo,
     'BEATADJUST':       beatAdjust,
     'CHANNELPREF':      setChPref,
+    'CHORDADJUST':      MMA.chords.chordAdjust,
     'COMMENT':          comment,
     'CRESC':            MMA.volume.setCresc,
     'CUT':              cut,
     'DEBUG':            setDebug,
     'DEC':              macros.vardec,
     'DECRESC':          MMA.volume.setDecresc,
+    'DEFALIAS':         MMA.grooves.grooveAlias,
     'DEFCHORD':         MMA.chords.defChord,
-    'DEFGROOVE':        grooveDefine,
+    'DEFGROOVE':        MMA.grooves.grooveDefine,
     'DELETE':           deleteTrks,
     'DOC':              MMA.docs.docNote,
     'DOCVAR':           MMA.docs.docVars,
@@ -2277,8 +2031,8 @@ simpleFuncs={
     'EOF':              eof,
     'FERMATA':          fermata,
     'GOTO':             goto,
-    'GROOVE':           groove,
-    'GROOVECLEAR':      grooveClear,
+    'GROOVE':           MMA.grooves.groove,
+    'GROOVECLEAR':      MMA.grooves.grooveClear,
     'IF':               macros.varIF,
     'IFEND':            ifend,
     'INC':              macros.varinc,
@@ -2297,7 +2051,7 @@ simpleFuncs={
     'MSET':             macros.msetvar,
     'MSETEND':          endmset,
     'NEWSET':           macros.newsetvar,
-    'CHORDADJUST':      MMA.chords.chordAdjust,
+    'PATCH':            MMA.patch.patch,
     'PRINT':            lnPrint,
     'PRINTACTIVE':      printActive,
     'PRINTCHORD':       MMA.chords.printChord,
@@ -2309,17 +2063,20 @@ simpleFuncs={
     'RNDSET':           macros.rndvar,
     'SEQ':              seq,
     'SEQCLEAR':         seqClear,
-    'SEQRND':           setSeqRnd,
-    'SEQRNDWEIGHT':     setSeqRndWeight,
+    'SEQRND':           MMA.seqrnd.setSeqRnd,
+    'SEQRNDWEIGHT':     MMA.seqrnd.setSeqRndWeight,
     'SEQSIZE':          seqsize,
     'SET':              macros.setvar,
     'SETAUTOLIBPATH':   setAutoPath,
     'SETINCPATH':       setIncPath,
     'SETLIBPATH':       setLibPath,
+    'SETMIDIPLAYER':    setMidiPlayer,
     'SETOUTPATH':       setOutPath,
     'SHOWVARS':         macros.showvars,
     'STACKVALUE':       macros.stackValue,
+    'SWELL':            MMA.volume.setSwell,
     'SWINGMODE':        MMA.notelen.swingMode,
+    'SYNCHRONIZE':      synchronize,
     'TEMPO':            tempo,
     'TIME':             setTime,
     'TIMESIG':          setTimeSig,
@@ -2350,7 +2107,7 @@ trackFuncs={
     'DRUMTYPE':        trackDrumType,
     'DUPROOT':         trackDupRoot,
     'FORCEOUT':        trackForceOut,
-    'GROOVE':          trackGroove,
+    'GROOVE':          MMA.grooves.trackGroove,
     'HARMONY':         trackHarmony,
     'HARMONYONLY':     trackHarmonyOnly,
     'HARMONYVOLUME':   trackHarmonyVolume,
@@ -2379,6 +2136,7 @@ trackFuncs={
     'SEQRND':          trackSeqRnd,
     'SEQUENCE':        trackSequence,
     'SEQRNDWEIGHT':    trackSeqRndWeight,
+    'SWELL':           trackSwell,
     'NOTESPAN':        trackSpan,
     'STRUM':           trackStrum,
     'TONE':            trackTone,

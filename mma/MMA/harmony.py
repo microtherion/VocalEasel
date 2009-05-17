@@ -90,16 +90,16 @@ def harmonize(hmode, note, chord):
 def gethnote(note, chord):
     """ Determine harmony notes for a note based on the chord.
 
-    note - midi value of the note
+        note - midi value of the note
 
-    chord - list of midi values for the chord
+        chord - list of midi values for the chord
 
 
-    This routine works by creating a chord list with all
-    its notes having a value less than the note (remember, this
-    is all MIDI values). We then grab notes from the end of
-    the chord until one is found which is less than the original
-    note.
+        This routine works by creating a chord list with all
+        its notes having a value less than the note (remember, this
+        is all MIDI values). We then grab notes from the end of
+        the chord until one is found which is less than the original
+        note.
     """
 
     wm="No harmony note found since no chord, using note " + \

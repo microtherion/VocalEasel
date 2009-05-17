@@ -31,9 +31,10 @@ import MMA.patScale
 import MMA.patArpeggio
 import MMA.patSolo
 import MMA.patAria
+import MMA.grooves
+
 import gbl
 from   MMA.common import *
-
 
 trkClasses = {
     'BASS'     : MMA.patBass.Bass,
@@ -75,9 +76,9 @@ def trackAlloc(name, err):
         If not, we either error (err==1) or return (err==0).
     """
 
-    if trkClasses.has_key(base):
+    try:
         f = trkClasses[base]
-    else:
+    except:
         if err:
             error("There is no track class '%s' for trackname '%s'" % (base, name) )
         else:
@@ -93,7 +94,7 @@ def trackAlloc(name, err):
 
     # Update current grooves to reflect new track.
 
-    for slot in gbl.settingsGroove.keys():
+    for slot in MMA.grooves.glist.keys():
         newtk.saveGroove(slot)
 
 

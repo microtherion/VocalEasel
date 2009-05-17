@@ -26,9 +26,11 @@ This module handles voice name translations.
 
 """
 
-import gbl
 import MMA.midiC
+
+import gbl
 from   MMA.common import *
+
 
 
 """ Translation table for VOICE. This is ONLY used when a voice is set
@@ -78,10 +80,9 @@ class Vtable:
         """ Return a translation or original. """
 
         name=name.upper()
-        if self.table.has_key(name):
+        try:
             return self.table[name]
-
-        else:
+        except KeyError:
             return name
 
 vtable=Vtable()            # Create single class instance.
@@ -123,24 +124,32 @@ class Dtable:
                 error("Each translation pair must be in the format Voice=Alias")
             v,a = l.split('=')
 
-            v=MMA.midiC.drumToValue(v)
-            a=MMA.midiC.drumToValue(a)
+            v1=MMA.midiC.drumToValue(v)
+            if v1<0:
+                error("Drum Tone '%s' not defined." % v)
+            a1=MMA.midiC.drumToValue(a)
+            if a1<0:
+                error("Drum Tone '%s' not defined." % a)
 
-            self.table[v] = a
+            self.table[v1] = a1
             if gbl.debug:
                 print "DrumTone Translation: %s=%s" % \
                       (MMA.midiC.valueToDrum(v), MMA.midiC.valueToDrum(a))
 
 
     def get(self, name):
-        """ Return a translation or original. """
+        """ Return a translation or original. Note that this also does
+            validation of 'name'. It is called from patDrum and patSolo. 
+        """
 
         v=MMA.midiC.drumToValue(name)
+        
+        if v<0:
+            error("Drum Tone '%s' not defined." % name)
 
-        if self.table.has_key(v):
+        try:
             return self.table[v]
-
-        else:
+        except KeyError:
             return v
 
 
@@ -195,10 +204,10 @@ class VoiceVolTable:
     def get(self, v, vol):
         """ Return an adjusted value or original. """
 
-        if self.table.has_key(v):
+        try:
             vol = int(vol * self.table[v])
-
-        return vol
+        except KeyError:
+            return vol
 
 
 voiceVolTable=VoiceVolTable()
@@ -245,10 +254,10 @@ class DrumVolTable:
     def get(self, v, vol):
         """ Return an adjusted value or original. """
 
-        if self.table.has_key(v):
+        try:
             vol = int(vol * self.table[v])
-
-        return vol
+        except KeyError:
+            return vol
 
 
 drumVolTable=DrumVolTable()

@@ -23,14 +23,16 @@ Bob van der Poel <bob@mellowood.ca>
 
 """
 
+import MMA.notelen
+import MMA.translate
+import MMA.harmony
+import MMA.volume
+import MMA.alloc
+
 import gbl
 from   MMA.common import *
-from   MMA.notelen import getNoteLen
-import MMA.translate
-from   MMA.harmony import harmonize
 from   MMA.pat import PC
-import MMA.alloc
-import MMA.volume
+
 
 
 class NoteList:
@@ -79,9 +81,10 @@ class Melody(PC):
 
         if len(ln) > 1:
             error("Only 1 value permitted for Drum Tone in Solo tracks")
-
+        
+        
         self.drumTone = MMA.translate.dtable.get(ln[0])
-
+        
 
     def getLine(self, pat, ctable):
         """ Extract a melodyline for solo/melody tracks.
@@ -128,25 +131,25 @@ class Melody(PC):
         """
 
         if gbl.swingMode:
-            len8 = getNoteLen('8')
-            len81 = getNoteLen('81')
-            len82 = getNoteLen('82')
+            len8 = MMA.notelen.getNoteLen('8')
+            len81 = MMA.notelen.getNoteLen('81')
+            len82 = MMA.notelen.getNoteLen('82')
             onBeats = [ x * gbl.BperQ for x in range(gbl.QperBar)]
             offBeats = [ (x * gbl.BperQ + len8) for x in range(gbl.QperBar)]
 
 
-        length = getNoteLen('4')    # default note length
+        length = MMA.notelen.getNoteLen('4')    # default note length
         lastc = ''                  # last parsed note
         velocity = 90               # intial/default velocity for solo notes
 
         notes={}   # A dict of NoteList, keys == offset
-
+        
         if self.drumType:
             isdrum = 1
             lastc = str(self.drumTone)
         else:
             isdrum = None
-
+        
         pat = pat.replace(' ', '').split(';')[:-1]
 
         # set initial offset into bar
@@ -206,7 +209,7 @@ class Melody(PC):
                     i+=1
 
             if i:
-                l=getNoteLen(a[0:i])
+                l=MMA.notelen.getNoteLen(a[0:i])
                 c=a[i:]
             else:
                 l=length
@@ -219,7 +222,6 @@ class Melody(PC):
 
             length = l    # set defaults for next loop
             lastc = c
-
 
             """ Convert the note part into a series of midi values
                 Notes can be a single note, or a series of notes. And
@@ -286,7 +288,7 @@ class Melody(PC):
                     elif name == '*':
                         v = self.drumTone
                     else:
-                        v = MMA.translate.dtable.get(name)
+                        v = int(MMA.translate.dtable.get(name))
 
 
                 """ Swingmode -- This tests for successive 8ths on/off beat
@@ -310,7 +312,7 @@ class Melody(PC):
                     notes[offset] = NoteList(l)
 
                 # add note event to note[] array
-
+                
                 notes[offset].nl.append(v)
                 notes[offset].velocity.append(self.adjustVolume(velocity, offset))
 
@@ -336,7 +338,7 @@ class Melody(PC):
 
     def addHarmony(self, notes, ctable):
         """ Add harmony to solo notes. """
-
+        
         sc=self.seq
 
         harmony = self.harmony[sc]
@@ -352,7 +354,7 @@ class Melody(PC):
                 if tb.chordZ:
                     continue
 
-                h = harmonize(harmony, nn.nl[0], tb.chord.bnoteList)
+                h = MMA.harmony.harmonize(harmony, nn.nl[0], tb.chord.bnoteList)
 
                 """ If harmonyonly set then drop note, substitute harmony,
                     else append harmony notes to chord.
@@ -622,7 +624,7 @@ def extractSolo(ln, rptcount):
         """
 
         for t in autoSoloTracks[1:]:
-            if gbl.tnames.has_key(t) and gbl.tnames[t].riff == [] \
+            if t in gbl.tnames and gbl.tnames[t].riff == [] \
                    and max(gbl.tnames[t].harmonyOnly):
                 gbl.tnames[t].setRiff( firstSolo[:] )
 

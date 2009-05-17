@@ -67,6 +67,10 @@ okay("""Okay, I'm ready to create the links. I will create 2 links:
 os.system("ln -sf `pwd` %s" % dir)
 os.system("ln -sf `pwd`/mma.py %s" % exe)
 
+
+print "There are some man pages in %s/docs/man that you may wish to install." % dir
+
+
 print "Everything seems to be okay. We suggest you first update the database"
 print "with the command mma -G."
 print "Have Fun!"

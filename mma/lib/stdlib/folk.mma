@@ -99,6 +99,30 @@ End
 
 DefGroove FolkArticulated  Fingered picked guitar and a bit of bass.
 
+
+///////////////////
+/// Sustained versions
+
+Groove Folk
+
+Begin Chord-Sus
+	Sequence { 1 2 90 0 90 0; 3 2-0 90 0 90 0}
+	Octave     6
+	DupRoot   -1
+	Voice     Harmonica 
+	Voicing   Mode=Optimal
+	Articulate 100
+	Unify      On
+	Volume     ppp
+End
+
+DefGroove FolkSus  Some nice harmonica chords with the guitar.
+
+Groove FolkArticulated
+Chord-Sus Groove FolkSus
+DefGroove FolkArticulatedSus  Articulated version with harmonica.
+
+
 ///////////////////////////
 //// Introduction
 

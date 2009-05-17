@@ -252,35 +252,37 @@ class Lyric:
 
         if self.dupchords:
             ly = []
+            for v in ln.split():   # do each chord symbol or '/' mark
 
-            for v in ln.split():
-                v = v.replace('&', 'b')
-                if v == 'z':
-                    v = 'N.C.'
-                if 'z' in v:
-                    v = v.split('z')[0]
-                while v.startswith('-'):
-                    v=v[1:]
-                while v.startswith('+'):
-                    v=v[1:]
+                if v != '/':
+                    v = v.replace('&', 'b')    # remember, "&" is optional
+                    
+                    if v == 'z' or v == 'z!':  # convert plain z to "NC"
+                        v = 'N.C.'
 
-                if self.transpose:
-                    tr=0   # Needed in case line is invalid!
-                    cn=v[0:2]
-                    if self.chordnames.has_key(cn):
-                        tr=self.chordnames[cn] + self.transpose
+                    if 'z' in v:               # strip out the 'zCDA..' after the chord
+                        v = v.split('z')[0]
+                    
+                    v = v.lstrip("+-")         # strip off leading "+" and "-"
+                    
+                    if self.transpose:   # transpose will be set to 0, 1, -1, etc.
+                        t=None           # Needed in case line is not a chord ('/', "NC")!
+                        
+                        try:             # try for 2 char chord name (F#, Gb, etc)
+                            cn=v[0:2]
+                            t=self.chordnames[cn] + self.transpose
+                        except:
+                            try:         # try 1 char chord name (C, D, etc)
+                                cn=v[0:1]
+                                t=self.chordnames[cn] + self.transpose
+                            except:
+                                pass     # not a chord pitch
 
-                    else:
-                        cn=v[0:1]
-                        if self.chordnames.has_key(cn):
-                            tr=self.chordnames[cn] + self.transpose
+                        if t != None:    # use None, 0 is okay
+                            while t>=12: t-=12
+                            while t<=-12: t+=12
 
-                    while tr>=12: tr-=12
-                    while tr<=-12: tr+=12
-
-                    if tr:
-                        v = self.transNames[self.transKey][tr] + v[len(cn):]
-
+                            v = self.transNames[self.transKey][t] + v[len(cn):]
 
                 ly.append(v)
 
