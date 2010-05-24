@@ -449,6 +449,9 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 	while (i!=e) {	
 		VLNoteList::const_iterator 	n 	= i;
 		++n;
+		VLNoteList::const_iterator 	n2 	= n;
+		if (n2 != e)
+			++n2;
 		
 		VLLyricsNote c	= *i;	// Current note, remaining duration
 		VLLyricsNote p  = c;	// Next partial note
@@ -536,8 +539,8 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 				if ((p.fDuration == sw6 && (at % grid4 == 0)) 
 				 || (swing16 && p.fDuration == sw12 && (at % grid8 == 0))
 				) {
-					if (p.fDuration == c.fDuration && n!=e 
-					 && n->fDuration == p.fDuration
+					if (p.fDuration == c.fDuration && n2!=e
+					 && n->fDuration == p.fDuration && n2->fDuration >= p.fDuration
 					) {
 						; // Triplet, not swing note
 					} else {

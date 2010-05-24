@@ -2,25 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UTExportedTypeDeclarations</key>
-	<array>
-		<dict>
-			<key>UTTypeDescription</key>
-			<string>VocalEasel song</string>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>public.content</string>
-				<string>com.apple.package</string>
-			</array>
-			<key>UTTypeIdentifier</key>
-			<string>org.aereperennius.vocaleasel-song</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<string>vlsong</string>
-			</dict>
-		</dict>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDocumentTypes</key>
@@ -256,10 +237,29 @@
 	<key>CFBundleSignature</key>
 	<string>VçEz</string>
 	<key>CFBundleVersion</key>
-	<string>1.2</string>
+	<string>1.3a1</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.content</string>
+				<string>com.apple.package</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>VocalEasel song</string>
+			<key>UTTypeIdentifier</key>
+			<string>org.aereperennius.vocaleasel-song</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<string>vlsong</string>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>
