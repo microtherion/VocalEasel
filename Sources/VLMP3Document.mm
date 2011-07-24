@@ -5,9 +5,10 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2008 Matthias Neeracher
+// Copyright © 2008-2011 Matthias Neeracher
 //
 
+#import "VLAppController.h"
 #import "VLMP3Document.h"
 
 @implementation VLDocument (MP3)
@@ -22,7 +23,7 @@
 	}
 	NSBundle *	mainBundle	= [NSBundle mainBundle];
 	
-	[self createTmpFileWithExtension:@"aiff" ofType:@"VLAIFFType"];
+	[self createTmpFileWithExtension:@"aiff" ofType:VLAIFFType];
 	
 	NSURL *		aiffURL  = [self fileURLWithExtension:@"aiff"];
 	NSURL *     mp3URL   = [self fileURLWithExtension:@"mp3"];

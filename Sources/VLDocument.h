@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2007 Matthias Neeracher
+// Copyright © 2005-2011 Matthias Neeracher
 //
 
 #import "VLModel.h"
@@ -16,6 +16,16 @@
 @class VLPDFWindow;
 @class VLLogWindow;
 @class PDFDocument;
+
+#define VLBIABType      @"VLBIABType"
+#define VLNativeType    @"org.aereperennius.vocaleasel-song"
+#define VLLilypondType  @"org.lilypond.lilypond-source"
+#define VLMusicXMLType  @"VLMusicXMLType"
+#define VLMMAType       @"VLMMAType"
+#define VLMIDIType      @"public.midi"
+#define VLPDFType       @"com.adobe.pdf"
+#define VLAIFFType      @"public.aifc-audio"
+#define VLMP3Type       @"public.mp3"
 
 enum {
 	kVLPlayAccompaniment = 1,

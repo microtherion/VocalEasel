@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright Â© 2006-2007 Matthias Neeracher
+// Copyright © 2006-2011 Matthias Neeracher
 //
 
 #import "VLMIDIDocument.h"
@@ -17,7 +17,7 @@
 {
 	NSBundle *	mainBundle	= [NSBundle mainBundle];
 
-	[self createTmpFileWithExtension:@"mma" ofType:@"VLMMAType"];
+	[self createTmpFileWithExtension:@"mma" ofType:VLMMAType];
 
 	NSURL *		mmaURL  = [self fileURLWithExtension:@"mma"];
 	NSString *	launch	=

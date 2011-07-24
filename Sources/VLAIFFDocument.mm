@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2008 Matthias Neeracher
+// Copyright © 2008-2011 Matthias Neeracher
 //
 
 #import "VLAIFFDocument.h"
@@ -17,7 +17,7 @@
 
 - (NSFileWrapper *)aiffFileWrapperWithError:(NSError **)outError
 {
-	[self createTmpFileWithExtension:@"mid" ofType:@"VLMIDIType"];
+	[self createTmpFileWithExtension:@"mid" ofType:VLMIDIType];
 
 	NSURL *		midiURL  = [self fileURLWithExtension:@"mid"];
 	NSURL * 	aiffURL  = [self fileURLWithExtension:@"aiff"];

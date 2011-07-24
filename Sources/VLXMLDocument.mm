@@ -17,7 +17,7 @@
 {
 	static NSArray * sPropertyKeys = nil;
 
-	NSFileWrapper * contents = [self fileWrapperWithFilter:@"VLMusicXMLType" error:outError];
+	NSFileWrapper * contents = [self fileWrapperWithFilter:VLMusicXMLType error:outError];
 	
 	if (!contents) {
 		return nil;
@@ -82,10 +82,10 @@
 			[self setPrintInfo:pi];
 			[undoMgr enableUndoRegistration];
 		}
-		return [self readFromFileWrapper:[wrappers objectForKey:@"Song"] withFilter:@"VLMusicXMLType"	
+		return [self readFromFileWrapper:[wrappers objectForKey:@"Song"] withFilter:VLMusicXMLType	
 					 error:outError];
 	} else {
-		if ([self readFromFileWrapper:wrapper withFilter:@"VLMusicXMLType" error:outError]) {
+		if ([self readFromFileWrapper:wrapper withFilter:VLMusicXMLType error:outError]) {
 			[self setFileURL:nil];
 			
 			return YES;

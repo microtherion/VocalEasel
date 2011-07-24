@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright Â© 2006-2007 Matthias Neeracher
+// Copyright © 2006-2007 Matthias Neeracher
 //
 
 #import "VLMMADocument.h"

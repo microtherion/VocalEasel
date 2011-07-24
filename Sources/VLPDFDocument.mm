@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright Â© 2006-2007 Matthias Neeracher
+// Copyright © 2006-2011 Matthias Neeracher
 //
 
 #import "VLPDFDocument.h"
@@ -17,7 +17,7 @@
 	NSString *  base			= [self baseName];
 	NSBundle *	mainBundle		= [NSBundle mainBundle];
 
-	[self createTmpFileWithExtension:@"ly" ofType:@"VLLilypondType"];
+	[self createTmpFileWithExtension:@"ly" ofType:VLLilypondType];
 
 	NSString *	launch	=
 		[mainBundle pathForResource:@"lilyWrapper" ofType:@""

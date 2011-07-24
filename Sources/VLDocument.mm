@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2008 Matthias Neeracher
+// Copyright © 2005-2011 Matthias Neeracher
 //
 
 #import "VLDocument.h"
@@ -403,7 +403,7 @@
 					  forSaveOperation:saveOperation error:outError];
 	if (!vcsWrapper)
 		vcsWrapper = preservedVCSWrapper;
-	if ([typeName isEqual:@"VLNativeType"])
+	if ([typeName isEqual:VLNativeType])
 		[validTmpFiles removeAllObjects];
 	
 	return res;
@@ -411,21 +411,21 @@
 
 - (NSFileWrapper *)fileWrapperOfType:(NSString *)typeName error:(NSError **)outError
 {
-	if ([typeName isEqual:@"VLNativeType"]) {
+	if ([typeName isEqual:VLNativeType]) {
 		return [self XMLFileWrapperWithError:outError flat:NO];
-	} else if ([typeName isEqual:@"VLMusicXMLType"]) {
+	} else if ([typeName isEqual:VLMusicXMLType]) {
 		return [self XMLFileWrapperWithError:outError flat:YES];
-	} else if ([typeName isEqual:@"VLLilypondType"]) {
+	} else if ([typeName isEqual:VLLilypondType]) {
 		return [self lilypondFileWrapperWithError:outError];
-	} else if ([typeName isEqual:@"VLMMAType"]) {
+	} else if ([typeName isEqual:VLMMAType]) {
 		return [self mmaFileWrapperWithError:outError];
-	} else if ([typeName isEqual:@"VLMIDIType"]) {
+	} else if ([typeName isEqual:VLMIDIType]) {
 		return [self midiFileWrapperWithError:outError];
-	} else if ([typeName isEqual:@"VLAIFFType"]) {
+	} else if ([typeName isEqual:VLAIFFType]) {
 		return [self aiffFileWrapperWithError:outError];
-	} else if ([typeName isEqual:@"VLMP3Type"]) {
+	} else if ([typeName isEqual:VLMP3Type]) {
 		return [self mp3FileWrapperWithError:outError];
-	} else if ([typeName isEqual:@"VLPDFType"]) {
+	} else if ([typeName isEqual:VLPDFType]) {
 		return [self pdfFileWrapperWithError:outError];
 	} else {
 		if (outError)
@@ -449,9 +449,9 @@
 			[[doc windowControllers] 
 				makeObjectsPerformSelector:@selector(close)];
 
-	if ([typeName isEqual:@"VLNativeType"] || [typeName isEqual:@"VLMusicXMLType"]) {
+	if ([typeName isEqual:VLNativeType] || [typeName isEqual:VLMusicXMLType]) {
 		return [self readFromXMLFileWrapper:wrapper error:outError];
-	} else if ([typeName isEqual:@"VLLilypondType"] || [typeName isEqual:@"VLBIABType"]) {
+	} else if ([typeName isEqual:VLLilypondType] || [typeName isEqual:VLBIABType]) {
 		if ([self readFromFileWrapper:wrapper withFilter:typeName error:outError]) {
 			[self setFileURL:nil];
 			return YES;
@@ -513,7 +513,7 @@
 	if (hasMusicSequence) {
 		VLSoundOut::Instance()->PlaySequence(NULL);
 	} else {
-		[self createTmpFileWithExtension:@"mid" ofType:@"VLMIDIType"];
+		[self createTmpFileWithExtension:@"mid" ofType:VLMIDIType];
 
 		MusicSequence	music;
 		NewMusicSequence(&music);
@@ -618,7 +618,7 @@
 
 - (IBAction) showOutput:(id)sender
 {
-	[self createTmpFileWithExtension:@"pdf" ofType:@"VLPDFType"];
+	[self createTmpFileWithExtension:@"pdf" ofType:VLPDFType];
 	[[self pdfWin] showWindow:sender];
 	[pdfWin reloadPDF];
 }
@@ -626,7 +626,7 @@
 - (NSPrintOperation *)printOperationWithSettings:(NSDictionary *)printSettings 
 										   error:(NSError **)outError 
 {
-	[self createTmpFileWithExtension:@"pdf" ofType:@"VLPDFType"];
+	[self createTmpFileWithExtension:@"pdf" ofType:VLPDFType];
 	[printDoc autorelease];
 	printDoc = [[PDFDocument alloc] initWithURL:[self fileURLWithExtension:@"pdf"]];
 
