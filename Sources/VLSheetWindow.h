@@ -24,7 +24,7 @@
 
 @end
 
-@interface VLSheetWindow : NSWindowController {
+@interface VLSheetWindow : NSWindowController <NSToolbarDelegate> {
 	VLEditable *	editTarget;
 
 	IBOutlet id 	outputToolItem;

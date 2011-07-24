@@ -10,7 +10,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface VLPDFWindow : NSWindowController {
+@interface VLPDFWindow : NSWindowController <NSToolbarDelegate> {
 	IBOutlet id	pdfView;
 	IBOutlet id prevPageItem;
 	IBOutlet id nextPageItem;
