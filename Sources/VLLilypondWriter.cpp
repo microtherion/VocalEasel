@@ -187,10 +187,10 @@ static const char kValue[] = {
 	1, 2, 4, 8, 16, 32
 };
 
-static std::string	LilypondPitchName(int8_t pitch, bool useSharps)
+static std::string	LilypondPitchName(int8_t pitch, bool useSharps, bool restIsSkip)
 {
 	if (pitch == VLNote::kNoPitch)
-		return "r";
+		return restIsSkip ? "s" : "r";
 	pitch %= 12;
 	if (kScale[pitch] != ' ')
 		return kScale[pitch] + std::string();
@@ -257,7 +257,7 @@ static bool PreferSharps(bool globalSharps, int noteAccidentals)
 void VLLilypondWriter::VisitNote(VLLyricsNote & n)							   
 {
 	std::string nm = 
-		LilypondPitchName(n.fPitch, PreferSharps(fUseSharps, n.fVisual));
+		LilypondPitchName(n.fPitch, PreferSharps(fUseSharps, n.fVisual), false);
 	if (n.fPitch != VLNote::kNoPitch) {
 		int ref = VLNote::kMiddleC-VLNote::kOctave;
 		for (int ticks = (n.fPitch-ref)/VLNote::kOctave; ticks>0; --ticks)
@@ -304,7 +304,7 @@ static const char * kLilypondStepNames[] = {
 void VLLilypondWriter::VisitChord(VLChord & c)									
 {
 	std::string name = 
-		LilypondPitchName(c.fPitch, PreferSharps(fUseSharps, c.fVisual));
+		LilypondPitchName(c.fPitch, PreferSharps(fUseSharps, c.fVisual), true);
 	char duration[16];
 	if (c.fDuration.fNum == 1 && !(c.fDuration.fDenom & (c.fDuration.fDenom-1))) // Power of two
 		sprintf(duration, "%d", c.fDuration.fDenom);
@@ -396,7 +396,7 @@ void VLLilypondWriter::VisitChord(VLChord & c)
 	// Root
 	//
 	if (c.fRootPitch != VLNote::kNoPitch)
-		name += "/+" + LilypondPitchName(c.fRootPitch, fUseSharps);
+		name += "/+" + LilypondPitchName(c.fRootPitch, fUseSharps, false);
 
  done:
 	if (fAccum.size())
