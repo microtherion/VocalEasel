@@ -48,18 +48,16 @@
 			<true/>
 			<key>NSDocumentClass</key>
 			<string>VLDocument</string>
-			<key>NSExportableAs</key>
+			<key>NSExportableTypes</key>
 			<array>
-				<string>VLPDFType</string>
-				<string>VLMIDIType</string>
+				<string>com.adobe.pdf</string>
+				<string>public.midi</string>
 				<string>VLMusicXMLType</string>
-				<string>VLLilypondType</string>
+				<string>org.lilypond.lilypond-source</string>
 				<string>VLMMAType</string>
-				<string>VLAIFFType</string>
-				<string>VLMP3Type</string>
+				<string>public.aifc-audio</string>
+				<string>public.mp3</string>
 			</array>
-			<key>NSPersistentStoreTypeKey</key>
-			<string>XML</string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeExtensions</key>
@@ -236,12 +234,16 @@
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
 	<string>VçEz</string>
+	<key>CFBundleURLTypes</key>
+	<array/>
 	<key>CFBundleVersion</key>
 	<string>1.3a1</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSServices</key>
+	<array/>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
@@ -257,9 +259,13 @@
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
-				<string>vlsong</string>
+				<array>
+					<string>vlsong</string>
+				</array>
 			</dict>
 		</dict>
 	</array>
+	<key>UTImportedTypeDeclarations</key>
+	<array/>
 </dict>
 </plist>
