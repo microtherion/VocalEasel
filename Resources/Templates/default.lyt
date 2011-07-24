@@ -31,9 +31,9 @@ vlFlat = #(markup #:hspace 0.2 (alteration->text-accidental-markup FLAT))
    "Stack two accidentals"
    (interpret-markup layout props
     (markup #:raise 3.0 #:fontsize -5.0 #:column (#:with-dimensions '(0 . 3) '(0 . 5) top bottom))))
-#(define-public (vlBassNamer pitch) 
+#(define-public (vlBassNamer . args) 
   "Return pitch markup for PITCH."
-  (markup #:sub #:line (#:raise 1.0 "/" (note-name->markup pitch))))
+  (markup #:sub #:line (#:raise 1.0 "/" (apply note-name->markup args))))
 
 vlExceptionMusic =  {
     <c e g bes d' a'>1-\markup { \super "13" } 
