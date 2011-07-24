@@ -84,6 +84,11 @@
 		chordSize			= 6.0f;
 		lyricSize			= 0.0f;
 		staffSize			= 20.0f;
+        topPadding          = 2.0f;
+        titlePadding        = 4.0f;
+        staffPadding        = 3.0f;
+        chordPadding        = 1.5f;
+        lyricPadding        = 1.0f;
 		playElements		= kVLPlayAccompaniment|kVLPlayMelody|kVLPlayCountIn;
 		sheetWin			= nil;
 		pdfWin				= nil;	

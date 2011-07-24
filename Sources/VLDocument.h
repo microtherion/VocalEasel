@@ -48,6 +48,11 @@ enum {
 	float				chordSize;
 	float				lyricSize;
 	float				staffSize;
+    float               topPadding;
+    float               titlePadding;
+    float               staffPadding;
+    float               chordPadding;
+    float               lyricPadding;
 	int					playElements;
 	NSString *			tmpPath;
 	NSFileWrapper *		vcsWrapper;

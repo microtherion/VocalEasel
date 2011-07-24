@@ -1,19 +1,32 @@
-\version "2.8.0"
+\version "2.14.0"
 
 \header {
 	title		= "<{TITLE}>"
-	poet 	= "<{POET}>"
-	composer= "<{COMPOSER}>"
-	arranger  = "<{ARRANGER}>"
-	tagline	= #(string-append "Created with VocalEasel <{VLVERSION}> / Lilypond " (lilypond-version))
+	poet        = "<{POET}>"
+	composer    = "<{COMPOSER}>"
+	arranger    = "<{ARRANGER}>"
+	tagline     = #(string-append "Created with VocalEasel <{VLVERSION}> / Lilypond " (lilypond-version))
 }
 
 \paper {
-       #(set-paper-size <{PAPERSIZE}>)
-       indent = 0.0\cm
-       pagenumber = no
-       page-top-space = #.1
-       <{FORMATTING}>
+    #(set-paper-size <{PAPERSIZE}>)
+    indent = 0.0\cm
+    pagenumber = no
+    top-markup-spacing #'padding = #<{TOPPADDING}>
+    markup-system-spacing #'padding = #<{TITLEPADDING}>
+    system-system-spacing #'padding = #<{STAFFPADDING}>
+    <{FORMATTING}>
+}
+
+\layout {
+    \context {
+        \ChordNames
+        \override VerticalAxisGroup #'nonstaff-relatedstaff-spacing #'padding = #<{CHORDPADDING}>
+    }
+    \context {
+        \Lyrics
+        \override VerticalAxisGroup #'nonstaff-relatedstaff-spacing #'padding = #<{LYRICPADDING}>
+    }
 }
 
 #(set-global-staff-size <{STAFFSIZE}>)

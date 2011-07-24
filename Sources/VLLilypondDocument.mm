@@ -154,17 +154,27 @@ static const char * 	sPaperNames[] = {
 	[ly substituteMacro:@"COMPOSER" withValue:songComposer];
 	[ly substituteMacro:@"ARRANGER" withValue:songArranger];
 	[ly substituteMacro:@"VLVERSION" withValue:
-			[bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
+     [bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
 	[ly substituteMacro:@"PAPERSIZE" withValue:paper];
 	//	[ly substituteMacro:@"FORMATTING" withValue:@"ragged-last-bottom = ##f"];
 	[ly substituteMacro:@"VLVERSION" withValue:
-			[bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
+     [bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
 	[ly substituteMacro:@"CHORDSIZE" withValue:
-			[NSString stringWithFormat:@"%f", chordSize]];
+     [NSString stringWithFormat:@"%f", chordSize]];
 	[ly substituteMacro:@"LYRICSIZE" withValue:
-			[NSString stringWithFormat:@"%f", lyricSize]];
+     [NSString stringWithFormat:@"%f", lyricSize]];
 	[ly substituteMacro:@"STAFFSIZE" withValue:
-			[NSString stringWithFormat:@"%f", staffSize*scaling]];
+     [NSString stringWithFormat:@"%f", staffSize*scaling]];
+	[ly substituteMacro:@"TOPPADDING" withValue:
+     [NSString stringWithFormat:@"%f", topPadding]];
+	[ly substituteMacro:@"TITLEPADDING" withValue:
+     [NSString stringWithFormat:@"%f", titlePadding]];
+	[ly substituteMacro:@"STAFFPADDING" withValue:
+     [NSString stringWithFormat:@"%f", staffPadding]];
+	[ly substituteMacro:@"CHORDPADDING" withValue:
+     [NSString stringWithFormat:@"%f", chordPadding]];
+	[ly substituteMacro:@"LYRICPADDING" withValue:
+     [NSString stringWithFormat:@"%f", lyricPadding]];
 	[ly substituteMacro:@"CHORDS" withValue: 
 			[NSString stringWithUTF8String:writer.Chords().c_str()]];
 	[ly substituteMacro:@"NOTES" withValue: 
