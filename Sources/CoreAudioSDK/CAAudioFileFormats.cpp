@@ -312,7 +312,7 @@ char *OSTypeToStr(char *buf, OSType t)
 {
 	char *p = buf;
 	char str[4], *q = str;
-	*(UInt32 *)str = EndianU32_NtoB(t);
+	*(UInt32 *)str = OSSwapHostToBigInt32(t);
 	for (int i = 0; i < 4; ++i) {
 		if (isprint(*q) && *q != '\\')
 			*p++ = *q++;
@@ -348,7 +348,7 @@ int		StrToOSType(const char *str, OSType &t)
 			p += 2;
 		}
 	}
-	t = EndianU32_BtoN(*(UInt32 *)buf);
+	t = OSSwapBigToHostInt32(*(UInt32 *)buf);
 	return p - str;
 fail:
 	return 0;
