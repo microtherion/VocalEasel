@@ -68,7 +68,7 @@ OUT.print <<'END_HEADER'
 END_HEADER
 
 def xmlesc(s)
-  s.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&rt;')
+  s.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;')
 end
 
 grooves.each do |style,grooves|
