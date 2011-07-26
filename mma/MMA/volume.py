@@ -59,21 +59,17 @@ def adjvolume(ln):
     if not ln:
         error("Use: AdjustVolume DYN=RATIO [..]")
 
-    for l in ln:
+    notopt, ln = opt2pair(ln, 1)
 
-        try:
-            v,r = l.split('=')
-        except:
-            error("AdjustVolume expecting DYN=RATIO pair, not '%s'" % l)
+    if notopt:
+        error("ADJUSTVOLUME: Expecting DYNAMIC=RATIO pairs" )
 
-        v=v.upper()
-
+    for v, r in ln:
         if v == 'RATIO':
-
             r=stof(r)
 
             if r<0 or r>100:
-                error("VolumeRatio must be value 0 to 100")
+                error("ADJUSTVOLUME RATIO: value must be 0 to 100")
 
             vTRatio = r/100
             vMRatio = 1-vTRatio
@@ -82,14 +78,13 @@ def adjvolume(ln):
             vols[v] = calcVolume(r, vols[v])
 
         else:
-            error("Dynamic '%s' for AdjustVolume is unknown" % v )
-
+            error("ADJUSTVOLUME DYNAMIC: '%s' for AdjustVolume is unknown" % v )
 
 
     if gbl.debug:
         print "Volume Ratio: %s%% Track / %s%% Master" % ( vTRatio * 100, vMRatio * 100)
         print "Volume table:",
-        for a in vols:
+        for a in sorted(vols):
             print "%s=%s" % (a, int(vols[a] * 100)),
         print
 
@@ -101,6 +96,9 @@ def calcVolume(new, old):
     if new[0] == '-' or new[0] == '+':
         a = stoi(new, "Volume expecting value for %% adjustment, not %s" % new)
         v = old + (old * a/100.)
+        if v < 0:
+            v=0
+            warning("Volume adjustment results in 0 volume.")
 
     elif new[0] in "0123456789":
         v = stoi(new, "Volume expecting value, not '%s'" % new) / 100.
@@ -131,7 +129,7 @@ def calcVolume(new, old):
 def setVolume(ln):
     """ Set master volume. """
 
-    global volume, lastVolume
+    global volume, lastVolume, futureVol
 
     lastVolume = volume
 
@@ -140,8 +138,10 @@ def setVolume(ln):
 
     volume = calcVolume(ln[0], volume)
 
+    futureVol = []
     if gbl.debug:
         print "Volume: %s%%" % volume
+
 
 
 # The next 3 are called from the parser.
@@ -255,7 +255,7 @@ def fvolume(dir, startvol, ln):
         volList.append( startvol)
 
     volList.append(destvol)
- 
+    
     return volList
 
 

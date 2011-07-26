@@ -1113,7 +1113,8 @@ static int8_t sSharpAcc[] = {
 
 - (void)setGroove:(NSString *)groove
 {
-	[[self document] setGroove:groove inSections:[self sectionsInSelection]];
+    if (groove)
+        [[self document] setGroove:groove inSections:[self sectionsInSelection]];
 }
 
 - (void)playWithGroove:(NSString *)groove

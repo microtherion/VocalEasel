@@ -48,9 +48,27 @@ Continuing will probably cause all kinds of strange errors
 and a generally unsatisfactory experience. But, we can try...
 """)
 
-dir = "/usr/local/share/mma"
-exe = "/usr/local/bin/mma"
+rootdir = "/usr/local/share"
+rootexe = "/usr/local/bin"
+  
+dir = rootdir + "/mma"
+exe = rootexe + "/mma"
 
+# Check to make sure install directories exist. Offer to create
+# ... these might need to be created in Mac OS X
+
+if not os.path.exists(rootdir):
+        okay("""The directory %s does not exist. Create okay?""" % rootdir)
+        if os.system("mkdir -p %s" % rootdir):
+                print "Opps, create failed. Were you root?"
+                sys.exit(1)
+        
+if not os.path.exists(rootexe):
+        okay("""The directory %s does not exist. Create okay?""" % rootexe)
+        if os.system("mkdir -p %s" % rootexe):
+                print "Opps, create failed. Were you root?"
+                sys.exit(1)
+      
 if os.path.exists(dir):
 	okay("""The directory %s currently exists. Proceeding will overwrite
 with a new link. YOU MAY LOSE DATA.""" % dir)

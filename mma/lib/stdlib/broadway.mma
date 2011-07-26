@@ -144,7 +144,18 @@ Chord-Piz    Sequence  *  *    C13                     C1
 Chord-Gloc   Sequence  *  *    C13                     C1
 
 DefGroove BroadwayIntro   Simple 4 bar intro.
+Groove Broadway
 
+/// Expand to 8 bars
+
+SeqSize 8
+
+Drum-Kick    Sequence  *  *  * * * *   *                      D13
+Bass         Sequence  *  *  * * * *  {1 2 5 90; 3 2 4 90} {1 4. 3 90; 3 4. 2 90}
+Chord-Piz    Sequence  *  *  * * * *  C13                     C1
+Chord-Gloc   Sequence  *  *  * * * *  C13                     C1
+
+DefGroove BroadwayIntro8   Simple 8 bar intro.
 
 ////////////////////////////////////////////
 /// Ending

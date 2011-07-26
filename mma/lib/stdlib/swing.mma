@@ -177,6 +177,24 @@ End
 DefGroove SwingTriple  Modified Swing with quarter note triplets. Good \
                        for occasional fill bars.
 
+////// 2 bar fill
+
+Groove Swing
+SeqSize 2
+
+Drum-PHH  Sequence Swing8 D1234
+Drum-OHH  Sequence D1234  
+Drum-Kick Sequence *  D13
+Drum-Side Sequence *  D13
+//  Drum-LowConga
+// Drum-HiConga
+
+Chord  Sequence L2 C1	
+Chord-Guitar  Sequence L1 C13
+Bass  Sequence  B13
+
+DefGroove SwingFill   Simple 2 bar fill. Good for endings.
+
 
 ////// Arpeggiating clarinet
 

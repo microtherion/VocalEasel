@@ -175,16 +175,24 @@ End
 
 DefGroove Foxtrot1    FoxTrot with sax section and walking bass.
 
+Groove FoxTrot1
 Chord-Sus Groove FoxTrotSus
-
 DefGroove FoxTrot1Sus    TremoloStrings added to FoxTrot1.
+
+Groove FoxTrot1
+Arpeggio  Groove FoxTrotPlus
+DefGroove FoxTrot1Plus    Add arpeggio piano to FoxTrot1
+
+Groove FoxTrot1
+Arpeggio  Groove FoxTrotPlus
+Chord-Sus Groove FoxTrotSus
+DefGroove FoxTrot1SusPlus    Add arpeggio and sustained strings.
+
 
 ////////////////////////////
 /// Intros
 
 Groove Foxtrot
-
-
 
 Bass 	Sequence -
 
@@ -198,9 +206,26 @@ Begin Walk
 End
 
 Chord 	Sequence  C1234 
-Chord-Piano Sequence C13 
+//Chord-Piano Sequence C13 
 
 DefGroove FoxTrotIntro  Walking bass intro.
+
+///
+
+Groove Foxtrot1
+
+Drum-Kick  Sequence  *   *  *  D13
+Drum-Side  Sequence  *   *  *  z
+Drum-PHH   Sequence  *   *  *  D2
+Drum-OHH   Sequence  *   *  *  D16
+
+Walk        Sequence  *  *  *  W1234
+Chord-Sax	Sequence  *  *  *  L1 
+Chord-Piano Sequence  *  *  *  C1 
+
+DefGroove FoxTrot1Intro  Intro based on FoxTrot1 (with saxes).
+
+
 
 //////////////////////
 // Fill

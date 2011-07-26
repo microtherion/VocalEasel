@@ -167,7 +167,7 @@ Begin Chord-12
        {1 32 71; 1.5 32 73; 2 32 70; 2.25 32 60; 2.75 32 70; 3.25 32 72; 3.75 32 73; 4.25 32 71; 4.5 32 67 }
 End
 
-DefGroove Main-A    Auto-generated 'Main A' sty/salsa1.sty
+DefGroove Salsa1MainA    Auto-generated 'Main A' sty/salsa1.sty
 
 
 //////////////////////
@@ -297,7 +297,7 @@ Begin Bass-14
  Sequence  {1 1 1 103 } z 
 End
 
-DefGroove Intro-A    Auto-generated 'Intro A' sty/salsa1.sty
+DefGroove Salsa1IntroA    Auto-generated 'Intro A' sty/salsa1.sty
 
 
 //////////////////////
@@ -433,7 +433,7 @@ Begin Bass-16
  Sequence  {1 8 1 103; 1.5 32 1 103; 1.75 32 1 103; 2.25 32 1 103; 2.5 32 1 103; 2.75 16 1 103 }
 End
 
-DefGroove Fill-AA    Auto-generated 'Fill In AA' sty/salsa1.sty
+DefGroove Salsa1FillAA    Auto-generated 'Fill In AA' sty/salsa1.sty
 
 
 //////////////////////
@@ -578,7 +578,7 @@ Begin Bass-16
  Sequence  {1 8 1 103; 1.5 32 1 103; 1.75 32 1 103; 2.25 32 1 103; 2.5 32 1 103; 2.75 16 1 103 }
 End
 
-DefGroove Fill-AB    Auto-generated 'Fill In AB' sty/salsa1.sty
+DefGroove Salsa1FillAB    Auto-generated 'Fill In AB' sty/salsa1.sty
 
 
 //////////////////////
@@ -738,7 +738,7 @@ Begin Bass-16
        {1 16 1 119 }
 End
 
-DefGroove Ending-A    Auto-generated 'Ending A' sty/salsa1.sty
+DefGroove Salsa1EndingA    Auto-generated 'Ending A' sty/salsa1.sty
 
 
 //////////////////////
@@ -946,7 +946,7 @@ Begin Bass-16
        {1 8 1 119; 1.75 32 5 119; 2 8 5 119; 2.75 32 1 119; 3 8 1 119; 3.75 32 5 119; 4 8 5 119; 4.75 32 5 119 }
 End
 
-DefGroove Main-B    Auto-generated 'Main B' sty/salsa1.sty
+DefGroove Salsa1MainB    Auto-generated 'Main B' sty/salsa1.sty
 
 
 //////////////////////
@@ -1064,7 +1064,7 @@ Begin Bass-14
  Sequence  {1 1 1 103 } z 
 End
 
-DefGroove Intro-B    Auto-generated 'Intro B' sty/salsa1.sty
+DefGroove Salsa1IntroB    Auto-generated 'Intro B' sty/salsa1.sty
 
 
 //////////////////////
@@ -1254,7 +1254,7 @@ Begin Bass-16
  Sequence  {1 16 1 119; 1.5 16 1 119 }
 End
 
-DefGroove Fill-BB    Auto-generated 'Fill In BB' sty/salsa1.sty
+DefGroove Salsa1FillBB    Auto-generated 'Fill In BB' sty/salsa1.sty
 
 
 //////////////////////
@@ -1435,7 +1435,7 @@ Begin Bass-16
  Sequence  {1 16 1 119; 1.5 16 1 119 }
 End
 
-DefGroove Fill-BA    Auto-generated 'Fill In BA' sty/salsa1.sty
+DefGroove Salsa1FillBA    Auto-generated 'Fill In BA' sty/salsa1.sty
 
 
 //////////////////////
@@ -1606,27 +1606,5 @@ Begin Bass-16
        {1 16 1 119 }
 End
 
-DefGroove Ending-B    Auto-generated 'Ending B' sty/salsa1.sty
-
-
-/// Groove Aliases. You should do something creative here!
-
-
-Groove    Main-A
-DefGroove Main-C            /// Alias definition from Main-A
-
-Groove    Main-A
-DefGroove Main-D            /// Alias definition from Main-A
-
-Groove    Intro-A
-DefGroove Intro-C           /// Alias definition from Intro-A
-
-Groove    Ending-A
-DefGroove Ending-C          /// Alias definition from Ending-A
-
-Groove    Fill-AA
-DefGroove Fill-CC           /// Alias definition from Fill-AA
-
-Groove    Fill-AA
-DefGroove Fill-DD           /// Alias definition from Fill-AA
+DefGroove Salsa1EndingB    Auto-generated 'Ending B' sty/salsa1.sty
 

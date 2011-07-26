@@ -37,14 +37,14 @@ class Scale(PC):
 
     vtype = 'SCALE'
 
-    lastNote = -1
-    lastChord = None
-    lastStype = None
+    lastNote   = -1
+    lastChord  = None
+    lastStype  = None
     lastDirect = 1
-    lastRange = 0
-    sOffset = 0
-    notes = None
-    dirfact = 1
+    lastRange  = 0
+    sOffset    = 0
+    notes      = None
+    dirfact    = 1
 
     def getPgroup(self, ev):
         """ Get group for scale patterns.
@@ -217,15 +217,18 @@ class Scale(PC):
                     self.adjustNote(note),
                     self.adjustVolume(p.vol, p.offset))
 
-
             if self.harmony[sc]:
                 ch = self.getChordInPos(p.offset, ctable).chord.noteList
                 h = MMA.harmony.harmonize(self.harmony[sc], note, ch)
+
+                strumOffset = self.getStrum(sc)
+
                 for n in h:
                     self.sendNote(
-                        p.offset,
+                        p.offset + strumOffset,
                         self.getDur(p.duration),
                         self.adjustNote(n),
                         self.adjustVolume(self.harmonyVolume[sc] * p.vol, -1) )
 
+                    strumOffset += self.getStrum(sc)
 

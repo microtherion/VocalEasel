@@ -140,7 +140,7 @@ Begin Bass-14
  Sequence  {1 16 1 104; 1 16 5 104; 1 16 3 104; 1 16 1 104; 1.29 32 1 104; 1.29 32 3 104; 1.29 32 1 104; 1.29 32 5 104 } z  z  z 
 End
 
-DefGroove Main-A    Auto-generated 'Main A' salsa2.sty
+DefGroove Salsa2MainA    Auto-generated 'Main A' salsa2.sty
 
 
 //////////////////////
@@ -306,7 +306,7 @@ Begin Chord-13
  Sequence   z  z  z {2.91 4. 60; 2.95 4. 70; 3 4. 80; 3.04 4. 90 }
 End
 
-DefGroove Intro-A    Auto-generated 'Intro A' salsa2.sty
+DefGroove Salsa2IntroA    Auto-generated 'Intro A' salsa2.sty
 
 
 //////////////////////
@@ -406,7 +406,7 @@ Begin Chord-12
  Sequence  {1.01 8 72; 1.47 16 65; 1.5 32 71; 1.72 16 66; 1.75 16 70; 2.26 16 75; 2.79 16 69; 2.8 8 70; 3.26 16 66; 3.29 16 65; 3.79 32 69; 4.04 8 71; 4.5 16 60 }
 End
 
-DefGroove Fill-AA    Auto-generated 'Fill In AA' salsa2.sty
+DefGroove Salsa2FillAA    Auto-generated 'Fill In AA' salsa2.sty
 
 
 //////////////////////
@@ -544,7 +544,7 @@ Begin Chord-13
  Sequence  {2.5 32 82; 2.75 32 81; 3.25 32 80; 3.75 0 81; 4.5 32 83; 4.75 32 86 }
 End
 
-DefGroove Fill-AB    Auto-generated 'Fill In AB' salsa2.sty
+DefGroove Salsa2FillAB    Auto-generated 'Fill In AB' salsa2.sty
 
 
 //////////////////////
@@ -641,7 +641,7 @@ Begin Chord-15
  Sequence   z {1 16 90; 1.5 16 90; 1.75 16 90; 2.25 16 90; 2.75 16 90 }
 End
 
-DefGroove Ending-A    Auto-generated 'Ending A' salsa2.sty
+DefGroove Salsa2EndingA    Auto-generated 'Ending A' salsa2.sty
 
 
 //////////////////////
@@ -897,7 +897,7 @@ Begin Bass-16
        {1 16 1 119; 1.75 8 5 127; 2.5 16 1 111; 3.25 8 1 111; 3.75 32 1 111; 4.25 8 1 121; 4.75 32 1 127 }
 End
 
-DefGroove Main-B    Auto-generated 'Main B' salsa2.sty
+DefGroove Salsa2MainB    Auto-generated 'Main B' salsa2.sty
 
 
 //////////////////////
@@ -1082,7 +1082,7 @@ Begin Bass-14
  Sequence   z  z  z {1 1 1 90; 1 1 5 90; 1 1 1 90; 1 1 3 90 }
 End
 
-DefGroove Intro-B    Auto-generated 'Intro B' salsa2.sty
+DefGroove Salsa2IntroB    Auto-generated 'Intro B' salsa2.sty
 
 
 //////////////////////
@@ -1263,7 +1263,7 @@ Begin Bass-16
  Sequence  {1 16 1 119; 1.75 8 5 127; 2.5 16 1 111; 3.25 8 1 111; 3.75 32 1 111; 4.25 8 1 121; 4.75 32 1 127 }
 End
 
-DefGroove Fill-BB    Auto-generated 'Fill In BB' salsa2.sty
+DefGroove Salsa2FillBB    Auto-generated 'Fill In BB' salsa2.sty
 
 
 //////////////////////
@@ -1401,7 +1401,7 @@ Begin Chord-13
  Sequence  {2.5 32 82; 2.75 32 81; 3.25 32 80; 3.75 0 81; 4.5 32 83; 4.75 32 86 }
 End
 
-DefGroove Fill-BA    Auto-generated 'Fill In BA' salsa2.sty
+DefGroove Salsa2FillBA    Auto-generated 'Fill In BA' salsa2.sty
 
 
 //////////////////////
@@ -1498,27 +1498,5 @@ Begin Chord-15
  Sequence   z {1 16 90; 1.5 16 90; 1.75 16 90; 2.25 16 90; 2.75 16 90 }
 End
 
-DefGroove Ending-B    Auto-generated 'Ending B' salsa2.sty
-
-
-/// Groove Aliases. You should do something creative here!
-
-
-Groove    Main-A
-DefGroove Main-C            /// Alias definition from Main-A
-
-Groove    Main-A
-DefGroove Main-D            /// Alias definition from Main-A
-
-Groove    Intro-A
-DefGroove Intro-C           /// Alias definition from Intro-A
-
-Groove    Ending-A
-DefGroove Ending-C          /// Alias definition from Ending-A
-
-Groove    Fill-AA
-DefGroove Fill-CC           /// Alias definition from Fill-AA
-
-Groove    Fill-AA
-DefGroove Fill-DD           /// Alias definition from Fill-AA
+DefGroove Salsa2EndingB    Auto-generated 'Ending B' salsa2.sty
 

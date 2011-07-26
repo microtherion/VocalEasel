@@ -126,7 +126,7 @@ Begin Chord-15
        {1.5 32 89; 2 32 89; 2.75 32 88; 3.25 32 88; 3.75 32 86; 4 32 90; 4.5 32 89 }
 End
 
-DefGroove Main-A    Steady Samba beat.
+DefGroove QuandoGSMainA    Steady Samba beat.
 
 
 //////////////////////
@@ -221,7 +221,7 @@ Begin Chord-15
  Sequence  {1 32 94; 1.5 32 93; 2 32 94; 3 32 95; 3.5 32 94; 4.25 32 97; 4.75 32 95 }
 End
 
-DefGroove Fill-AA    Good fill for repeats with Main-A.
+DefGroove QuandoGSFillAA    Good fill for repeats with Main-A.
 
 
 //////////////////////
@@ -309,7 +309,7 @@ Begin Chord-16
  Sequence  {1 16 122 }
 End
 
-DefGroove Intro-A    A one bar intro with a heavy hit on beat 1.
+DefGroove QuandoGSIntroA    A one bar intro with a heavy hit on beat 1.
 
 
 //////////////////////
@@ -424,7 +424,7 @@ Begin Chord-16
        {1 32 112; 1.5 32 111; 2.25 32 108; 2.75 32 113; 3 32 115 }
 End
 
-DefGroove Ending-A    Good ending to go with Main-A.
+DefGroove QuandoGSEndingA    Good ending to go with Main-A.
 
 
 //////////////////////
@@ -568,7 +568,7 @@ Begin Chord-16
        {1 1 93 }
 End
 
-DefGroove Main-B    Adds horn section to Main-A.
+DefGroove QuandoGSMainB    Adds horn section to Main-A.
 
 
 //////////////////////
@@ -674,7 +674,7 @@ Begin Chord-16
  Sequence  {1 32 102; 1.5 32 96; 2 32 114; 3 32 105; 3.5 32 108; 4.25 32 112; 4.75 32 121 }
 End
 
-DefGroove Fill-BB    Fill for Main-B.
+DefGroove QuandoGSFillBB    Fill for Main-B.
 
 
 //////////////////////
@@ -780,7 +780,7 @@ Begin Chord-16
  Sequence  {1 32 102; 1.5 32 96; 2 32 114; 3 32 105; 3.5 32 108; 4.25 32 112; 4.75 32 121 }
 End
 
-DefGroove Fill-BA    Simple fill with horns.
+DefGroove QuandoGSFillBA    Simple fill with horns.
 
 
 //////////////////////
@@ -954,7 +954,7 @@ Begin Chord-16
        {1 32 106; 3.75 32 93; 4 32 95; 4.5 32 112 }
 End
 
-DefGroove Intro-B  This is an 8 bar introduction. The first 6 bars are a just \
+DefGroove QuandoGSIntroB  This is an 8 bar introduction. The first 6 bars are a just \
                     a Main-A, but bars 7 and 8 have the anticipated hits.
 
 
@@ -1162,7 +1162,7 @@ Begin Chord-16
        {1 32 100; 1.5 16 101; 2.25 32 103; 2.75 32 100; 3 16 102 }
 End
 
-DefGroove Ending-B  This 8 bar ending duplicates Main-B with a single bar "ending".
+DefGroove QuandoGSEndingB  This 8 bar ending duplicates Main-B with a single bar "ending".
 
 
 //////////////////////
@@ -1338,7 +1338,7 @@ Begin Chord-16
        {1 1 78 }
 End
 
-DefGroove Main-C    Pretty much like Main-B, but the horns are softer.
+DefGroove QuandoGSMainC    Pretty much like Main-B, but the horns are softer.
 
 
 //////////////////////
@@ -1415,7 +1415,7 @@ Begin Chord-15
  Sequence  {1 8 95 }
 End
 
-DefGroove Fill-CC    Abrupt fill with hit on 1.
+DefGroove QuandoGSFillCC    Abrupt fill with hit on 1.
 
 
 //////////////////////
@@ -1589,7 +1589,7 @@ Begin Chord-16
        {1 32 106; 3.75 32 93; 4 32 95; 4.5 32 112 }
 End
 
-DefGroove Intro-C    Pretty much like Intro-B.
+DefGroove QuandoGSIntroC    Pretty much like Intro-B.
 
 
 //////////////////////
@@ -1796,7 +1796,7 @@ Begin Chord-16
        {1 32 100; 1.5 16 101; 2.25 32 103; 2.75 32 100; 3 16 102 }
 End
 
-DefGroove Ending-C    This 8 bar ending duplicates Main-C with an "end" on the last bar.
+DefGroove QuandoGSEndingC    This 8 bar ending duplicates Main-C with an "end" on the last bar.
 
 
 //////////////////////
@@ -2016,7 +2016,7 @@ Begin Chord-15
        {1 32 90; 3.75 32 89; 4 32 88; 4.5 32 90 }
 End
 
-DefGroove Main-D  Much like Main-A, but a bit brighter percussion.
+DefGroove QuandoGSMainD  Much like Main-A, but a bit brighter percussion.
 
 
 //////////////////////
@@ -2104,5 +2104,5 @@ Begin Chord-16
  Sequence  {1 16 122 }
 End
 
-DefGroove Fill-DD   Loud fill with a brass hit on beat 1.
+DefGroove QuandoGSFillDD   Loud fill with a brass hit on beat 1.
 

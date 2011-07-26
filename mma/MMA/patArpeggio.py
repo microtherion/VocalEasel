@@ -35,9 +35,12 @@ from   MMA.pat import PC
 class Arpeggio(PC):
     """ Pattern class for an arpeggio track. """
 
-    vtype = 'ARPEGGIO'
-    arpOffset = -1
-    arpDirection = 1
+    vtype         = 'ARPEGGIO'
+    arpOffset     = -1
+    arpDirection  = 1
+    lastRange     = 999
+    lastDirection = 999
+    
 
     def getPgroup(self, ev):
         """ Get group for apreggio pattern.
@@ -61,6 +64,8 @@ class Arpeggio(PC):
         self.ssvoice = -1
         self.arpOffset=-1
         self.arpDirection=1
+        lastRange     = 999
+        lastDirection = 999
 
     def trackBar(self, pattern, ctable):
         """ Do a arpeggio bar.
@@ -70,7 +75,18 @@ class Arpeggio(PC):
         """
 
         sc = self.seq
+
         direct = self.direction[sc]
+        if direct != self.lastDirection:
+            self.arpOffset=-1
+            self.arpDirection=1
+            self.lastDirection = direct
+
+        range = self.chordRange[sc]
+        if range != self.lastRange:
+            self.arpOffset=-1
+            self.arpDirection=1
+            self.lastRange = range
 
         for p in pattern:
             tb = self.getChordInPos(p.offset, ctable)
@@ -95,7 +111,7 @@ class Arpeggio(PC):
             # settings each for each bar as well, so it's probably just as easy to
             # leave it as is. Besides, this works.
 
-            ln = self.chordRange[sc]
+            ln = range
             o = 0
             ourChord = []
             while ln >= 1:
@@ -136,7 +152,6 @@ class Arpeggio(PC):
 
             self.arpOffset += self.arpDirection
 
-
             if not self.harmonyOnly[sc]:
                 self.sendNote(
                     p.offset,
@@ -144,16 +159,19 @@ class Arpeggio(PC):
                     self.adjustNote(note),
                     self.adjustVolume(p.vol, p.offset) )
 
-
             if self.harmony[sc]:
                 h = MMA.harmony.harmonize(self.harmony[sc], note, ourChord)
+                
+                strumOffset = self.getStrum(sc)
+            
                 for n in h:
                     self.sendNote(
-                        p.offset,
+                        p.offset + strumOffset,
                         self.getDur(p.duration),
                         self.adjustNote(n),
                         self.adjustVolume(p.vol * self.harmonyVolume[sc], -1) )
-
+                    
+                    strumOffset += self.getStrum(sc)
 
             tb.chord.reset()    # important, other tracks chord object
 

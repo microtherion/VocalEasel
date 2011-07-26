@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+<!--Converted with LaTeX2HTML 2008 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
@@ -13,7 +13,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="mma.css">
@@ -27,21 +28,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY  bgcolor="#ffffff">
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html416"
+<A NAME="tex2html472"
   HREF="node6.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html414"
+<A NAME="tex2html470"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html408"
+<A NAME="tex2html464"
   HREF="node4.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html417"
+<B> Next:</B> <A NAME="tex2html473"
   HREF="node6.html">Grooves</A>
-<B> Up:</B> <A NAME="tex2html415"
+<B> Up:</B> <A NAME="tex2html471"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html409"
+<B> Previous:</B> <A NAME="tex2html465"
   HREF="node4.html">Patterns</A>
 <BR>
 <BR></DIV>
@@ -50,15 +51,15 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html418"
+<LI><A NAME="tex2html474"
   HREF="node5.html#SECTION00510000000000000000">Defining Sequences</A>
-<LI><A NAME="tex2html419"
+<LI><A NAME="tex2html475"
   HREF="node5.html#SECTION00520000000000000000">SeqClear</A>
-<LI><A NAME="tex2html420"
+<LI><A NAME="tex2html476"
   HREF="node5.html#SECTION00530000000000000000">SeqRnd</A>
-<LI><A NAME="tex2html421"
+<LI><A NAME="tex2html477"
   HREF="node5.html#SECTION00540000000000000000">SeqRndWeight</A>
-<LI><A NAME="tex2html422"
+<LI><A NAME="tex2html478"
   HREF="node5.html#SECTION00550000000000000000">SeqSize</A>
 </UL>
 <!--End of Table of Child-Links-->
@@ -94,14 +95,14 @@ each track in your song:
       </Table>
 
 <P>
-``Track'' can be any valid track name: ``Chord'', ``Walk'',
-``Walk-Sus'', ``Arpeggio-88'', etc.
+&#8220;Track&#8221; can be any valid track name: &#8220;Chord&#8221;, &#8220;Walk&#8221;,
+&#8220;Walk-Sus&#8221;, &#8220;Arpeggio-88&#8221;, etc.
 
 <P>
 All pattern names used when setting a sequence need to be defined when
 this command is issued; or you can use what appears to be a pattern
 definition right in the sequence command by enclosing the pattern
-definition in a set of curly brackets ``{ }''.
+definition in a set of curly brackets &#8220;{ }&#8221;.
 
 <P>
 
@@ -149,18 +150,18 @@ Arpeggio Sequence { 1 1 100 * 8 } { 1 1 80 * 4 }   </B>
 <A HREF="#eg:seq1">This example</A> creates a 2 bar
 pattern. The Drum, Chord and Bass patterns repeat on every bar; the
 Drum-1 sequence repeats after 2 bars. Note how the Arpeggio pattern is
-defined at run-time.<A NAME="tex2html29"
-  HREF="#foot2222"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>
+defined at run-time.<A NAME="tex2html30"
+  HREF="#foot2356"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>
 <P>
 If there are fewer patterns than S<SMALL>EQ</SMALL>S<SMALL>IZE</SMALL>, the sequence will be
 filled out to correct size. If the number of patterns used is greater
 than S<SMALL>EQ</SMALL>S<SMALL>IZE</SMALL> (see
-<A HREF="node23.html#sec-directives">directives</A>) a warning
+<A HREF="node24.html#sec-directives">directives</A>) a warning
 message will be printed and the pattern list will be truncated.
 
 <P>
-When defining longer sequences, you can use the ``repeat'' symbol, a
-single ``/'', to save typing. For example, the following two lines are
+When defining longer sequences, you can use the &#8220;repeat&#8221; symbol, a
+single &#8220;/&#8221;, to save typing. For example, the following two lines are
 equivalent:
 
 <P>
@@ -177,8 +178,8 @@ Bass Sequence Bass1 / Bass2 /   </B>
 <P>
 <A NAME="sequence-clear"></A>
 <P>
-The special pattern name ``-'' (no quotes, just a single hyphen), or a
-single ``z'' can be used to turn a track off. For example, if you have
+The special pattern name &#8220;-&#8221; (no quotes, just a single hyphen), or a
+single &#8220;z&#8221; can be used to turn a track off. For example, if you have
 set the sequences in <A HREF="#eg:seq1">this example</A>
 and decide to delete the Bass halfway though the song you could:
 
@@ -192,8 +193,8 @@ and decide to delete the Bass halfway though the song you could:
       </Table>
 
 <P>
-The special sequences, ``-'' or ``z'', are also the equivalent of a
-rest or ``tacet'' sequence. For example, in defining a 4 bar sequence
+The special sequences, &#8220;-&#8221; or &#8220;z&#8221;, are also the equivalent of a
+rest or &#8220;tacet&#8221; sequence. For example, in defining a 4 bar sequence
 with a 1-5 bass pattern on the first 3 bars and a walking bass on bar
 4 you might do something like:
 
@@ -209,15 +210,15 @@ Walk Sequence z / / Walk4-4   </B>
       </Table>
 
 <P>
-If you already have a sequence defined<A NAME="tex2html30"
-  HREF="#foot2237"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A> you can repeat or copy the existing pattern by
-using a single ``*'' as the pattern name. This is useful when you are
+If you already have a sequence defined<A NAME="tex2html31"
+  HREF="#foot2371"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A> you can repeat or copy the existing pattern by
+using a single &#8220;*&#8221; as the pattern name. This is useful when you are
 modifying an existing sequence.
 
 <P>
 For example, assume that we have created a four bar G<SMALL>ROOVE</SMALL>
-called ``Neato''. Now, we want to change the C<SMALL>HORD</SMALL> pattern to
-use for an introduction ...but, we really only want to change the
+called &#8220;Neato&#8221;. Now, we want to change the C<SMALL>HORD</SMALL> pattern to
+use for an introduction ... but, we really only want to change the
 fourth bar in the pattern:
 
 <P>
@@ -246,6 +247,43 @@ interesting patterns and variations. This chapter should certainly
 give more detail and many more examples.
 
 <P>
+Seqeuence definitions can get quite long and may need multiple
+lines. You can do this by using &#8220; &#92;&#8221; marked continuation lines. Or, to
+make it possible to have comments at the end of lines, 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will
+parse S<SMALL>EQUENCE</SMALL> lines and attempt to join lines together until a
+matching number of &#8220;{&#8221;s and &#8220;}&#8221;s are found. One caution: in
+order for this feature to work with multi-bar sequences you must have
+non-matching braces on a line. For example, this will work:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord Sequence {1 4 90; 
+<BR>
+3 4 90} { 1 1 90}   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This will <SPAN  CLASS="textit">not work</SPAN>:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord Sequence {1 4 90 } <IMG
+ WIDTH="28" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="\includegraphics[height=3ex]{stop.eps}">
+<BR>      {1 1 90}   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
 The following commands help manipulate sequences in your creations:
 
 <P>
@@ -258,7 +296,7 @@ SeqClear
 <P>
 This command clears all existing sequences from memory. It is useful
 when defining a new sequence and you want to be sure that no
-``leftover'' sequences are active. The command:
+&#8220;leftover&#8221; sequences are active. The command:
 
 <P>
 
@@ -286,8 +324,8 @@ Alternately, the command:
       </Table>
 
 <P>
-deletes <SPAN  CLASS="textit">all</SPAN> drum sequences. This includes the track ``Drum'',
-``Drum1'', etc.
+deletes <SPAN  CLASS="textit">all</SPAN> drum sequences. This includes the track &#8220;Drum&#8221;,
+&#8220;Drum1&#8221;, etc.
 
 <P>
 If you use a sub-track:
@@ -302,8 +340,8 @@ If you use a sub-track:
       </Table>
 
 <P>
-only the sequence for that track is cleared.<A NAME="tex2html31"
-  HREF="#foot2321"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A>
+only the sequence for that track is cleared.<A NAME="tex2html32"
+  HREF="#foot2461"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A>
 <P>
 In addition to clearing the sequence pattern, the following other
 settings are restored to a default condition:
@@ -376,7 +414,7 @@ resets <SPAN  CLASS="textit">all</SPAN> C<SMALL>HORD</SMALL> tracks, whereas the
 
 <P>
 resets the C<SMALL>HORD-</SMALL>F<SMALL>OO</SMALL> track. If you need to clear <SPAN  CLASS="textit">only</SPAN>
-the C<SMALL>HORD</SMALL> track use the ``-'' option.
+the C<SMALL>HORD</SMALL> track use the &#8220;-&#8221; option.
 
 <P>
 
@@ -401,7 +439,7 @@ example, if you had a sequence:
       </Table>
 
 <P>
-bar 1 would use ``P1'', bar 2 ``P2'', etc. However, it is quite
+bar 1 would use &#8220;P1&#8221;, bar 2 &#8220;P2&#8221;, etc. However, it is quite
 possible (and fun and useful) to insert a randomness to the order of
 sequences. 
 <FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  can achieve this in three different ways:
@@ -672,7 +710,7 @@ In this case there is no relationship between any of the randomized
 tracks.
 
 <P>
-Finally, it is possible to set a ``global'' randomization for a
+Finally, it is possible to set a &#8220;global&#8221; randomization for a
 selected set of tracks. In this case we will set the Drum tracks only:
 
 <P>
@@ -733,12 +771,12 @@ selected set of tracks. In this case we will set the Drum tracks only:
 </BLOCKQUOTE>
 
 <P>
-Note that the drum sequences always ``line up'' with each other and
+Note that the drum sequences always &#8220;line up&#8221; with each other and
 the Chord and Bass sequences follow in the normal order.
 
 <P>
 The S<SMALL>EQ</SMALL>C<SMALL>LEAR</SMALL> command will disable all sequence
-randomization. The S<SMALL>EQ</SMALL> command will disable ``global'' (for all
+randomization. The S<SMALL>EQ</SMALL> command will disable &#8220;global&#8221; (for all
 tracks) randomization.
 
 <P>
@@ -779,7 +817,7 @@ Simple:
 
 <P>
 Think of the random selection occurring like selecting balls out of bag. The S<SMALL>EQ</SMALL>R<SMALL>ND</SMALL>W<SMALL>EIGHT</SMALL>
-command ``fills up the bag.'' In the above case, there will be two C1 and C2 balls, one C3 and C4 ball--
+command &#8220;fills up the bag&#8221;. In the above case, there will be two C1 and C2 balls, one C3 and C4 ball--
 for a total of six balls.
 
 <P>
@@ -798,7 +836,7 @@ SeqSize</A>
 </H1>
 
 <P>
-The number of bars in a sequence are set with the ``SeqSize'' command.
+The number of bars in a sequence are set with the &#8220;SeqSize&#8221; command.
 For example:
 
 <P>
@@ -823,26 +861,28 @@ the end of the sequence; expansion is done by duplicating the sequence
 until it is long enough.
 
 <P>
+
+<P>
 <BR><HR><H4>Footnotes</H4>
 <DL>
-<DT><A NAME="foot2222">... run-time.</A><A
- HREF="node5.html#tex2html29"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
+<DT><A NAME="foot2356">... run-time.</A><A
+ HREF="node5.html#tex2html30"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
 <DD>If you run 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  with the ``-s'' option
-  you'll see pattern names in the format ``_1''. The leading
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  with the &#8220;-s&#8221; option
+  you'll see pattern names in the format &#8220;_1&#8221;. The leading
   underscore indicates that the pattern was dynamically created in the
   sequence.
 
 </DD>
-<DT><A NAME="foot2237">... defined</A><A
- HREF="node5.html#tex2html30"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A></DT>
+<DT><A NAME="foot2371">... defined</A><A
+ HREF="node5.html#tex2html31"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A></DT>
 <DD>In reality there is
   always a sequence defined for every track, but it might be a series
-  of ``rest'' bars.
+  of &#8220;rest&#8221; bars.
 
 </DD>
-<DT><A NAME="foot2321">... cleared.</A><A
- HREF="node5.html#tex2html31"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A></DT>
+<DT><A NAME="foot2461">... cleared.</A><A
+ HREF="node5.html#tex2html32"><SUP><SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A></DT>
 <DD>It is probably
   easier to use the command: 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
@@ -859,26 +899,26 @@ until it is long enough.
 </DL>
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html416"
+<A NAME="tex2html472"
   HREF="node6.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html414"
+<A NAME="tex2html470"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html408"
+<A NAME="tex2html464"
   HREF="node4.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html417"
+<B> Next:</B> <A NAME="tex2html473"
   HREF="node6.html">Grooves</A>
-<B> Up:</B> <A NAME="tex2html415"
+<B> Up:</B> <A NAME="tex2html471"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html409"
+<B> Previous:</B> <A NAME="tex2html465"
   HREF="node4.html">Patterns</A></DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 bob
-2008-09-28
+2010-11-07
 </ADDRESS>
 </BODY>
 </HTML>

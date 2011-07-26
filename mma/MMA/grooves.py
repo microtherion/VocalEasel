@@ -94,7 +94,7 @@ def grooveDefine(ln):
     if gbl.debug:
         print "Groove settings saved to '%s'." % slot
 
-    if gbl.makeGrvDefs:
+    if gbl.makeGrvDefs:   # doing a database update ...
         MMA.auto.updateGrooveList(slot)
 
     if len(ln) > 1:
@@ -112,10 +112,7 @@ def grooveDefineDo(slot):
         'QPERBAR':   gbl.QperBar,
         'SEQRND':    MMA.seqrnd.seqRnd[:],
         'TIMESIG':   MMA.midi.timeSig.get(),
-        '81':        MMA.notelen.noteLenTable['81'],
-        '82':        MMA.notelen.noteLenTable['82'],
-        'SWINGMODE': gbl.swingMode ,
-        'SWINGSKEW': gbl.swingSkew,
+        'SWINGMODE': MMA.swing.gsettings() ,
         'VRATIO':    (MMA.volume.vTRatio, MMA.volume.vMRatio)}
 
 
@@ -174,16 +171,15 @@ def groove(ln):
                 print "Groove '%s' not defined. Trying auto-load from libraries" \
                       % slot
 
-            l=MMA.auto.loadGrooveDir(slot)    # name of the lib file with groove
- 
+            l=MMA.auto.findGroove(slot)    # name of the lib file with groove
+
             if l:
                 if gbl.debug:
                     print "Attempting to load groove '%s' from '%s'." % (slot, l)
             
                 reportFutureVols()
+                MMA.parse.usefile([l])
 
-                MMA.parse.usefile([os.path.join(gbl.autoLib, l)])
-            
                 if not slot in glist:
                     error("Groove '%s' not found. Have libraries changed "
                           "since last 'mma -g' run?" % slot)
@@ -223,6 +219,7 @@ def groove(ln):
     if gbl.debug:
         print "Groove settings restored from '%s'." % slot
 
+
 def grooveDo(slot):
     """ This is separate from groove() so we can call it from
         usefile() with a qualified name. """
@@ -238,15 +235,13 @@ def grooveDo(slot):
     gbl.QperBar              = g['QPERBAR']
     MMA.seqrnd.seqRnd        = g['SEQRND']
     MMA.midi.timeSig.set( *g['TIMESIG'])  # passing tuple as 2 args.
-    MMA.notelen.noteLenTable['81'] = g['81']
-    MMA.notelen.noteLenTable['82'] = g['82']
-    gbl.swingMode = g['SWINGMODE']
-    gbl.swingSkew = g['SWINGSKEW']
+    MMA.swing.grestore( g['SWINGMODE'] )
     MMA.volume.vTRatio, MMA.volume.vMRatio = g['VRATIO']
+
 
     for n in gbl.tnames.values():
         n.restoreGroove(slot)
-    
+
     """ This is important! Tracks NOT overwritten by saved grooves way
         have the wrong sequence length. I don't see any easy way to hit
         just the unchanged/unrestored tracks so we do them all.
@@ -396,13 +391,13 @@ def allgrooves(ln):
     """ Apply a command to all currently defined grooves. """
 
     if not ln:
-        error("OverRide: requires a directive.")
-
+        error("AllGrooves: requires arguments.")
     
     origSlot = MMA.parse.gmagic    # save the current groove
     grooveDefineDo(origSlot)
 
-    action = ln[0].upper()
+    action = ln[0].upper()   # either a command or a trackname
+
     if len(ln)>1:
         trAction = ln[1].upper()   
     else:
@@ -413,31 +408,30 @@ def allgrooves(ln):
 
     counter = 0
 
-    for g in glist:
-        grooveDo(g)
+    for g in glist:   # do command for each groove in memory
+        grooveDo(g)     # active existing groove
 
-        if action in sfuncs:
+        if action in sfuncs:        # test for non-track command and exe.
             sfuncs[action](ln[1:])
             counter += 1
-            continue
 
-        if len(ln) < 2:
-            error("AllGrooves: No command for assumed trackname %s." % action)
-        
-        name=action
+        else:                       # not a non-track, see if track command
+            if not trAction:
+                error("AllGrooves: No command for assumed trackname %s." % action)
 
-        if not name in gbl.tnames:
-            continue
+            name = action  # remember 'action' is ln[0]. Using 'name' just makes it clearer
+            if not name in gbl.tnames:  # skip command if track doesn't exist
+                continue
 
-        if trAction in tfuncs:
-            tfuncs[trAction](name, ln[2:])
-            counter += 1
-        else:
-            error ("AllGrooves: Not a command: '%s'" % ' '.join(ln))
+            if trAction in tfuncs:
+                tfuncs[trAction](name, ln[2:])
+                counter += 1
+            else:
+                error ("AllGrooves: Not a command: '%s'" % ' '.join(ln))
 
         grooveDefineDo(g)       # store the change!!!
 
-    grooveDo(origSlot)          # restore groove
+    grooveDo(origSlot)          # restore original state
     
     if not counter:
         warning("No tracks affected with '%s'" % ' '.join(ln))

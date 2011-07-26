@@ -30,6 +30,9 @@ from   MMA.common import *
 
 splitChannels = []
 
+# some constants we use to catorgize event types
+MIDI_NOTE = 1
+MIDI_PRG  = 2
 
 def setSplitChannels(ln):
     """ Parser routine, sets up list of track to split. Overwrites existing. """
@@ -78,22 +81,22 @@ def writeTracks(out):
     tcount = len(keys)
     out.write( mkHeader(tcount, gbl.BperQ, gbl.midiFileType) )
 
+    if gbl.barRange:   # compensate for -B/-b options
+        stripRange()
+
     # Write data chunks for each track
 
     for n in keys:
+        if gbl.debug:
+            print "Writing <%s> ch=%s;" % \
+                (gbl.mtrks[n].trackname, n),
 
-        if len(gbl.mtrks[n].miditrk):
+        if n in splitChannels and gbl.midiFileType:
+            tcount += writeSplitTrack(n, out)
+        else:
+            gbl.mtrks[n].writeMidiTrack(out)
 
-            if gbl.debug:
-                print "Writing <%s> ch=%s;" % \
-                    (gbl.mtrks[n].trackname, n),
-            
-            if n in splitChannels and gbl.midiFileType:
-                tcount += writeSplitTrack(n, out)
-            else:
-                gbl.mtrks[n].writeMidiTrack(out)
-
-    """ We have increased the track count! So, we need to
+    """ We may have changed the track count! So, we need to
         fix the file header. This is offset 10/11 which contains
         the number of tracks. The counter tcount has been
         tracking this, so just seek, replace and seek back.
@@ -181,7 +184,7 @@ class Mtrk:
         self.channel = channel-1
         self.trackname = ''
         self.lastEvent = [None] * 129
-
+        self.lastPrg = 0
 
     def delDup(self, offset, cmd):
         """Delete a duplicate event. Used by timesig, etc.    """
@@ -228,17 +231,44 @@ class Mtrk:
         self.addToTrack(offset, chr(0xff) + chr(0x06) + intToVarNumber(len(msg)) + msg )
 
 
+    def addCopyright(self, offset, msg):
+        """ Insert copyright. """
+
+        # should never happen since the caller sets offset=0
+        if offset != 0:
+            error("Copyright message must be at offset 0, not %s." % offset)
+
+        # we need to bypass addToTrack to force copyright to the start of the track.
+
+        ev=chr(0xff) + chr(0x02) + intToVarNumber(len(msg)) + msg
+        tr=self.miditrk
+
+        if hasattr(self, 'ipoint'):
+            self.ipoint += 1
+        else:
+            self.ipoint=0
+        
+        if offset in tr:
+            tr[offset].insert(self.ipoint, ev)
+        else:
+            tr[offset]=[ev]
+
+        
     def addText(self, offset, msg):
         """ Create a midi TextEvent."""
 
         self.addToTrack( offset, chr(0xff) + chr(0x01) + intToVarNumber(len(msg)) + msg )
-
 
     def addLyric(self, offset, msg):
         """ Create a midi lyric event. """
 
         self.addToTrack( offset,
             chr(0xff) + chr(0x05) + intToVarNumber(len(msg)) + msg )
+
+    def addCuePoint(self, offset, msg):
+        """ Create a MIDI cue pointr event. """
+
+        self.addToTrack( offset, chr(0xff) + chr(0x07) + intToVarNumber(len(msg)) + msg )
 
 
     def addTrkName(self, offset, msg):
@@ -251,7 +281,6 @@ class Mtrk:
         cmd = chr(0xff) + chr(0x03)
         self.delDup(offset, cmd)
         self.addToTrack(offset, cmd + intToVarNumber(len(msg)) + msg )
-
 
     def addProgChange( self, offset, program, oldprg):
         """ Create a midi program change (handles extended voicing).
@@ -271,8 +300,7 @@ class Mtrk:
 
         # Always do voice change. Maybe not necessary, but let's be safe.
 
-        self.addToTrack(offset, chr(0xc0 | self.channel) + chr(v2) )
-
+        self.addToTrack(offset, chr(0xc0 | self.channel) + chr(v2), MIDI_PRG )
 
     def addGlis(self, offset, v):
         """ Set the portamento. LowLevel MIDI.
@@ -309,7 +337,7 @@ class Mtrk:
         """
 
         self.addToTrack(offset,
-            chr(0xb0 | self.channel) + chr(0x7b) + chr(0) )
+            chr(0xb0 | self.channel) + chr(0x7b) + chr(0), 1 )
 
 
     def addChannelVol(self, offset, v):
@@ -353,7 +381,7 @@ class Mtrk:
                 if offset > eof:
                     del tr[offset]
             self.addToTrack(eof, chr(0xb0 | self.channel) + chr(0x7b) + chr(0))
-            
+
 
         """ To every MIDI track we generate we add (if the -0 flag
             was set) an on/off beep at offset 0. This makes for
@@ -362,9 +390,9 @@ class Mtrk:
 
         if gbl.synctick and self.channel >= 0:
             self.addToTrack(0, chr(0x90 | self.channel) + chr(80) + chr(90) )
-            self.addToTrack(1, chr(0x90 | self.channel) + chr(80) + chr(0) ) 
-                        
-            
+            self.addToTrack(1, chr(0x90 | self.channel) + chr(80) + chr(0) )
+
+
         if gbl.debug:
             ttl = 0
             lg=1
@@ -422,11 +450,11 @@ class Mtrk:
         out.write( tdata )
 
 
-    def addPairToTrack(self, boffset, startRnd, duration, note, v, unify):
+    def addPairToTrack(self, boffset, startRnd, endRnd, duration, note, v, unify):
         """ Add a note on/off pair to a track.
 
             boffset      - offset into current bar
-            startRnd  - rand val start adjustment
+            startRnd, endRnd  - rand val start adjustment
             duration  - note len
             note      - midi value of note
             v      - midi velocity
@@ -458,11 +486,11 @@ class Mtrk:
 
         # Start/end offsets
 
-        onOffset  = getOffset( boffset, startRnd)
+        onOffset  = getOffset( boffset, startRnd, endRnd)
         offOffset = onOffset + duration
 
         # ON/OFF events
-        
+
         onEvent  = chr(0x90 | self.channel) + chr(note) + chr(v)
         offEvent = onEvent[:-1] + chr(0)
 
@@ -502,18 +530,41 @@ class Mtrk:
                     else:
                         del(tr[f][i])
                     if not unify:
-                        self.addToTrack(onOffset, offEvent)
+                        self.addToTrack(onOffset, offEvent, MIDI_NOTE)
                     else:
                         noOnFlag=1
                     break
 
         if not noOnFlag:
-            self.addToTrack(onOffset, onEvent )
-        self.addToTrack(offOffset, offEvent )
+            self.addToTrack(onOffset, onEvent, MIDI_NOTE)
+        self.addToTrack(offOffset, offEvent, MIDI_NOTE )
 
         # Save the NOTE OFF time for the next loop.
 
         self.lastEvent[note] = offOffset
+
+
+    def addNoteOnToTrack(self, boffset, note, v, startRnd=None, endRnd=None):
+        """ Add a single note on or note off when v=0 to a track.
+            boffset      - offset into current bar
+            duration  - note len
+            note      - midi value of note
+            v      - midi velocity, set to 0 for note off
+            startRnd/endRnd  - rand val start adjustment
+
+            Added by louisjb for plectrum.
+        """
+
+        # Start offsets
+
+        onOffset  = getOffset( boffset, startRnd, endRnd)
+
+        # ON/OFF events (off is on with v = 0)
+
+        onEvent  = chr(0x90 | self.channel) + chr(note) + chr(v)
+
+        self.addToTrack(onOffset, onEvent, MIDI_NOTE )
+
 
 
     def zapRangeTrack(self, start, end):
@@ -534,7 +585,7 @@ class Mtrk:
                         del trk[a][i]
 
 
-    def addToTrack(self, offset, event):
+    def addToTrack(self, offset, event, evType=None):
         """ Add an event to a track.
 
             MIDI data is saved as created in track structures.
@@ -544,11 +595,22 @@ class Mtrk:
             the events are stored as a list in the order they are
             created. Our storage looks like:
 
-            miditrk[OFFSET_VALUE] = [event1, event2, ...]
+                 miditrk[OFFSET_VALUE] = [event1, event2, ...]
+
+            evType is an optional arg. Two values are used:
+                 MIDI_PR - a program (voice) change. Save the timestamp.
+                 MIDI_NOTE - note on/off ... check to see it doesn't happen
+                             before the last program change.
+
         """
 
-        if offset<0:
-            offset=0
+        if evType == MIDI_NOTE and offset < self.lastPrg:
+            offset = self.lastPrg
+        elif evType == MIDI_PRG:
+            self.lastPrg=offset
+
+        if offset < 0:
+            offset = 0
 
         tr=self.miditrk
 
@@ -588,3 +650,130 @@ timeSig = TimeSig()
 
 
 
+def stripRange():
+    """ Strip out range limited data. """
+
+    bp = gbl.barPtrs   # list generated at compile time
+
+    if gbl.barRange[-1] == 'ABS':
+        gbl.barRange.pop()  # delete abs marker
+        for a in bp:        # convert comment numbers to abs numbers
+            bp[a][0] = str(a)
+    validRange = []
+
+    for a in gbl.barRange:   # list of bars we want to produce
+        for b in bp:
+            if a == bp[b][0]:
+                validRange.append([bp[b][1], bp[b][2]])
+
+    if not validRange:
+        print "  Range directive -b/B would result in empty file."
+        print "  Entire file is being created. Check the range."
+        return
+
+    # Collaspe/merge the valid range pointers
+    validRange.sort()   # barptrs was dict, so this list is not in order
+    tmp = []
+    a,b = validRange[0]
+    for i in range(1, len(validRange)):
+        if b+1 == validRange[i][0]:
+            b = validRange[i][1]
+        else:
+            tmp.append( [a,b] )
+            if i < len(validRange):
+                a,b = validRange[i]
+    tmp.append( [a,b] )
+    validRange = tmp  # list of event times to keep
+
+    """ Create list of event times to discard. Each item in the list:
+        is [ start-time, end-time]
+     """
+
+    disList = []
+    lowestEv = bp[1][1]
+    for a in validRange:
+        disList.append( [lowestEv, a[0]-1] )
+        lowestEv = a[1]
+
+    """ Determine the last event time in the buffer. This is not nesc. the
+        same as the last barptr ... tempos and midinote can write past the
+        last bar. We need to test each track and find the highest event time.
+    """
+
+    lastev = -1
+    for a in gbl.mtrks:
+        z = sorted(gbl.mtrks[a].miditrk)
+        if z[-1]>lastev:
+            lastev = z[-1]
+
+    disList.append( [validRange[-1][1]+1, lastev] )
+
+    """ 1st pass. For each track take all the cut parts and adjust their
+        offsets to the end offset of the previous keep section. Strip out
+        all note on events, lyric and text events in the effected bits.
+    """
+
+    for start, end in disList:
+        for n in gbl.mtrks:
+            tr=gbl.mtrks[n].miditrk
+            newEvents = []
+            for ev in sorted(tr.keys()):   # sort is important!
+                if ev >= start and ev <=end:
+                    for e in tr[ev]:
+                        # skip note on events
+                        if ord(e[0]) & 0xf0 == 0x90 and ord(e[2]):
+                            continue
+                        # skip lyric and text events
+                        if ord(e[0]) == 0xff:
+                            if ord(e[1]) == 0x05 or ord(e[1]) == 0x01:
+                                continue
+                        # skip if event is note off and it already is present
+                        if ord(e[0]) & 0xf0 == 0x90 and ord(e[2]) == 0:
+                            for x in newEvents:
+                                if x == e:
+                                    e=None
+                                    break
+                        if e:
+                            newEvents.append(e)
+                    del (tr[ev])
+
+            """ We now have a new list of events for the 'start' offset (it might
+                just be an empty list) AND we have deleted the events for 'start'
+                to 'end'. Just a matter of inserted a new event list.
+            """
+
+            if newEvents:
+                tr[start] = newEvents
+
+    """ 2nd pass. Adjust offsets of stuff to keep. """
+
+    offset = 1
+    for vals in range(len(validRange)):   # each valid range
+        start = validRange[vals][0]
+        end   = validRange[vals][1]+1
+        offset += (start - disList[vals][0])-1
+        for a in gbl.mtrks:               # each track
+            tr = gbl.mtrks[a].miditrk
+            for ev in sorted(tr.keys()):  # each event list
+                if ev >= start and ev <= end:
+                    newoffset = ev-offset
+                    if ev != newoffset:  # don't append/copy creating duplicates
+                        if newoffset in tr:
+                            tr[newoffset].extend(tr[ev])
+                        else:
+                            tr[newoffset] = tr[ev]
+                        del tr[ev]
+
+    """ After all this compressing the end of file marker is past the
+        end of the real data. This could bugger up the -1 option, so fix
+        it. Go though all the tracks again and find the end.
+    """
+
+    lastev = -1
+    for a in gbl.mtrks:
+        z = sorted(gbl.mtrks[a].miditrk)
+        if z and z[-1]>lastev:
+            lastev = z[-1]
+    gbl.tickOffset = lastev
+
+    print "  File has been truncated for -b/-B option. Bar count/time incorrect."

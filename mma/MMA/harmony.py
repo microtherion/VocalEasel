@@ -38,26 +38,50 @@ def harmonize(hmode, note, chord):
         if tp in ('2', '2BELOW'):
             hnotes.append( gethnote(note, chord) )
 
+        elif tp == '28Below':
+            hnotes.append( gethnote(note, chord)-12)
+
         elif tp == '2ABOVE':
             hnotes.append( gethnote(note, chord)+12 )
+
+        elif tp == '28ABOVE':
+            hnotes.append( gethnote(note, chord)+24 )
 
         elif tp in ( '3', '3BELOW'):
             a = gethnote(note, chord)
             b = gethnote(a, chord)
             hnotes.extend( [a, b] )
-
+        
+        elif tp == '38BELOW':
+            a = gethnote(note, chord)
+            b = gethnote(a, chord)
+            hnotes.extend( [a-12, b-12] )
+   
         elif tp == '3ABOVE':
             a = gethnote(note, chord)
             b = gethnote(a, chord)
             hnotes.extend( [a+12, b+12] )
 
+        elif tp == '38ABOVE':
+            a = gethnote(note, chord)
+            b = gethnote(a, chord)
+            hnotes.extend( [a+24, b+24] )
+
         elif tp in ('OPEN', "OPENBELOW"):
             a=gethnote(note, chord)
             hnotes.append( gethnote(a, chord))
+            
+        elif tp == 'OPEN8BELOW':
+            a = gethnote(note, chord)
+            hnotes.append( gethnote(a-12, chord))
 
         elif tp == 'OPENABOVE':
             a=gethnote(note, chord)
             hnotes.append( gethnote(a, chord) + 12 )
+ 
+        elif tp == 'OPEN8ABOVE':
+            a=gethnote(note, chord)
+            hnotes.append( gethnote(a, chord) + 24 )
 
         elif tp in ('8', '8BELOW'):
             hnotes.append( note - 12 )
@@ -79,13 +103,11 @@ def harmonize(hmode, note, chord):
         else:
             error("Unknown harmony type '%s'" % tp)
 
-    """ Strip out duplicate notes from harmony list. Cute trick here,
-        we use the note values as keys for a new dictionary, assign
-        a null value, and return the list of keys.
+    """ Strip out duplicate notes from harmony list.
+        Cute trick here ... using set().
     """
 
-    return dict([(i, None) for i in hnotes]).keys()
-
+    return list(set(hnotes))
 
 def gethnote(note, chord):
     """ Determine harmony notes for a note based on the chord.

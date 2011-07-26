@@ -145,6 +145,61 @@ Chord-Duh Groove QuickStepDuh
 DefGroove QuickStepDuhSus        Sustains with vocalization.
 
 
+////////////////////////////////
+//// Walking bass versions
+
+Groove QuickStep
+Bass Sequence -
+
+/// Use 2 patterns. The main walk skips beats 3 or 2 on alternate bars.
+/// The 2nd pattern fills in these beats (and 4.5) at random times.
+/// We don't just do a rskip on the 1st pattern since we really do
+/// want beats on 1 and 4 (and 2/3?).
+
+Begin Walk
+	Voice $_Bass_Voice
+	Volume $_Bass_Volume
+	Articulate 60
+	Octave $_Bass_Octave
+	Rvolume $_Bass_Rvolume
+	Rtime   $_Bass_Rtime
+	Sequence  {1 4 100; 2 4 70; 4 4 90}  {1 4 90; 3 4 90; 4 4 60}
+End
+
+Begin Walk-Random
+   Copy Walk
+   Sequence {3 8. 70; 4.5 16 100} {2 8. 70; 4.5 16 100}
+   Rskip 50
+End
+
+DefGroove QuickStepWalk    Basic pattern with walking bass.
+
+Groove QuickStepHit
+Walk Groove QuickStepWalk
+Bass Sequence -
+Defgroove  QuickStepHitWalk  Brass hits with walking bass.
+
+Groove QuickStepSus
+Walk Groove QuickStepWalk
+Bass Sequence -
+Defgroove  QuickStepSusWalk  Sustained strings with walking bass.
+
+Groove QuickStepHitSus
+Walk Groove QuickStepWalk
+Bass Sequence -
+Defgroove  QuickStepHitSusWalk  Sustained strings, brass hits and walking bass.
+
+Groove QuickStepDuh 
+Walk Groove QuickStepWalk
+Bass Sequence -
+Defgroove  QuickStepDuhWalk Vocalization and walking bass.
+
+Groove QuickStepDuhSus
+Walk Groove QuickStepWalk
+Bass Sequence -
+Defgroove  QuickStepDuhSusWalk Strings, vocalization and walking bass.
+
+
 //////////////////////////////////////////////////////////
 // Intro
 

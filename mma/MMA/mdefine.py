@@ -31,6 +31,27 @@ import MMA.midiC
 import gbl
 from   MMA.common import *
 
+def mdefine(ln):
+    """ Set a midi seq pattern. """
+
+    if not ln:
+        error("MDefine needs arguments")
+
+    name = ln[0]
+    if name.startswith('_'):
+        error("Names with a leading underscore are reserved")
+
+    if name.upper() == 'Z':
+        error("The name 'Z' is reserved")
+
+    mdef.set(name, ' '.join(ln[1:]))
+
+
+def trackMdefine(name, ln):
+    """ Set a midi seq pattern. Ignore track name."""
+
+    mdefine(ln)
+
 
 class Mdefine:
 
@@ -38,7 +59,7 @@ class Mdefine:
         self.defs = {}
 
     def get(self, name):
-        """ Return a predefine MIDI pattern."""
+        """ Return a predefined MIDI pattern."""
 
         try:
             return self.defs[name]

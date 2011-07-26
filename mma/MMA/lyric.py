@@ -25,7 +25,7 @@ Bob van der Poel <bob@mellowood.ca>
 
 import gbl
 from   MMA.common import *
-
+import MMA.paths
 
 class Lyric:
 
@@ -34,6 +34,7 @@ class Lyric:
     versenum  = 1       # current verse number of lyric
     dupchords = 0       # set if we want chords as lyric events
     transpose = 0       # tranpose chord names (for dupchords only)
+    karmode   = 0       # in kar mode use textevents, split at hyphens
 
     pushedLyrics = []
 
@@ -79,44 +80,26 @@ class Lyric:
         if self.transKey:  a+="Sharp"
         else:              a+="Flat"
 
+        a += " KAR="
+        if self.karmode:   a+="On"
+        else:              a+="Off"
+
         return a
 
 
     def option(self, ln):
         """ Set a lyric option. """
 
-        for i, l in enumerate(ln):
-            l=l.upper()
+        ln, opts = opt2pair(ln)
 
-            # Single word options
+        for o, v in opts:
+            o = o.upper()
+            v = v.upper()
 
-            if l.upper()=="SET":
-
-                if i>=len(ln):
-                    s=''
-                else:
-                    s=' '.join(ln[i+1:]).strip()
-
-                if not s.startswith('['):
-                    s = '[' + s + ']'
-
-                self.pushedLyrics.append(s)
-
-                break
-
-
-            # All the rest are OPT=VALUE pairs
-
-            try:
-                a,v = l.split('=')
-            except:
-                error("Lyric options must be in CMD=VALUE pairs")
-
-
-            if a == 'EVENT':
+            if o == 'EVENT':
                 if v == 'TEXT':
                     self.textev = 1
-                    warning ("Lyric: Placing lyrics as TEXT EVENTS  is not recommended")
+                    warning ("Lyric: Placing lyrics as TEXT EVENTS is not recommended")
 
                 elif v == 'LYRIC':
                     self.textev = None
@@ -124,10 +107,10 @@ class Lyric:
                         print "Lyric: lyrics set as LYRIC events."
 
                 else:
-                    error("Valid options for Lyric Event are TEXT or LYRIC")
+                    error("Lyric: Valid options for EVENT are TEXT or LYRIC.")
 
 
-            elif a == 'SPLIT':
+            elif o == 'SPLIT':
                 if v == 'BAR':
                     self.barsplit = 1
                     if gbl.debug:
@@ -139,10 +122,10 @@ class Lyric:
                         print "Lyric: lyrics appear as one per bar."
 
                 else:
-                    error("Valid options for Lyric Split are BAR or NORMAL")
+                    error("Lyric: Valid options for SPLIT are BAR or NORMAL.")
 
 
-            elif a == 'VERSE':
+            elif o == 'VERSE':
                 if v.isdigit():
                     self.versenum = int(v)
 
@@ -153,55 +136,112 @@ class Lyric:
                     self.versenum -= 1
 
                 else:
-                    error("Valid options of Lyric Verse are <nn> or INC or DEC")
+                    error("Lyric: Valid options for VERSE are <nn>, INC or DEC")
 
                 if self.versenum < 1:
-                    error("Attempt to set Lyric Verse to %s. Values "
-                        "must be > 0" % self.versenum)
+                    error("Lyric: Attempt to set Verse to %s. Values must be > 0" % self.versenum)
 
                 if gbl.debug:
-                    print "Lyric: verse number set to %s" % self.versenum
+                    print "Lyric: Verse number set to %s" % self.versenum
 
 
-            elif a == 'CHORDS':
+            elif o == 'CHORDS':
                 if v in ('1', 'ON'):
                     self.dupchords = 1
                     if gbl.debug:
-                        print "Lyric: chords are duplicated as lyrics."
+                        print "Lyric: Chords are duplicated as lyrics."
 
                 elif v in ('0', 'OFF'):
                     self.dupchords = 0
                     if gbl.debug:
-                        print "Lyric: chords are NOT duplicated as lyrics."
+                        print "Lyric: Chords are NOT duplicated as lyrics."
 
                 else:
-                    error ("Expecting 'ON' or 'OFF' in Lyric directive, not 'CHORDS=%s'" % v)
+                    error ("Lyric: CHORDS expecting 'ON' or 'OFF', not %s'" % v)
 
-            elif a == 'TRANSPOSE':
-
-                v = stoi(v, "Lyric Tranpose expecting value, not %s" % v)
+            elif o == 'TRANSPOSE':
+                v = stoi(v, "Lyric: Tranpose expecting value, not %s" % v)
 
                 if v < -12 or v > 12:
-                    error("Lyric Tranpose %s out-of-range; must be -12..12" % v)
+                    error("Lyric: Tranpose %s out-of-range; must be -12..12" % v)
 
                 self.transpose = v
 
-            elif a == 'CNAMES':
+                if gbl.debug:
+                        print "Lyric: Chord names transposed %s steps." % v
 
+            elif o == 'CNAMES':
                 if v in ('#', 'SHARP'):
                     self.transKey = 1
+
                 elif v in ('B', '&', 'FLAT'):
                     self.transKey = 0
 
                 else:
                     error("Lyric CNames expecting 'Sharp' or 'Flat', not '%s'" % v )
 
+                if gbl.debug:
+                    print "Lyric: Chord names favor"
+                    if self.transKey:
+                        print "#."
+                    else:
+                        print "b."
+
+            elif o == 'KARMODE':
+                if v in ('ON', '1'):
+                    self.karmode = 1
+                    if not hasattr(self, 'setkar'):
+                        self.setkar = 1
+                        meta=gbl.mtrks[0]
+                        # this converts the "created" text to kar format
+                        mt = meta.miditrk
+                        if 0 in mt:   # don't bother if no events at 0
+                            txt=None
+                            for t,ev in enumerate(mt[0]):
+                                if ord(ev[1]) == 1:
+                                    ev=ev[3:]
+                                    if ev.startswith("Created by MMA"):
+                                        txt = "@I " + ev
+                                        del mt[0][t]
+                                        break
+                            if txt:
+                                meta.addText(0, txt)
+                        # other kar fields
+                        meta.addText(0, "@KMIDI KARAOKE FILE")
+                        meta.addText(0, "@V0100")
+                        # change extension to .kar
+                        MMA.paths.createOutfileName('.kar')
+ 
+                elif v in ('OFF', '0'):
+                    self.karmode = 0
+                else:
+                    error("Lyric Kar expecting On, 1, Off or 0, not '%s'." % v)
+
+                if gbl.debug:
+                    print "Lyric: Karmode",
+                    if self.karmode: print "enabled."
+                    else: print "disabled."
+
             else:
-                error("Usage: Lyric expecting EVENT, SPLIT, VERSE, CHORDS, TRANSPOSE, CNAMES or SET, "
-                    "not '%s'" % a )
+                error("Usage: Lyric expecting EVENT, SPLIT, VERSE, CHORDS, TRANSPOSE,"
+                      "CNAMES, KAR or SET, not '%s'" % o )
 
 
+        # All the opt=value options have been taken care of. ln can now only
+        # contain "Set ..." Anything else is an error.
 
+        if not ln:
+            return
+
+        if ln[0].upper() != "SET":
+            error("Lyric: Unknown option '%'." % ln[0])
+
+        s=' '.join(ln[1:]).strip()
+
+        if not s.startswith('['):
+            s = '[' + s + ']'
+            
+        self.pushedLyrics.append(s)
 
 
     def leftovers(self):
@@ -233,7 +273,6 @@ class Lyric:
 
             ln = ln + self.pushedLyrics.pop(0)
             a=b=1      # flag that we have lyrics, count really doesn't matter
-
 
         if rpt > 1:
             if self.dupchords:
@@ -309,11 +348,16 @@ class Lyric:
         lyrics=lyrics.replace('\\n', ' \\n ')
         lyrics=lyrics.replace('     ', ' ')
 
+        if self.karmode:
+            lyrics = lyrics.replace('\-', chr(1))
+            lyrics = lyrics.replace('-', chr(0)+' ')
+   
         if self.barsplit:
             lyrics = [lyrics]
         else:
             lyrics = lyrics.split()
 
+ 
         beat = 0
         bstep = gbl.QperBar / float(len(lyrics))
 
@@ -331,12 +375,16 @@ class Lyric:
             a = a.replace('\\r', '\r')
             a = a.replace('\\n', '\n')
 
-            if a and a != ' ':
-                if not a.endswith('-'):
+            if  a and a != ' ':
+                if a and self.karmode and (chr(0) in a or chr(1) in a):
+                    a=a.replace(chr(0), '')
+                    a=a.replace(chr(1), '-')
+                elif not a.endswith('-') and not a.endswith('\n') and not a.endswith('\r'):
                     a += ' '
 
+                
                 p=getOffset(beat * gbl.BperQ)
-                if self.textev:
+                if self.textev or self.karmode:
                     gbl.mtrks[0].addText(p, a)
                 else:
                     gbl.mtrks[0].addLyric(p, a)

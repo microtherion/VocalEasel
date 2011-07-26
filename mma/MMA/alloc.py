@@ -26,6 +26,7 @@ Bob van der Poel <bob@mellowood.ca>
 import MMA.patChord
 import MMA.patWalk
 import MMA.patBass
+import MMA.patPlectrum
 import MMA.patDrum
 import MMA.patScale
 import MMA.patArpeggio
@@ -45,7 +46,9 @@ trkClasses = {
     'WALK'     : MMA.patWalk.Walk,
     'MELODY'   : MMA.patSolo.Melody,
     'SOLO'     : MMA.patSolo.Solo,
-    'ARIA'     : MMA.patAria.Aria
+    'ARIA'     : MMA.patAria.Aria,
+    'PLECTRUM' : MMA.patPlectrum.Plectrum
+
 }
 
 

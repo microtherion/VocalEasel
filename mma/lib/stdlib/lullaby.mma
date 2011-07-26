@@ -19,10 +19,6 @@ Time 4
 Timesig 4 4
 Include stdpats
 
-///////// Additional Patterns
-
-
-////////// Ballad
 
 SeqSize 1
 
@@ -95,6 +91,50 @@ Groove LullabySus
 Walk Groove LullabyWalk
 DefGroove LullabyWalkSus  Strings and walking bass.
 
+///////////////////////////
+/// Arpeggios
+
+Groove Lullaby
+
+Begin Arpeggio
+    Voice JazzGuitar
+	Octave 6
+	Articulate 140
+	Volume mp
+	Harmony None
+	Rskip 40
+	Rvolume 5
+	Rtime 5
+	Direction Up
+	Range .99
+	Sequence A8
+End
+
+DefGroove LullabyPlus          Add in arpeggiating guitar.
+
+Groove Lullaby1
+Arpeggio Groove LullabyPlus
+DefGroove Lullaby1Plus         Arpeggiating guitar and extra bass.
+
+Groove LullabyWalk
+Arpeggio Groove LullabyPlus
+DefGroove LullabyWalkPlus      Arpeggiating guitar and walking bass.
+
+
+Groove LullabySus
+Arpeggio Groove LullabyPlus
+DefGroove LullabySusPlus      Arpeggiating guitar and sustained strings.
+
+
+Groove Lullaby1Sus
+Arpeggio Groove LullabyPlus
+DefGroove Lullaby1SusPlus     Arpeggiating guitar, sustained strings and extra bass.
+
+
+Groove LullabyWalkSus
+Arpeggio Groove LullabyPlus
+DefGroove LullabyWalkSusPlus  Arpeggiating guitar, strings and walking bass.
+ 
 
 ///////////////////
 //// Intro

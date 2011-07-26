@@ -59,21 +59,21 @@ class Vtable:
         if not ln:
             self.table = {}
             if gbl.debug:
-                print "Voice Translaion table reset."
-
+                print "Voice Translation table reset."
             return
 
-        for l in ln:
-            l=l.upper()
-            if l.count('=') != 1:
-                error("Each translation pair must be in the format Voice=Alias")
-            v,a = l.split('=')
+        ln, opts = opt2pair(ln, toupper=1)
+        
+        if ln:
+            error("VOICETR: Each translation pair must be in the format Alias=Voice.")
+
+        for v, a in opts:
             self.table[v] = a
 
         if gbl.debug:
             print "Voice Translations: ",
-            for l in ln:
-                print l,
+            for v, a in opts:
+                print "%s=%s" % (v,a),
             print
 
     def get(self, name):
@@ -114,27 +114,32 @@ class Dtable:
         if not ln:
             self.table = {}
             if gbl.debug:
-                print "DrumTone Translaion table reset."
+                print "DrumTone Translation table reset."
 
             return
+        
+        ln, opts = opt2pair(ln, 1)
+        
+        if ln:
+            error("TONETR: Each translation pair must be in the format Tone=NewTone.")
 
-        for l in ln:
-            l=l.upper()
-            if l.count('=') != 1:
-                error("Each translation pair must be in the format Voice=Alias")
-            v,a = l.split('=')
 
+        for v, a in opts:
             v1=MMA.midiC.drumToValue(v)
             if v1<0:
-                error("Drum Tone '%s' not defined." % v)
+                error("TONETR: Tone '%s' not defined." % v)
+
             a1=MMA.midiC.drumToValue(a)
             if a1<0:
-                error("Drum Tone '%s' not defined." % a)
+                error("TONETR: Tone '%s' not defined." % a)
 
             self.table[v1] = a1
-            if gbl.debug:
-                print "DrumTone Translation: %s=%s" % \
-                      (MMA.midiC.valueToDrum(v), MMA.midiC.valueToDrum(a))
+        
+        if gbl.debug:
+            print "TONETR Translations:",
+            for v, a in opts:
+                print "%s=%s" % (MMA.midiC.valueToDrum(v), MMA.midiC.valueToDrum(a)),
+            print
 
 
     def get(self, name):
@@ -186,29 +191,38 @@ class VoiceVolTable:
 
             return
 
-        for l in ln:
-            l=l.upper()
-            if l.count('=') != 1:
-                error("Each translation pair must be in the format Voice=Ajustment")
-            v,a = l.split('=')
+        ln, opts = opt2pair(ln)
+        
+        if ln:
+            error("VOICEVOLTR: Expecting VOICE=VOLUME pairs.")
 
-            v=MMA.midiC.instToValue(v)
+        for v, a in opts:
+            val=MMA.midiC.instToValue(v)
+            
+            if val<0:
+                error("VOICEVOLTR: unknown voice '%s'." % v)
+
             a=stoi(a)
             if a<1 or a>200:
-                error("Voice volume adjustments must be in range 1 to 200, not %s" % a)
-            self.table[v] = a/100.
-            if gbl.debug:
-                print "Voice Volume Adjustment: %s=%s" % (MMA.midiC.valueToInst(v), a)
+                error("VOICEVOLTR: adjustments must be in range 1 to 200, not '%s'." % a)
+
+            self.table[val] = a/100.
+
+        if gbl.debug:
+            print "VOICEVOLTR: ",
+            for v, a in opts:
+                print "%s=%s" % (v.upper(), a),
+            print
 
 
     def get(self, v, vol):
         """ Return an adjusted value or original. """
 
         try:
-            vol = int(vol * self.table[v])
-        except KeyError:
+            return vol * self.table[v]
+        except:
             return vol
-
+        
 
 voiceVolTable=VoiceVolTable()
 
@@ -227,36 +241,46 @@ class DrumVolTable:
 
 
     def set(self, ln):
-        """ Set a name/alias for voice volume adjustment, called from parser. """
+        """ Set a name/alias for drumtone volume adjustment, called from parser. """
 
         if not ln:
             self.table = {}
             if gbl.debug:
-                print "Drum Volume Adjustment table reset."
+                print "DRUMVOLTR: Adjustment table reset."
 
             return
 
-        for l in ln:
-            l=l.upper()
-            if l.count('=') != 1:
-                error("Each translation pair must be in the format Drum=Ajustment")
-            v,a = l.split('=')
+        ln, opt = opt2pair(ln, 1)
+        
+        if ln:
+            error("DRUMVOLTR: Each option must be in the format TONE=AJUSTMENT.")
 
-            v=MMA.midiC.instToValue(v)
-            a=stoi(a)
+        for v, a in opt:
+            val = MMA.midiC.drumToValue(v)
+
+            if val < 0:
+                error("DRUMVOLTR: Unknown tone '%s'." % v)
+
+            a = stoi(a)
             if a<1 or a>200:
-                error("Drum volume adjustments must be in range 1 to 200, not %s" % a)
-            self.table[v] = a/100.
-            if gbl.debug:
-                print "Drum Volume Adjustment: %s=%s" % (MMA.midiC.valueToDrum(v), a)
+                error("DRUMVOLTR: adjustments must be in range 1 to 200, not '%s'." % a)
+
+            self.table[val] = a/100
+
+        if gbl.debug:
+            print "DRUMVOLTR: Adjustments",
+            for v, a in opt:
+                print "%s=%s" % (MMA.midiC.valueToDrum(val), a),
+            print
 
 
     def get(self, v, vol):
         """ Return an adjusted value or original. """
 
         try:
-            vol = int(vol * self.table[v])
-        except KeyError:
+            return vol * self.table[v]
+
+        except:         # not the best, but any errors just return the orignal volume.
             return vol
 
 

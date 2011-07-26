@@ -25,9 +25,6 @@ Begin Walk Define
 	W1+23	W123; 1.5 8 80 
 End
 
-Begin Arpeggio Define
-	Ajazz   1 4 90; 2 3+3 70; 2.667 3 80; 3 3+3 70; 3.667 3 80
-End
 
 //////////////////////////////////////////////
 /////   Jazzwaltz
@@ -134,7 +131,7 @@ Groove JazzWaltz
 
 Begin Arpeggio
 	Voice Celesta
-	Sequence Ajazz
+	Sequence  {1 4 90; 2 3+3 70; 2.667 3 80; 3 3+3 70; 3.667 3 80 }
 	Harmony Open
 	Octave 6
 	Volume mp
@@ -143,13 +140,37 @@ Begin Arpeggio
 	Rskip 20
 	Rvolume 20
 	Rtime 10
-End
+	End
 
 DefGroove JazzWaltz1    Add arpeggio runs.
 
 Chord-Sus Groove JazzWaltzSus
 
 DefGroove JazzWaltz1Sus   Sustained strings and arpeggios.
+
+////////
+
+Groove JazzWaltz
+
+Begin Arpeggio
+	Voice VoiceOohs
+	Sequence  {1 2 90; 3.66 8 100}  A3  A1  {A3 Shift .66}
+	Harmony OpenBelow
+	Octave 5
+	Volume m
+	Range .9
+	Direction Down
+	Articulate 70
+	Rskip 20
+	Rvolume 20
+	Rtime 10
+End
+
+DefGroove JazzWaltz2    Add VoiceOohs.
+
+Chord-Sus Groove JazzWaltzSus
+
+DefGroove JazzWaltz2Sus   Sustained strings and DUH voices.
 
 ////////////////////////////
 // Intros

@@ -5,9 +5,9 @@
 
 MIDI 0xF0 0x05 0x7E 0x7F 0x09 0x01 0xF7
 
-// Loop to set channel volume to 80
+// Loop to set channel volume to 80 (not channel 1)
 
-Set Channel 0xb0 
+Set Channel 0xb1
 10
 	MIDI $Channel 0x07 0x50      // channel volume == 80 
 	Inc Channel

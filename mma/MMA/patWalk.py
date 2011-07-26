@@ -142,7 +142,7 @@ class Walk(PC):
             else:    # BOTH
                 self.walkChoice += random.choice( (-1,0,0,2,2,1,1,1,1,1,1,1))
 
-
+           
             if not self.harmonyOnly[sc]:
                 self.sendNote(
                     p.offset,
@@ -150,16 +150,18 @@ class Walk(PC):
                     self.adjustNote(note),
                     self.adjustVolume(p.vol, p.offset) )
 
-
             if self.harmony[sc]:
                 ch = self.getChordInPos(p.offset, ctable).chord.noteList
                 h = MMA.harmony.harmonize(self.harmony[sc], note, ch)
+              
+                strumOffset = self.getStrum(sc)
+
                 for n in h:
                     self.sendNote(
-                        p.offset,
+                        p.offset + strumOffset,
                         self.getDur(p.duration),
                         self.adjustNote(n),
                         self.adjustVolume(p.vol * self.harmonyVolume[sc], -1) )
 
-
+                    strumOffset += self.getStrum(sc)
 

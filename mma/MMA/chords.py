@@ -25,9 +25,12 @@ Bob van der Poel <bob@mellowood.ca>
 
 import copy
 
-
 from MMA.common import *
 from MMA.chordtable import chordlist
+import MMA.roman
+
+####################################################
+# Convert a roman numeral chord to standard notation
 
 
 
@@ -119,15 +122,14 @@ cdAdjust = {
 def chordAdjust(ln):
     """ Adjust the chord point up/down one octave. """
 
+    notpair, ln = opt2pair(ln)
+
     if not ln:
-        error("ChordAdjust: Needs at least one argument")
+        error("ChordAdjust: Needs at least one argument.")
+    if notpair:
+         error("ChordAdjust: All args have to be in the format opt=value.")
 
-    for l in ln:
-        try:
-            pitch, octave = l.split('=')
-        except:
-            error("Each arg must contain an '=', not '%s'" % l)
-
+    for pitch, octave in ln:
         if pitch not in cdAdjust:
             error("ChordAdjust: '%s' is not a valid pitch" % pitch)
 
@@ -220,7 +222,7 @@ class ChordNotes:
     ### Functions ###
     #################
 
-    def __init__(self, name, line=''):
+    def __init__(self, name):
         """ Create a chord object. Pass the chord name as the only arg.
 
         NOTE: Chord names ARE case-sensitive!
@@ -244,6 +246,7 @@ class ChordNotes:
         """
 
         slash = None
+        wmessage = ''   # slash warning msg, builder needed for gbl.rmShow
         octave = 0
         inversion = 0
 
@@ -256,9 +259,17 @@ class ChordNotes:
         if '/' in name and '>' in name:
             error("You cannot use both an inversion and a slash in the same chord")
 
+        if ':' in name:
+            name, barre = name.split(':', 1)
+            barre = stoi(barre, "Expecting integer after ':'")
+            if barre < -20 or barre > 20:
+                error("Chord barres limited to -20 to 20 (more is silly)")
+        else:
+            barre = 0
+
         if '>' in name:
             name, inversion = name.split('>', 1)
-            inversion = stoi(inversion, "Expecting interger after '>'")
+            inversion = stoi(inversion, "Expecting integer after '>'")
             if inversion < -5 or inversion > 5:
                 error("Chord inversions limited to -5 to 5 (more seems silly)")
 
@@ -270,13 +281,19 @@ class ChordNotes:
             name = name[1:]
             octave = 12
 
-        name = name.replace('&', 'b')
+        # we have just the name part. Save 'origname' for debug print
+
+        origName = name = name.replace('&', 'b')
 
         # Strip off the slash part of the chord. Use later
         # to do proper inversion.
 
         if name.find('/') > 0:
             name, slash = name.split('/')
+
+        if name[0] in ("I", "V", "i", "v"):
+            n=name
+            name = MMA.roman.convert(name)
 
         if name[1:2] in ( '#b' ):
             tonic = name[0:2]
@@ -300,6 +317,7 @@ class ChordNotes:
         self.chordType     = ctype
         self.tonic         = tonic
         self.rootNote     = self.noteList[0]
+        self.barre        = barre
 
         self.noteListLen = len(self.noteList)
 
@@ -311,7 +329,17 @@ class ChordNotes:
 
         # Do inversions if there is a valid slash notation.
 
-        if slash:
+        if slash:   # convert Roman or Arabic to name of note from chord scale
+            if slash[0] in ('I', 'i', 'V', 'v') or slash[0].isdigit():
+                n = MMA.roman.rvalue(slash)
+                n = self.scaleList[n]           # midi value
+                while n >=12:
+                    n-=12
+                while n<0:
+                    n+=12
+
+                slash = ('C', 'C#', 'D', 'D#', 'E', 'F',
+                         'F#', 'G', 'G#', 'A', 'A#', 'B')[n]
             try:
                 r=cdAdjust[slash]    # r = -6 to 6
             except KeyError:
@@ -351,14 +379,29 @@ class ChordNotes:
                     break
 
             if not c_roted and not s_roted:
-                warning("The slash chord note '%s' not in chord or scale" % slash)
+                wmessage = "The slash chord note '%s' not in chord or scale" % slash
+                if not gbl.rmShow:
+                    warning(wmessage)
 
             elif not c_roted:
-                warning("The slash chord note '%s' not in chord '%s'" % (slash, name))
+                wmessage = "The slash chord note '%s' not in chord '%s'" % (slash, name)
+                if not gbl.rmShow:
+                    warning(wmessage)
 
             elif not s_roted:    # Probably will never happen :)
-                warning("The slash chord note '%s' not in scale for the chord '%s'" % (slash, name))
+                wmessage = "The slash chord note '%s' not in scale for the chord '%s'" \
+                            % (slash, name)
+                if not gbl.rmShow:
+                    warning(wmessage)
 
+        if gbl.rmShow:
+            if slash:
+                a = '/'+slash
+            else:
+                a = ''
+            if wmessage:
+                a+='   ' + wmessage
+            print " %03s] %-09s -> %s%s" % (gbl.lineno, origName, name, a)
 
     def reset(self):
         """ Restores notes array to original, undoes mangling. """

@@ -1,0 +1,119 @@
+
+// jazzguitar
+
+Begin Doc
+ Some things just don't fit! This is a soft-of-jazz and sort-of-folk set with
+ a guitar and piano. I'm trying to emulate the background used by Madeleine Peyroux
+ doing "Everybody's Talkin'".
+End
+
+Author Bob van der Poel
+
+
+SeqClear
+Time 4
+Timesig 4 4
+Include stdpats
+
+////////// Additional defines
+
+
+////////////////////////
+// Basic
+
+
+SeqSize 4
+
+Begin Drum-Tom
+    Tone LowTom2
+    Volume ppp
+    Sequence { D13 ; D2 Shift .5} 
+End
+
+Begin Bass-High
+	Voice      JazzGuitar
+	Articulate 120
+	Volume     m
+	Octave     5
+	Sequence  {1 2. 3 90; 3 2 5 90; 4 2 3 90 } { 1 2. 1 90; 3 4. 3 90; 4 2 5 90}
+    Harmony   OpenBelow
+    HarmonyVOlume 50 
+End
+
+Begin Bass
+	Voice      $_Bass-High_Voice
+	Articulate 105
+	Octave     3
+	Volume     mf
+	Sequence   B13 
+End
+
+
+DefGroove FolkyJazzGuitar    Basic pattern with bass, guitar notes and drum.
+
+Groove FolkyJazzGuitar
+
+Begin Arpeggio
+    Voice Clavinet
+    Articulate 120
+    Octave 6
+    Sequence  A4
+    Harmony OpenBelow
+    HarmonyVolume 100
+    Rtime 10
+    RVolume 10
+    Rskip 70
+End
+
+DefGroove FolkyJazzGuitarPlus Add in some Clavinet notes.
+
+///////////////////////////
+//// Sustained
+
+Groove FolkyJazzGuitar
+
+Begin Chord-Sus
+	Voice     VoiceOohs 
+	Sequence  {1 2 90 0 90 0; 3 2 90 0 90 0}  
+	Voicing   Mode=Optimal
+	Volume    p
+	Octave    5
+	Articulate 120
+End
+
+DefGroove FolkyJazzGuitarSus  Basic with sustained voices.
+
+Groove FolkyJazzGuitarPlus
+ Chord-Sus Groove FolkyJazzGuitarSus
+DefGroove FolkyJazzGuitarSusPlus  Added Clavinet and sustained voices.
+
+////////////////////////////
+///////////// Intro
+
+Groove FolkyJazzGuitar
+
+Drum-Tom  Sequence D1234 * D13 D1
+Bass-High Sequence  *  *  *  {1 1 1 90}
+Bass      Sequence  *  *  *  B1 
+
+DefGroove FolkyJazzGuitarIntro   A basic 4 bar introduction.
+
+
+//////////////////////////////////////////////
+//// Ending
+
+Groove FolkyJazzGuitar
+
+SeqSize 2
+
+Drum-Tom  Sequence D1234 D1
+Bass-High Sequence {1 2. 1 90; 3 2. 1 90}  {1 1 1 90}
+Bass      Sequence  *  B1 
+
+
+DefGroove FolkyJazzGuitarEnd    A 2 bar ending.
+
+
+
+
+

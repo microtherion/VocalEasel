@@ -61,12 +61,12 @@ Begin Chord-L
 	Articulate   70
 	Octave       4              // This has no effect! 
     NoteSpan     42 53
-	Volume       mp
+	Volume       m
 End
 
 Begin Bass-L
 	Sequence     $Bseq
-	Articulate   60
+	Articulate   70
 	Octave       $_Chord-L_Octave
 	Volume       $_Chord-L_Volume
     NoteSpan     $_Chord-L_Span
@@ -187,7 +187,7 @@ Begin Chord-Guitar
 	Voice       NylonGuitar
 	Accent      1 10
 	Octave      5
-	Volume      p
+	Volume      mp
 	Articulate  90
 End
 
@@ -196,7 +196,7 @@ End
 Begin Drum-Tam
 	Sequence	D23
 	Tone        Tambourine
-	Volume      pp
+	Volume      p
 	Rvolume     10
 	Rskip       5
 	Rtime       10
@@ -205,7 +205,7 @@ End
 Begin Drum-Tri
 	Sequence    D1
 	Tone        OpenTriangle
-	Volume      pp
+	Volume      p
 	Rskip       50
 	Rvolume     30
 	Rtime       10
@@ -221,7 +221,7 @@ Begin Chord-Sus
 	Voice      Strings
 	Sequence   { 1 2. 90 0 80 0 * 3}  // Root and fifth notes only.
 	Voicing    Mode=Optimal
-	Volume     p
+	Volume     mp
 	Octave     5
 	Articulate 100
 	Unify      On
@@ -246,7 +246,7 @@ Begin Arpeggio
 	Articulate 80
 	Voice      Accordion
 	Octave     5
-	Volume     pp
+	Volume     p
 	Rvolume    10
 	Rskip      10   10   50    10
 	Rtime      2
@@ -365,7 +365,7 @@ Begin Arpeggio
 	Range     2
     Octave    5
     Direction Up
-	Volume    p
+	Volume    mp
 	Rtime     2
 	Rvolume   10
 End

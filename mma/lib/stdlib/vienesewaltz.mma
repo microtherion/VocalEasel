@@ -72,7 +72,7 @@ Begin Drum-HH
 End
 
 
-DefGroove VieneseWaltz	Basic waltz,  piano only.
+DefGroove VieneseWaltz      Basic waltz,  piano only.
 
 
 Begin Chord-Sus
@@ -86,9 +86,10 @@ Begin Chord-Sus
 End
 
 
-DefGroove VieneseWaltzSus	Basic waltz with strings and piano.
+DefGroove VieneseWaltzSus     Basic waltz with strings and piano.
 
 
+//////////////////////////////////////////////////////////////
 ///   VieneseWaltz1  - Same as above, but with arp musicbox
 
 
@@ -127,8 +128,50 @@ Chord-Sus Groove VieneseWaltzSus
 Scale Rskip 5
 Arpeggio Rskip 20
 
-DefGroove VieneseWaltz1Sus   Waltz with arpeggios and strings.
+DefGroove VieneseWaltz1Sus     Waltz with arpeggios and strings.
 
+//////////////////////////////////////
+/// Arpeggio with piano chords. The break between the basic and 1 versions
+///   are a bit too large. Use this as a transition.
+
+Groove VieneseWaltz
+
+Chord-Piano Volume -30
+
+Begin Arpeggio
+    Groove VieneseWaltz1
+	Volume -25
+	Articulate 110
+End
+Begin Scale
+    Groove VieneseWaltz1
+	Volume -25
+	Articulate 110
+End
+
+DefGroove VieneseWaltz2   Musicbox sounds with piano.
+
+Groove VieneseWaltz2
+Chord-Sus Groove VieneseWaltzSus
+DefGroove VieneseWaltz2Sus  Musicbox with piano and strings.
+
+////////////////////////////////////
+//// Intro
+
+Groove VieneseWaltz
+
+
+Bass         Sequence   *    *    B123    {1 2. 1 90}
+Chord-Piano  Sequence   *    *    C123    L1
+//Drum-Kick
+Drum-Cym     Sequence	*    *    *       D1
+Drum-HH      Sequence	*    *    *       D2
+
+
+DefGroove VieneseWaltzIntro     Simple 4 bar introduction.
+
+
+///////////////////////////////////
 /// Ending
 
 Groove VieneseWaltz

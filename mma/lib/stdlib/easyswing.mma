@@ -1,6 +1,8 @@
 
 // easyswing
 
+// converted to use plectrum, bvdp, Feb/2010
+
 Begin Doc
 
  Soft guitar strumming. Great for tunes like "Beyond The Sea"
@@ -22,14 +24,23 @@ Include stdpats
 
 SeqSize 4
 
+Begin Plectrum Define
+   Pl4 1 5 90 80 80 80 70 70; \ 
+      2 6 80 80 80 80 70 70; \
+      3 5 90 90 80 80 70 70; \
+      4 4 80 80 70 70 70 60
 
-Begin Chord
-	Sequence	C1234	/  /  C13
-	Voicing Mode=Optimal 
+   Pl2 1 5 80 80 70 70 80 90; \
+       3 6 80 80 70 70 75 60
+
+   Pslow1 1 20 90 88 85 80 77 75 
+
+End
+
+Begin Plectrum
+	Sequence  Pl4 / / Pl2
 	Voice JazzGuitar
-	Volume mf
-	Articulate 95
-	Strum 5
+	Volume m
 	Accent 1 10 3 5
 	RVolume 10
 	Octave 5
@@ -136,10 +147,7 @@ DefGroove EasySwingWalkFill   Walking bass fill.
 
 Groove EasySwing	// Just modify the easyswing pattern
 
-Begin Chord
-	Sequence	L1
-	Strum 20
-End
+Plectrum 	Sequence  Pslow1
 
 DefGroove EasySwing1    One strum per bar. Okay if the tempo is \
                         quite fast, or as an introduction.
@@ -156,10 +164,7 @@ DefGroove EasySwing1Fill    Add apreggios to single chord swing.
 
 Groove EasySwing
 
-Begin Chord
-	Sequence	L2
-	Strum 10
-End
+Plectrum 	Sequence  Pl2
 
 DefGroove EasySwing2      Same EasySwing, but with 2 strums per bar.
 
@@ -174,7 +179,7 @@ DefGroove EasySwing2Fill    Add apreggios to two chord swing.
 /// EasySwing42  - alternate 4 and 2 strum bars
 
 Groove EasySwing
-Chord Sequence C1234 L2
+Plectrum Sequence Pl4  Pl2
 DefGroove EasySwing42      For faster rhythms, a bar of 4 followed \
                            by a bar of 2.
 
@@ -187,7 +192,7 @@ Arpeggio Groove EasySwingFill
 DefGroove EasySwing42Fill   Add arpeggios to 4-2 pattern.
 
 Groove EasySwingWalk
-Chord Groove EasySwing42
+Plectrum Groove EasySwing42
 DefGroove EasySwing42Walk    A 4-2 pattern with a walking bass.
 
 Chord-Sus Groove EasySwingSus
@@ -208,7 +213,7 @@ Begin Alltracks
 	Rskip 0
 End
 
-Chord    Sequence	C1234	/ C13  L1
+Plectrum Sequence	Pl4 /  Pl2  Pslow1
 Bass     Sequence	{1 2. 1 90}  /  / 	{1 4 1 80; 2 4 3 85; 3 2 5 95}
 Walk     Sequence   -
 Drum-HH  Sequence   D1234 / /  D13
@@ -221,13 +226,9 @@ DefGroove EasySwingIntro       4 bar intro
 
 Groove EasySwingIntro
 
-Begin Chord
-   Sequence L1
-   Articulate 99
-End
-
-Bass    Sequence {1 2. 1 90} 
-Drum-HH Sequence D1234 / / D1
+Plectrum Sequence Pslow1
+Bass     Sequence {1 2. 1 90} 
+Drum-HH  Sequence D1234 / / D1
 
 DefGroove EasySwingIntro1    4 bar intro with 1 long chord per bar.
 
@@ -235,7 +236,7 @@ DefGroove EasySwingIntro1    4 bar intro with 1 long chord per bar.
 
 Groove EasySwingIntro
 
-Chord    Sequence L2
+Plectrum   Sequence Pl2
 
 Begin Drum-HH
 	Tone RideCymbal1
@@ -280,7 +281,7 @@ End
 Drum-HH  Sequence D16 D13
 Drum-PHH Sequence D16 D13
 
-Chord Sequence 	C1234 L1
+Plectrum Sequence Pl4  Pslow1
 
 Walk Sequence	W1234  z
 Bass Sequence 	z	{1 1 1 90}

@@ -67,6 +67,14 @@ chordlist = {
              (C, D, E, F, G, A, D+12),
              "Major chord plus 9th (no 7th.)"),
 
+    'addb9': ((C,    E,    G,    Db+12),
+             (C, D, E, F, G, A, Db+12),
+             "Major chord plus flat 9th (no 7th.)"),
+
+    'add#9': ((C,    E,    G,    Ds+12),
+             (C, D, E, F, G, A, Ds+12),
+             "Major chord plus sharp 9th (no 7th.)"),
+
     'm':    ((C,    Eb,    G ),
              (C, D, Eb, F, G, Ab, Bb),
              "Minor triad."),
@@ -91,6 +99,10 @@ chordlist = {
     'm7':    ((C,    Eb,       G,      Bb ),
              (C, D, Eb, F, G, Ab, Bb),
              "Minor 7th (flat 3rd plus dominant 7th)."),
+
+    'm7#5':    ((C,    E,    Gs,    Bb),
+             (C, D, E, F, Gs, A, Bb),
+             "Minor 7th with sharp 5th."),
 
     'mM7':    ((C,    Eb,      G,      B ),
              (C, D, Eb, F, G, Ab, B),
@@ -155,6 +167,8 @@ chordlist = {
     'M7':    ((C,    E,    G,    B),
              (C, D, E, F, G, A, B),
              "Major 7th."),
+
+
 
     'M7#5':    ((C,    E,    Gs,    B),
              (C, D, E, F, Gs, A, B),
@@ -310,6 +324,22 @@ chordlist = {
              (C, D, F, F, G, A, B),
              "Suspended 4th, major triad with the 3rd raised half tone."),
 
+    'msus4':   ((C,    Eb,  F,  G ),
+             (C, D, Eb, F, G, Ab, Bb),
+             "Minor suspended 4th, minor triad plus 4th."),
+
+    'sus(addb9)': ((C,    F,    G, Db+12 ),
+             (C, D, F, F, G, A, B),
+             "Suspended 4th, major triad with the 3rd raised half tone plus flat 9th."),
+
+    'sus(add9)': ((C,    F,    G,  D+12 ),
+             (C, D, F, F, G, A, B),
+             "Suspended 4th, major triad with the 3rd raised half tone plus 9th."),
+
+    'sus(add#9)': ((C,    F,    G, Ds+12 ),
+             (C, D, F, F, G, A, B),
+             "Suspended 4th, major triad with the 3rd raised half tone plus sharp 9th."),
+
     '7sus': ((C,    F,    G,    Bb ),
              (C, D, F, F, G, A, Bb),
              "7th with suspended 4th, dominant 7th with 3rd "
@@ -409,6 +439,9 @@ aliases = (
     ('+9M7',     'aug9M7',   ''),
     ('+M7',      'M7#5',     ''),
     ('m(add9)',  'm(sus9)',  ''),
+    ('(add9)',   'add9',     ''),
+    ('(addb9)',  'addb9',    ''),
+    ('(add#9)',  'add#9',    ''),
     ('69',       '6(add9)',  ''),
     ('m69',      'm6(add9)', ''),
     ('m(b5)',    'mb5',      ''),
@@ -445,6 +478,10 @@ aliases = (
     ('min#7',    'mM7',      ''),
     ('m#7',      'mM7',      ''),
     ('dim',      'dim7',     'A dim7, not a triad!'),
+    (chr(176),   'dim7',     'A dim7 using a degree symbol'),
+    (chr(176)+'3', 'mb5',   'A dim3 (triad) using a degree symbol'),
+    (chr(176)+'(addM7)', 'dim7(addM7)', 'dim7(addM7) using degree symbol'),
+    (chr(248),   'm7b5',     'Half-diminished using slashed degree symbol'),
     ('9sus',     'sus9',     ''),
     ('9-5',      '9b5',      ''),
     ('dim3',     'mb5',      'Diminished triad (non-standard notation).'),

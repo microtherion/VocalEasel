@@ -40,7 +40,9 @@ import MMA.notelen
 import MMA.chords
 import MMA.file
 import MMA.midi
+import MMA.midifuncs
 import MMA.midiIn
+import MMA.midinote
 import MMA.grooves
 import MMA.docs
 import MMA.auto
@@ -50,6 +52,9 @@ import MMA.mdefine
 import MMA.volume
 import MMA.seqrnd
 import MMA.patch
+import MMA.paths
+import MMA.player
+import MMA.swing
 
 import gbl
 
@@ -57,6 +62,7 @@ from   MMA.common import *
 from   MMA.lyric import lyric
 from   MMA.macro import macros
 from   MMA.alloc import trackAlloc
+from   MMA.keysig import keySig
 
 lastChord = None   # tracks last chord for "/ /" data lines.
 
@@ -72,7 +78,10 @@ gmagic = 9988   # magic name for groove saved with USE
 """
 
 class CTable:
+    name      = None    # Chord name (not used?)
     chord     = None    # A pointer to the chordNotes structures
+    chStart   = None    # where in the bar the chord starts (in ticks, 0..)
+    chEnd     = None    # where it ends (in ticks)
     chordZ    = None    # set if chord is tacet
     arpeggioZ = None    # set if arpeggio is tacet
     walkZ     = None    # set if walking bass is tacet
@@ -80,10 +89,7 @@ class CTable:
     bassZ     = None    # set if bass is tacet
     scaleZ    = None    # set if scale track is tacet
     ariaZ     = None    # set if aria track is tacet
-
-    def __init__(self, offset):
-        self.offset=offset
-
+    plectrumZ = None    # set if plectrum is tacet
 
 
 ########################################
@@ -109,16 +115,15 @@ def parse(inpath):
     """ Process a mma input file. """
 
     global beginData, lastChord
- 
+
     gbl.inpath = inpath
 
     curline = None
 
     while 1:
         curline = inpath.read()
-        
-        if curline == None:
-            MMA.docs.docDump()
+
+        if curline == None:   # eof, exit parser
             break
 
         l = macros.expand(curline)
@@ -142,7 +147,7 @@ def parse(inpath):
         action=l[0].upper()      # 1st arg in line
 
         if action == 'BEGIN':
-            if not l:
+            if not l[1:]:
                 error("Use: Begin STUFF")
             beginPoints.append(len(beginData))
             beginData.extend(l[1:])
@@ -160,7 +165,7 @@ def parse(inpath):
             l = beginData + l
             action = l[0].upper()
 
-        
+
         if gbl.showExpand and action !='REPEAT':
             print l
 
@@ -187,7 +192,7 @@ def parse(inpath):
             if len(l) < 2:
                 error("Expecting argument after '%s'" % name)
             action = l[1].upper()
-            
+
             if action in trackFuncs:
                 trackFuncs[action](name, l[2:])
             else:
@@ -205,9 +210,12 @@ def parse(inpath):
         """
 
         if action.isdigit():   # isdigit() matches '1', '1234' but not '1a'!
+            barLabel = l[0]
             l = l[1:]
             if not l:        # ignore empty lines
                 continue
+        else:
+            barLabel = ''
 
         """ A bar can have an optional repeat count. This must
             be at the end of bar in the form '* xx'.
@@ -243,44 +251,21 @@ def parse(inpath):
               1. Make sure there is some chord data,
               2. Ensure the correct number of chords.
         """
- 
+
         if not l:
             error("Expecting music (chord) data. Even lines with\n"
                   "  lyrics or solos still need a chord")
 
-        i = gbl.QperBar - len(l)
-        if i < 0:
-            error("Too many chords in line. Max is %s, not %s" %
-                  (gbl.QperBar, len(l) ) )
-        if i:
-            l.extend( ['/'] * i )
 
+        """ We now have a chord line. It'll look something like:
 
-        """ We now have a valid line. It'll look something like:
+              ['Cm', '/', 'z', 'F#@4.5'] or ['/' 'C@3' ]
 
-              ['Cm', '/', 'z', 'F#'] or ['C', '/', '/', '/' ]
-
-            For each bar we create a ctable structure. This is just
-            a list of CTables, one for each beat division.
-            Each entry has the offset (in midi ticks), chordname, etc.
-
-            Special processing in needed for 'z' options in chords. A 'z' can
-            be of the form 'CHORDzX', 'z!' or just 'z'.
+            For each bar we create a list of CTables, one for each
+            chord in the line. Each entry has the start/end (in beats), chordname, etc.
         """
 
-        beat = 0
-        ctable = []
-
-        for c in l:
-            if c == '/':
-                if not lastChord:
-                    error("A chord has to be set before you can use a '/'")
-                c = lastChord
-            else:
-                lastChord = c
-
-            ctable.append(parseZs(c, beat))
-            beat += 1
+        ctable = parseChordLine(l)
 
         # Create MIDI data for the bar
 
@@ -295,9 +280,9 @@ def parse(inpath):
             else:
                 MMA.volume.nextVolume = None
 
-            
+
             """ Set up for rnd seq. This may set the current seq point. If return
-                is >=0 then we're doing track rnd. 
+                is >=0 then we're doing track rnd.
             """
 
             rsq, seqlist = MMA.seqrnd.setseq()
@@ -314,25 +299,31 @@ def parse(inpath):
                     seqSave = gbl.seqCount
                     if a.name in seqlist:   # for seqrnd with tracklist
                         gbl.seqCount = rsq
-                
                 a.bar(ctable)    ## process entire bar!
 
-                if rsq >= 0:
+                if rsq >= 0:   # for track rnd
                     gbl.seqCount = seqSave
 
             # Adjust counters
 
+            """ After processsing each bar we update a dictionary of bar
+                pointers. This table is used when the MIDI data is written
+                when -b or -B is set to limit output.
+            """
+
+            gbl.barPtrs[gbl.barNum+1] = [barLabel, gbl.tickOffset,
+                      gbl.tickOffset + (gbl.QperBar * gbl.BperQ)-1]
+
             gbl.totTime += float(gbl.QperBar) / gbl.tempo
 
+            gbl.tickOffset += (gbl.QperBar * gbl.BperQ)
+
             gbl.barNum += 1
+            gbl.seqCount = (gbl.seqCount+1) % gbl.seqSize
 
             if gbl.barNum > gbl.maxBars:
                 error("Capacity exceeded. Maxbar setting is %s. Use -m option"
                       % gbl.maxBars)
-
-            gbl.tickOffset += (gbl.QperBar * gbl.BperQ)
-
-            gbl.seqCount = (gbl.seqCount+1) % gbl.seqSize
 
             MMA.grooves.nextGroove()   # using groove list? Advance.
 
@@ -346,69 +337,130 @@ def parse(inpath):
                     print lyrics,
                 print
 
+def parseChordLine(l):
+    """ Parse a line of chord symbols and determine start/end points. """
 
-def parseZs(c, beat):
-    """ Parse a chord in a barline, create Ctable and strips 'z's.
+    global lastChord
 
-        This is called only from the main parser, but it's
-        complicated (ugly) enough to have its own function.
-    """
+    ctable = []               # an entry for each chord in the bar
+    quarter = gbl.BperQ       # ticks in a quarter note (== 1 beat)
+    endTime = (quarter * gbl.QperBar)  # number of ticks in bar
 
-    ctab = CTable(beat * gbl.BperQ)
+    p = 0                    # our beat counter --- points to beat 1,2, etc in ticks
 
-    if 'z' in c:
-        c, r = c.split('z', 1)    # chord name/track mute
+    for x in l:
+        if "@" in x:
+            ch, beat = x.split("@", 1)
+            beat = int((stof(beat, "Expecting an value after the @ in '%s'" % x)-1) * quarter)
+            p = int(beat/quarter) * quarter
+        else:
+            ch = x
+            beat = p
 
-        if not c:
-            if    r=='!': # mute all for 'z!'
-                r='DCAWBSR'
-                c='z'        # dummy chord name
-            elif not r: # mute all tracks except Drum 'z'
-                r='CBAWSR'
-                c='z'
+        p += quarter       # for next loop. Always a full beat.
 
-            else:
-                error("To mute individual tracks you must "
-                      "use a chord/z combination not '%s'" % r)
+        if ch == '/':      # handle continuation chords
+            if not ctable:
+                if lastChord:
+                   ch = lastChord
+                else:
+                    error("No previous chord for '/' at line start")
+            else:         # '/' other than at start just increment the beat counter
+                continue
 
-        else:    # illegal construct -- 'Cz!'
-            if r=='!':
-                error("'%sz!' is illegal. 'z!' mutes all tracks "
-                      "so you can't include the chord" % c)
+        if ctable:
+            if ctable[-1].name == ch:  # skip duplicate chords
+                continue
 
-            elif not r:
-                error("'%sz' is illegal. You must specify tracks "
-                          "if you use a chord" % c )
+            if ctable[-1].chStart >= beat:
+                error("Chord positions out of order")
 
-        for v in r:
-            if v == 'C':
-                ctab.chordZ = 1
-            elif v == 'B':
-                ctab.bassZ = 1
-            elif v == 'A':
-                ctab.arpeggioZ = 1
-            elif v == 'W':
-                ctab.walkZ = 1
-            elif v == 'D':
-                ctab.drumZ = 1
-            elif v == 'S':
-                ctab.scaleZ = 1
-            elif v == 'R':
-                ctab.ariaZ = 1
+        else:    # first entry
+            if beat != 0:
+                error("The first chord must be at beat 1, not '%s'." % (beat/quarter) )
 
-            else:
-                error("Unknown voice '%s' for rest in '%s'" % (v,r))
+        ctab = CTable()
+        ctab.name = ch
+        ctab.chStart = beat
 
-    ctab.chord = MMA.chords.ChordNotes(c)
+        """ If the chord we just extracted has a 'z' in it then we do the
+            following ugly stuff to figure out which tracks to mute. 'ch'
+            will be a chord name or 'z' when this is done.
+        """
 
-    return ctab
+        if 'z' in ch:
+            c, r = ch.split('z', 1)
+
+            if not c:   # no chord specified
+                c = 'z'        # dummy chord name to keep chordnotes() happy
+                if r == '!':    # mute all
+                    r = 'DCAWBSR'
+                elif not r:     # mute all tracks except Drum
+                    r = 'CBAWSR'
+                else:
+                    error("To mute individual tracks you must "
+                          "use a chord/z combination not '%s'" % ch)
+
+            else:    # illegal construct -- 'Cz!'
+                if r == '!':
+                    error("'%s' is illegal. 'z!' mutes all tracks "
+                          "so you can't include the chord." % ch)
+
+                elif not r:
+                    error("'%s' is illegal. You must specify tracks "
+                          "if you use a chord." % ch )
+
+            ch = c   # this will be 'z' or the chord part
+
+            # note this indent ... we do it always!
+            for v in r:   # 'r' must be a list of track specifiers
+                if v == 'C':
+                    ctab.chordZ = 1
+                elif v == 'B':
+                    ctab.bassZ = 1
+                elif v == 'A':
+                    ctab.arpeggioZ = 1
+                elif v == 'W':
+                    ctab.walkZ = 1
+                elif v == 'D':
+                    ctab.drumZ = 1
+                elif v == 'S':
+                    ctab.scaleZ = 1
+                elif v == 'R':
+                    ctab.ariaZ = 1
+                elif v == 'P':
+                    ctab.plectrumZ = 1
+                else:
+                    error("Unknown track '%s' for muting in '%s'" % (v, ch) )
+
+        ctab.chord = MMA.chords.ChordNotes(ch)  # Derive chord notes (or mute)
+
+        ctable.append(ctab)
+
+    # Done all chords in line, fix up some pointers.
+
+    if ctable[-1].chStart >= endTime:
+        error("Maximum offset for chord '%s' must be less than %s, not '%s'." % \
+                ( ctable[-1].name, endTime/quarter+1, ctable[-1].chStart/quarter+1 ))
+
+    for i, v in enumerate(ctable[:-1]):  # set end range for each chord
+        ctable[i].chEnd = ctable[i+1].chStart
+
+    ctable[-1].chEnd = endTime      # set end of range for last chord
+    lastChord = ctable[-1].name     # remember chord at end of this bar for next
+
+    return ctable
+
 
 ##################################################################
 
 def allTracks(ln):
     """ Apply track to all tracks. """
 
-    allTypes = ('BASS', 'CHORD', 'ARPEGGIO', 'SCALE', 'DRUM', 'WALK', 'MELODY', 'SOLO')
+    types1 = ('BASS', 'CHORD', 'ARPEGGIO', 'SCALE', 'DRUM', 'WALK', 'PLECTRUM')
+    types2   = ('MELODY', 'SOLO', 'ARIA' )
+    allTypes = types1 + types2
+
     ttypes = []
 
     if len(ln) < 1:
@@ -420,7 +472,7 @@ def allTracks(ln):
         i += 1
 
     if ttypes == []:
-        ttypes = allTypes
+        ttypes = types1
 
     if i>=len(ln):
         error("AllTracks: Additional argument (command?) required")
@@ -819,9 +871,9 @@ def include(ln):
         error("INCLUDE not permitted in Begin/End block")
 
     if len(ln) != 1:
-        error("Use:     Include FILE" )
+        error("Use: Include FILE" )
 
-    fn = MMA.file.locFile(ln[0], gbl.incPath)
+    fn = MMA.file.locFile(MMA.file.fixfname(ln[0]), gbl.incPath)
     if not fn:
         error("Could not find include file '%s'" % ln)
 
@@ -840,11 +892,11 @@ def usefile(ln):
     if len(ln) != 1:
         error("Use: Use FILE")
 
-    ln = ln[0]
-    fn = MMA.file.locFile(ln, gbl.libPath)
+    f = MMA.file.fixfname(ln[0])
+    fn = MMA.file.locFile(f, gbl.libPath)
 
     if not fn:
-        error("Unable to locate library file '%s'" % ln)
+        error("Unable to locate library file '%s'" % f)
 
     """ USE saves current state, just like defining a groove.
         Here we use a magic number which can't be created with
@@ -855,105 +907,6 @@ def usefile(ln):
     MMA.grooves.grooveDefineDo(slot)
     parseFile(fn)
     MMA.grooves.grooveDo(slot)
-
-def mmastart(ln):
-    if not ln:
-        error ("Use: MMAstart FILE [file...]")
-
-    gbl.mmaStart.extend(ln)
-
-    if gbl.debug:
-        print "MMAstart set to:",
-        printList(ln)
-
-def mmaend(ln):
-    if not ln:
-        error ("Use: MMAend FILE [file...]")
-
-    gbl.mmaEnd.extend(ln)
-
-    if gbl.debug:
-        print "MMAend set to:",
-        printList(ln)
-
-
-def setLibPath(ln):
-    """ Set the LibPath variable.  """
-
-    if len(ln) > 1:
-        error("Only one path can be entered for LibPath")
-
-    f = os.path.expanduser(ln[0])
-
-    if gbl.debug:
-        print "LibPath set to", f
-
-    gbl.libPath = f
-
-
-def setAutoPath(ln):
-    """ Set the autoPath variable.    """
-
-    if len(ln) > 1:
-        error("Only one path can be entered for AutoLibPath")
-
-    f = os.path.expanduser(ln[0])
-
-    MMA.auto.grooveDir = {}
-
-    # To avoid conflicts, delete all existing grooves (current seq not effected)
-
-    MMA.grooves.glist = {}
-    MMA.grooves.lastGroove = ''
-    MMA.grooves.currentGroove = ''
-
-    if gbl.debug:
-        print "AutoLibPath set to", f
-
-    gbl.autoLib = f
-
-
-def setIncPath(ln):
-    """ Set the IncPath variable.  """
-
-    if len(ln)>1:
-        error("Only one path is permitted in SetIncPath")
-
-    f = os.path.expanduser(ln[0])
-
-    if gbl.debug:
-        print "IncPath set to", f
-
-    gbl.incPath=f
-
-
-def setOutPath(ln):
-    """ Set the Outpath variable. """
-
-    if not ln:
-        gbl.outPath = ""
-
-    elif len(ln) > 1:
-        error ("Use: SetOutPath PATH")
-
-    else:
-        gbl.outPath = os.path.expanduser(ln[0])
-
-    if gbl.debug:
-        print "OutPath set to", gbl.outPath
-
-
-def setMidiPlayer(ln):
-    """ Set the MIDI file player (used with -P). """
-
-    if len(ln) != 1:
-        error("Use: MidiPlayer <program name>")
-    
-    gbl.midiPlayer = ln[0]
-
-    if gbl.debug:
-        print "MidiPlayer set to", gbl.MidiPlayer
-
 
 #######################################
 # Sequence
@@ -1018,13 +971,13 @@ def seq(ln):
 
 
 def seqClear(ln):
-    """ Clear all sequences (except SOLO tracks). """
+    """ Clear all sequences (except SOLO/ARIA tracks). """
 
     if ln:
         error ("Use: 'SeqClear' with no args")
 
     for n in gbl.tnames.values():
-        if n.vtype != "SOLO":
+        if n.vtype != 'SOLO' and n.vtype != 'ARIA':
             n.clearSequence()
     MMA.volume.futureVol = []
 
@@ -1033,177 +986,13 @@ def seqClear(ln):
 
 
 def restart(ln):
-    """ Restart all tracks to almost-default condidions. """
+    """ Restart all tracks to almost-default conditions. """
 
     if ln:
         error ("Use: 'Restart' with no args")
 
     for n in gbl.tnames.values():
         n.restart()
-
-
-#######################################
-# Midi
-
-def midiMarker(ln):
-    """ Parse off midi marker. """
-
-    if len(ln) == 2:
-        offset = stof(ln[0])
-        msg = ln[1]
-    elif len(ln) == 1:
-        offset = 0
-        msg = ln[0]
-    else:
-        error("Usage: MidiMark [offset] Label")
-
-    offset = int(gbl.tickOffset + (gbl.BperQ * offset))
-    if offset < 0:
-        error("MidiMark offset points before start of file")
-
-    gbl.mtrks[0].addMarker(offset, msg)
-
-
-def rawMidi(ln):
-    """ Send hex bytes as raw midi stream. """
-
-    mb=''
-    for a in ln:
-        a=stoi(a)
-
-        if a<0 or a >0xff:
-            error("All values must be in the range "
-                  "0 to 0xff, not '%s'" % a)
-
-        mb += chr(a)
-
-    gbl.mtrks[0].addToTrack(gbl.tickOffset, mb)
-
-    if gbl.debug:
-        print "Inserted raw midi in metatrack: ",
-        for b in mb:
-            print '%02x' % ord(b),
-        print
-
-
-def mdefine(ln):
-    """ Set a midi seq pattern. """
-
-    if not ln:
-        error("MDefine needs arguments")
-
-    name = ln[0]
-    if name.startswith('_'):
-        error("Names with a leading underscore are reserved")
-
-    if name.upper() == 'Z':
-        error("The name 'Z' is reserved")
-
-    MMA.mdefine.mdef.set(name, ' '.join(ln[1:]))
-
-
-def setMidiFileType(ln):
-    """ Set some MIDI file generation flags. """
-
-    if not ln:
-        error("USE: MidiFile [SMF=0/1] [RUNNING=0/1]")
-
-    for l in ln:
-        try:
-            mode, val = l.upper().split('=')
-        except:
-            error("Each arg must contain an '=', not '%s'" % l)
-
-        if mode == 'SMF':
-            if val == '0':
-                gbl.midiFileType = 0
-            elif val == '1':
-                gbl.midiFileType = 1
-            else:
-                error("Use: MIDIFile SMF=0/1")
-
-            if gbl.debug:
-                print "Midi Filetype set to", gbl.midiFileType
-
-
-        elif mode == 'RUNNING':
-            if val == '0':
-                gbl.runningStatus = 0
-            elif val == '1':
-                gbl.runningStatus = 1
-            else:
-                error("Use: MIDIFile RUNNING=0/1")
-
-            if gbl.debug:
-                print "Midi Running Status Generation set to",
-                if gbl.runningStatus:
-                    print 'ON (Default)'
-                else:
-                    print 'OFF'
-
-
-        else:
-            error("Use: MIDIFile [SMF=0/1] [RUNNING=0/1]")
-
-
-def setChPref(ln):
-    """ Set MIDI Channel Preference. """
-
-    if not ln:
-        error("Use: ChannelPref TRACKNAME=CHANNEL [...]")
-
-    for i in ln:
-        if '=' not in i:
-            error("Each item in ChannelPref must have an '='")
-
-        n,c = i.split('=')
-
-        c = stoi(c, "Expecting an integer for ChannelPref, not '%s'" % c)
-
-        if c<1 or c>16:
-            error("Channel for ChannelPref must be 1..16, not %s" % c)
-
-        gbl.midiChPrefs[n.upper()]=c
-
-    if gbl.debug:
-        print "ChannelPref:",
-        for n,c in gbl.midiChPrefs.items():
-            print "%s=%s" % (n,c),
-        print
-
-
-def setTimeSig(ln):
-    """ Set the midi time signature. """
-
-    if len(ln) == 1:
-        a=ln[0].upper()
-        if a == 'COMMON':
-            ln=('4','4')
-        elif a == 'CUT':
-            ln=('2','2')
-
-    if len(ln) != 2:
-        error("TimeSig: Usage (num dem) or ('cut' or 'common')")
-
-    nn = stoi(ln[0])
-
-    if nn<1 or nn>126:
-        error("Timesig NN must be 1..126")
-
-    dd = stoi(ln[1])
-    if     dd == 1:  dd = 0
-    elif dd == 2:  dd = 1
-    elif dd == 4:  dd = 2
-    elif dd == 8:  dd = 3
-    elif dd == 16: dd = 4
-    elif dd == 32: dd = 5
-    elif dd == 64: dd = 6
-    else:
-        error("Unknown value for timesig denominator")
-
-    MMA.midi.timeSig.set(nn,dd)
-
-
 
 
 #######################################
@@ -1214,7 +1003,7 @@ def synchronize(ln):
 
     if not ln:
         error("SYNCHRONIZE: requires args END and/or START.")
-    
+
     for a in ln:
         if a.upper() == 'END':
             gbl.endsync =  1
@@ -1275,24 +1064,25 @@ def setDebug(ln):
 
     msg=( "Use: Debug MODE=On/Off where MODE is one or more of "
           "DEBUG, FILENAMES, PATTERNS, SEQUENCE, "
-          "RUNTIME, WARNINGS or EXPAND" )
+          "RUNTIME, WARNINGS, EXPAND, ROMAN or PLECTRUM." )
 
 
     if not len(ln):
         error(msg)
 
-        # save current flags
+    # save current flags
 
-        gbl.Ldebug       = gbl.debug
-        gbl.LshowFilenames = gbl.showFilenames
-        gbl.Lpshow       = gbl.pshow
-        gbl.Lseqshow       = gbl.seqshow
-        gbl.Lshowrun       = gbl.showrun
-        gbl.LnoWarn       = gbl.noWarn
-        gbl.LnoOutput       = gbl.noOutput
-        gbl.LshowExpand       = gbl.showExpand
-        gbl.Lchshow       = gbl.chshow
-
+    gbl.Ldebug         = gbl.debug
+    gbl.LshowFilenames = gbl.showFilenames
+    gbl.Lpshow         = gbl.pshow
+    gbl.Lseqshow       = gbl.seqshow
+    gbl.Lshowrun       = gbl.showrun
+    gbl.LnoWarn        = gbl.noWarn
+    gbl.LnoOutput      = gbl.noOutput
+    gbl.LshowExpand    = gbl.showExpand
+    gbl.Lchshow        = gbl.chshow
+    gbl.LplecShow      = gbl.plecShow
+    gbl.LrmShow        = gbl.rmShow
 
     for l in ln:
         try:
@@ -1341,6 +1131,16 @@ def setDebug(ln):
             gbl.showExpand = setting
             if gbl.debug:
                 print "Expand display=%s." % val
+
+        elif mode == 'ROMAN':
+            gbl.rmShow = setting
+            if gbl.debug:
+                print "Roman numeral chords/slash display=%s" % val
+
+        elif mode == 'PLECTRUM':
+            gbl.plecShow = setting
+            if gbl.debug:
+                print "Plectrum display=%s" % val
 
         else:
             error(msg)
@@ -1402,12 +1202,36 @@ def trackSequence(name, ln):
 
     ln = ' '.join(ln)
 
+
+    """ Before we do extraction of {} stuff make sure we have matching {}s.
+        Count the number of { and } and if they don't match read more lines and 
+        append. If we get to the EOF then we're screwed and we error out. Only trick
+        is to make sure we do macro expansion! This code lets one have long
+        sequence lines without bothering with '\' continuations.
+    """
+    
+    oLine=gbl.lineno   # in case we error out, report start line
+    while ln.count('{') != ln.count('}'):
+        l = gbl.inpath.read()
+        if l == None:   # reached eof, error
+            gbl.lineno = oLine
+            error("%s Sequence {}s do not match" % name)
+
+        l=' '.join(macros.expand(l))
+        #print l, '<%s>' % l[-1]
+        if l[-1] != '}' and l[-1] != ';':
+            error("%s: Expecting multiple sequence lines to end in ';'" % name)
+
+        ln += ' ' + l
+
+
     """ Extract out any {} definitions and assign them to new
     define variables (__1, __99, etc) and melt them
     back into the string.
     """
 
     ids=1
+
     while 1:
         sp = ln.find("{")
 
@@ -1420,11 +1244,29 @@ def trackSequence(name, ln):
 
         pn = "_%s" % ids
         ids+=1
-
+        
         trk=name.split('-')[0]
         trackAlloc(trk, 1)
 
-        gbl.tnames[trk].definePattern(pn, s[0])
+        """ We need to mung the plectrum classes. Problem is that we define all
+            patterns in the base class (plectrum-banjo is created in PLECTRUM)
+            which is fine, but the def depends on the number of strings in the
+            instrument (set by the tuning option). So, we save the tuning for
+            the base class, copy the real tuning, and restore it.
+
+            NOTE: at this point the base and current tracks have been initialized.
+        """
+
+        if trk == 'PLECTRUM' and name != trk:
+            z=gbl.tnames[trk]._tuning[:]
+            gbl.tnames[trk]._tuning = gbl.tnames[name]._tuning
+        else:
+            z = None
+
+        gbl.tnames[trk].definePattern(pn, s[0])  # 'trk' is a base class!
+        if z:
+            gbl.tnames[trk]._tuning = z
+
         ln = ln[:sp] + ' ' + pn + ' ' + ln[sp:]
 
     ln=ln.split()
@@ -1480,6 +1322,13 @@ def trackRiff(name, ln):
 
     gbl.tnames[name].setRiff(' '.join(ln))
 
+def trackDupRiff(name, ln):
+    """ Set a riff for a track. """
+
+    if not ln:
+        error("%s DupRiff: need at least one track to copy to.")
+
+    gbl.tnames[name].dupRiff(ln)
 
 
 def deleteTrks(ln):
@@ -1557,6 +1406,43 @@ def trackChannelVol(name, ln):
 
     gbl.tnames[name].setChannelVolume(v)
 
+def trackChannelCresc(name, ln):
+    """ MIDI cresc. """
+
+    doTrackCresc(name, ln, 1)
+
+def trackChannelDecresc(name, ln):
+    """ MIDI cresc. """
+
+    doTrackCresc(name, ln, -1)
+
+def doTrackCresc(name, ln, dir):
+    """ Call func for midi(de)cresc """
+
+    if dir == -1:
+        func="MIDIDeCresc"
+    else:
+        func = "MIDICresc"
+
+    if len(ln) != 3:
+        error("Use: %s %s <start> <end> <count>" % (name, func))
+
+    v1=stoi(ln[0], "Expecting integer arg, not %s" % ln[0])
+    v2=stoi(ln[1], "Expecting integer arg, not %s" % ln[1])
+    count=stof(ln[2])
+
+    if count<=0:
+        error("%s: count must be >0" % func)
+
+    if v1<0 or v1>127 or v2<0 or v2>127:
+        error("%s: Volumes must be 0..127." % func)
+
+    if dir == -1 and v1<v2:
+        warning("%s: dest volume > start" % func)
+    elif dir == 1 and v1>v2:
+        warning("%s: dest volume < start" % func)
+
+    gbl.tnames[name].setMidiCresc(v1, v2, count)
 
 def trackAccent(name, ln):
     """ Set emphasis beats for track."""
@@ -1774,6 +1660,43 @@ def trackHarmonyVolume(name, ln):
 
 
 #######################################
+# Plectrum stuff
+
+def trackPlectrumTuning(name, ln):
+    """ Define the number of strings and tuning for
+        for an instrument that can be played with a plectrum.
+    """
+
+    if not ln:
+        error("Use: %s Tuning string1 string2 string3 [stringN ...]" % name)
+    
+    g=gbl.tnames[name]
+    
+    if hasattr(g, "setPlectrumTuning" ):
+        g.setPlectrumTuning(ln)
+    else:
+        warning("TUNING: not permitted in %s tracks. Arg '%s' ignored." % \
+                    ( g.vtype, ' '.join(ln) ) )
+
+
+def trackPlectrumCapo(name, ln):
+    """ Define the position of the capo
+        (unlike a real guitar negative numbers are allowed)
+        for an instrument that can be played with a plectrum.
+    """
+
+    if not ln or len(ln) != 1:
+        error("Use: %s Capo N" % name)
+  
+    g=gbl.tnames[name]
+    if hasattr(g, "setPlectrumCapo"):
+        g.setPlectrumCapo(ln[0])
+    else:
+        warning("CAPO: not permitted in %s tracks. Arg '%s' ignored." % \
+                    ( g.vtype, ' '.join(ln) ) )
+
+
+#######################################
 # MIDI setting
 
 
@@ -1784,75 +1707,6 @@ def trackChannel(name, ln):
         error("Use: %s Channel" % name)
 
     gbl.tnames[name].setChannel(ln[0])
-
-
-def trackMdefine(name, ln):
-    """ Set a midi seq pattern. Ignore track name."""
-
-    mdefine(ln)
-
-
-def trackMidiExt(ln):
-    """ Helper for trackMidiSeq() and trackMidiVoice()."""
-
-    ids=1
-    while 1:
-        sp = ln.find("{")
-
-        if sp<0:
-            break
-
-        ln, s = pextract(ln, "{", "}", 1)
-        if not s:
-            error("Did not find matching '}' for '{'")
-
-        pn = "_%s" % ids
-        ids+=1
-
-        MMA.mdefine.mdef.set(pn, s[0])
-        ln = ln[:sp] + ' ' + pn + ' ' + ln[sp:]
-
-    return ln.split()
-
-
-def trackMidiClear(name, ln):
-    """ Set MIDI command to send at end of groove. """
-
-    if not ln:
-        error("Use %s MIDIClear Controller Data" % name)
-
-
-    if len(ln) == 1 and ln[0] == '-':
-        gbl.tnames[name].setMidiClear( '-' )
-    else:
-        ln=' '.join(ln)
-        if '{' in ln or '}' in ln:
-            error("{}s are not permitted in %s MIDIClear command" % name)
-        gbl.tnames[name].setMidiClear( trackMidiExt( '{' + ln + '}' ))
-
-
-def trackMidiSeq(name, ln):
-    """ Set reoccurring MIDI command for track. """
-
-    if not ln:
-        error("Use %s MidiSeq Controller Data" % name)
-
-    if len(ln) == 1 and ln[0]== '-':
-        gbl.tnames[name].setMidiSeq('-')
-    else:
-        gbl.tnames[name].setMidiSeq( trackMidiExt(' '.join(ln) ))
-
-
-def trackMidiVoice(name, ln):
-    """ Set single shot MIDI command for track. """
-
-    if not ln:
-        error("Use %s MidiVoice Controller Data" % name)
-
-    if len(ln) == 1 and ln[0] == '-':
-        gbl.tnames[name].setMidiVoice( '-' )
-    else:
-        gbl.tnames[name].setMidiVoice( trackMidiExt(' '.join(ln) ))
 
 
 def trackChShare(name, ln):
@@ -1874,14 +1728,6 @@ def trackVoice(name, ln):
     gbl.tnames[name].setVoice(ln)
 
 
-def trackPan(name, ln):
-    """ Set the Midi Pan value for a track."""
-
-    if len(ln)==1 or len(ln)==3:
-        gbl.tnames[name].setPan(ln)
-    else:
-        error("Use %s MidiPAN [Value] OR [Initvalue DestValue Beats]." % name)
-
 def trackOff(name, ln):
     """ Turn a track off """
 
@@ -1900,31 +1746,13 @@ def trackOn(name, ln):
     gbl.tnames[name].setOn()
 
 
-def trackMidiName(name,ln):
-    """ Set channel track name."""
-
-    if not ln:
-        error("Use: %s TrackName" % name)
-
-    gbl.tnames[name].setTname(ln[0])
-
 
 def trackTone(name, ln):
     """ Set the tone (note). Only valid in drum tracks."""
 
-    if not ln:
-        error("Use: %s Tone N [...]" % name)
 
     gbl.tnames[name].setTone(ln)
 
-
-def trackGlis(name, ln):
-    """ Enable/disable portamento. """
-
-    if len(ln) != 1:
-        error("Use: %s Portamento NN, off=0, 1..127==on" % name)
-
-    gbl.tnames[name].setGlis(ln[0])
 
 def trackForceOut(name, ln):
     """ Force output of voice settings. """
@@ -1937,6 +1765,22 @@ def trackForceOut(name, ln):
 
 #######################################
 # Misc
+
+def trackArpeggiate(name, ln):
+    """ Set up the solo/melody arpeggiator. """
+
+
+    if not ln:
+        error("Use: %s Arpeggiate N" % name)
+  
+    g=gbl.tnames[name]
+    if hasattr(g, "setArp"):
+        g.setArp(ln)
+    else:
+        warning("Arpeggiate: not permitted in %s tracks. Arg '%s' ignored." % \
+                    ( g.vtype, ' '.join(ln) ) )
+
+
 
 def trackDrumType(name, ln):
     """ Set a melody or solo track to be a drum solo track."""
@@ -1987,7 +1831,6 @@ def trackUnify(name, ln):
     gbl.tnames[name].setUnify(ln)
 
 
-
 """ =================================================================
 
     Command jump tables. These need to be at the end of this module
@@ -2009,7 +1852,7 @@ simpleFuncs={
     'AUTHOR':           MMA.docs.docAuthor,
     'AUTOSOLOTRACKS':   MMA.patSolo.setAutoSolo,
     'BEATADJUST':       beatAdjust,
-    'CHANNELPREF':      setChPref,
+    'CHANNELPREF':      MMA.midifuncs.setChPref,
     'CHORDADJUST':      MMA.chords.chordAdjust,
     'COMMENT':          comment,
     'CRESC':            MMA.volume.setCresc,
@@ -2037,17 +1880,21 @@ simpleFuncs={
     'IFEND':            ifend,
     'INC':              macros.varinc,
     'INCLUDE':          include,
-    'KEYSIG':           MMA.patSolo.keySig.set,
+    'KEYSIG':           keySig.set,
     'LABEL':            comment,
     'LYRIC':            lyric.option,
-    'MIDIDEF':          mdefine,
-    'MIDI':             rawMidi,
-    'MIDIFILE':         setMidiFileType,
+    'MIDIDEF':          MMA.mdefine.mdefine,
+    'MIDI':             MMA.midifuncs.rawMidi,
+    'MIDICOPYRIGHT':    MMA.midifuncs.setMidiCopyright,
+    'MIDICUE':          MMA.midifuncs.setMidiCue,
+    'MIDIFILE':         MMA.midifuncs.setMidiFileType,
     'MIDIINC':          MMA.midiIn.midiinc,
-    'MIDIMARK':         midiMarker,
+    'MIDIMARK':         MMA.midifuncs.midiMarker,
     'MIDISPLIT':        MMA.midi.setSplitChannels,
-    'MMAEND':           mmaend,
-    'MMASTART':         mmastart,
+    'MIDITEXT':         MMA.midifuncs.setMidiText,
+    'MIDITNAME':        MMA.midifuncs.setMidiName,
+    'MMAEND':           MMA.paths.mmaend,
+    'MMASTART':         MMA.paths.mmastart,
     'MSET':             macros.msetvar,
     'MSETEND':          endmset,
     'NEWSET':           macros.newsetvar,
@@ -2067,19 +1914,19 @@ simpleFuncs={
     'SEQRNDWEIGHT':     MMA.seqrnd.setSeqRndWeight,
     'SEQSIZE':          seqsize,
     'SET':              macros.setvar,
-    'SETAUTOLIBPATH':   setAutoPath,
-    'SETINCPATH':       setIncPath,
-    'SETLIBPATH':       setLibPath,
-    'SETMIDIPLAYER':    setMidiPlayer,
-    'SETOUTPATH':       setOutPath,
+    'SETAUTOLIBPATH':   MMA.paths.setAutoPath,
+    'SETINCPATH':       MMA.paths.setIncPath,
+    'SETLIBPATH':       MMA.paths.setLibPath,
+    'SETMIDIPLAYER':    MMA.player.setMidiPlayer,
+    'SETOUTPATH':       MMA.paths.setOutPath,
     'SHOWVARS':         macros.showvars,
     'STACKVALUE':       macros.stackValue,
     'SWELL':            MMA.volume.setSwell,
-    'SWINGMODE':        MMA.notelen.swingMode,
+    'SWINGMODE':        MMA.swing.swingMode,
     'SYNCHRONIZE':      synchronize,
     'TEMPO':            tempo,
     'TIME':             setTime,
-    'TIMESIG':          setTimeSig,
+    'TIMESIG':          MMA.midifuncs.setTimeSig,
     'TONETR':           MMA.translate.dtable.set,
     'UNSET':            macros.unsetvar,
     'USE':              usefile,
@@ -2094,9 +1941,13 @@ simpleFuncs={
 
 trackFuncs={
     'ACCENT':          trackAccent,
+    'ARPEGGIATE':      trackArpeggiate,
     'ARTICULATE':      trackArtic,
     'CHANNEL':         trackChannel,
+    'DUPRIFF':         trackDupRiff,
     'MIDIVOLUME':      trackChannelVol,
+    'MIDICRESC':       trackChannelCresc,
+    'MIDIDECRESC':     trackChannelDecresc,
     'CHSHARE':         trackChShare,
     'COMPRESS':        trackCompress,
     'COPY':            trackCopy,
@@ -2114,17 +1965,20 @@ trackFuncs={
     'INVERT':          trackInvert,
     'LIMIT':           trackChordLimit,
     'MALLET':          trackMallet,
-    'MIDIDEF':         trackMdefine,
-    'MIDIGLIS':        trackGlis,
-    'MIDICLEAR':       trackMidiClear,
-    'MIDIPAN':         trackPan,
-    'MIDIGLIS':        trackGlis,
-    'MIDISEQ':         trackMidiSeq,
-    'MIDITNAME':       trackMidiName,
-    'MIDIVOICE':       trackMidiVoice,
+    'MIDICLEAR':       MMA.midifuncs.trackMidiClear,
+    'MIDICUE':         MMA.midifuncs.trackMidiCue,
+    'MIDIDEF':         MMA.mdefine.trackMdefine,
+    'MIDIGLIS':        MMA.midifuncs.trackGlis,
+    'MIDIPAN':         MMA.midifuncs.trackPan,
+    'MIDISEQ':         MMA.midifuncs.trackMidiSeq,
+    'MIDITEXT':        MMA.midifuncs.trackMidiText,
+    'MIDITNAME':       MMA.midifuncs.trackMidiName,
+    'MIDIVOICE':       MMA.midifuncs.trackMidiVoice,
     'OCTAVE':          trackOctave,
     'OFF':             trackOff,
     'ON':              trackOn,
+    'TUNING':          trackPlectrumTuning,
+    'CAPO':            trackPlectrumCapo,
     'RANGE':           trackRange,
     'RESTART':         trackRestart,
     'RIFF':            trackRiff,
@@ -2137,6 +1991,7 @@ trackFuncs={
     'SEQUENCE':        trackSequence,
     'SEQRNDWEIGHT':    trackSeqRndWeight,
     'SWELL':           trackSwell,
+    'MIDINOTE':        MMA.midinote.parse,
     'NOTESPAN':        trackSpan,
     'STRUM':           trackStrum,
     'TONE':            trackTone,

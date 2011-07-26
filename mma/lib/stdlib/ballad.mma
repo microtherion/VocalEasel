@@ -171,7 +171,7 @@ Begin Chord-Harp
 	Articulate 80
 	Rtime 20
 	Rskip 10
-	Rvolume 30
+	Rvolume 30 
 	Octave 4 5
 	SeqRnd On
 	Volume p	

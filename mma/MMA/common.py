@@ -65,11 +65,10 @@ def error(msg):
     for a in msg:
         a=ord(a)
         if a<0x20 or a >=0x80:
-            print "Corrupt input file? Illegal character 0x%2x found." % a
+            print "Corrupt input file? Illegal character 'x%02x' found." % a
             break
 
     sys.exit(1)
-
 
 def warning(msg):
     """ Print warning message and return. """
@@ -86,7 +85,7 @@ def warning(msg):
         print "Warning:%s\n        %s" % (ln, msg)
 
 
-def getOffset(ticks, ran=None):
+def getOffset(ticks, ranLow=None, ranHigh=None):
     """ Calculate a midi offset into a song.
 
         ticks == offset into the current bar.
@@ -101,8 +100,8 @@ def getOffset(ticks, ran=None):
 
     p = gbl.tickOffset + int(ticks)     # int() cast is important!
 
-    if ran:
-        r = randrange( -ran, ran+1 )
+    if ranLow or ranHigh:
+        r = randrange( ranLow, ranHigh+1 )
         if ticks == 0 and r < 0:
             r=0
         p+=r
@@ -210,3 +209,28 @@ def lnExpand(ln, msg):
             last = n
 
     return ln
+
+
+def opt2pair(ln, toupper=0):
+    """ Parse a list of options. Separate out "=" option pairs. 
+
+        Returns:
+           newln - original list stripped of opts
+           opts  - list of options. Each option is a tuple(opt, value)
+
+       Note: default is to leave case alone, setting toupper converts everything to upper.
+    """
+
+    opts = []
+    newln = []
+    
+    for a in ln:
+        if toupper:
+            a=a.upper()
+        try:
+            o, v = a.split('=', 1)
+            opts.append( (o,v) )
+        except:
+            newln.append(a)
+
+    return newln, opts

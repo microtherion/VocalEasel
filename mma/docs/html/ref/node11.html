@@ -1,19 +1,20 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+<!--Converted with LaTeX2HTML 2008 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Automatic Melodies: Aria Tracks</TITLE>
-<META NAME="description" CONTENT="Automatic Melodies: Aria Tracks">
+<TITLE>Emulating plucked instruments: Plectrum Tracks</TITLE>
+<META NAME="description" CONTENT="Emulating plucked instruments: Plectrum Tracks">
 <META NAME="keywords" CONTENT="mma">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="mma.css">
@@ -27,274 +28,410 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY  bgcolor="#ffffff">
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html507"
+<A NAME="tex2html568"
   HREF="node12.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html505"
+<A NAME="tex2html566"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html499"
+<A NAME="tex2html560"
   HREF="node10.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html508"
-  HREF="node12.html">Randomizing</A>
-<B> Up:</B> <A NAME="tex2html506"
+<B> Next:</B> <A NAME="tex2html569"
+  HREF="node12.html">Automatic Melodies: Aria Tracks</A>
+<B> Up:</B> <A NAME="tex2html567"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html500"
+<B> Previous:</B> <A NAME="tex2html561"
   HREF="node10.html">Solo and Melody Tracks</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html570"
+  HREF="node11.html#SECTION001110000000000000000">Tuning</A>
+<LI><A NAME="tex2html571"
+  HREF="node11.html#SECTION001120000000000000000">Capo</A>
+<LI><A NAME="tex2html572"
+  HREF="node11.html#SECTION001130000000000000000">Patterns</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
 
 <H1><A NAME="SECTION001100000000000000000"></A>
-<A NAME="chap-aria"></A>
+<A NAME="chap-plectrum"></A>
 <BR>
-Automatic Melodies: Aria Tracks
+Emulating plucked instruments: Plectrum Tracks
 </H1>
 
 <P>
-A<SMALL>RIA</SMALL> tracks are designed to let 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  automatically generate
-something resembling melody. Honest, this will never put real
-composers on the unemployment line (well, no more than they are mostly
-there already).
+P<SMALL>LECTRUM</SMALL><A NAME="tex2html48"
+  HREF="#foot5419"><SUP><SPAN CLASS="arabic">11</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>tracks are designed to let 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  create tracks that sound, remarkably,
+like real, strummed instruments (guitars, mandolins, banjos, etc).
 
 <P>
-You might want to use an A<SMALL>RIA</SMALL> to embellish a section of a song (like
-an introduction or an ending). Or you can have 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  generate a complete
-melody over the song chords.
+As mentioned earlier in this document, the biggest difference between
+P<SMALL>LECTRUM</SMALL> and other tracks is that a duration is not used. This
+means that each string (note) in P<SMALL>LECTRUM</SMALL> patterns continue to
+sound until they are changed (a new note) or muted.
 
 <P>
-In a traditional song the melody depends on two parts: patterns
-(IE. note lengths, volume, articulation) and pitch (usually determined
-by the chords in a song). If you have been using 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  at all you will
-know that that chords are the building block of what 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  does
-already. So, to generate a melody we just need some kind of
-pattern. And, since 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  already uses patterns in most things it
-does, it is a short step to use a specialized pattern to generate a
-melody.
+When creating a P<SMALL>LECTRUM</SMALL> pattern or sequence you simply set an
+offset, strum duration and volumes for each string of the
+&#8220;instrument&#8221;.
 
 <P>
-It might serve to look at the sample song files enclosed in this
-package in the directory <TT><SPAN  CLASS="textbf">egs/aria</SPAN></TT>. Compile and play them. Not too bad?
+To aid in debugging, a special D<SMALL>EBUG</SMALL> option P<SMALL>LECTRUM</SMALL> is
+provided. When enabled this will display chord shapes for generated
+chords. See <A HREF="node24.html#debugging">here</A> for
+information to enable/disable this option.
 
 <P>
-Just like other track, you can create as many A<SMALL>RIA</SMALL>s as you
-want.  So, you can have the tracks A<SMALL>RIA-1</SMALL>, A<SMALL>RIA</SMALL>, and
-A<SMALL>RIA-SILLY</SMALL>  all at the same time. And, the majority of other
-commands (like O<SMALL>CTAVE</SMALL>, A<SMALL>RTICULATE</SMALL>, etc.) apply to A<SMALL>RIA</SMALL>s.
+
+<H1><A NAME="SECTION001110000000000000000">
+Tuning</A>
+</H1> 
 
 <P>
-The following commands are important to note:
-
-<P>
-<DL>
-<DT><STRONG>Range</STRONG></DT>
-<DD>Just like scale tracks. A R<SMALL>ANGE</SMALL> of 2 would let 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  work on a 2
-octave chord, etc.
-
-<P>
-</DD>
-<DT><STRONG>ScaleType</STRONG></DT>
-<DD>Much like a scale track. By default, the setting for this
-is CHORD. But, you can use AUTO, SCALE or CHROMATIC. AUTO and SCALE
-are identical and force 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  to select notes from the scale associated
-with the current chord; CHROMATIC generates an 11 tone scale starting
-at the root note of the chord.
-
-<P>
-</DD>
-<DT><STRONG>Direction</STRONG></DT>
-<DD>As 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  processes the song it moves a note-selection pointer
-up or down. By default D<SMALL>IRECTION</SMALL> is set to the single value "1" which
-tells 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  to add 1 after each note is generated. However, you can set
-the value to an integer -4 to 4 or the special value "r". With "r" a
-random value -1, 0 or 1 will be used. Important: in an A<SMALL>RIA</SMALL>
-track the sequence size/point is ignored for D<SMALL>IRECTION</SMALL>.
-
-<P>
-</DD>
-</DL>
-
-<P>
-A bit more detail on defining an A<SMALL>RIA</SMALL>:
-
-<P>
-First, here is a simplified sample track definition:
+By default the P<SMALL>LECTRUM</SMALL> tracks are set to a standard
+guitar. However, it's very easy to change with with the T<SMALL>UNING</SMALL>
+command. This command requires a note setting for each string in the
+instrument. For example, to duplicate the default:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Begin Aria
-<BR>
-Voice JazzGuitar
-<BR>
-Volume f 
-<BR>
-Sequence 1.5 8 90; 2 8 90; 2.5 8 90; 
-<BR>
-3 8 90; 3.5 8 90; 4 8 90; 4.5 8 90 
-<BR>
-Direction r 0 0 1 -1 0 0 1 r
-   </B> 
+    <B>Plectrum Tuning e- a- d g b e+   </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-Next assume that we have a few bars of music with only a CMajor
-chord the default R<SMALL>ANGE</SMALL> of ``1'' and the default S<SMALL>CALE</SMALL>T<SMALL>YPE</SMALL>
-of ``Scale'. The following table shows the notes which would be generated
-for each time event:
+In this case we have set six strings. The first string is a low &#8220;e&#8221;,
+the second a low &#8220;a&#8221;, etc.
 
 <P>
-<BLOCKQUOTE>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT">Event</TD>
-<TD ALIGN="LEFT">Offset Pointer</TD>
-<TD ALIGN="LEFT">Note</TD>
-</TR>
-<TR><TD ALIGN="LEFT">1</TD>
-<TD ALIGN="LEFT">0</TD>
-<TD ALIGN="LEFT">c</TD>
-</TR>
-<TR><TD ALIGN="LEFT">2</TD>
-<TD ALIGN="LEFT">0</TD>
-<TD ALIGN="LEFT">c</TD>
-</TR>
-<TR><TD ALIGN="LEFT">3</TD>
-<TD ALIGN="LEFT">1</TD>
-<TD ALIGN="LEFT">e</TD>
-</TR>
-<TR><TD ALIGN="LEFT">4</TD>
-<TD ALIGN="LEFT">3 <SPAN CLASS="MATH"><IMG
- WIDTH="24" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
- SRC="img5.png"
- ALT="$\Rightarrow$"></SPAN> 0</TD>
-<TD ALIGN="LEFT">c</TD>
-</TR>
-<TR><TD ALIGN="LEFT">5</TD>
-<TD ALIGN="LEFT">4 <SPAN CLASS="MATH"><IMG
- WIDTH="24" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
- SRC="img5.png"
- ALT="$\Rightarrow$"></SPAN> 0</TD>
-<TD ALIGN="LEFT">c</TD>
-</TR>
-<TR><TD ALIGN="LEFT">6</TD>
-<TD ALIGN="LEFT">-2 <SPAN CLASS="MATH"><IMG
- WIDTH="24" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
- SRC="img5.png"
- ALT="$\Rightarrow$"></SPAN> 2</TD>
-<TD ALIGN="LEFT">g</TD>
-</TR>
-<TR><TD ALIGN="LEFT">7</TD>
-<TD ALIGN="LEFT">random</TD>
-<TD ALIGN="LEFT">c, e or g</TD>
-</TR>
-<TR><TD ALIGN="LEFT">8</TD>
-<TD ALIGN="LEFT">random</TD>
-<TD ALIGN="LEFT">c, e, or g</TD>
-</TR>
-<TR><TD ALIGN="LEFT">9</TD>
-<TD ALIGN="LEFT">....</TD>
-<TD ALIGN="LEFT">etc.</TD>
-</TR>
-</TABLE>
-</BLOCKQUOTE>
+Similarly, you could define a tenor banjo with:
 
 <P>
-In the above table the ``<SPAN CLASS="MATH"><IMG
- WIDTH="24" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
- SRC="img5.png"
- ALT="$\Rightarrow$"></SPAN>'' indicates that the offset is
-out-of-range and converted to the second value.
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Plectrum Tuning g- d a e+   </B> 
+   
+	    </td></tr>
+      </Table>
 
 <P>
-If you were to change the S<SMALL>CALE</SMALL>T<SMALL>YPE</SMALL> or R<SMALL>ANGE</SMALL> you would get a
-completely different series.
+Only one T<SMALL>UNING</SMALL> setting can be set for a sequence. It applies
+to all bars in the current sequence. It is saved and restored in
+G<SMALL>ROOVE</SMALL>s.
 
 <P>
-Please note the following:
+If you change the T<SMALL>UNING</SMALL> for a P<SMALL>LECTRUM</SMALL> track after
+setting a S<SMALL>EQUENCE</SMALL> you must ensure that the number of strings
+in the P<SMALL>ATTERN</SMALL> and T<SMALL>UNING</SMALL> are the same. A mismatch will
+generate an error. However, setting a different T<SMALL>UNING</SMALL> with the
+same number of strings is just fine.
+
+<P>
+
+<H1><A NAME="SECTION001120000000000000000">
+Capo</A>
+</H1> 
+
+<P>
+A &#8220;capo&#8221; is small bar which is placed on the neck of a guitar, banjo
+or other stringed instrument to raise its pitch. They are quite useful
+when a song is in a pitch too low for a singer ... a capo placed
+on the guitar raises the pitch of each played chord. Much easier for a
+player than having to change (raise) each chord in the song. In 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  the use of a P<SMALL>LECTRUM</SMALL> C<SMALL>APO</SMALL> setting is a bit different:
+it doesn't change the chord pitches. A &#8220;C Major&#8221; chord remains a &#8220;C
+Major&#8221; chord. However, the actual note assignments to the different
+strings on the instrument can (and most likely) changes. Depending on
+the tuning of the &#8220;instrument&#8221; a &#8220;C&#8221; chord with a C<SMALL>APO 2</SMALL>
+will be created as a &#8220;B&#8221; <SPAN  CLASS="textit">chord shape</SPAN> played above the second fret. In most cases
+a chord with a positive C<SMALL>APO</SMALL> value will have a higher tonality.
+
+<P>
+To change the C<SMALL>APO</SMALL> value:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Plectrum Capo 2  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+In addition to raising the pitch of the instrument, you can use
+negative values ... in a real instrument you would need to stretch
+the neck for similar results! There are no limits on the capo
+values. Very high or low values will have no different effect over
+moderate ones since the generated notes will always be in the MIDI
+range of 0 to 127.
+
+<P>
+Only one C<SMALL>APO</SMALL> setting can be set for a sequence. It applies to
+all bars in the current sequence. It is saved and restored in
+G<SMALL>ROOVE</SMALL>s.
+
+<P>
+It is also possible to change the pitch or tonality for individual
+chords with the &#8220;barre&#8221; chord name extension (detailed
+<A HREF="node30.html#barre-chords">here</A>).
+
+<P>
+Yet another way to change the pitch is to use the O<SMALL>CTAVE</SMALL>
+settings <A HREF="node24.html#octave">here</A>.
+
+<P>
+<SPAN  CLASS="textit">Remember: unlike a real instrument, neither <SMALL>CAPO</SMALL> or barre chords
+  change the pitch (transpose) the chord in 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> . The same chord is played,
+  but with a higher tonality.</SPAN>
+
+<P>
+
+<H1><A NAME="SECTION001130000000000000000">
+Patterns</A>
+</H1>
+
+<P>
+Setting a pattern for a P<SMALL>LECTRUM</SMALL> track is similar to that of
+other tracks: you simply set the offset and volumes for the different
+strings. In addition you must specify a &#8220;strum&#8221;<A NAME="tex2html49"
+  HREF="#foot5421"><SUP><SPAN CLASS="arabic">11</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A> value (used as a delay between
+strings). The formal definition for a P<SMALL>LECTRUM</SMALL> pattern is:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Offset Strum Strings:Velocity [...Strings:Velocity]  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+where:
+
+<P>
+<DL>
+<DT><STRONG>Offset</STRONG></DT>
+<DD>A beat or offset into the bar. This is used in the same
+  manner as in all the other MMA patterns.
+
+<P>
+</DD>
+<DT><STRONG>Strum</STRONG></DT>
+<DD>The strumming delay between hitting each string. Use a
+  positive number for a downward strum and negative number for an
+  upward strum and use zero for all the notes to be played together. &#8220;3&#8221;
+  is a fast downward strum and &#8220;-10&#8221; is a slow upward strum.
+
+<P>
+</DD>
+<DT><STRONG>Strings</STRONG></DT>
+<DD>The string or strings that are to be plucked. Details
+  below.
+
+<P>
+</DD>
+<DT><STRONG>Velocity</STRONG></DT>
+<DD>The MIDI velocity (loudness) for each string. &#8220;127&#8221;
+  is the maximum volume, A value of zero is used to mute the string or
+  strings. Guitarists often mute the strings with the side of their
+  hand when strumming.<A NAME="tex2html50"
+  HREF="#foot5422"><SUP><SPAN CLASS="arabic">11</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A>
+<P>
+</DD>
+</DL>
+
+<P>
+For a basic strumming guitar you might use:<A NAME="tex2html51"
+  HREF="#foot5423"><SUP><SPAN CLASS="arabic">11</SPAN>.<SPAN CLASS="arabic">4</SPAN></SUP></A>
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Begin Plectrum-Strumming 
+<BR>&nbsp;&nbsp;Voice       NylonGuitar 
+<BR>&nbsp;&nbsp;Volume      m 
+<BR>&nbsp;&nbsp;Sequence  1.0   +5     120 120 120 120 120 100; &#92;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;2.0   +5      90  80  80  80  80  80;&#92;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;2.5   -5       -   -  50  50  50  50;&#92;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;3.0   +5      90  80  80  80  80  80;&#92;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;3.5   -5       -   -  50  50  50  50;&#92;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;4.0   +5      90  80  80  80  80  80;&#92;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;4.5   -5       -   -  50  50  50  50;     
+<BR>
+End   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This gives eight strums per bar. Note the strum values at beats 2.5,
+3.5 and 4.5: using a negative strum value causes the strum to run in
+the opposite (high to low) direction.
+
+<P>
+Also, notice the use of &#8220;-&#8221; values for certain strings. A &#8220;-&#8221; lets
+that string continue to vibrate until the next pattern. If you want to
+disable (mute) a string use a &#8220;0&#8221; for the volume.
+
+<P>
+Another example shows how to set up a finger picking pattern:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Begin Plectrum-FingerPicking 
+<BR>&nbsp;&nbsp;Voice       NylonGuitar 
+<BR>&nbsp;&nbsp;Volume      m 
+<BR>&nbsp;&nbsp;Sequence          1.0    0       - 100   -   -  90  -;&#92;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;1.5    0       -   -   -  90   -   -;&#92;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;2.0    0       -   -   90  -  90   -;&#92;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;2.5    0       -   -   -  90   -   -;&#92;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;3.0    0       -   -   -   -   -  90;&#92;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;3.5    0       -   -   -   -  90   -;&#92;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;4.0    0       -   -   -   90  -   -;&#92;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;4.5    0       -   -   90  -   -   -;   
+<BR>
+End   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+To make creation of volume tables a bit easier, you can shorten the
+notation by setting a range and volume. This is done by using
+&#8220;n-m:v&#8221; where n is the start string number and m is the end string
+number and v is the volume. <B>Please note that the strings are numbered
+in &#8220;reverse&#8221; order, just like a guitar.</B> The last string (the bottom
+and usually the highest pitch) is string &#8220;1&#8221;, the first string
+(assuming 6 strings) is &#8220;6&#8221;. So,
 
 <P>
 
 <UL>
-<LI>A<SMALL>RIA</SMALL>s are <SPAN  CLASS="textit">not</SPAN> saved or modified by G<SMALL>ROOVE</SMALL> commands. Well, almost
-...the sequence size will be adjusted to match the new size from the
-groove. This might be unexpected:
+<LI>&#8220;1.0 0 2:50&#8221; is the same as &#8220;1.0 0 - - - - 50 -&#8221;
+</LI>
+<LI>&#8220;1.0 -5 2-4:80&#8221; is the same as &#8220;1.0 -5 - - 80 80 80 -&#8221;
+
+<P>
+</LI>
+</UL>
+
+<P>
+It is not possible to mix range and individual string settings. So,
+<SPAN  CLASS="textit">you cannot do</SPAN>:
 
 <P>
 
 <UL>
-<LI>Load a groove. Let's say it has a S<SMALL>EQSIZE</SMALL> of 4.
-</LI>
-<LI>Create an A<SMALL>RIA</SMALL>. Use 4 patterns to match the groove size (if you
-     don't 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will expand the sequence size for the A<SMALL>RIA</SMALL>, just
-     like other tracks).
-</LI>
-<LI>Process a few bars of music.
-</LI>
-<LI>Load a new groove, but this time with a S<SMALL>EQSIZE</SMALL> of 2. Now, the
-     A<SMALL>RIA</SMALL> will be truncated. This behavior is duplicated in other
-     tracks as well, but it might be unexpected here.
+<LI>&#8220;1.0 0 2:50 90&#8221; <IMG
+ WIDTH="28" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="\includegraphics[height=3ex]{stop.eps}">
 </LI>
 </UL>
 
 <P>
-</LI>
-<LI>D<SMALL>IRECTION</SMALL> can not be changed on a bar per bar basis. It applies to
-the entire sequence.
+Missing volume settings are expanded just like in C<SMALL>HORD</SMALL>
+tracks. So, assuming a 6 string guitar:
 
 <P>
+
+<UL>
+<LI>&#8220;1.0 0 90 &#8221; is the same as &#8220;1.0 0 90 90 90 90 90 90&#8221;
 </LI>
 </UL>
 
 <P>
-You can make dramatic changes to your songs with a few simple
-tricks. Try modifying the D<SMALL>IRECTION</SMALL> settings just slightly; use
-several patterns and S<SMALL>EQ</SMALL>R<SMALL>ND</SMALL> to generate less predictable
-patterns; use H<SMALL>ARMONLY</SMALL>O<SMALL>NLY</SMALL> with a different voice and pattern.
-
-<P>
-Oh, and have fun!
+However, do note that you must specify either one or all the strings
+if you are not using a range. Again, <SPAN  CLASS="textit">you cannot do</SPAN>:
 
 <P>
 
-<P>
+<UL>
+<LI>&#8220;1. 0 80 90&#8221; <IMG
+ WIDTH="28" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="\includegraphics[height=3ex]{stop.eps}">
+</LI>
+</UL>
 
+<P>
+Please note that the following options have no effect in a
+P<SMALL>LECTRUM</SMALL> track: A<SMALL>RTICULATE</SMALL>, V<SMALL>OICING</SMALL>,
+S<SMALL>TRUM</SMALL> M<SMALL>ALLET</SMALL> and D<SMALL>IRECTION</SMALL>.
+<BR><HR><H4>Footnotes</H4>
+<DL>
+<DT><A NAME="foot5419">...P<SMALL>LECTRUM</SMALL></A><A
+ HREF="node11.html#tex2html48"><SUP><SPAN CLASS="arabic">11</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
+<DD>The concept and code base for the Plectrum
+  track was developed by Louis James Barman
+  <SPAN  CLASS="textbf">&lt;louisjbarman at googlemail dot com&gt;</SPAN>. Send compliments to him!
+
+</DD>
+<DT><A NAME="foot5421">... &#8220;strum&#8221;</A><A
+ HREF="node11.html#tex2html49"><SUP><SPAN CLASS="arabic">11</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A></DT>
+<DD>A
+  &#8220;P<SMALL>LECTRUM </SMALL>S<SMALL>TRUM</SMALL>&#8221; setting is ignored by these tracks. Strum
+  must be set as part of the pattern.
+
+</DD>
+<DT><A NAME="foot5422">... strumming.</A><A
+ HREF="node11.html#tex2html50"><SUP><SPAN CLASS="arabic">11</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A></DT>
+<DD>The P<SMALL>LECTRUM</SMALL> track differs from
+    other 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  tracks as the duration of each note is not given but
+    instead like a real guitar the note on the string will continue
+    to sound until either it is muted by using a velocity of zero or
+    until another note is played on the same string.
+
+</DD>
+<DT><A NAME="foot5423">... use:</A><A
+ HREF="node11.html#tex2html51"><SUP><SPAN CLASS="arabic">11</SPAN>.<SPAN CLASS="arabic">4</SPAN></SUP></A></DT>
+<DD>These examples
+  use B<SMALL>EGIN</SMALL>/E<SMALL>ND</SMALL> shorthand notation. This is explained in
+  the &#8220;Begin/End Block&#8221; chapter <A HREF="node25.html#sec-blocks">here</A>.
+
+</DD>
+</DL>
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html507"
+<A NAME="tex2html568"
   HREF="node12.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html505"
+<A NAME="tex2html566"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html499"
+<A NAME="tex2html560"
   HREF="node10.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html508"
-  HREF="node12.html">Randomizing</A>
-<B> Up:</B> <A NAME="tex2html506"
+<B> Next:</B> <A NAME="tex2html569"
+  HREF="node12.html">Automatic Melodies: Aria Tracks</A>
+<B> Up:</B> <A NAME="tex2html567"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html500"
+<B> Previous:</B> <A NAME="tex2html561"
   HREF="node10.html">Solo and Melody Tracks</A></DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 bob
-2008-09-28
+2010-11-07
 </ADDRESS>
 </BODY>
 </HTML>

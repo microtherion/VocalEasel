@@ -1,19 +1,20 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+<!--Converted with LaTeX2HTML 2008 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Patch Management</TITLE>
-<META NAME="description" CONTENT="Patch Management">
+<TITLE>Low Level MIDI Commands</TITLE>
+<META NAME="description" CONTENT="Low Level MIDI Commands">
 <META NAME="keywords" CONTENT="mma">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="mma.css">
@@ -27,22 +28,22 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY  bgcolor="#ffffff">
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html677"
+<A NAME="tex2html725"
   HREF="node22.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html675"
+<A NAME="tex2html723"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html669"
+<A NAME="tex2html717"
   HREF="node20.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html678"
-  HREF="node22.html">Fine Tuning (Translations)</A>
-<B> Up:</B> <A NAME="tex2html676"
+<B> Next:</B> <A NAME="tex2html726"
+  HREF="node22.html">Patch Management</A>
+<B> Up:</B> <A NAME="tex2html724"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html670"
-  HREF="node20.html">Low Level MIDI Commands</A>
+<B> Previous:</B> <A NAME="tex2html718"
+  HREF="node20.html">Variables, Conditionals and Jumps</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
@@ -50,245 +51,377 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html679"
-  HREF="node21.html#SECTION002110000000000000000">Voice</A>
-<LI><A NAME="tex2html680"
-  HREF="node21.html#SECTION002120000000000000000">Patch</A>
+<LI><A NAME="tex2html727"
+  HREF="node21.html#SECTION002110000000000000000">Channel</A>
+<LI><A NAME="tex2html728"
+  HREF="node21.html#SECTION002120000000000000000">ChannelPref</A>
+<LI><A NAME="tex2html729"
+  HREF="node21.html#SECTION002130000000000000000">ChShare</A>
+<LI><A NAME="tex2html730"
+  HREF="node21.html#SECTION002140000000000000000">ForceOut</A>
+<LI><A NAME="tex2html731"
+  HREF="node21.html#SECTION002150000000000000000">MIDI</A>
+<LI><A NAME="tex2html732"
+  HREF="node21.html#SECTION002160000000000000000">MIDIClear</A>
+<LI><A NAME="tex2html733"
+  HREF="node21.html#SECTION002170000000000000000">MIDICue</A>
+<LI><A NAME="tex2html734"
+  HREF="node21.html#SECTION002180000000000000000">MIDICopyright</A>
+<LI><A NAME="tex2html735"
+  HREF="node21.html#SECTION002190000000000000000">MIDIDef</A>
+<LI><A NAME="tex2html736"
+  HREF="node21.html#SECTION0021100000000000000000">MIDICresc and MIDIDecresc</A>
+<LI><A NAME="tex2html737"
+  HREF="node21.html#SECTION0021110000000000000000">MIDIFile</A>
+<LI><A NAME="tex2html738"
+  HREF="node21.html#SECTION0021120000000000000000">MIDIGlis</A>
+<LI><A NAME="tex2html739"
+  HREF="node21.html#SECTION0021130000000000000000">MIDIInc</A>
+<LI><A NAME="tex2html740"
+  HREF="node21.html#SECTION0021140000000000000000">MIDIMark</A>
+<LI><A NAME="tex2html741"
+  HREF="node21.html#SECTION0021150000000000000000">MIDINote</A>
 <UL>
-<LI><A NAME="tex2html681"
-  HREF="node21.html#SECTION002121000000000000000">Patch Set</A>
-<LI><A NAME="tex2html682"
-  HREF="node21.html#SECTION002122000000000000000">Patch Rename</A>
-<LI><A NAME="tex2html683"
-  HREF="node21.html#SECTION002123000000000000000">Patch List</A>
-<LI><A NAME="tex2html684"
-  HREF="node21.html#SECTION002124000000000000000">Ensuring It All Works</A>
-</UL></UL>
+<LI><A NAME="tex2html742"
+  HREF="node21.html#SECTION0021151000000000000000">Setting Options</A>
+<LI><A NAME="tex2html743"
+  HREF="node21.html#SECTION0021152000000000000000">Note Events</A>
+<LI><A NAME="tex2html744"
+  HREF="node21.html#SECTION0021153000000000000000">Controller Events</A>
+<LI><A NAME="tex2html745"
+  HREF="node21.html#SECTION0021154000000000000000">Pitch Bend</A>
+<LI><A NAME="tex2html746"
+  HREF="node21.html#SECTION0021155000000000000000">Pitch Bend Range</A>
+<LI><A NAME="tex2html747"
+  HREF="node21.html#SECTION0021156000000000000000">Channel Aftertouch</A>
+<LI><A NAME="tex2html748"
+  HREF="node21.html#SECTION0021157000000000000000">Channel Aftertouch Range</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html749"
+  HREF="node21.html#SECTION0021160000000000000000">MIDIPan</A>
+<LI><A NAME="tex2html750"
+  HREF="node21.html#SECTION0021170000000000000000">MIDISeq</A>
+<LI><A NAME="tex2html751"
+  HREF="node21.html#SECTION0021180000000000000000">MIDISplit</A>
+<LI><A NAME="tex2html752"
+  HREF="node21.html#SECTION0021190000000000000000">MIDIText</A>
+<LI><A NAME="tex2html753"
+  HREF="node21.html#SECTION0021200000000000000000">MIDITname</A>
+<LI><A NAME="tex2html754"
+  HREF="node21.html#SECTION0021210000000000000000">MIDIVoice</A>
+<LI><A NAME="tex2html755"
+  HREF="node21.html#SECTION0021220000000000000000">MIDIVolume</A>
+</UL>
 <!--End of Table of Child-Links-->
 <HR>
 
 <H1><A NAME="SECTION002100000000000000000"></A>
-<A NAME="patch"></A>
+<A NAME="sec-mididirectives"></A>
 <BR>
-Patch Management
+Low Level MIDI Commands
 </H1>
 
 <P>
-Modern music keyboards and synthesizers are capable of producing a
-bewildering variety of sounds. Many consumer units priced well under
-$1000.00 contain several hundred or more unique voices. But, ``out of
-the box'' 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  supports only 128 ``General MIDI''<A NAME="tex2html71"
-  HREF="#foot9811"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A> preset voices. These voices are assigned the values 0
-to 127. We refer to the various voices as ``tones'', ``instruments'',
-or ``patches''.<A NAME="tex2html72"
-  HREF="#foot9812"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A>
+The commands discussed in this chapter directly effect your MIDI
+output devices.
+
+<P>
+Not all MIDI devices are equal. Many of the effects in this chapter
+may be ignored by your devices. Sorry, but that's just the way MIDI
+is.
+
 <P>
 
-<H1><A NAME="SECTION002110000000000000000"></A>  <A NAME="set-voice"></A>
+<H1><A NAME="SECTION002110000000000000000"></A> <A NAME="set-channel"></A>
 <BR>
-Voice
-</H1>
+Channel
+</H1> 
 
 <P>
-The MIDI instrument or voice used for a track is set with:
+As noted in <A HREF="node3.html#sec-tracks">Tracks and Channels</A> 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  assigns MIDI channels
+dynamically as it creates tracks. In most cases this works fine;
+however, you can if you wish force the assignment of a specific MIDI
+channel to a track with the C<SMALL>HANNEL</SMALL> command.
+
+<P>
+You cannot assign a channel number to a track if it already defined
+(well, see the section C<SMALL>H</SMALL>S<SMALL>HARE</SMALL>, below, for the inevitable
+exception), nor can you change the channel assignments for any of the
+D<SMALL>RUM</SMALL> tracks.
+
+<P>
+Let us assume that you want the <SPAN  CLASS="textit">Bass</SPAN> track assigned to MIDI
+channel 8. Simply use:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Chord-2 Voice Piano1  </B> 
+    <B>Bass Channel 8   </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-Voices apply only to the specified track. The actual instrument can be
-specified via the MIDI instrument number, an ``extended'' value, or
-with the symbolic name.  See the tables in the MIDI
-<A HREF="node29.html#sec-voicenames">voicing section</A> for lists of the standard, recognized
-names.
+Caution: If the selected channel is already in use an error will be
+generated. Due to the way 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  allocates tracks, if you really need
+to manually assign track it is recommended that you do this in a
+MMA<SMALL>RC</SMALL> file.
 
 <P>
-You can create interesting effects by varying the voice used with drum
-tracks. By default ``Voice 0'' is used. However, you can change the
-drum voices. The supplied library files do not change the voices since
-this is highly dependent on the MIDI synth you are using.
-
+<A NAME="channel0"></A>
 <P>
-You can specify a different V<SMALL>OICE</SMALL> for each bar in a sequence.
-Repeated values can be represented with a ``/'':
+You can disable a channel at any time by using a channel number of 0:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Chord Voice Piano1 / / Piano2  </B> 
+    <B>Arpeggio-1 Channel 0  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-It is possible to set up translations for the selected voice: see
-<A HREF="node22.html#set-voicetr">V<SMALL>OICE</SMALL>TR</A>.
+will disable the Arpeggio-1 channel, freeing it for use by other
+tracks. A warning message is generated. Disabling a track without a
+valid channel is fine. When you set a channel to 0 the track is also
+disabled. You can restart the track with the O<SMALL>N</SMALL> command
+(<A HREF="node24.html#set-on">here</A>.
+
+<P>
+You don't need to have a valid MIDI channel assigned to a track to do
+things like: MIDIP<SMALL>AN</SMALL>, MIDIG<SMALL>LIS</SMALL>, MIDIV<SMALL>OLUME</SMALL> or
+even the assignment of any music to a track. MIDI data is created in
+tracks and then sent out to the MIDI buffers. Channel assignment is
+checked and allocated at this point, and an error will be generated if
+no channels are available.
+
+<P>
+It's quite acceptable to do channel reassignments in the middle of a
+song. Just assign channel 0 to the unneeded track first.
+
+<P>
+MIDI channel settings are <SPAN  CLASS="textit">not</SPAN> saved in G<SMALL>ROOVE</SMALL>s.
+
+<P>
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  inserts a MIDI &#8220;track name&#8221; meta event when the channel
+buffers are first assigned at a MIDI offset of 0. If the MIDI channel
+is reassigned, a new &#8220;track name&#8221; is inserted at the current song
+offset.
+
+<P>
+A more general method is to use C<SMALL>HANNEL</SMALL>P<SMALL>REF</SMALL> detailed below.
+
+<P>
+You can access the currently assigned channel with the
+$_TRACK_C<SMALL>HANNEL</SMALL> macro.
 
 <P>
 
 <H1><A NAME="SECTION002120000000000000000">
-Patch</A>
+ChannelPref</A>
 </H1>
 
 <P>
-In addition to the 128 standard voices mandated by the MIDI standards
-(referred to as the GM voices) 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  also supports extended voice
-banks.
-
-<P>
-<DIV ALIGN="CENTER">
-
-		<Table CellSpacing=0 Width="80%" Align="Center" CellPadding=10 BGColor="#dddddd" Border=3>
-           <tr> <td>
-	       <BR>
-<BR><SPAN  CLASS="textit">The rest of this
-        chapter presents features which are highly dependent your hardware.
-        It is quite possible to create midi files which sound very
-        different (or even awful, or perhaps not at all) on other
-        hardware. We recommend that you <SPAN  CLASS="textit">do not</SPAN> use these
-        features to create files you want to share!</SPAN>
-	
-           </td></tr>
-        </Table>
-
-</DIV>
-
-<P>
-A typical keyboard will assign instruments to different voice
-banks. The first, default, bank will contain the standard set of 128
-GM instruments. However, you can select different banks, each with a
-variety of voices, by changing the current voice bank. This switching
-is done by changing the value of MIDI Controller 0, 32 or both. You'll
-need to read the manual for your hardware to figure this out.
-
-<P>
-In order to use voices outside of the normal GM range 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  uses an
-extended addressing mode which includes values for the patch and
-controllers 0 and 32. Each value is separated from the others with a
-single ``.''. Two examples would include 22.33.44 and 22.33. The first
-value is the Patch Number, the second is a value for Controller 0. The
-third value, if present, is the setting for Controller 32.
-
-<P>
-My Casio Wk-3000 lists Bank-53, Program-27 as "Rotary Guitar". It's easy to use
-this voice directly in a V<SMALL>OICE</SMALL> command:
+If you prefer to have certain tracks assigned to certain channels you
+can use the C<SMALL>HANNEL</SMALL>P<SMALL>REF</SMALL> command to create a custom set of
+preferences. By default, 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  assigns channels starting at 16 and
+working down to 1 (with the expectation of drum tracks which are all
+assigned channel 10). If, for example, you would like the <SPAN  CLASS="textit">Bass</SPAN>
+track to be on channel 9, sustained bass on channel 3, and
+<SPAN  CLASS="textit">Arpeggio</SPAN> on channel 5, you can have a command like:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Chord Voice 27.53  </B> 
+    <B>ChannelPref Bass=9 Arpeggio=5 Bass-Sus=3   </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-Yes, but who wants all those ``funny'' numbers in their 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  files?
-Well, no one that I know. For this reason the P<SMALL>ATCH</SMALL> command has
-been developed. This command lets you modify existing patch names,
-list names and create new ones.
+Most likely this will be in your <SMALL>MMARC</SMALL> file.
 
 <P>
-P<SMALL>ATCH</SMALL> takes a variety of options. We suggest you read this
-section and examine some of the included example files before
-venturing out on your own. But, really, it's not that complicated.
+You can use multiple command lines, or have multiple assignments on a
+single line. Just make sure that each item consists of a trackname, an
+&#8220;=&#8221; and a channel number in the range 1 to 16.
 
 <P>
-Unless otherwise noted, you can stack a number of different options
-onto the same P<SMALL>ATCH</SMALL> line.
+If a channel has already been assigned this command will probably be
+ignored. It should be used <SPAN  CLASS="textit">before</SPAN> any MIDI data is generated.
 
 <P>
 
-<H2><A NAME="SECTION002121000000000000000">
-Patch Set</A>
-</H2>
+<H1><A NAME="SECTION002130000000000000000"></A> <A NAME="set-chshare"></A>
+<BR>
+ChShare
+</H1> 
 
 <P>
-The S<SMALL>ET</SMALL> option is used to assign one or more patch values to
-symbolic names. Going back to my Casio example, above, I could use the
-following line to register the voice with 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  is fairly conservative in its use of MIDI tracks. &#8220;Out of the
+box&#8221; it demands a separate MIDI channel for each of its tracks, but
+only as they are actually used. In most cases, this works just fine.
+
+<P>
+However, there are times when you might need more tracks than the
+available MIDI channels or you may want to free up some channels for
+other programs.
+
+<P>
+If you have different tracks with the same voicing, it's quite simple.
+For example, you might have an arpeggio and scale track:
+
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Patch Set 27.53=RotaryGuitar  </B> 
+    <B>Arpeggio Sequence A16 z 
+<BR>
+Arpeggio Voice Piano1 
+<BR>
+Scale Sequence z S8 
+<BR>
+Scale Voice Piano1   </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-The assignment consists of two parts or keys joined by a ``=''
-sign. No spaces are permitted. The left part of the assignment is a
-value. It can be a single number in the range 0 to 127; or 2 or 3 numbers
-joined by ``.''s. The right right part is a symbolic name. Any characters
-are permitted (but no spaces!).
-
-<P>
-After the assignment you can use ``RotaryGuitar'' just like any other
-instrument name:
+In this example, 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will use different MIDI channels for the
+<SPAN  CLASS="textit">Arpeggio</SPAN> and the <SPAN  CLASS="textit">Scale</SPAN>. Now, if you force channel
+sharing:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Chord Voice rotaryguitar  </B> 
+    <B>Scale ChShare Arpeggio  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-Note that once the voice has been registered you don't need to worry
-about the case of individual letters.
+both tracks will use the same MIDI channel.
 
 <P>
-It's even possible to register a number of voices in this manner:
+This is really foolproof in the above example, especially since the
+same voice is being used for both. Now, what if you wanted to use a
+different voice for the tracks?
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Patch set 27.53=RotaryGuitar 61.65=BASS+TROMBONE   </B> 
+    <B>Arpeggio Sequence A16 z 
+<BR>
+Arpeggio Voice Piano1 Strings 
+<BR>
+Scale Sequence z S8 
+<BR>
+Scale ChShare Arpeggio  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-Just make sure that the S<SMALL>ET</SMALL> assignments are the last thing on
-the P<SMALL>ATCH</SMALL> line.
+You might think that this would work, but it doesn't. 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  ignores
+voice changes for bars which don't have a sequence, so it will set
+&#8220;Piano1&#8221; for the first bar, then &#8220;Strings&#8221; for the second (so far,
+so good). But, when it does the third bar (an A<SMALL>RPEGGIO</SMALL>) it will
+not know that the voice has been changed to &#8220;Strings&#8221; by the
+<SPAN  CLASS="textit">Scale</SPAN> track.
 
 <P>
-It is relatively easy to load entire sets of extended patch names by
-creating special 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  include files. For example, for a Casio
-WK-3000 keyboard you might have the file <TT><SPAN  CLASS="textbf">includes/casio-wk3.mma</SPAN></TT>
-with a large number of settings. Here's a snippet:
+So, the general rule for track channel sharing is to use only one
+voice.
+
+<P>
+One more example which doesn't work:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Begin Patch Set 
+    <B>Arpeggio Sequence A8 
 <BR>
-0.48=GrandPiano 
+Scale Sequence S4 
 <BR>
-1.48=BrightPiano 
+Arpeggio Voice Piano1 
 <BR>
-2.48=ElecGrandPiano 
+Scale Voice Piano1 
 <BR>
-3.48=Honky-Tonk1 
-<BR>  ...
+Scale ChShare Arpeggio   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This example has an active scale and arpeggio sequence in each
+bar. Since both use the same voice, you may think that it will work
+just fine ... but it may not. The problem here is that 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will
+generate MIDI on and off events which may overlap each other. One or
+the other will be truncated. If you are using a different octave, it
+will work much better. It may sound okay, but you should probably find
+a better way to do this.
+
+<P>
+When a C<SMALL>H</SMALL>S<SMALL>HARE</SMALL> directive is parsed the &#8220;shared&#8221; channel is
+first checked to ensure that it has been assigned. If not currently
+assigned, the assignment is first done. What this means is that you
+are subverting 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> 's normal dynamic channel allocation scheme. This
+may cause is a depletion of available channels.
+
+<P>
+Please note that that the use of the C<SMALL>H</SMALL>S<SMALL>HARE</SMALL> command is
+probably never really needed, so it might have more problems than
+outlined here. If you want to see how much a bother channel sharing
+becomes, have a look at the standard library file
+<TT><SPAN  CLASS="textbf">frenchwaltz.mma</SPAN></TT>. All this so the accordion bass can use one
+channel instead of 6. If I were to write it again I'd just let it suck
+up the MIDI channels.
+
+<P>
+For another, simpler, way of reassigning MIDI tracks and letting 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  do most of the work for you, refer to the
+<A HREF="node24.html#sec-delete">D<SMALL>ELETE</SMALL> command</A>.
+
+<P>
+
+<H1><A NAME="SECTION002140000000000000000">
+ForceOut</A>
+</H1>
+
+<P>
+Under normal conditions 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  only generates the MIDI tracks it thinks
+are valid or relevant. So, if you create a track but insert no note
+data into that track it will not be generated. An easy way to verify
+this is by creating file and running 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  with the -c command line
+option. Lets start off by creating a file you might think will set the
+keyboard channel on your synth to a TenorSax voice:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Begin Solo-Keyboard
+<BR>&nbsp;&nbsp;Channel 1
+<BR>&nbsp;&nbsp;Voice TenorSax
+<BR>&nbsp;&nbsp;MIDIVolume 100
 <BR>
 End  </B> 
    
@@ -296,336 +429,2265 @@ End  </B>
       </Table>
 
 <P>
-Now, at the top of your song file or in a <SMALL>MMARC</SMALL> file insert the
-command:
+If you test this you should get:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>include casio-wk300<A NAME="tex2html73"
-  HREF="#foot9941"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A></B> 
+    <B>$ mma test -c
+<BR>&nbsp;&nbsp;
+<BR>
+File 'test' parsed, but no MIDI file produced!
+<BR>&nbsp;
+<BR>
+Tracks allocated:
+<BR>&nbsp;SOLO-KEYBOARD
+<BR>&nbsp;
+<BR>
+Channel assignments:
+<BR>
+1 SOLO-KEYBOARD
+<BR>  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-A file like this can be created by hand or you can convert existing an
-existing file to a format  understands. A number of ``patch''
-files exist for the popular ``Band in a Box'' program from
-PGMusic. There files may be subject to copyright, so use them with
-respect. No patch files are included in this distribution, but many
-are freely available on the internet. For a start you might want to
-look at <TT><A NAME="tex2html74"
-  HREF="http://www.pgmusic.com/support_miscellaneous.htm">http://www.pgmusic.com/support_miscellaneous.htm</A></TT>. These
-files cannot be read my 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> , so we have included a
-little conversion utility <TT><SPAN  CLASS="textbf">util/pg2mma.py</SPAN></TT>. There is a short
-file with instructions <TT><SPAN  CLASS="textbf">util/README.pg2mma</SPAN></TT>. 
+So, a 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  track will be created. But if you compile this file and
+examine the resulting MIDI file you will find that the voice <SPAN  CLASS="textit">has
+  not</SPAN> been set.<A NAME="tex2html75"
+  HREF="#foot10056"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>
+<P>
+To overcome this, insert the F<SMALL>ORCE</SMALL>O<SMALL>UT</SMALL> command at the end of the
+track setup.
 
 <P>
-The S<SMALL>ET</SMALL> option will issue warning messages if you redefine
-existing instrument names or addresses. We suggest that you edit any
-configuration files so that they have unique names and that you do not
-rename any of the standard GM names.
-
-<P>
-
-<H2><A NAME="SECTION002122000000000000000">
-Patch Rename</A>
-</H2>
-
-<P>
-The naming of patches is actually quite arbitrary. You'll find that
-different manufacturers use different names to refer to the same
-voices. Most of the time this isn't a major concern, but you have the
-freedom in 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  to change any patch name you want. For example, 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  calls the first voice in the GM set ``Piano1''. Maybe you want to use
-the name ``AcousticGrand''. Easy:
+For example, here is a more complete file which will set the keyboard
+track (MIDI channel 1) to TenorSax with a volume of 100, play a bar of
+accompaniment, set a Trumpet voice with a louder volume, play another
+bar, and finally reset the keyboard to the default Piano voice. A cool
+way to program your keyboard for different voicing changes so you can
+have more fun doing play-a-longs.
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Patch Rename Piano1=AcousticGrand  </B> 
+    <B>Groove BossaNova
+<BR>&nbsp;
+<BR>
+Begin Solo
+<BR>&nbsp;&nbsp;Channel 1
+<BR>&nbsp;&nbsp;Voice TenorSax
+<BR>&nbsp;&nbsp;MIDIVolume 100
+<BR>&nbsp;&nbsp;ForceOut
+<BR>
+End
+<BR>&nbsp;
+<BR>
+1 C
+<BR>&nbsp;
+<BR>
+Begin Solo
+<BR>&nbsp;&nbsp;Voice Trumpet
+<BR>&nbsp;&nbsp;MIDIVolume 120
+<BR>&nbsp;&nbsp;ForceOut
+<BR>
+End
+<BR>&nbsp;
+<BR>
+2 G
+<BR>&nbsp;
+<BR>
+Begin Solo
+<BR>&nbsp;&nbsp;Voice Piano1
+<BR>&nbsp;&nbsp;MIDIVolume 127
+<BR>&nbsp;&nbsp;ForceOut
+<BR>
+End
+<BR>  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-Each R<SMALL>ENAME</SMALL> option has a left and right part joined by an ``=''
-sign. The left part is the current name; the right is the new
-name. Please note that after this command the name ``Piano1'' will not
-be available.
-
-<P>
-You can have any number of items in a list; however, they must be the
-last items on the P<SMALL>ATCH</SMALL> line.
+Note: The same or similar results could be accomplished with the
+MIDI command; however, it's a bit harder to use and the
+commands would be in the Meta track.
 
 <P>
 
-<H2><A NAME="SECTION002123000000000000000">
-Patch List</A>
-</H2>
+<H1><A NAME="SECTION002150000000000000000"></A>
+<A NAME="sec-midi"></A>
+<BR>
+MIDI
+</H1>
 
 <P>
-After making changes to 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> 's internal tables you might want to
-check to make sure that what you meant is what you got. For this
-reason there are three different versions of the L<SMALL>IST</SMALL>
-command.
+The complete set of MIDI commands is not limitless--but from this end
+it seems that adding commands to suit every possible configuration is
+never-ending. So, in an attempt to satisfy everyone, a command which
+will place any arbitrary MIDI stream in your tracks has been
+implemented. In most cases this will be a MIDI &#8220;Sysex&#8221; or &#8220;Meta&#8221;
+event.
 
 <P>
-<DL>
-<DT><STRONG>List=GM</STRONG></DT>
-<DD>Lists the current values of the GM voices,
+For example, you might want to start a song off with a MIDI reset:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MIDI 0xF0 0x05 0x7e 0x7f 0x09 0x01 0xf7  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+The values passed to the MIDI command are normal integers; however,
+they must all be in the range of 0x00 to 0xff. In most cases it is
+easiest to use hexadecimal numbers by using the &#8220;0x&#8221; prefix. But,
+you can use plain decimal integers if you prefer.
+
+<P>
+In the above example:
+
+<P>
+<DL COMPACT>
+<DT>&nbsp;&nbsp;0xF0</DT>
+<DD>Designates a SYSEX message
+
+<P>
 </DD>
-<DT><STRONG>List=EXT</STRONG></DT>
-<DD>Lists the extended voices,
+<DT>&nbsp;&nbsp;0x05</DT>
+<DD>The length of the message
+
+<P>
 </DD>
-<DT><STRONG>List=All</STRONG></DT>
-<DD>Lists both the GM and extended voices.
+<DT>&nbsp;&nbsp;0x7e</DT>
+<DD>... The actual message
+
+<P>
 </DD>
 </DL>
 
 <P>
-For example, the command:
-
+Another example places the key signature of F major (1 flat) in the
+meta track:<A NAME="tex2html76"
+  HREF="#foot10533"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A>
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Patch List=EXT  </B> 
+    <B>MIDI 0xff 0x59 0x02 0xff 0x00  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-will produce a listing something like:
+Some <SPAN  CLASS="textit">cautions:</SPAN>
+
+<UL>
+<LI>
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  makes no attempt to verify the validity of the data!
+
+<P>
+</LI>
+<LI>The &#8220;Length&#8221; field must be manually calculated.
+
+<P>
+</LI>
+<LI>Malformed sequences can create non-playable MIDI files. In
+  extreme situations, these might even damage your synth. You are on
+  your own with this command ... be careful.
+
+<P>
+</LI>
+<LI>The M<SMALL>IDI</SMALL> directive always places data in the <SPAN  CLASS="textit">Meta</SPAN>
+  track at the current time offset into the file. This should not be a
+  problem.
+
+<P>
+</LI>
+</UL>
+
+<P>
+Cautions aside, <TT><SPAN  CLASS="textbf">includes/init.mma</SPAN></TT> has been included in this
+distribution. I use this without apparent problems; to use it add the
+command line:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>0.48=GrandPiano 
-<BR>
-1.48=BrightPiano 
-<BR>
-2.48=ELEC.GrandPiano 
-<BR> ...</B> 
+    <B>MMAstart init  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
+in your <SMALL>MMARC</SMALL> file. The file is pretty well commented and it
+sets a synth up to something reasonably sane.
 
-<H2><A NAME="SECTION002124000000000000000">
-Ensuring It All Works</A>
+<P>
+If you need a brief delay after a raw MIDI command, it is possible to
+insert a silent beat with the <A HREF="node16.html#beatadjust">B<SMALL>EAT</SMALL>A<SMALL>DJUST</SMALL>
+  command</A>.  See
+the file <TT><SPAN  CLASS="textbf">includes/reset.mma</SPAN></TT> for an example.
+
+<P>
+
+<H1><A NAME="SECTION002160000000000000000"></A> <A NAME="sec-midiclear"></A>
+<BR>
+MIDIClear
+</H1> 
+
+<P>
+As noted earlier in this manual you should be very careful in
+programming MIDI sequences into your song and/or library files. Doing
+damage to a synthesizer is probably a remote possibility ... but
+leaving it in a unexpected mode is likely. For this reason the
+MIDIC<SMALL>LEAR</SMALL> command has been added as a companion to the
+MIDIV<SMALL>OICE</SMALL> and MIDIS<SMALL>EQ</SMALL> commands.
+
+<P>
+Each time a MIDI track (not necessary the same as a 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  track) is
+ended or a new G<SMALL>ROOVE</SMALL> is started, a check is done to see if any
+MIDI data has been inserted in the track with a MIDIV<SMALL>OICE</SMALL> or
+MIDIS<SMALL>EQ</SMALL> command. If it has, a further check is done to see if
+there is an &#8220;undo&#8221; sequence defined via a MIDIC<SMALL>LEAR</SMALL> command.
+That data is then sent; or, if data has not be defined for the track,
+a warning message is displayed.
+
+<P>
+The MIDIC<SMALL>LEAR</SMALL> command uses the same syntax as MIDIV<SMALL>OICE</SMALL>
+and MIDIS<SMALL>EQ</SMALL>; however, you can not specify different sequence
+for different bars in the sequence:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Bass-Funky MIDIClear 1 Modulation 0; 1 ReleaseTime 0  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+As in MIDIV<SMALL>OICE</SMALL> and MIDIS<SMALL>EQ</SMALL> you can include sequences
+defined in a MIDID<SMALL>EF</SMALL> (see below). The
+&lt;beat&gt;offsets are required, but ignored.
+
+<P>
+
+<H1><A NAME="SECTION002170000000000000000"></A> <A NAME="midicue"></A>
+<BR>
+MIDICue
+</H1> 
+
+<P>
+MIDI files can contain &#8220;cue points&#8221; to be used as pointers to
+sections of the file. In 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  you can insert these in the meta-track:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiCue Begin slow portion of song  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+or in a specified track:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord MidiCue Chords get louder here  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Not all MIDI sequencers or editors recognize this event.
+
+<P>
+The text for this command is queued until the track is created. If the
+specified track is never created the text is discarded.
+
+<P>
+
+<H1><A NAME="SECTION002180000000000000000"></A> <A NAME="midicopyright"></A>
+<BR>
+MIDICopyright
+</H1> 
+
+<P>
+Inserting a copyright message into a MIDI file may be a good
+idea, and it's simple enough to do.
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiCopyright (C) Bob van der Poel 2044  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will insert the message &#8220;(C)..&#8221; as the first item in the first track
+of the generated file.<A NAME="tex2html77"
+  HREF="#foot10536"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A>You can have any number of M<SMALL>IDI</SMALL>C<SMALL>OPYRIGHT</SMALL> messages in your
+file. They will be inserted sequentially at the head of the
+file. Command placement in your input file has no effect on the
+positioning.
+
+<P>
+
+<H1><A NAME="SECTION002190000000000000000"></A> <A NAME="mididef"></A>
+<BR>
+MIDIDef
+</H1> 
+
+<P>
+To make it easier to create long sets of commands for MIDIS<SMALL>EQ</SMALL>
+and MIDIC<SMALL>LEAR</SMALL> you can create special macros. Each definition
+consists of a symbolic name, a beat offset, a controller name and a
+value. For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MIDIdef Rel1 1 ReleaseTime 50; 3 ReleaseTime 0   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+creates a definition called &#8220;Rel1&#8221; with two controller events. The
+controller names can be a single value or a permitted symbolic name
+<A HREF="node30.html#sec-controllers">(here)</A>.
+
+<P>
+You can have multiple controller events. Just list them with &#8220;;&#8221;
+delimiters.
+
+<P>
+
+<H1><A NAME="SECTION0021100000000000000000"></A> <A NAME="midicresc"></A>
+<BR>
+MIDICresc and MIDIDecresc
+</H1>
+
+<P>
+Much like the track C<SMALL>RESC</SMALL> and D<SMALL>ECRESC</SMALL>
+<A HREF="node18.html#track-cresc">(here)</A> commands, these
+commands change volume over a set number of bars. However, unlike the
+previously mentioned commands, these commands utilize the MIDI Channel
+Volume settings <A HREF="#channelvol">(here)</A>.
+
+<P>
+The two commands are identical, with the exception that
+MIDIC<SMALL>RESC</SMALL> prints a warning if the second argument is smaller
+than the first and MIDID<SMALL>ECRESC</SMALL> prints a warning if the second
+argument is larger than the first.
+
+<P>
+The first two arguments are MIDI values in the range 0 to 127. The
+third argument is the number of bars to apply the command over. 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  distributes the needed values evenly over the bar range. 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  assumes
+that your song will be long enough for the specifed bar count; if the
+song is too short you will end up with volume settings past the end of
+the song (the MIDI file will be expanded for this).
+
+<P>
+To change the MIDI channel volume of the Bass track over three and a
+half bars:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Bass MidiCresc 50 100 3.5  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Please read the discussion for MIDIV<SMALL>OLUME</SMALL>
+<A HREF="#channelvol">(here)</A> for more details.
+
+<P>
+
+<H1><A NAME="SECTION0021110000000000000000"></A> <A NAME="midismf"></A>
+<BR>
+MIDIFile
+</H1> 
+
+<P>
+This option controls some fine points of the generated MIDI file. The
+command is issued with a series of parameters in the form
+&#8220;MODE=VALUE&#8221;. You can have multiple settings in a single
+MIDIF<SMALL>ILE</SMALL> command.
+
+<P>
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  can generate two types of SMF (Sta
+ndard MIDI Files):
+<DL COMPACT>
+<DT>0.</DT>
+<DD>This file contains only one track into which the data for
+  all the different channel tracks has been merged. A number of synths
+  which accept SMF (Casio, Yamaha and others) only accept type 0
+  files.
+
+<P>
+</DD>
+<DT>1.</DT>
+<DD>This file has the data for each MIDI channel in its own
+  track. This is the default file generated by 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> .
+
+<P>
+</DD>
+</DL>
+
+<P>
+You can set the filetype in an RC file (or, for that matter, in any
+file processed by 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> ) with the command:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiFile SMF=0  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+or
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiFile SMF=1  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+You can also set it on the command line with the -M option. Using the
+command line option will override the M<SMALL>IDI</SMALL>SMF command if it is
+in a RC file.
+
+<P>
+By default 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  uses &#8220;running status&#8221; when generating MIDI files.
+This can be disabled with the command:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiFile Running=0  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+or enabled (but this is the default) with:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiFile Running=1  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Files generated without running status will be about 20 to 30% larger
+than their compressed counterparts. They may be useful for use with
+brain-dead sequencers and in debugging generated code. There is no
+command line equivalent for this option.
+
+<P>
+
+<H1><A NAME="SECTION0021120000000000000000">
+MIDIGlis</A>
+</H1>
+
+<P>
+This sets the MIDI portamento<A NAME="tex2html78"
+  HREF="#foot10165"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">4</SPAN></SUP></A> (in case you're new to all this, portamento is like
+glissando between notes--wonderful, if you like trombones! To enable
+portamento:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Arpeggio MIDIGlis 30  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+The parameter can be any value between 1 and 127. To turn the sliding
+off:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Arpeggio MIDIGlis 0  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This command will work with any track (including drum tracks).
+However, the results may be somewhat &#8220;interesting&#8221; or
+&#8220;disappointing&#8221;, and many MIDI devices don't support portamento at
+all. So, be cautious.  The data generated is not sent into the MIDI
+stream until musical data is created for the relevant MIDI channel.
+
+<P>
+
+<H1><A NAME="SECTION0021130000000000000000"></A>
+
+<A NAME="midi-inc"></A>
+<BR>
+MIDIInc
+</H1>
+
+<P>
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  has the ability to include a user supplied MIDI file at any
+point of its generated files. These included files can be used to play
+a melodic solo over a 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  pattern or to fill a section of a song
+with something like a drum solo.
+
+<P>
+When the MIDI<SMALL>INC</SMALL> command is encountered the current line is
+parsed for options, the file is inserted into the stored MIDI stream,
+and processing continues. The include has no effect on any song
+pointers, etc. Optionally, the MIDI data can be pushed into a
+S<SMALL>OLO</SMALL> or M<SMALL>ELODY</SMALL> track and further processed by that
+track's optional settings (see the file <TT><SPAN  CLASS="textbf">egs/midi-inc/README-riffs</SPAN></TT>
+for a detailed tutorial on this option).
+
+<P>
+MIDI<SMALL>INC</SMALL> has a number of options, all set in the form
+OPTION=VALUE. Following are the recognized options:
+
+<P>
+<DL>
+<DT><STRONG>FILE</STRONG></DT>
+<DD>The filename of the file to be included. This must be
+  a complete filename. The filename will be expanded by the Python
+  os.path.expanduser() function for tilde expansion. No prefixes or
+  extensions are added by 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> . Examples:
+  F<SMALL>ILE</SMALL>=<TT><SPAN  CLASS="textbf">/home/bob/midi/myfile.mid</SPAN></TT>.  or
+  F<SMALL>ILE</SMALL>=<TT><SPAN  CLASS="textbf">~/sounds/myfile.mid</SPAN></TT>.
+
+<P>
+</DD>
+<DT><STRONG>VOLUME</STRONG></DT>
+<DD>An adjustment for the volume of all the note on events
+  in the included MIDI file. The adjustment is specified as a
+  percentage with values under 100 decreasing the volume and over 100
+  increasing it. If the resultant volume (velocity) is less than 1 a
+  velocity of 1 will be used; if it is over 127, 127 will be
+  used. Example: V<SMALL>OLUME=80</SMALL>.
+
+<P>
+</DD>
+<DT><STRONG>OCTAVE</STRONG></DT>
+<DD>Octave adjustment for all notes in the file. Values in
+  the range -4 to 4 are permitted. Notes in drum tracks (channel 10)
+  will not be effected. Example: O<SMALL>CTAVE=2</SMALL>. Note: specifying an
+  octave does not set the selected track to that octave; it just
+  adjusts notes by 12 (or 24, etc) pitches up or down.
+
+<P>
+</DD>
+<DT><STRONG>TRANSPOSE</STRONG></DT>
+<DD>Transposition adjustment settings in the range -24 to
+  24 are permitted. If you do not set a value for this, the global
+  transpose setting will be applied (excepting channel 10, drum,
+  notes). Example: T<SMALL>RANSPOSE=-2</SMALL>. Having different values for the
+  global and import T<SMALL>RANSPOSE</SMALL> is fine and should work as
+  expected.
+
+<P>
+</DD>
+<DT><STRONG>LYRIC</STRONG></DT>
+<DD>This option will copy any <SPAN  CLASS="textit">Lyric</SPAN> events to the
+  
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  meta track. The valid settings are &#8220;On&#8221; or &#8220;Off&#8221;. By
+  default this is set to &#8220;Off&#8221;. Example: L<SMALL>YRIC=</SMALL>O<SMALL>N</SMALL>.
+
+<P>
+</DD>
+<DT><STRONG>TEXT</STRONG></DT>
+<DD>This option will copy any <SPAN  CLASS="textit">Text</SPAN> events to the 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>    meta track. The valid settings are &#8220;On&#8221; or &#8220;Off&#8221;. By default
+  this is set to &#8220;Off&#8221;. Example: T<SMALL>EXT=</SMALL>O<SMALL>N</SMALL>.
+
+<P>
+</DD>
+<DT><STRONG>START</STRONG></DT>
+<DD>Specifies the start point <SPAN  CLASS="textit">of the file to be
+    included</SPAN> in beats. For example, S<SMALL>TART=22</SMALL> would start the
+  include process 22 beats into the file. The data will be inserted at
+  the current song position in your MMA file. The value used must
+  greater or equal to 0 and may be a fractional beat value (18.456 is
+  fine).
+
+<P>
+</DD>
+<DT><STRONG>END</STRONG></DT>
+<DD>Specifies the end point <SPAN  CLASS="textit">of the file to be included</SPAN>
+  in beats. For example, E<SMALL>ND=100</SMALL> would discard all data after
+  100 beats in the file. The value used must be greater that the
+  <SPAN  CLASS="textit">Start</SPAN> position and can be fractional.
+
+<P>
+</DD>
+<DT><STRONG>REPORT</STRONG></DT>
+<DD>Parse the MIDI file and print a summary report on the
+  terminal. No MIDI file is created. To enable, include
+  R<SMALL>EPORT=</SMALL>O<SMALL>N</SMALL>; to duplicate the default use
+  R<SMALL>EPORT=</SMALL>O<SMALL>FF</SMALL>. The most useful information generated are the
+  note start data which you can use with S<SMALL>TRIP</SMALL>S<SMALL>ILENCE</SMALL>.
+
+<P>
+</DD>
+<DT><STRONG>STRIPSILENCE</STRONG></DT>
+<DD>By default, 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will strip off any silence at the
+  start of an imported MIDI track. You can avoid this behaviour by
+  setting  S<SMALL>TRIP</SMALL>S<SMALL>ILENCE=</SMALL>O<SMALL>FF</SMALL>. To duplicate the default, use
+  S<SMALL>TRIP</SMALL>S<SMALL>ILENCE=</SMALL>O<SMALL>N</SMALL>.
+
+<P>
+A problem with deleting silence is that different tracks in your
+  file may have different &#8220;start&#8221; points. If you are having a
+  problem with included data not starting where you think it should,
+  examine the file with the R<SMALL>EPORT</SMALL> option (above) and set the
+  S<SMALL>TRIP</SMALL>S<SMALL>ILENCE</SMALL> factor manually. Eg:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiInc File=myfile.mid Solo=1 StripSilence=2345  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+</DD>
+<DT><STRONG>IGNOREPC</STRONG></DT>
+<DD>A MIDI file being imported may contain Program Change
+  commands (voice changes). By default 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will strip these out so
+  that the voices set in the 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  track are used. However, you can
+  override this by setting I<SMALL>GNORE</SMALL>PC=F<SMALL>ALSE</SMALL>. To duplicate the
+  default, use I<SMALL>GNORE</SMALL>PC=T<SMALL>RUE</SMALL><A NAME="tex2html79"
+  HREF="#foot10205"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">5</SPAN></SUP></A>
+<P>
+</DD>
+<DT><STRONG><SPAN  CLASS="textit">TRACK</SPAN></STRONG></DT>
+<DD>A trackname <SPAN  CLASS="textit">must be set</SPAN> into which notes
+  are inserted. You can set more than one track/channel if you
+  wish. For example, if you have the option DRUM=10 any notes
+  in the MIDI file with a channel 10 setting would be inserted into
+  the 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  D<SMALL>RUM</SMALL> track. Similarity, S<SMALL>OLO-</SMALL>T<SMALL>ENOR=1</SMALL> will
+  copy notes from channel 1 into the S<SMALL>OLO-</SMALL>T<SMALL>ENOR</SMALL> track. If the
+  track doesn't exist, it will be created. Note: this means that the
+  channel assignment in your included file and the new 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  generated
+  file will most likely be different.
+
+<P>
+To convert the data in the imported track into data that a
+  S<SMALL>OLO</SMALL> or M<SMALL>ELODY</SMALL> track can process append the keyword
+  R<SMALL>IFF</SMALL> to the channel number with a comma. The note on/off data will be
+  converted into R<SMALL>IFF</SMALL> commands and pushed into the specified
+  track.
+
+<P>
+Further, you can append the key P<SMALL>RINT</SMALL> as well. The generated
+  R<SMALL>IFF</SMALL>s will not be inserted into the track but displayed on
+  your computer monitor. This can be useful for debugging or to
+  generate lines which can be edited and inserted into a song file.
+
+<P>
+<SPAN  CLASS="textit">At least one T<SMALL>RACK</SMALL> option is required to include a MIDI
+    file. It is up to the user to examine existing MIDI files to
+    determine the tracks being used and which to include into 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> 's
+    output.</SPAN>
+
+<P>
+</DD>
+</DL>
+
+<P>
+A short example which you could insert into a 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  file is really
+this simple:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MIDIinc File=test.mid Solo-Piano=1 Drum=10 Volume=70  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This will include the MIDI file &#8220;test.mid&#8221; at the current position
+and assign all notes in channel 1 to the <SPAN  CLASS="textit">Solo-Piano</SPAN> track and
+the notes from channel 10 to the <SPAN  CLASS="textit">Drum</SPAN> track. The volumes for
+all the notes will be adjusted to 70% of that in the original.
+
+<P>
+Slighty more complicated (and probably silly):
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiInc File=test.mid Lyric=On Solo-Piano=1,Riff
+  Solo-harmony=2,riff Drum=10 Solo-Guitar=3   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+<P>
+<BLOCKQUOTE>Will import the existing file &#8220;test.mid&#8221; and: 
+<BR></BLOCKQUOTE>
+<P><DL>
+<DT><STRONG>Lyrics</STRONG></DT>
+<DD>will be read and inserted into the meta track,
+ 
+</DD>
+<DT><STRONG>Solo-Piano</STRONG></DT>
+<DD>Data from channel 1 will be converted and inserted
+   into the S<SMALL>OLO-</SMALL>P<SMALL>IANO</SMALL> track as a series of R<SMALL>IFF</SMALL>s.
+ 
+</DD>
+<DT><STRONG>Solo-Harmony</STRONG></DT>
+<DD>Data from channel 1 (again!) will be converted and inserted
+   into the S<SMALL>OLO-</SMALL>H<SMALL>ARMONY</SMALL> track as a series of R<SMALL>IFF</SMALL>s.
+ 
+</DD>
+<DT><STRONG>Drum</STRONG></DT>
+<DD>Channel 10 data will be copied into the D<SMALL>RUM</SMALL>
+   track.
+ 
+</DD>
+<DT><STRONG>Solo-Guitar</STRONG></DT>
+<DD>Channel 3 data will be copied into the
+   S<SMALL>OLO-</SMALL>G<SMALL>UITAR</SMALL> track. Track settings (ie, Articulate, Harmony)
+   will <SPAN  CLASS="textit">not</SPAN> be applied.
+
+<P>
+</DD>
+</DL>
+
+<P>
+More complete example of usage are shown in the directory
+<TT><SPAN  CLASS="textbf">egs/midi-inc</SPAN></TT> in the distribution.
+
+<P>
+A few notes:
+
+<P>
+
+<UL>
+<LI>MIDI files to be included do not have to have the same tempo.
+  M<SMALL>IDI</SMALL>I<SMALL>NC</SMALL> adjusts this automatically during the importation.
+  However, the internal setting for beat division should be the same.
+  
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  assumes a beat division of 192 (this is set in bytes 12 and 13
+  of the MIDI file). If the included file differs a warning is printed
+  and 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will attempt to adjust the timings, but there may be some
+  drift due to rounding.
+
+<P>
+</LI>
+<LI>The included MIDI file is parsed to find the offset of the first
+  note-on event. Notes to be included are set with their offsets
+  compensated by that time. This means that any silence at the start
+  of the included file is skipped (this may surprise you if you have
+  used the optional <SPAN  CLASS="textit">Start</SPAN> setting). Please note the
+  S<SMALL>TRIP</SMALL>S<SMALL>ILENCE</SMALL> option, above, for one work-a-round.
+
+<P>
+</LI>
+<LI>If you want the data from the included MIDI file to start
+  somewhere besides the start of the current bar you can use a
+  B<SMALL>EATADJUST</SMALL> before the M<SMALL>IDI</SMALL>I<SMALL>NC</SMALL>--use another to move
+  the pointer back right after the include to keep the song pointer
+  correct.
+
+<P>
+</LI>
+<LI>Not all events in the included files are transferred: notably,
+  all system and meta events (other than text and lyric, see above)
+  are ignored.
+
+<P>
+</LI>
+<LI>If you want to apply different V<SMALL>OLUME</SMALL> or other options to
+  different tracks, just do multiple includes of the same file (with
+  each include using a different track and options).
+
+<P>
+</LI>
+<LI>
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  assumes that all the option pairs are valid. If an option
+  pair isn't a real directive, it is assumed that the option is a
+  valid track name. So, a line like:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiInc Files=test.mid Solo-Piano=1 Drum=10 Volume=70  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will generate an error like:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiInc: FILES is not a valid MMA track.  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Sorry, but we're not the best guessers or parsers in the world.
+
+<P>
+</LI>
+</UL>
+
+<P>
+For short snippets of MIDI you can insert individual events using the
+MIDIN<SMALL>OTE</SMALL> command <A HREF="#midi-note">(here)</A>.
+
+<P>
+
+<H1><A NAME="SECTION0021140000000000000000">
+MIDIMark</A>
+</H1>
+
+<P>
+You can insert a MIDI Marker event into the Meta track with this
+command. The mark can be useful in debugging your MIDI output with a
+sequencer or editor which supports Mark events (most do).
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiMark Label  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will insert the text &#8220;Label&#8221; at the current position. You can add an
+optional negative or positive offset in beats:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiMark 2 Label4  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will insert &#8220;Label4&#8221; 2 beats into the next bar.
+
+<P>
+Note: the &#8220;mark&#8221; inserted can only be a single word. If you need a
+longer message see <A HREF="#midicue">M<SMALL>IDI</SMALL>C<SMALL>UE</SMALL></A> or
+<A HREF="#miditext">M<SMALL>IDI</SMALL>T<SMALL>EXT</SMALL></A>.
+
+<P>
+
+<H1><A NAME="SECTION0021150000000000000000"></A>
+
+<A NAME="midi-note"></A>
+<BR>
+MIDINote
+</H1>
+
+<P>
+It is relatively easy to insert various melody and harmony notes into
+a song with S<SMALL>OLO</SMALL> and other tracks. However, there are times
+when you may wish to insert a set of notes complete with MIDI timing
+and velocities. These values can be hand generated or created by an
+external program.
+
+<P>
+The MIDIN<SMALL>OTE</SMALL> command is used to insert one or more MIDI note
+on/off, controller or pitch bend events directly into a track. If you
+have a large segment of MIDI data to insert you will probably want to
+generate a MIDI file and insert it into your song with the
+MIDII<SMALL>NC</SMALL> command
+<A HREF="#midi-inc">(here)</A>. M<SMALL>IDI</SMALL>N<SMALL>OTE</SMALL> is more
+suited for short segments.
+
+<P>
+
+<H2><A NAME="SECTION0021151000000000000000">
+Setting Options</A>
 </H2>
 
 <P>
-If you are going to use any of the extended patches in your MIDI files
-you may need to do some additional work.
+M<SMALL>IDI</SMALL>N<SMALL>OTE</SMALL> has a number of settings which modify its
+behavior. These options can be different for each track and are set on
+a track-by-track basis. Options are reset to their defaults with the
+S<SMALL>EQ</SMALL>C<SMALL>LEAR</SMALL> command (except for S<SMALL>OLO</SMALL> tracks). They are
+<SPAN  CLASS="textit">not</SPAN> saved or modified by G<SMALL>ROOVE</SMALL> commands.
 
 <P>
-Your hardware may need to be in a ``special'' mode for any of the
-extended patches to take effect. What we suggest is that you use the
-MIDI command <A HREF="node20.html#sec-midi">(details here)</A> to do some initialization. For an example please
-look at the file <TT><SPAN  CLASS="textbf">includes/init.mma</SPAN></TT> which we include in our
-personal files. This file sets the volume, pan and controller values
-to known settings. It's easy to modify this file to match your
-hardware setup.
+M<SMALL>IDI</SMALL>N<SMALL>OTE</SMALL> takes various options in the OPTION=VALUE
+notation. Please note that options can appear on a line by themselves,
+or can be mixed into a data/command line. The order is not
+important--all option pairs are parsed out of an input line
+<SPAN  CLASS="textit">before</SPAN> the actual data is read. The following options are
+supported:
 
 <P>
-To use a file like <TT><SPAN  CLASS="textbf">includes/init.mma</SPAN></TT> just include a line like:
+<DL>
+<DT><STRONG>Transpose=On/Off</STRONG></DT>
+<DD>By default MIDIN<SMALL>OTE</SMALL> ignores the global
+  T<SMALL>RANSPOSE</SMALL> setting. If enabled, each note will be adjusted by
+  the global setting. Careful with this: T<SMALL>RANSPOSE</SMALL> is a global
+  setting which effects <SPAN  CLASS="textit">all</SPAN> tracks; M<SMALL>IDI</SMALL>N<SMALL>OTE </SMALL>T<SMALL>RANSPOSE</SMALL>
+  effects only the specified track.
 
 <P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>include init  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-in your mmarc file. See the Path section of this manual for details
-<A HREF="node26.html#sec-paths">(here)</A>.
+</DD>
+<DT><STRONG>Offsets=Beats/Ticks</STRONG></DT>
+<DD>By default a MIDI tick offset into the
+  current position in the file is used. However, you can change this
+  to &#8220;Beats&#8221; so that conventional 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  beat offset are used (see
+  example below).
 
 <P>
-To help keep things sane, 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  checks each track as it is closed. If
-an extended voice has been used in that track it resets the effected
-controllers to a zero state. In most cases this means that if you
-finish playing the file your keyboard will be returned to a
-``default'' state.
+</DD>
+<DT><STRONG>Duration=Notes/Ticks</STRONG></DT>
+<DD>By default the note duration is specified
+  using MIDI ticks. Setting the value to &#8220;Notes&#8221; enables the use of
+  conventional 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  note durations (which are converted, internally,
+  to MIDI ticks.
 
 <P>
-However, you might wish to generate some explicit MIDI sequences at the
-end of a generated file. Just write another file like the
-<TT><SPAN  CLASS="textbf">init.mma</SPAN></TT> file we discussed above. You can insert this file by
-placing a line like:
+</DD>
+<DT><STRONG>Articulate=On/Off</STRONG></DT>
+<DD>This option is OFF by default. If enabled the
+  current A<SMALL>RTICULATE</SMALL> <A HREF="node24.html#articulate">(details
+    here)</A> setting is applied to each event if
+  the duration is set to <SPAN  CLASS="textit">Notes</SPAN>. Setting this option to &#8220;off&#8221;
+  causes each note to have its full value. If using &#8220;ticks&#8221; (the
+  default) for the duration this command is ignored.
 
 <P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>include endinit  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-at the end of your song file. Or, use the MMAE<SMALL>ND</SMALL> command
-detailed <A HREF="node26.html#sec-mmaend">here</A>.
+</DD>
+<DT><STRONG>Octave=Value</STRONG></DT>
+<DD>Octave adjustment will increase/decrease by the
+  set number of octaves for each note entered in a N<SMALL>OTE</SMALL>
+  command. Values in the range -4 to 4 are permitted. Notes in drum
+  tracks (channel 10) will not be effected. This has no effect on the
+  underlying track's octave. Any generated notes outside of the valid
+  MIDI range of 0 to 127 will be adjusted to fit the range.
 
 <P>
-You can get about as complicated as you want with all this. One scheme
-you might consider is to use macros to wrap your extended patch
-code. For example:
+</DD>
+<DT><STRONG>Volume=Value</STRONG></DT>
+<DD>Use this option to adjust the volume (velocity) of
+  the notes set with a N<SMALL>OTE</SMALL> command (useful if you have played
+  a melody on a keyboard and it is too loud/soft). The value is a
+  percentage adjustment factor and, by default, is set to 100. Values
+  greater than 100 will make notes louder and values less than 100
+  will make them softer. Using very large factors will cause all notes
+  to have maximum velocity (127); small factors will cause minimum
+  velocity. Generated values less than 1 are magically set to 1;
+  values greater than 127 are set to 127. The adjustment factor must
+  be greater than 0.
 
 <P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>if def Casio 
-<BR>
-include casio-wk3000 
-<BR>
-include init.file.for.casio.mma 
-<BR>
-endif 
-<BR>   
-<BR>
-Groove somegroove 
-<BR>   
-<BR>
-if def Casio 
-<BR>
-Chord Voice ROtaryGuitar 
-<BR>
-Endif 
-<BR>   
-<BR>
-1  Cm 
-<BR>
-2  Dm 
-<BR>   ...more chords 
-<BR>
-if def Casio 
-<BR>
-include restore-file-for-casio.mma 
-<BR>
-endif   </B> 
-   
-	    </td></tr>
-      </Table>
+</DD>
+<DT><STRONG>Adjust=Value</STRONG></DT>
+<DD>This option is set to 0 by default. If a value is
+  set all future <SPAN  CLASS="textit">Tick Offsets</SPAN> in M<SMALL>IDI</SMALL>N<SMALL>OTE</SMALL> directives
+  will be adjusted by that value. This can be quite useful if you have
+  a set of note on/off events parsed from an existing MIDI file. Using
+  the A<SMALL>DJUST</SMALL> value can shift the series back and forth in your
+  song file. The setting has no effect when using Beat offsets.
 
 <P>
-Now, when you compile the file define the macro on the command line:
+</DD>
+</DL>
+
+<P>
+To duplicate the default settings you might use a line like:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>$ mma -SCASIO filename   </B> 
+    <B>Chord-Piano MidiNote Offsets=Ticks Duration=Ticks Articulate=Off
+  Transpose=Off Adjust=0 Volume=100 Octave=0   </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-This defines the macro so that your wrappers work. To compile for the
-GM voicing, just skip the ``-SCASIO''.
-
-<P>
-An alternate method is to use the V<SMALL>OICE</SMALL>TR command
-<A HREF="node22.html#set-voicetr">(details here)</A>. Using a similar example we'd create a song
-file like:
+You can insert MIDI events directly into any track with a command line
+like:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>if def Casio 
-<BR>
-include casio-wk3000 
-<BR>
-include init.file.for.casio.mma 
-<BR>
-VoiceTR Piano1=RotaryGuitar ChoralAhhs=VoxHumana 
-<BR>
-endif 
-<BR>
-Groove somegroove 
-<BR>   
-<BR>
-1  Cm 
-<BR>
-2  Dm 
-<BR>   ...more chords 
-<BR>
-if def Casio 
-<BR>
-include restore-file-for-casio.mma 
-<BR>
-endif   </B> 
+    <B>Solo MidiNote Note 1 c#+ 100 4  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-Notice how, in this example, we don't need to wrap each and every
-V<SMALL>OICE</SMALL> line. We just create a translation table with the
-alternate voices we want to use. Now, when the G<SMALL>ROOVE</SMALL> is loaded
-the various voices will be changed.
+The valid commands are N<SMALL>OTE</SMALL> (note on/off event), C<SMALL>TRL</SMALL>
+(controller event) and PB (pitch bend event), PBR
+(series/range of pitch bend events), C<SMALL>H</SMALL>AT (a channel aftertouch
+event) and C<SMALL>H</SMALL>ATR (series/range of channel aftertouch
+events). Following is a detailed command set for each option:
+
+<P>
+
+<H2><A NAME="SECTION0021152000000000000000">
+Note Events</A>
+</H2>
+
+<P>
+A M<SMALL>IDI</SMALL>N<SMALL>OTE</SMALL> N<SMALL>OTE</SMALL> event is specified with the &#8220;Note&#8221;
+keyword; however, the keyword doesn't need to be used. So:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Solo MidiNote 1 65 100 4  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+and 
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Solo MidiNote Note 1 65 100 4  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+are equivalent.
+
+<P>
+After the command you need to specify the offset, pitch, velocity and
+duration of the desired note.
+
+<P>
+<DL>
+<DT><STRONG>Offset</STRONG></DT>
+<DD>The offset into the current bar. The exact format
+  depends of the global setting use (Ticks or Beats). When using Ticks
+  (the default) the offset is simply inserted into the current bar at
+  the given offset. To insert an event at the start of the current bar
+  use &#8220;0&#8221;. If using Beats, you can use any valid offset used in
+  defining patterns
+  <A HREF="node4.html#beat-offset">(here)</A>. Values less than 1
+  will place the event before the current bar. Note: when using Tick
+  offsets they will be adjusted by the global A<SMALL>DJUST</SMALL> setting.
+
+<P>
+
+<UL>
+<LI>The value for the offset can be negative. This will generate
+    an event before the start of the current bar and a warning message
+    will be displayed.
+</LI>
+<LI>Offsets can be fractional if using &#8220;beats&#8221;. Fractional
+    values when using &#8220;ticks&#8221; will cause an error.
+  
+</LI>
+</UL>
+
+<P>
+</DD>
+<DT><STRONG>Note</STRONG></DT>
+<DD>The next field represents the MIDI note or pitch or a set
+  of notes (a chord). Notes can be specified with their MIDI value (0
+  to 127) or using standard notation pitch mnemonics.
+
+<P>
+A single note is specified with a MIDI value or mnemonic; a chord
+  (multiple notes) is specified by appending each desired note with a
+  single comma. For example, to insert a C Major chord you could use
+  the line:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Solo MidiNote Note 1 c,e,g 90 192  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Pitch names are used just like you would in a S<SMALL>OLO</SMALL> or
+  M<SMALL>ELODY</SMALL> track
+  <A HREF="node10.html#solo-pitch">(here)</A>. The permitted syntax
+  is limited to the letters 'a', 'b', 'c', 'd', 'e', 'f' or 'g'
+  followed by an optional '&amp;', '#' or 'n' and a number of '-'s or
+  '+'s. When a note pitch is specified by name the O<SMALL>CTAVE</SMALL>
+  setting for the track is honored. The current K<SMALL>EY</SMALL>S<SMALL>IG</SMALL> is
+  applied to <SPAN  CLASS="textit">each</SPAN> chord. Accidentals, whether set explicitly or
+  from a key signature, <SPAN  CLASS="textit">do not</SPAN> apply to successive
+  chords.<A NAME="tex2html80"
+  HREF="#foot10544"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">6</SPAN></SUP></A>They <SPAN  CLASS="textit">do</SPAN> apply to successive notes in a chord, irrespective of
+  octave. So, the chord &#8220;a#,a+,a++&#8221; would have all three &#8220;a&#8221;s
+  sharp.
+
+<P>
+For D<SMALL>RUM</SMALL> tracks and S<SMALL>OLO</SMALL> or M<SMALL>ELODY</SMALL> tracks which
+  have the &#8220;DrumType&#8221; attribute set, you can use drum tone mnemonics
+  <A HREF="node30.html#sec-drumnames">(here)</A>. The special tone
+  &#8220;*&#8221; can be used to select the tone. In the case of M<SMALL>ELODY</SMALL>
+  and S<SMALL>OLO</SMALL> tracks the current default tone is used
+  <A HREF="node10.html#solo-default-tone">(here)</A>; for
+  D<SMALL>RUM</SMALL> tracks the currently selected T<SMALL>ONE</SMALL>
+  <A HREF="node4.html#drum-tone">(here)</A>. Use of the special
+  &#8220;*&#8221; is useful when you have a series of drum events--changing
+  only the T<SMALL>ONE</SMALL> is much easier than changing a number of
+  M<SMALL>IDI</SMALL>N<SMALL>OTE</SMALL> commands.
+
+<P>
+</DD>
+<DT><STRONG>Velocity</STRONG></DT>
+<DD>The &#8220;volume&#8221; of the note is set with a MIDI velocity
+  in the range 0 to 127. Notes with the velocity of 0 will, probably,
+  not sound.
+
+<P>
+</DD>
+<DT><STRONG>Duration</STRONG></DT>
+<DD>The length of the note is set in either MIDI ticks for
+  
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  note durations, depending on the global &#8220;Duration&#8221;
+  setting. When using Ticks remember that 192 MIDI ticks equals a
+  quarter note. If you have enabled the Articulate setting and are
+  using Note durations the duration will be adjusted.
+</DD>
+</DL>
+
+<P>
+
+<UL>
+<LI>When using &#8220;note&#8221; for the duration any valid 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  note length
+  is permitted. For example, using a duration of &#8220;8+8&#8221; would
+  generate the same duration as &#8220;4&#8221;.
+</LI>
+<LI>The MIDIN<SMALL>OTE</SMALL> directive does not check for overlapping
+  notes of the same pitch. These are easy to create if long durations
+  are specified and may not give the desired results.
+</LI>
+<LI>The S<SMALL>WING</SMALL> setting is ignored.
+</LI>
+</UL>
+
+<P>
+
+<H2><A NAME="SECTION0021153000000000000000">
+Controller Events</A>
+</H2>
+
+<P>
+A MIDI controller event can be directly inserted at any point in our
+song using a M<SMALL>IDI</SMALL>N<SMALL>OTE </SMALL>C<SMALL>ONTROLLER</SMALL> command. For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Solo MidiNote Ctrl 3 Modulation 90  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will insert a <SPAN  CLASS="textit">Modulation</SPAN> control event. The necessary values
+are:
+
+<P>
+<DL>
+<DT><STRONG>Offset</STRONG></DT>
+<DD>Same as for <SPAN  CLASS="textit">Note</SPAN>. See above for details.
+
+<P>
+</DD>
+<DT><STRONG>Controller</STRONG></DT>
+<DD>This can be a value in the range 0 to 127 specifying
+  the MIDI controller or a symbolic name. See the appendix
+  <A HREF="node30.html#sec-controllers">, here,</A> for a list of
+  defined names.
+
+<P>
+</DD>
+<DT><STRONG>Datum</STRONG></DT>
+<DD>The &#8220;parameter&#8221; value for the controller. Must be in
+  the range 0 to 127.
+
+<P>
+</DD>
+</DL>
+
+<P>
+
+<H2><A NAME="SECTION0021154000000000000000">
+Pitch Bend</A>
+</H2>
+
+<P>
+A MIDI Pitch Bend event can be directly inserted at any point in our
+song using a M<SMALL>IDI</SMALL>N<SMALL>OTE </SMALL>PB command. For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Solo MidiNote PB 3 934   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+<DL>
+<DT><STRONG>Offset</STRONG></DT>
+<DD>Same as for <SPAN  CLASS="textit">Note</SPAN>. See above for details.
+
+<P>
+</DD>
+<DT><STRONG>Value</STRONG></DT>
+<DD>The value for a pitch bend event must be in the range
+  -8191 to +8192.<A NAME="tex2html81"
+  HREF="#foot10377"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">7</SPAN></SUP></A> The exact effect of different values is device dependant;
+  however, -8191 sets the pitch bend to &#8220;as low as possible&#8221;, 8192
+  sets it &#8220;as high as possible&#8221;, and 0 resets the pitch to neutral.
+
+<P>
+</DD>
+</DL>
+
+<P>
+
+<H2><A NAME="SECTION0021155000000000000000">
+Pitch Bend Range</A>
+</H2>
+
+<P>
+This command is just like P<SMALL>ITCH </SMALL>B<SMALL>END</SMALL>, described above, with the
+added feature of creating a series of events over a period of
+time. This makes it easy to create various &#8220;swoops&#8221; and &#8220;slides&#8221;
+in your song. As always, the example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Solo MidiNote PBR 20 3,4 0,1000   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+<DL>
+<DT><STRONG>Count</STRONG></DT>
+<DD>This sets the total number of events to insert. Each
+  event will be distributed over the specifed <SPAN  CLASS="textit">offset range</SPAN>.
+
+<P>
+</DD>
+<DT><STRONG>Offset Range</STRONG></DT>
+<DD>Two values joined with a single comma. Both values
+  and the comma must be present. The first value is the first event
+  offset to use, the second is the last. Events will be evently
+  distributed over the two offsets. Each offset has the same format as
+  as for <SPAN  CLASS="textit">Note</SPAN>.
+
+<P>
+</DD>
+<DT><STRONG>Value Range</STRONG></DT>
+<DD>Two values joined with a single comma. Both values
+  and the comma must be present. The first value is the initial pitch
+  bend setting; the second is the final. The values will be
+  incremented (or decremented) for each event offset according to the
+  <SPAN  CLASS="textit">count</SPAN> value. See P<SMALL>ITCH </SMALL>B<SMALL>END</SMALL>, above, for the range
+  rules.
+
+<P>
+</DD>
+</DL>
+
+<P>
+
+<H2><A NAME="SECTION0021156000000000000000">
+Channel Aftertouch</A>
+</H2>
+
+<P>
+MIDI channel aftertouch events can be directly inserted in a 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  song using the M<SMALL>IDI</SMALL>N<SMALL>OTE </SMALL>C<SMALL>H</SMALL>AT command. For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Solo MidiNote ChAT 3 50   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+<DL>
+<DT><STRONG>Offset</STRONG></DT>
+<DD>Same as for <SPAN  CLASS="textit">Note</SPAN>. See above for details.
+
+<P>
+</DD>
+<DT><STRONG>Value</STRONG></DT>
+<DD>The value for a channel aftertouch event must be in the
+  range 0 to 127. The exact effect of this command is highly specific
+  to different synths; however, it applies to all currently sounding
+  note events on the specified channel. On some hardware (or software)
+  the command is ignored; on others it effects the volume or vibrato.
+
+<P>
+</DD>
+</DL>
+
+<P>
+
+<H2><A NAME="SECTION0021157000000000000000">
+Channel Aftertouch Range</A>
+</H2>
+
+<P>
+Just like C<SMALL>HANNEL </SMALL>A<SMALL>FTERTOUCH</SMALL>, described above, with the added
+feature of creating a series of events over a period of time. Example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Solo MidiNote ChATR 20 3,4 0,100   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+<DL>
+<DT><STRONG>Count</STRONG></DT>
+<DD>This sets the total number of events to insert. Each
+  event will be distributed over the specifed <SPAN  CLASS="textit">offset range</SPAN>.
+
+<P>
+</DD>
+<DT><STRONG>Offset Range</STRONG></DT>
+<DD>Two values joined with a single comma. Both values
+  and the comma must be present. The first value is the first event
+  offset to use, the second is the last. Events will be evently
+  distributed over the two offsets. Each offset has the same format as
+  as for <SPAN  CLASS="textit">Note</SPAN>.
+
+<P>
+</DD>
+<DT><STRONG>Value Range</STRONG></DT>
+<DD>Two values joined with a single comma. Both values
+  and the comma must be present. The first value is the initial pitch
+  bend setting; the second is the final. The values will be
+  incremented (or decremented) for each event offset according to the
+  <SPAN  CLASS="textit">count</SPAN> value. See C<SMALL>HANNEL </SMALL>A<SMALL>FTERTOUCH</SMALL>, above, for the
+  range rules.
+
+<P>
+</DD>
+</DL>
+
+<P>
+<DIV ALIGN="CENTER">
+------------
+</DIV>
+
+<P>
+
+<UL>
+<LI>Remember that you can use hexadecimal notation for any of the
+  above commands. A hex value is one preceded by a &#8220;0x&#8221; ... the
+  decimal value 20 would be 0x14.
+
+<P>
+</LI>
+<LI>M<SMALL>IDI</SMALL>N<SMALL>OTE</SMALL> is unaffected by G<SMALL>ROOVE</SMALL> commands.
+
+<P>
+</LI>
+<LI>Bar measure pointers are <SPAN  CLASS="textit">not</SPAN> updated or affected.
+
+<P>
+</LI>
+<LI>For an alternate method of including a complete MIDI file
+  directly into a track please see the MIDII<SMALL>NC</SMALL> command
+  <A HREF="#midi-inc">(here)</A>.
+
+<P>
+</LI>
+<LI>Yet an another alternate method to be aware of is MIDI
+  <A HREF="#sec-midi">(here)</A> which places events
+  directly into the Meta track.
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<H1><A NAME="SECTION0021160000000000000000">
+MIDIPan</A>
+</H1>
+
+<P>
+In MIDI-speak &#8220;pan&#8221; is the same as &#8220;balance&#8221; on a stereo. By
+adjusting the MIDIP<SMALL>AN</SMALL> for a track you can direct the output to
+the left, right or both speakers. Example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Bass MIDIPan 4   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This command is only available in track mode. The data generated is
+not sent into the MIDI stream until musical data is created for the
+relevant MIDI channel.
+
+<P>
+The value specified must be in the range 0 to 127, and must be an
+integer.
+
+<P>
+A variation for this command is to have the pan value change over a
+range of beats:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Solo MidiPan 10 120 4  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+in this case you must give exactly 3 arguments:
+
+<P>
+
+<OL>
+<LI>The initial pan value (0 to 127),
+</LI>
+<LI>The final pan value (0 to 127),
+</LI>
+<LI>The number of beats to apply the pan over.
+</LI>
+</OL>
+
+<P>
+Using a beat count you can create interesting effects with different
+instruments moving between the left and right channels.
+
+<P>
+MIDIP<SMALL>AN</SMALL> is not saved or restored by G<SMALL>ROOVE</SMALL> commands, nor
+is it effected by S<SMALL>EQ</SMALL>C<SMALL>LEAR</SMALL>. A MIDIP<SMALL>AN</SMALL> is inserted
+directly into the MIDI track at the point at which it is encountered
+in the music file. This means that the effect of MIDIP<SMALL>AN</SMALL> will
+be in use until another MIDIP<SMALL>AN</SMALL> is encountered.
+
+<P>
+MIDIP<SMALL>AN</SMALL> can be used in MIDI compositions to emulate the sound
+of an orchestra. By assigning different values to different groups of
+instruments, you can get the feeling of strings, horns, etc. all
+placed in the &#8220;correct&#8221; position on the stage.
+
+<P>
+MIDIP<SMALL>AN</SMALL> can be used for much cruder purposes. When creating
+accompaniment tracks for a mythical jazz group, you might set all the
+bass tracks (Bass, Walk, Bass-1, etc) set to aMIDIP<SMALL>AN</SMALL> 0. Now,
+when practicing at home you have a &#8220;full band&#8221;; and the bass player
+can practice without the generated bass lines simply by turning off
+the left speaker.
+
+<P>
+Because most MIDI keyboard do not reset between tunes, there should be
+a MIDIP<SMALL>AN</SMALL> to undo the effects at the end of the
+file. Example:<A NAME="tex2html82"
+  HREF="#foot10545"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">8</SPAN></SUP></A>
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Include swing 
+<BR>
+Groove Swing
+<BR>
+Bass MIDIPan 0
+<BR>
+Walk MIDIPan 0
+<BR>
+1 C
+<BR>
+2 C
+<BR>  ...
+<BR>
+123 C
+<BR>
+Bass MIDIPan 64
+<BR>
+Walk MIDIPan 64   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+
+<H1><A NAME="SECTION0021170000000000000000">
+MIDISeq</A>
+</H1>
+
+<P>
+It is possible to associate a set of MIDI controller messages with
+certain beats in a sequence. For example, you might want to have the
+Modulation Wheel set for the first beats in a bar, but not for the
+third. The following example shows how:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Seqsize 4 
+<BR>
+Begin Bass-2 
+<BR>
+Voice NylonGuitar 
+<BR>
+Octave 4 
+<BR>
+Sequence { 1 4 1 90; 2 4 3 90; 3 4 5 90; 4 4 1+ 90} 
+<BR>
+MIDIDef WheelStuff 1 1 0x7f ; 2 1 0x50; 3 1 0 
+<BR>
+MidiSeq WheelStuff 
+<BR>
+Articulate 90 
+<BR>
+End 
+<BR>    
+<BR>
+C <SPAN CLASS="MATH">*</SPAN> 4  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+The M<SMALL>IDI</SMALL>S<SMALL>EQ</SMALL> command is specific to a track and is saved as part
+of the G<SMALL>ROOVE</SMALL> definition. This lets style file writers use
+enhanced MIDI features to dress up their sounds.
+
+<P>
+The command has the following syntax:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>TrackName MidiSeq &lt;Beat&gt; &lt;Controller&gt; &lt;Datum&gt; [ ; ...]   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+where:
+<DL>
+<DT><STRONG>Beat</STRONG></DT>
+<DD>is the Beat in the bar. This can be an integer (1,2, etc.)
+  or a floating point value (1.2, 2.25, etc.). It must be 1 or greater
+  and less than the end of bar (in <SPAN  CLASS="textbf">4/4</SPAN> it must be less than
+  5).
+
+<P>
+</DD>
+<DT><STRONG>Controller</STRONG></DT>
+<DD>A valid MIDI controller. This can be a value in the
+  range 0x00 to 0x7f or a symbolic name. See the appendix
+  <A HREF="node30.html#sec-controllers">, here,</A> for a list of
+  defined names.
+
+<P>
+</DD>
+<DT><STRONG>Datum</STRONG></DT>
+<DD>All controller messages use a single byte &#8220;parameter&#8221;
+  in the range 0x00 to 0x7f.
+
+<P>
+</DD>
+</DL>
+
+<P>
+You can enter the values in either standard decimal notation or in
+hexadecimal with the prefixed &#8220;0x&#8221;. In most cases, your code will be
+clearer if you use values like &#8220;0x7f&#8221; rather than the equivalent
+&#8220;127&#8221;.
+
+<P>
+The MIDI sequences specified can take several forms:
+
+<P>
+
+<OL>
+<LI>A simple series like:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MIDISeq 1 ReleaseTime 50; 3 ReleaseTime 0   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+in this case the commands are applied to beats 1 and 3 in each bar
+  of the sequence.
+
+<P>
+</LI>
+<LI>As a set of names predefined in an MIDID<SMALL>EF</SMALL> command:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MIDISeq Rel1 Rel2   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Here, the commands defined in &#8220;Rel1&#8221; are applied to the first bar
+  in the sequence, &#8220;Rel2&#8221; to the second. And, if there are more bars
+  in the sequence than definitions in the line, the series will be
+  repeated for each bar.
+
+<P>
+</LI>
+<LI>A set of series enclosed in { } braces. Each braced series is
+  applied to a different bar in the sequence. The example above could
+  have been does as:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MIDISeq { 1 ReleaseTime 50; 3 ReleaseTime 0 }  &#92;
+<BR>     { 2 ReleaseTime 50; 4 ReleaseTime 0 }   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+</LI>
+<LI>Finally, you can combine the above into different combinations.
+  For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MIDIDef Rel1 1 ReleaseTime 50 
+<BR>
+MIDIDef Rel2 2 ReleaseTime 50  
+<BR>
+MIDISeq { Rel1; 3 ReleaseTime 0 } { Rel2; 4 ReleaseTime 0 }   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+</LI>
+</OL>
+
+<P>
+You can have specify different messages for different beats (or
+different messages/controllers for the same beat) by listing them on
+the same M<SMALL>IDI</SMALL>S<SMALL>EQ</SMALL> line separated by &#8220;;&#8221;s.
+
+<P>
+If you need to repeat a sequence for a measure in a sequence you can
+use the special notation &#8220;/&#8221; to force the use of the previous line.
+The special symbol &#8220;z&#8221; or &#8221;-&#8221; can be used to disable a bar (or
+number of bars). For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Bass-Dumb MIDISeq 1 ReleaseTime 20 z / FOOBAR   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+would set the &#8220;ReleaseTime&#8221; sequence for the first bar of the
+sequence, no MIDISeq events for the second and third, and the contents
+of &#8220;FOOBAR&#8221; for the fourth.
+
+<P>
+To disable the sending of messages just use a single &#8220;-&#8221;:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Bass-2 MidiSeq - // disable controllers  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+
+<H1><A NAME="SECTION0021180000000000000000">
+MIDISplit</A>
+</H1>
+
+<P>
+For certain post-processing effects it is convenient to have each
+different drum tone in a separate MIDI track. This makes it easier to
+apply an effect to, for example, the snare drum. Just to make this a
+bit more fun you can split any track created by 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> .
+
+<P>
+To use this feature:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MIDISplit &lt;list of channels&gt;  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+So, to split out just the drum channel<A NAME="tex2html83"
+  HREF="#foot10469"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">9</SPAN></SUP></A> you would have the command:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MIDISplit 10  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+somewhere in your song file.
+
+<P>
+When processing 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  creates an internal list of MIDI note-on events
+for each tone or pitch in the track. It then creates a separate MIDI
+track for each list. Any other events are written to another track.
+
+<P>
+
+<H1><A NAME="SECTION0021190000000000000000"></A>
+<A NAME="miditext"></A>
+<BR>
+MIDIText
+</H1> 
+
+<P>
+This command inserts an arbitrary text string into a MIDI track at the
+current file position:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord-Sus MidiText I just love violins.  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will insert the text event<A NAME="tex2html84"
+  HREF="#foot10547"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">10</SPAN></SUP></A> &#8220;I just love violins.&#8221; into the
+C<SMALL>HORD-</SMALL>S<SMALL>US</SMALL> track.
+
+<P>
+Please note that if the specified track does
+not exist the text will be queued. If the track is never created, the
+command is ignored.
+
+<P>
+You can also insert text into the Meta track:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiText A message in the Meta Track  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Since the Meta track always exists, no queueing is done.
+
+<P>
+
+<H1><A NAME="SECTION0021200000000000000000">
+MIDITname</A>
+</H1>
+
+<P>
+When creating a MIDI track, 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  inserts a MIDI Track Name event at
+the start of the track.  By default, this name is the same as the
+associated 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  track name. You can change this by issuing the
+MIDI<SMALL>T</SMALL>N<SMALL>AME</SMALL> command. For example, to change the C<SMALL>HORD</SMALL>
+track name you might do something like:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord MidiTname Piano  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Please note that this <SPAN  CLASS="textit">only</SPAN> effects the tracks in the generated
+MIDI file.  You still refer to the track in your file as C<SMALL>HORD</SMALL>.
+
+<P>
+You can also use this command to rename the automatic name inserted
+into the Meta track. When 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  starts it inserts a Track Name event
+based on the filename at offset 0 in the Meta Track. For example, if
+you have a 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  input file &#8220;dwr.mma&#8221; the a &#8220;Meta SeqName&#8221; event
+&#8220;dwr&#8221; will be inserted. A command like:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MidiTName My version of &#8220;Dancing with Roses&#8221;  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+anywhere in the input file will remove the original text and insert a
+new event in its place.<A NAME="tex2html85"
+  HREF="#foot10548"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">11</SPAN></SUP></A>
+<P>
+
+<H1><A NAME="SECTION0021210000000000000000">
+MIDIVoice</A>
+</H1>
+
+<P>
+Similar to the MIDIS<SMALL>EQ</SMALL> command discussed in the previous
+section, the MIDIV<SMALL>OICE</SMALL> command is used to insert MIDI
+controller messages into your files. Instead of sending the data for
+each bar as MIDIS<SMALL>EQ</SMALL> does, this command just sends the listed
+control events at the start of a track and then, if needed, at the
+start of each bar.
+
+<P>
+Again, a short example. Let us assume that you want to use the
+&#8220;Release Time&#8221; controller to sustain notes in a bass line:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Seqsize 4 
+<BR>
+Begin Bass-2 
+<BR>
+Voice NylonGuitar 
+<BR>
+MidiVoice 1 ReleaseTime 50 
+<BR>
+Octave 4 
+<BR>
+Sequence { 1 4 1 90; 2 4 3 90; 3 4 5 90; 4 4 1+ 90} 
+<BR>
+Articulate 60 
+<BR>
+End 
+<BR>    
+<BR>
+C <SPAN CLASS="MATH">*</SPAN> 4  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+should give an interesting effect.
+
+<P>
+The syntax for the command is:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Track MIDIVoice &lt;beat&gt; &lt;controller&gt; &lt;Datum&gt; [; ...]   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This syntax is identical to that discussed in the section for
+MIDIS<SMALL>EQ</SMALL>, above. The &lt;beat&gt;value is
+required for the command--it determines if the data is sent before or
+after the V<SMALL>OICE</SMALL> command is sent. Some controllers are reset by
+a voice, others not. My experiments show that B<SMALL>ANK</SMALL> should be
+sent before, most others after. Using a &#8220;beat&#8221; of &#8220;0&#8221; forces the
+MidiVoice data to be sent before the Voice control; any other &#8220;beat&#8221;
+value causes the data to be sent after the Voice control. In this
+silly example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Voice Piano1 
+<BR>
+MidiVoice {0 Bank 5; 1 ReleaseTime 100}   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+the MIDI data is created in an order like:
+
+<P>
+<P>
+<BLOCKQUOTE>0 Param Ch=xx Con=00 val=05 
+<BR>
+0 ProgCh Ch=xx Prog=00 
+<BR>
+0 Param Ch=xx Con=72 val=80
+
+</BLOCKQUOTE>
+
+<P>
+All the MIDI events occur at the same offset, but the order is (may
+be) important.
+
+<P>
+By default 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  assumes that the MIDIVoice data is to be used only
+for the first bar in the sequence. But, it's possible to have a
+different sequence for each bar in the sequence (just like you can
+have a different V<SMALL>OICE</SMALL> for each bar). In this case, group the
+different data groups with {} brackets:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Bass-1 MIDIVoice {1 ReleaseTime 50} {1 ReleaseTime 20}   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This list is stored with other G<SMALL>ROOVE</SMALL> data, so is ideal for
+inclusion in a style file.
+
+<P>
+If you want to disable this command after it has been issued you can
+use the form:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Track MIDIVoice - // disable  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Some technical notes:
+
+<P>
+
+<UL>
+<LI>
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  tracks the events sent for each bar and will not duplicate
+  sequences.
+
+<P>
+</LI>
+<LI>Be cautious in using this command to switch voice banks. If you
+  don't switch the voice bank back to a sane value you'll be playing
+  the wrong instruments!
+
+<P>
+</LI>
+<LI>Do use the MIDIC<SMALL>LEAR</SMALL> command
+  (<A HREF="#sec-midiclear">details)</A> to
+  &#8220;undo&#8221; anything you've done via a MIDIV<SMALL>OICE</SMALL> command.
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<H1><A NAME="SECTION0021220000000000000000"></A> <A NAME="channelvol"></A>
+<BR>
+MIDIVolume
+</H1> 
+
+<P>
+MIDI devices equipped with mixer settings can make use of the
+&#8220;Channel&#8221; or &#8220;Master&#8221; volume settings.<A NAME="tex2html86"
+  HREF="#foot10517"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">12</SPAN></SUP></A>
+<P>
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  doesn't set any channel volumes without your knowledge. If you
+want to use a set of reasonable defaults, look at the file
+<TT><SPAN  CLASS="textbf">includes/init.mma</SPAN></TT> which sets all channels other than &#8220;1&#8221; to
+&#8220;100&#8221;. Channel &#8220;1&#8221; is assumed to be a solo/keyboard track and is
+set to the maximum volume of &#8220;127&#8221;.
+
+<P>
+You can set selected MIDIV<SMALL>OLUME</SMALL>s:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord MIDIVolume 55  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will set the Chord track channel. For most users, the use of this
+command is <SPAN  CLASS="textit">not</SPAN> recommended since it will upset the balance of
+the library grooves. If you need a track softer or louder you should
+use the V<SMALL>OLUME</SMALL> setting (which changes the MIDI velocities of
+each note) for the track.
+
+<P>
+The data generated is not sent into the MIDI stream until musical data
+is created for the relevant MIDI channel.
+
+<P>
+More sophisticated MIDI programs use MIDI volume changes in
+combination with velocity settings. If you are going to do a &#8220;fancy
+arrangement&#8221; you'll probably be better of using a dedicated
+sequencer/editor to make the track-by-track volume changes. On the
+other hand, you may find that using MIDIV<SMALL>OLUME</SMALL>,
+MIDIC<SMALL>RESC</SMALL> and MIDID<SMALL>ECRESC</SMALL>
+<A HREF="#midicresc">(here)</A> works just fine.
+
+<P>
+Caution: If you use the command with A<SMALL>LL</SMALL>T<SMALL>RACKS</SMALL> you should note
+that only existing 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  tracks will be effected.
 
 <P>
 <BR><HR><H4>Footnotes</H4>
 <DL>
-<DT><A NAME="foot9811">... MIDI''</A><A
- HREF="node21.html#tex2html71"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
-<DD>The
-  General MIDI or GM standard was developed by the MIDI Manufactures
-  Association.
+<DT><A NAME="foot10056">... set.</A><A
+ HREF="node21.html#tex2html75"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
+<DD>Depending on your initialization files,
+  there may be other information MIDI in the track which is inserted
+  into the output file.
 
 </DD>
-<DT><A NAME="foot9812">... ``patches''.</A><A
- HREF="node21.html#tex2html72"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A></DT>
-<DD>``Patch'' a bit of a historical term dating
-  back to the times when synthesizers cost a lot of money and used
-  bits of wire and cable to ``patch'' different oscillators, filters,
-  etc. together.
+<DT><A NAME="foot10533">... track:</A><A
+ HREF="node21.html#tex2html76"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A></DT>
+<DD>This is much easier to do with the KeySig
+  command, <A HREF="node24.html#keysig">here</A>
 
 </DD>
-<DT><A NAME="foot9941">... casio-wk300</A><A
- HREF="node21.html#tex2html73"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A></DT>
-<DD>Refer to I<SMALL>NCLUDE</SMALL> <A HREF="node26.html#sec-include">(here)</A> for details on file placement.
+<DT><A NAME="foot10536">... file.</A><A
+ HREF="node21.html#tex2html77"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A></DT>
+<DD>A copyright message is set as a
+  meta-event with the coding &lt;FF 02 Len Text&gt;.
+
+</DD>
+<DT><A NAME="foot10165">... portamento</A><A
+ HREF="node21.html#tex2html78"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">4</SPAN></SUP></A></DT>
+<DD>The name &#8220;Glis&#8221; is used
+  because &#8220;MIDIPortamento&#8221; gets to be a bit long to type and
+  &#8220;MIDIPort&#8221; might be interpreted as something to do with
+  &#8220;ports&#8221;.
+
+</DD>
+<DT><A NAME="foot10205">...I<SMALL>GNORE</SMALL>PC=T<SMALL>RUE</SMALL></A><A
+ HREF="node21.html#tex2html79"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">5</SPAN></SUP></A></DT>
+<DD>&#8220;On&#8221; and &#8220;1&#8221; can be
+    used instead of &#8220;True&#8221;; &#8220;Off&#8221; and &#8220;0&#8221; can be used instead of &#8220;False&#8221;.
+
+</DD>
+<DT><A NAME="foot10544">... chords.</A><A
+ HREF="node21.html#tex2html80"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">6</SPAN></SUP></A></DT>
+<DD>The reason for this is that 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  doesn't really
+    know when to stop applying an accidental in a set of
+    M<SMALL>IDI</SMALL>N<SMALL>OTE</SMALL> commands since they can easily span the current
+    bar. It is thought best to honor a key signature, but to reset it
+    for each chord. Not quite standard musical notation; but then
+    
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  isn't notation.
+
+</DD>
+<DT><A NAME="foot10377">... +8192.</A><A
+ HREF="node21.html#tex2html81"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">7</SPAN></SUP></A></DT>
+<DD>The number is a 14 bit value over 2
+    bytes. Internally 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  converts the argument to a value 0 to
+    16383.
+
+</DD>
+<DT><A NAME="foot10545">... Example:</A><A
+ HREF="node21.html#tex2html82"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">8</SPAN></SUP></A></DT>
+<DD>This is much easier to do with the MMAStart
+  and MMAEnd options (<A HREF="node27.html#sec-paths">details)</A>.
+
+</DD>
+<DT><A NAME="foot10469">... channel</A><A
+ HREF="node21.html#tex2html83"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">9</SPAN></SUP></A></DT>
+<DD>In 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  this will
+  always be channel 10.
+
+</DD>
+<DT><A NAME="foot10547">... event</A><A
+ HREF="node21.html#tex2html84"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">10</SPAN></SUP></A></DT>
+<DD>This is a meta-event &lt;FF
+  01 len msg&gt;
+
+</DD>
+<DT><A NAME="foot10548">... place.</A><A
+ HREF="node21.html#tex2html85"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">11</SPAN></SUP></A></DT>
+<DD>A Track Name (SeqName) message is set as a
+  meta-event with the coding &lt;FF 03 Len Text&gt;.
+
+</DD>
+<DT><A NAME="foot10517">... settings.</A><A
+ HREF="node21.html#tex2html86"><SUP><SPAN CLASS="arabic">21</SPAN>.<SPAN CLASS="arabic">12</SPAN></SUP></A></DT>
+<DD>I discovered this
+  on my keyboard after many frustrating hours attempting to balance
+  the volumes in the library. Other programs would change the keyboard
+  settings, and not being aware of the changes, I'd end up scratching
+  my head.
 
 </DD>
 </DL>
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html677"
+<A NAME="tex2html725"
   HREF="node22.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html675"
+<A NAME="tex2html723"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html669"
+<A NAME="tex2html717"
   HREF="node20.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html678"
-  HREF="node22.html">Fine Tuning (Translations)</A>
-<B> Up:</B> <A NAME="tex2html676"
+<B> Next:</B> <A NAME="tex2html726"
+  HREF="node22.html">Patch Management</A>
+<B> Up:</B> <A NAME="tex2html724"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html670"
-  HREF="node20.html">Low Level MIDI Commands</A></DIV>
+<B> Previous:</B> <A NAME="tex2html718"
+  HREF="node20.html">Variables, Conditionals and Jumps</A></DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 bob
-2008-09-28
+2010-11-07
 </ADDRESS>
 </BODY>
 </HTML>

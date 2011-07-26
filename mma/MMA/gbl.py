@@ -24,7 +24,20 @@ Bob van der Poel <bob@mellowood.ca>
 
 import os
 
-version = "1.4"        # Version -- Sept/2008
+version = "1.7"        # Version -- Nov/2010
+
+""" A few globals are actually set in the calling stub, mma.py.This is
+    done to make future ports and platform specific settings a bit easier.
+    The following variables are imported from mma.py and stored here:
+
+        platform   - host platform, Windows, Linux, etc.
+        MMAdir     - the home directory for mma stuff
+
+    The above variables can be accessed from the rest of the mma modules in
+    the form "gbl.MMAdir", etc. 
+"""
+
+from __main__ import MMAdir, platform
 
 """ mtrks is storage for the MIDI data as it is created.
     It is a dict of class Mtrk() instances. Keys are the
@@ -96,31 +109,41 @@ transpose   =  0      # Transpose is global (ignored by drum tracks)
 
 lineno      = -1      # used for error reporting
 
-swingMode   =  0      # defaults to 0, set to 1 for swing mode
-swingSkew   =  None   # this is just for $_SwingMode macro
-
 barNum      =  0      # Current line number
+
+barPtrs     = {}      # for each bar, pointers to event start/end
 
 synctick    =  0      # flag, set if we want a tick on all tracks at offset 0
 endsync     =  0      # flag, set if we want a eof sync
 
 
 #############   Path and search variables. #############
+# In mma.py we checked for known directories and inserted the
+# first found 'mma' directory into the sys.path list and set MMAdir.
+# Assume that this is where the rest of mma's configuration file
+# live. If mma runs but can't fine includes, etc. look in mma.py
+# and add the proper paths.
 
-libPath = ''
-for p in ( "c:\\mma\\lib", "/usr/local/share/mma/lib", "/usr/share/mma/lib", "./lib"):
-    if os.path.isdir(p):
-        libPath=p
-        break
 
-incPath = ''
-for p in ( "c:\\mma\\includes", "/usr/local/share/mma/includes",
-               "/usr/share/mma/includes", "./includes"):
-    if os.path.isdir(p):
-        incPath=p
-        break
+libPath = os.path.join(MMAdir, 'lib')
+if not os.path.isdir(libPath):
+    print "Warning: Library directory not found."
 
-autoLib = 'stdlib'
+incPath = os.path.join(MMAdir, 'includes')
+if not os.path.isdir(incPath):
+    print "Warning: Include directory not found."
+
+# Set up autolib defaults. We start with MMALIB/stdlib and append
+# any other directories we find in MMALIB. Note, the order of
+# libs after stdlib is alphabetical.
+# User can change the libs with SetAutoLibPath dir1 dir2 etc.
+
+autoLib=['stdlib']
+dirs = sorted(os.listdir(libPath))
+for d in dirs:
+    if os.path.isdir(os.path.join(libPath, d)) and d not in autoLib:
+        autoLib.append(d)
+
 
 outPath    =   ''      # Directory for MIDI file
 mmaStart   =   []      # list of START files
@@ -140,15 +163,22 @@ runningStatus  = 1     # running status enabled
     it hurts too much.
 """
 
-debug          =     Ldebug = 0
-pshow          =     Lpshow = 0
-seqshow        =     Lseqshow = 0
-showrun        =     Lshowrun = 0
-noWarn         =     LnoWarn = 0
-noOutput       =     LnoOutput = 0
-showExpand     =     LshowExpand = 0
+barRange       =     []      # both -B and -b use this
+
+# the Lxxx values are the previous settings, used for LASTDEBUG macro
+
+debug          =     Ldebug         = 0
+pshow          =     Lpshow         = 0
+seqshow        =     Lseqshow       = 0
+showrun        =     Lshowrun       = 0
+noWarn         =     LnoWarn        = 0
+noOutput       =     LnoOutput      = 0
+showExpand     =     LshowExpand    = 0
 showFilenames  =     LshowFilenames = 0
-chshow         =     Lchshow = 0
+chshow         =     Lchshow        = 0
+
+plecShow       =     LplecShow  = 0  # not a command line setting
+rmShow         =     LrmShow    = 0  # not command
 
 outfile        =     None
 infile         =     None
@@ -158,5 +188,5 @@ makeGrvDefs    =     0
 cmdSMF         =     None
 
 playFile       =     0       # set if we want to call a player
-midiPlayer     =     "aplaymidi"
+
 

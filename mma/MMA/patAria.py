@@ -46,7 +46,6 @@ class Aria(PC):
     lastRange = None
 
 
-
     def restoreGroove(self, gname):
         """ Grooves are not saved/restored for aria tracks. But, seqsize is honored! """
         self.setSeqSize()
@@ -84,8 +83,8 @@ class Aria(PC):
 
         for n in ln:
             n = n.upper()
-            if not n in ( 'CHROMATIC', 'AUTO', 'CHORD'):
-                error("Unknown %s ScaleType. Only Chromatic, Scale and Chord are valid" % self.name)
+            if not n in ( 'CHROMATIC', 'SCALE', 'AUTO', 'CHORD'):
+                error("Unknown %s ScaleType. Only Chromatic, Scale (Auto) and Chord are valid" % self.name)
             tmp.append(n)
 
         self.scaleType = seqBump(tmp)
@@ -109,14 +108,17 @@ class Aria(PC):
         
         self.selectDir = []
         for a in ln:
-            if a.upper() == 'R':
+            if set(a.upper()) == set('R'):    # is direction 'r', 'rr', 'rrr', etc.
+                if len(a) > 4:
+                    error("Aria Direction has too much randomness"
+                          "(Maximum of 4 r's, got %d)." % len(a))
                 self.selectDir.append(a.upper())
-            else:
-                a=stoi(a, "Expecting integer value or 'r'.")
+            else:   # not random, has to be an integer -4 ... 4
+                a=stoi(a, "Expecting integer value or 'r*'.")
                 if a < -4 or a > 4:
                     error("Aria direction must be 'r' or -4 to 4, not '%s'" % a)
                 self.selectDir.append(a)
-        
+
         if gbl.debug:
             print "Set %s Direction:" % self.name,
             printList(self.selectDir)
@@ -143,16 +145,16 @@ class Aria(PC):
 
             thisChord = ct.chord.tonic + ct.chord.chordType
             stype = self.scaleType[sc]
-            range = self.chordRange[sc]
+            chrange = self.chordRange[sc]
 
             ### Generate notelist if nesc.
 
             if self.lastChord != thisChord or self.lastStype != stype or \
-                    self.lastRange != range:
+                    self.lastRange != chrange:
 
                 self.lastChord = thisChord
                 self.lastStype = stype
-                self.lastRange = range
+                self.lastRange = chrange
 
                 if stype == 'CHORD':
                     notelist = ct.chord.noteList
@@ -164,28 +166,32 @@ class Aria(PC):
                 o=0
                 self.notes=[]
 
-                while range >= 1:
+                while chrange >= 1:
                     for a in notelist:
                         self.notes.append(a+o)
                     o+=12
-                    range-=1
+                    chrange-=1
 
-                if range>0 and range<1:  # for fractional scale lengths
-                    range = int(len(notelist) * range)
-                    if range < 2:   # important, must be at least 2 notes in a scale
-                        range=2
-                    for a in notelist[:range]:
+                if chrange>0 and chrange<1:  # for fractional scale lengths
+                    chrange = int(len(notelist) * chrange)
+                    if chrange < 2:   # important, must be at least 2 notes in a scale
+                        chrange=2
+                    for a in notelist[:chrange]:
                         self.notes.append(a+o)
             
             # grab a note from the list
 
             if self.dirptr >= len(self.selectDir):
                 self.dirptr=0
+            
+            # the direction ptr is either an int(-4..4) or a string of 'r', 'rr, etc.
 
             a = self.selectDir[self.dirptr]
-            if a == 'R':
-                a = random.choice( (-1, 0, 1) )
-            self.noteptr += a
+  
+            if type(a) == type(1):
+                self.noteptr += a
+            else:
+                self.noteptr += random.choice( range(-len(a), len(a)+1 ))
 
             if self.noteptr >= len(self.notes):
                 if a > 0:
@@ -197,9 +203,8 @@ class Aria(PC):
                     self.noteptr = len(self.notes)-1
                 else:
                     self.noteptr = 0
-            
-            note = self.notes[self.noteptr]
 
+            note = self.notes[self.noteptr]
             self.dirptr  += 1
 
             # output
@@ -211,18 +216,16 @@ class Aria(PC):
                     self.adjustNote(note),
                     self.adjustVolume(p.vol, p.offset))
 
-
             if self.harmony[sc]:
                 h = MMA.harmony.harmonize(self.harmony[sc], note, ct.chord.noteList)
+                
+                strumOffset = self.getStrum(sc)
+
                 for n in h:
                     self.sendNote(
-                        p.offset,
+                        p.offset + strumOffset,
                         self.getDur(p.duration),
                         self.adjustNote(n),
                         self.adjustVolume(p.vol * self.harmonyVolume[sc], -1))
 
-
-
-
-
-
+                    strumOffset += self.getStrum(sc)

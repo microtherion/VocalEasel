@@ -1,6 +1,8 @@
 
 // countrywaltz
 
+// converted to use plectrum instead of chord for guitar. BVDP, March/2010.
+
 Begin Doc
 
   These waltzes are good for "old-time" things like 
@@ -10,11 +12,12 @@ End
 
 Author Bob van der Poel
 
+
+
 SeqClear
 Time 3
 Timesig 3 4
 Include stdpats34
-
 
 /////////////////////////////////////////////
 // Country/Old-time 
@@ -30,14 +33,12 @@ Begin Bass
 	Volume mf
 End
 	
-Begin Chord
-	Sequence C23 
+Begin Plectrum
+	Sequence {2 5 90 90 80 80 70 70;
+              3 5 80 80 80 70 70 65 }
 	Voice NylonGuitar
-	Voicing Mode=Optimal
 	Octave 4
-	Strum 10
 	Volume p
-	Articulate 100
 End
 
 // Same voice as the strumming guitar we play a decending 5/3/1 line
@@ -68,7 +69,7 @@ Begin Drum-Kick
 	Rvolume 10
 	Volume pp
 End
-	
+
 DefGroove CountryWaltz  Doris Day would like this! A string \
                         bass on beat 1 with a strummed guitar on 2 \
                         and 3, and a light-feeling drum. 
@@ -116,7 +117,7 @@ Begin Arpeggio
 	Voice NylonGuitar
 	Sequence   A3 / / A6
 	Octave 4
-	Range 2
+	Range 1.8
 	Direction Up / / Down
 	Rvolume 10
 	Accent 1 10
@@ -177,17 +178,53 @@ DefGroove  CountryWaltz2SusWalk Apregginating guitar, sustained string \
 
 
 
+//// Introduction
 
+Groove CountryWaltz1
 
+Bass       Sequence  *  *  {1 4. 3 90} {1 4. 5 90}
+Plectrum   Sequence  *  *  *   {1 9 80 75 70 65 60 55}
+// Bass-Chord  	Sequence   {1 4 5 90; 2 4 3 90; 3 4 1 90}  z  B123  z
 
+Drum       Sequence  *  *  *           D123
+Drum-Kick  Sequence  *  *  *           *
+Begin Arpeggio
+	Sequence        A6   A3  A3  A1
+	Invert    0
+	SeqRnd    Off
+	Volume          m    mp   p  pp
+	Range     2
+	Harmony   OpenBelow
+	Octave    5
+	Rskip     0
+End
+
+DefGroove CountryWaltzIntro   Introduction to the waltz.
+
+//// Pretty much the same, but expanded to 8 bars.
+
+Groove CountryWaltz1
+Seqsize 8
+
+Bass       Sequence  *  *  *  *  *  * {1 4. 3 90} {1 4. 5 90}
+Plectrum   Sequence  *  *  *  *  *  *  *    {1 10 80 75 70 65 60 55}
+// Bass-Chord  	Sequence   {1 4 5 90; 2 4 3 90; 3 4 1 90}  z  B123  z
+
+Drum       Sequence  *  *  *  *  *  *  *          D123
+Drum-Kick  Sequence  *  *  *  *  *  *  *          *
+
+Arpeggio   Sequence  A6 /  A3  /  A3 /  /  A1
+
+DefGroove CountryWaltzIntro8  8 Bar intro to the waltz.
 
 //// Ending
 
 Groove CountryWaltz
 
-Begin Chord
-	Sequence C23  /  L2 L1
-	Articulate 100
+Begin Plectrum
+	Sequence {2 5 1-3:90 4-6:80; 3 5 80} / \
+             {2 5 1-3:90 4-6:80 } \
+             {1 10 90}
 	Volume pp
 End
 

@@ -10,17 +10,32 @@ End
 
 Author Bob van der Poel
 
+Begin DocVar
+  NoMetronome If this variable is set the clicks will still sound, but \
+              their volume will be at a zero level. This gives a bit of silence \
+              at the start of playing a track. Quite useful for performance.
+End
+
 SeqClear
 Time 4
 Timesig 4 4
 
+
+// push the metronome velocity value onto the stack. Either 0 or 90.
+If Ndef NOMETRONOME
+   StackValue 90
+Else
+   StackValue 0
+Endif
+
 Begin Drum  Define
-	M1      1 0 90
-	M3      M1 Shift 2
-	M13     M1; M3
-	M24     M13 Shift 1
-	M1234   M13; M24
+    M1      1 0 $_StackValue
+    M3      M1 Shift 2
+    M13     M1; M3
+    M24     M13 Shift 1
+    M1234   M13; M24
 End
+
 
 ////////////////////////////////////////////////////////
 /// Metronome2   Ticks on beat 1 and 3

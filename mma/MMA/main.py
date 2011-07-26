@@ -24,9 +24,9 @@ Bob van der Poel <bob@mellowood.ca>
 """
 
 import os
-import time
 
 import MMA.midi
+import MMA.midifuncs
 import MMA.parse
 import MMA.file 
 import MMA.options
@@ -36,7 +36,7 @@ import MMA.docs
 import gbl
 from   MMA.common import *
 from   MMA.lyric import lyric
-
+import MMA.paths
 
 ########################################
 ########################################
@@ -66,10 +66,15 @@ if gbl.debug:
 
 m = gbl.mtrks[0] = MMA.midi.Mtrk(0)
 
-m.addText(0, "Created by MMA.")
-m.addTrkName(0, 'MetaTrack')
-m.addTempo(0, gbl.tempo)
-MMA.parse.setTimeSig(['4','4'])   # most stdlib files will override this
+if gbl.infile:
+    fileName=MMA.file.locFile(gbl.infile, None)
+
+    if fileName:   # needed for certain doc commands.
+        m.addTrkName(0, "%s" % fileName.rstrip(".mma") )
+        m.addText(0, "Created by MMA. Input filename: %s" % fileName)
+
+m.addTempo(0, gbl.tempo)              # most user files will override this
+MMA.midifuncs.setTimeSig(['4','4'])   # most stdlib (and/or user) files will override this
 
 #####################################
 # Read an RC file. All found files are processed.
@@ -96,8 +101,9 @@ for i in rcfiles:
             error("Specified init file '%s' not found" % gbl.mmaRC)
 
 else: #if not rcread:
-    gbl.lineno = -1
-    warning("No RC file was found or processed")
+    if gbl.debug:
+        gbl.lineno = -1
+        warning("No RC file was found or processed")
 
 
 gbl.createDocs = docOption   # Restore doc options
@@ -119,18 +125,19 @@ if gbl.makeGrvDefs:
 if not gbl.infile:
     MMA.options.usage("No input filename specified.")
 
-# Add filename to meta track.
-
-gbl.mtrks[0].addText(0, "Input filename: %s" % gbl.infile)
 
 ################################
-# Just extract docs (-Dx) to stdout.
+# Just extract docs (-Dxh, etc) to stdout.
 
 if docOption:
-    f=MMA.file.locFile(gbl.infile, None)
-    if not f:
-        error("File '%s' not found" % gbl.infile)
-    MMA.parse.parseFile(f)
+    if docOption == 4:
+        MMA.docs.htmlGraph(gbl.infile)
+    else:
+        f=MMA.file.locFile(gbl.infile, None)
+        if not f:
+            error("File '%s' not found" % gbl.infile)
+        MMA.parse.parseFile(f)
+        MMA.docs.docDump()
     sys.exit(0)
 
 
@@ -139,30 +146,12 @@ if docOption:
 
 if gbl.cmdSMF:
     gbl.lineno = -1
-    MMA.parse.setMidiFileType(['SMF=%s' % gbl.cmdSMF])
+    MMA.midifuncs.setMidiFileType(['SMF=%s' % gbl.cmdSMF])
 
+######################################
+# Create the output filename
 
-##########################################
-# Create the output filename.
-# If outfile was specified on cmd line then leave it alone.
-#    Otherwise ...
-#    1. strip off the extension if it is .mma,
-#    2. append .mid
-
-if gbl.playFile and gbl.outfile:
-    error("You cannot use the -f option with -P")
-
-if gbl.outfile:
-    outfile = gbl.outfile
-elif gbl.playFile:
-    outfile = "MMAtmp%s.mid" % os.getpid()
-else:
-    outfile, ext = os.path.splitext(gbl.infile)
-    if ext != gbl.ext:
-        outfile=gbl.infile
-    outfile += '.mid'
-
-outfile=os.path.expanduser(outfile)
+MMA.paths.createOutfileName(".mid")
 
 
 ################################################
@@ -178,7 +167,6 @@ for f in gbl.mmaStart:
     gbl.lineno = -1
 
 # The song file specified on the command line
-
 
 f = MMA.file.locFile(gbl.infile, None)
 
@@ -263,8 +251,10 @@ gbl.lineno=-1    # disable line nums for error/warning
 
 """ We fix the outPath now. This lets you set outpath in the song file.
 
-    The filename "outfile" was created above. It is either the input filename
-    with '.mma' changed to '.mid' OR if -f<FILE> was used then it's just <FILE>.
+    The filename "outfile" was created in paths, get a copy.
+
+    It is either the input filename with '.mma' changed to '.mid' (or kar)
+    OR if -f<FILE> was used then it's just <FILE>.
 
     If any of the following is true we skip inserting the outputpath into the
     filename:
@@ -277,6 +267,8 @@ gbl.lineno=-1    # disable line nums for error/warning
     a ".", "/" or "\ " then it is inserted at the start of the path;
     otherwise it is inserted before the filename portion.
 """
+
+outfile = MMA.paths.outfile
 
 if (not outfile.startswith('/')) and gbl.outPath and not gbl.outfile and not gbl.playFile:
     if gbl.outPath[0] in '.\\/':
@@ -337,11 +329,8 @@ MMA.midi.writeTracks(out)
 out.close()
 
 if gbl.playFile:
-    print "Playing %s with %s" % (outfile, gbl.midiPlayer)
-    t=time.time()
-    os.system("%s %s" % (gbl.midiPlayer, outfile))
-    os.remove(outfile)
-    print "Play complete (%.2f min), file has been deleted." % ((time.time()-t)/60)
+    import MMA.player
+    MMA.player.playMidi(outfile)
 
 if gbl.debug:
     print "Completed processing file '%s'." % outfile

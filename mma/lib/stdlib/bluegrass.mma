@@ -145,6 +145,26 @@ End
 
 DefGroove BlueGrassSus      Add sustained accordion.
 
+Groove BlueGrassSus
+Drum-Clap Groove BlueGrassClap
+DefGroove BlueGrassSusClap   Accordion and clapping.
+
+////////////////////////////////////////////////
+/// Intro
+
+Groove BlueGrass
+
+AllTracks SeqRnd Off
+
+Chord  	      Sequence    *    *   *  L1     // NylonGuitar
+Chord-Banjo   Sequence    *    *   C1234   { 1 8 90; 1.5 8 90; 2  4 90}
+Bass          Sequence    B13   /    /      B1
+Walk          Sequence    -
+Drum-HH       Sequence     *    *    *      D13
+Drum-Snare    Sequence     *    *    *      D13
+
+DefGroove BlueGrassIntro   4 bar introduction.
+
 
 //////////////////////////////////////////
 // Simple ending for the bluegrassers

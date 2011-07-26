@@ -1,5 +1,44 @@
+Add FF 02 copyright message option
 
-In anticipation of a real-soon-now 1.0 release more eg files need to be
-written to test more features.
+GrooveOverlay: Permit a different groove for part of a bar (single
+   beat breaks, etc).
 
-Fix -Dk to show option keywords.
+    Syntax:  GrooveOverlay   2.5,3,yourgroove  4,4.5,mygroove
+
+   Rough code outline (in parse) would be:
+
+ ... if chordoverlay active:
+      1. Change the start/end points already figured so that (using
+         the above example) 2.5 to 3 and 4 to 4.5 are silent (z!)
+      2. Remember what was in the table before we made the changes :)
+      3. process the bar normally for all the tracks
+      4. for each arg saved in overlay:
+             - create a new chordtable with all silence expect for the overlay part
+             - switch groove
+             - process
+      5. Return to original groove
+ ... update bar pointers
+
+
+Enhance the html groove docs to <play> a sample for a clicked groove.
+
+It might be easy to add the ability to set different chords for different
+   tracks. For example, one might want a C Major chord, but a C7 for
+   the arpeggio(s). I'm thinking that we might do "Arpeggio Chord XX"
+   and handle it much like a RIFF is done right now. Would there be
+   any point/usage?
+
+It might be useful to have a "if file exists" test. Useful for
+   conditional includes and things like that. Deciding what path to
+   use might be a problem (current path, groove library, include)???
+
+
+The -b/-B options do NOT work if the section includes any BEATADJUST
+   commands.
+
+Add a midi channel volume tracker and setter. This would permit
+   midi-(de)cresc from a known (by mma) value.
+
+Library docs --- add the time signature to the header.
+
+Add Nashville chord notation in addition to roman.

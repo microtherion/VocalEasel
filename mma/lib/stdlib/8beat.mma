@@ -175,6 +175,41 @@ DefGroove 8Beat1     Adds interest to bass line with alternate walking bars.
 Chord-Sus Groove 8BeatSus
 DefGroove 8Beat1Sus  Adds sustained string to 8Beat1.
 	
+/////////////////////////////
+/// Plus versions add in piano
+
+Groove 8Beat
+
+Begin Arpeggio
+	Voice Piano1
+	Sequence  {A4; 1.5 8 90; 3.5 8 90} \
+              {A2; 1.5 4 90; 3.5 4 90} \
+              {A4 Shift .5} \
+              {A2; A4 Shift .5}
+    Harmony OpenBelow+OpenAbove
+	Articulate 130
+	Rvolume 0,20
+	Rskip 40
+    Range 2
+    SeqRnd ON
+    Direction Random
+	Volume mf
+	Octave 5
+End
+
+DefGroove 8BeatPlus   Adds a bit of random piano.
+
+Groove 8BeatSus
+Arpeggio Groove 8BeatPlus
+DefGroove 8BeatSusPlus  Strings and random piano.
+
+Groove 8Beat1
+Arpeggio Groove 8BeatPlus
+DefGroove 8Beat1Plus  Interesting bass line and piano.
+
+Groove 8Beat1Sus
+Arpeggio Groove 8BeatPlus
+DefGroove 8Beat1SusPlus  Interesting bass, piano and strings.
 
 ///////////////////////
 /// Intro
@@ -196,6 +231,27 @@ Chord-Guitar Sequence	G1    G1  G1   L1
 
 
 DefGroove 8BeatIntro   Straight-ahead four bar introduction.
+
+///////////////////////////////////////////
+/// Fill
+
+Groove 8Beat
+
+SeqSize 1
+
+Drum-OHH     Sequence   D8
+Drum-CHH     Sequence   D1234
+Drum-Snare   Sequence   D8
+Drum-Kick    Sequence   D13
+
+Bass         Sequence	B13
+
+Chord        Sequence   C1234
+
+Chord-Guitar Sequence	G1
+
+DefGroove 8BeatFill  A single bar fill, mostly drums.
+
 
 
 ///////////////////////////////////////

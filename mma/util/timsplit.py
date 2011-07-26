@@ -74,10 +74,10 @@ for trackname in tracklist:
     trackname = trackname.title()
     status, txt = commands.getstatusoutput ("mma -0 %s -T %s -f %s " % (mmafile, trackname, tmpmid) )
     if status:
-        if txt.startswith("No data created"):
+        if txt.find("No data created") >= 0:
             print "NO DATA for '%s', skipping" % trackname
             continue
-        print "timsplit error", status
+        print "timsplit error creating MIDI file:", status
         print txt
         sys.exit(1)
 
@@ -88,7 +88,7 @@ for trackname in tracklist:
     print "Creating: %s.wav" % trackname
     status, txt = commands.getstatusoutput ("timidity -OwM -o%s.wav %s" % (trackname, tmpmid) )
     if status:
-        print "timsplit error", status
+        print "timsplit error running timidity:", status
         print txt
         sys.exit(1)
  

@@ -139,7 +139,24 @@ Chord-Sus Groove BasicRockSus
 
 DefGroove BasicRock4Sus   Our 4/4 version with strings.                    
 
+///////////////////////////////////////////
+/// 4 bar intro
 
+Groove BasicRock
+Seqsize 4
+
+Drum-Kick    Sequence  *    *    *   D13
+Drum-Snare   Sequence  *    *    *   D123
+// Drum-OHH
+Drum-Tam     Sequence  *    *    *   {D12; D12 shift .25; D12 shift .5; D12 shift .75}
+Bass         Sequence  *    *    *   B13
+Chord-Clean  Sequence  *    *    *   C13
+Chord-Clean2 Sequence  *    *    *   L1
+Chord-Dist   Sequence  *    *    *   L1
+
+DefGroove    BasicRockIntro   4 bar intro.
+
+////////////////////////////////
 /// Ending
 
 Groove BasicRock

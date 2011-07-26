@@ -9,7 +9,8 @@ MMA consists of several parts. They should be installed as follows:
 1. The main executable script, mma, should be in /usr/local/bin or
    somewhere else in your executable path.
 
-2. A number of modules which MMA needs. They should be installed in
+2. A number of modules which MMA needs (in the distro they are the files
+   ending in .py in the MMA directory). They should be installed in
    /usr/local/share/mma/MMA.
 
 3. Some other files used by the library and user extensions. These are

@@ -2,7 +2,7 @@
 // rb.mma
 
 Begin Doc
-	Rythmn and Blues. I did a different version of "My 
+	Rythmn and Blues. I did a raunchy version of "My 
 	Blue Heaven" using this groove.
 End
  
@@ -130,6 +130,35 @@ Begin Chord-Organ
 End
 
 DefGroove R&BSus     Change rhythmic organ to sustained chords.
+
+
+/// Add some guitar picking
+
+Groove R&B
+
+Bass-Guitar Sequence -
+
+Begin Arpeggio
+    Voice CleanGuitar
+	Sequence  A8 A4
+	Range .8
+	SeqRnd On
+	Rtime 5
+	RVolume 15
+	Rskip 25
+	Harmony 3Below
+	Accent 1 10
+	Volume f
+	Octave 5
+End
+
+DefGroove R&BPlus   Our basic rhythm with some nice picking.
+
+Groove R&BPlus
+
+Chord-Organ Groove R&BSus 
+
+DefGroove R&BSusPlus  Sustained with picking.
 
 
 /////////////////////////////////////////////

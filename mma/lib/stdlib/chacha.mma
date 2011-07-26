@@ -161,7 +161,7 @@ Begin Arpeggio-Sus
 	Octave 6
 	Articulate 100
 	Harmony Open
-	Range 1
+	Range .9
 	Direction Random
 	Sequence A2
 End

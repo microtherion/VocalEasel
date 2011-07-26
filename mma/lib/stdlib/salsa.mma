@@ -99,6 +99,28 @@ End
 
 DefGroove Salsa  Basic Salsa pattern.
 
+/////////////////////////////
+/// Plus ... add in arpeggiating piano
+
+
+Groove Salsa
+
+Begin Arpeggio
+    Voice Flute
+	Articulate 90
+	Octave 6
+	Volume m
+	Accent 1 10 3 10
+	Sequence {A4 Shift .5} A8 
+	SeqRnd On
+	Range 1.2
+	Rskip 20
+End
+
+DefGroove SalsaPlus   Basic pattern with apreggiating flute.
+
+
+/////////////////////////////
 //// Sustain
 
 Groove Salsa
@@ -122,6 +144,11 @@ Chord Volume -20
 
 DefGroove SalsaSus   Basic pattern with added strings.
 
+Groove SalsaSus
+
+Arpeggio Groove SalsaPlus
+
+DefGroove SalsaSusPlus  Sustained pattern with added flute.
 
 ////////  Intro
 

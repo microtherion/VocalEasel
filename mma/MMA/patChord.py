@@ -26,31 +26,66 @@ Bob van der Poel <bob@mellowood.ca>
 
 import random
 
-
 import MMA.notelen
 
 import gbl
 from   MMA.common import *
 from   MMA.pat import PC
+import copy
 
+
+class Voicing:
+    def __init__(self):
+        self.mode     = None
+        self.range    = 12
+        self.center   = 4
+        self.random   = 0
+        self.percent  = 0
+        self.bcount   = 0
+        self.dir      = 0
 
 
 class Chord(PC):
     """ Pattern class for a chord track. """
 
     vtype = 'CHORD'
+    sortDirection = 0   # used for tracking direction of strummed chords
+
+    def __init__(self, ln):
+        self.voicing = Voicing()
+        PC.__init__(self, ln)
+        
+    def saveGroove(self, gname):
+        """ Save special/local variables for groove. """
+
+        PC.saveGroove(self, gname)  # create storage. Do this 1st.
+        self.grooves[gname]['VMODE'] = copy.deepcopy(self.voicing)
+
+    def restoreGroove(self, gname):
+        """ Restore special/local/variables for groove. """
+
+        self.voicing = self.grooves[gname]['VMODE']
+        PC.restoreGroove(self, gname)
+
+
+    def clearSequence(self):
+        """ Set some initial values. Called from init and clear seq. """
+
+        PC.clearSequence(self)
+        self.voicing   = Voicing()
+        # .direction was set in PC.clear.. we're changing to our default
+        self.direction = seqBump(['UP'])
 
 
     def setVoicing(self, ln):
         """ set the Voicing Mode options.  Only valid for CHORDS. """
 
-        for l in ln:
-            try:
-                mode, val = l.upper().split('=')
-            except:
-                error("Each Voicing option must contain a '=', not '%s'" % l)
+        notopt, ln = opt2pair(ln, toupper=1)
 
+        if notopt:
+            error("Voicing: Each Voicing option must be a OPT=VALUE pair.")
 
+        for mode, val in ln:
             if mode == 'MODE':
                 valid= ("-", "OPTIMAL", "NONE", "ROOT", "COMPRESSED", "INVERT")
 
@@ -65,7 +100,7 @@ class Chord(PC):
                     warning("Setting both VoicingMode and Invert/Compress is not a good idea")
 
                 """ When we set voicing mode we always reset this. This forces
-                the voicingmode code to restart its rotations.
+                    the voicingmode code to restart its rotations.
                 """
 
                 self.lastChord = []
@@ -74,55 +109,47 @@ class Chord(PC):
 
 
             elif mode == 'RANGE':
-                val = stoi(val, "Argument for %s Voicing Range "
-                       "must be a value" % self.name)
+                val = stoi(val, "VOICING RANGE %s: Arg must be a value" % self.name)
 
                 if val < 1 or val > 30:
-                    error("Voicing Range '%s' out-of-range; "
-                          "must be 1 to 30" % val)
+                    error("Voicing Range: Arg out-of-range; must be 1 to 30, not '%s'." % val)
 
                 self.voicing.range = val
 
 
             elif mode == 'CENTER':
-                val = stoi(val, "Argument for %s Voicing Center "
-                       "must be a value" % self.name)
+                val = stoi(val, "Argument for %s VOICING CENTER must be a value" % self.name)
 
                 if val < 1 or val > 12:
-                    error("Voicing Center %s out-of-range; "
-                          "must be 1 to 12" % val)
+                    error("VOICING CENTER: arg out-of-range; must be 1 to 12, not '%s'." % val)
 
                 self.voicing.center = val
 
             elif mode == 'RMOVE':
-                val = stoi(val, "Argument for %s Voicing Random "
-                       "must be a value" % self.name)
+                val = stoi(val, "Argument for %s VOICING RANDOM must be a value" % self.name)
 
                 if val < 0 or val > 100:
-                    error("Voicing Random value must be 0 to 100 "
-                          "not %s" % val)
+                    error("VOICING RANDOM: arg must be 0 to 100, not %s" % val)
 
                 self.voicing.random = val
                 self.voicing.bcount = 0
 
             elif mode == 'MOVE':
-                val = stoi(val, "Argument for %s Voicing Move "
-                       "must be a value" % self.name)
+                val = stoi(val, "Argument for %s VOICING MOVE  must be a value" % self.name)
 
                 if val < 0 :
-                    error("Voicing Move (bar count) must >= 0, not %s" % val)
+                    error("VOICING MOVE: bar count must >= 0, not %s" % val)
                 if val > 20:
-                    warning("Voicing Move (bar count) %s is quite large" % val)
+                    warning("VOICING MOVE: bar count '%s' is quite large" % val)
 
                 self.voicing.bcount = val
                 self.voicing.random = 0
 
             elif mode == 'DIR':
-                val = stoi(val, "Argument for %s Voicing Dir (move direction) "
-                       "must be a value" % self.name)
+                val = stoi(val, "Argument for %s VOICING DIR must be a value" % self.name)
 
                 if not val in (1,0,-1):
-                    error("Voicing Move Dir -1, 0 or 1, not %s" % val)
+                    error("VOICING MOVE: Dir must be -1, 0 or 1, not '%s'." % val)
 
                 self.voicing.dir = val
 
@@ -154,26 +181,6 @@ class Chord(PC):
         if gbl.debug:
             print "Set %s DupRoot to " % self.name,
             printList(ln)
-
-
-    def setStrum(self, ln):
-        """ Set Strum time. """
-
-        ln = lnExpand(ln, '%s Strum' % self.name)
-        tmp = []
-
-        for n in ln:
-            n = stoi(n, "Argument for %s Strum must be an integer"  % self.name)
-
-            if n < 0 or n > 100:
-                error("Strum %s out-of-range; must be 0..100" % n)
-
-            tmp.append(n)
-
-        self.strum = seqBump(tmp)
-
-        if gbl.debug:
-            print "Set %s Strum to %s" % (self.name, self.strum)
 
 
     def getPgroup(self, ev):
@@ -328,23 +335,6 @@ class Chord(PC):
             if self.invert[sc]:
                 tb.chord.invert(self.invert[sc])
 
-            # Set STRUM flags
-
-            strumAdjust = self.strum[sc]
-            strumOffset = 0
-            sd = self.direction[sc]
-            if sd=='BOTH':
-                sd = 'BOTHDOWN'
-            if sd == 'BOTHDOWN':
-                sd = 'BOTHUP'
-            elif sd == 'BOTHUP':
-                sd = 'BOTHDOWN'
-
-            if strumAdjust and sd in ('DOWN', 'BOTHDOWN'):
-                strumOffset += strumAdjust * tb.chord.noteListLen
-                strumAdjust = -strumAdjust
-
-
             """ Voicing adjustment for 'jazz' or altered chords. If a chord (most
                 likely something like a M7 or flat-9 ends up with any 2 adjacent
                 notes separated by a single tone an unconfortable dissonance results.
@@ -386,14 +376,39 @@ class Chord(PC):
                     v /= c
                     loo.append( (tb.chord.rootNote + self.crDupRoot, v))
 
-            for note, v in sorted(loo):  # sorting low-to-high notes. Mainly for STRUM.
+            # For strum we need to know the direction. Note that the direction
+            # is saved for the next loop (needed for alternating in BOTH).
+
+            sd = self.direction[sc]
+            if sd == 'BOTH':
+                if self.sortDirection:
+                    self.sortDirection = 0
+                else:
+                    self.sortDirection = 1
+            elif sd == 'DOWN':
+                self.sortDirection = 1
+            elif sd == 'RANDOM':
+                self.sortDirection = random.randint(0,1)
+            else:
+                self.sortDirection = 0
+                
+            # take the list of notes and sort them in low to high order.
+            # reverse the list if direction is set.
+
+            loo.sort()
+            if self.sortDirection:
+                loo.reverse()
+
+            strumOffset = 0
+
+            for note, v in loo:  # sorting low-to-high notes. Mainly for STRUM.
                 self.sendNote(
-                    p.offset+strumOffset,
+                    p.offset + strumOffset,
                     self.getDur(p.duration),
                     self.adjustNote(note),
-                    self.adjustVolume( v,  p.offset) )
+                    self.adjustVolume(v, p.offset) )
 
-                strumOffset += strumAdjust
+                strumOffset += self.getStrum(sc)
 
             tb.chord.reset()    # important, other tracks chord object
 
@@ -401,5 +416,6 @@ class Chord(PC):
 
         if self.voicing.bcount:
             self.voicing.bcount -= 1
+
 
 

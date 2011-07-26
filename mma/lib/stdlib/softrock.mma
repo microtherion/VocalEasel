@@ -117,7 +117,8 @@ Begin Arpeggio
 	Accent 1 10 3 10
 	Articulate 80
 	Volume p
-	Octave 6
+    Direction Random
+	Octave 5
 End
 
 DefGroove SoftRock1   Adds a latin-pop touch by using flute arpeggios.
@@ -126,6 +127,49 @@ Chord-Sus Groove SoftRockSus
 
 DefGroove SoftRock1Sus   Latin-pop with sustained strings.
 
+
+///////////////////////////////
+///// SoftRock2
+///// Change the piano to guitar and punch up the drums
+
+
+Groove SoftRock
+
+
+Begin Arpeggio
+	Sequence {1 4 90; 2.5 4 90; 3 4 90; 4 4 90}
+	Rskip 20
+	Rtime 20
+	Range 1.5
+	Voice JazzGuitar
+	Volume mp
+	Octave 5
+	Articulate 120
+End
+
+
+DefGroove SoftRock2   Add some guitar arpeggios to basic rhythm.
+
+Groove SoftRock2
+Chord-Sus Groove SoftRockSus
+DefGroove SoftRock2Sus   SoftRock2 with added sustain.
+
+
+
+/////////////////////////////////////
+/// Fills
+
+Groove SoftRock
+SeqSize 1
+
+Drum-Snare     Sequence   D1234
+///Drum-HH
+// Drum-Tri
+Chord          Sequence   C1234
+Bass           Sequence   B13
+Walk           Sequence   -
+
+DefGroove SoftRockFill   1 bar fill for endings.
 
  
 ////////////////////////////////////

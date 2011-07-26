@@ -26,7 +26,7 @@ def usage():
 ##########################
 
 if len(sys.argv[1:]) != 1:
-    print "mma-rnum: requires 1 filename argument."
+    print "mma-renum: requires 1 filename argument."
     usage()
     
 filename = sys.argv[1]
@@ -49,10 +49,14 @@ linenum = 1
 
 for l in inpath:
     l=l.rstrip()
-    
-    try:
-        x = int(l.split()[0])
-    except:
+
+
+    if l and l[0].isdigit():
+        try:
+            x = int(l.split()[0])
+        except:
+            x = None
+    else:
         x = None
 
     if x != None: 

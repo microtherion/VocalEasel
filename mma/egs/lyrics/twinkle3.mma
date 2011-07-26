@@ -5,7 +5,7 @@
 
 // Set the tempo, etc.
 
-Lyric Chords=On
+Lyric Chords=On cnames=sharp transpose=-6
 
 Tempo 250
 Groove Folk

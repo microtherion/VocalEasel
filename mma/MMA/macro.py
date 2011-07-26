@@ -35,7 +35,10 @@ import MMA.patAria
 import MMA.volume
 import MMA.grooves
 import MMA.parse
+import MMA.player
 import MMA.seqrnd
+import MMA.midinote
+import MMA.swing
 
 import gbl
 from   MMA.lyric import lyric
@@ -43,8 +46,22 @@ from   MMA.common import *
 from   MMA.safe_eval import safe_eval
 
 
-class Macros:
+def sliceVariable(p, sl):
+    """ Slice a variable. Used by macro expand. """
 
+    try:
+        new = eval('p' + "[" + sl + "]")
+    except IndexError:
+        error("Index '%s' out of range." % sl)
+    except:
+        error("Index error in '%s'." % sl)
+
+    if ":" not in sl:
+        new = [new]
+
+    return new
+
+class Macros:
     vars={}            # storage
     expandMode = 1        # flag for variable expansion
     pushstack = []
@@ -70,12 +87,7 @@ class Macros:
         # Simple/global     system values
 
         if s == 'KEYSIG':
-            a=MMA.patSolo.keySig.kSig
-            if a >= 0:
-                f='#'
-            else:
-                f='b'
-            return "%s%s" % (abs(a), f)
+            return MMA.keysig.keySig.getKeysig()
 
         elif s == 'TIME':
             return str(gbl.QperBar)
@@ -85,7 +97,7 @@ class Macros:
 
         elif s == 'VOLUME':
             return    str(int(MMA.volume.volume * 100))  # INT() is important
-
+            
         elif s == 'VOLUMERATIO':
             return str((MMA.volume.vTRatio * 100))
 
@@ -98,6 +110,9 @@ class Macros:
         elif s == 'LASTGROOVE':
             return MMA.grooves.lastGroove
 
+        elif s == 'SEQ':
+            return str(gbl.seqCount)
+
         elif s == 'SEQRND':
             if MMA.seqrnd.seqRnd[0] == 0: return "Off"
             if MMA.seqrnd.seqRnd[0] == 1: return "On"
@@ -107,11 +122,7 @@ class Macros:
             return str(gbl.seqSize)
 
         elif s == 'SWINGMODE':
-            if gbl.swingMode:
-                a = "On"
-            else:
-                a = "Off"
-            return "%s Skew=%s" % (a, gbl.swingSkew)
+            return MMA.swing.settings()
 
         elif s == 'TRANSPOSE':
             return str(gbl.transpose)
@@ -123,22 +134,31 @@ class Macros:
 
         elif s == 'DEBUG':
             return "Debug=%s  Filenames=%s Patterns=%s " \
-                    "Sequence=%s Runtime=%s Warnings=%s Expand=%s" % \
+                    "Sequence=%s Runtime=%s Warnings=%s Expand=%s " \
+                    "Roman=%s Plectrum=%s" % \
                     (gbl.debug, gbl.showFilenames, gbl.pshow, gbl.seqshow, \
-                    gbl.showrun,  int(not gbl.noWarn), gbl.showExpand)
+                    gbl.showrun,  int(not gbl.noWarn), gbl.showExpand, 
+                    gbl.rmShow, gbl.plecShow)
 
 
         elif s == 'LASTDEBUG':
             return "Debug=%s  Filenames=%s Patterns=%s " \
-                    "Sequence=%s Runtime=%s Warnings=%s Expand=%s" % \
+                    "Sequence=%s Runtime=%s Warnings=%s Expand=%s " \
+                    "Roman=%s Plectrum=%s" % \
                     (gbl.Ldebug, gbl.LshowFilenames, gbl.Lpshow, gbl.Lseqshow, \
-                    gbl.Lshowrun,  int(not gbl.LnoWarn), gbl.LshowExpand)
+                    gbl.Lshowrun,  int(not gbl.LnoWarn), gbl.LshowExpand,
+                    gbl.LrmShow, gbl.LplecShow)
 
         elif s == 'VEXPAND':
             if self.expandMode:
                 return "On"
             else:
                 return "Off"
+
+        elif s == "MIDIPLAYER":
+            return "%s Background=%s Delay=%s." % \
+            (' '.join(MMA.player.midiPlayer), MMA.player.inBackGround, 
+                      MMA.player.waitTime)
 
         elif s == "MIDISPLIT":
             return ' '.join([str(x) for x in MMA.midi.splitChannels])
@@ -147,7 +167,7 @@ class Macros:
             return ' '.join([str(x) for x in MMA.seqrnd.seqRndWeight])
 
         elif s == 'AUTOLIBPATH':
-            return gbl.autoLib
+            return ' '.join(gbl.autoLib)
 
         elif s == 'LIBPATH':
             return gbl.libPath
@@ -235,6 +255,9 @@ class Macros:
                 error("Mallet only valid in SOLO and MELODY tracks")
             return "Mallet Rate=%i Decay=%i" % (t.mallet, t.malletDecay*100)
 
+        elif func == 'MIDINOTE':
+            return MMA.midinote.mopts(t)
+
         elif func == 'OCTAVE':
             return ' '.join([str(a/12) for a in t.octave])
 
@@ -245,10 +268,25 @@ class Macros:
             return ' '.join([str(int(a * 100)) for a in t.rSkip])
 
         elif func == 'RTIME':
-            return ' '.join([str(x) for x in t.rTime])
+            tmp = []
+            for a1, a2 in t.rTime:
+                if a1 == a2:
+                    tmp.append('%s' % abs(a1))
+                else:
+                    tmp.append('%s,%s' % ( a1, a2))
+            return ' '.join(tmp)
+
 
         elif func == 'RVOLUME':
-            return ' '.join([str(int(a * 100)) for a in t.rVolume])
+            tmp = []
+            for a1, a2 in t.rVolume:
+                a1 = int(a1 * 100)
+                a2 = int(a2 * 100)
+                if a1 == a2:
+                    tmp.append('%s' % abs(a1))
+                else:
+                    tmp.append('%s,%s' % ( a1, a2))
+            return ' '.join(tmp)
       
         elif func == 'SEQUENCE':
             tmp = []
@@ -267,9 +305,18 @@ class Macros:
             return "%s %s" % (t.spanStart, t.spanEnd)
 
         elif func == 'STRUM':
-            if t.vtype != "CHORD":
-                error("Only CHORD tracks have STRUM")
-            return ' '.join([str(x) for x in t.strum])
+            r=[]
+            for v in t.strum:
+                if v == None:
+                    r.append("0")
+                else:
+                    a,b = v
+                    if a==b:
+                        r.append("%s" % a)
+                    else:
+                        r.append("%s,%s" % (a,b))
+                
+            return ' '.join(r)
 
         elif func == 'TONE':
             if t.vtype != "DRUM":
@@ -311,6 +358,7 @@ class Macros:
             return l
 
         gotmath=0
+        sliceVar = None
 
         while 1:          # Loop until no more subsitutions have been done
             sub=0
@@ -324,15 +372,40 @@ class Macros:
                     if frst == '$':     #  $$ - don't expand (done in IF clause)
                         continue
 
-                    elif frst == '(':   # flag math macro
+                    if frst == '(':   # flag math macro
                         gotmath = 1
                         continue
+                    
 
+                    # pull slice notation off the end of the name
+
+                    if s.endswith(']'):
+                        x=s.rfind('[')
+                        if not x:
+                            error("No matching for '[' for trailing ']' in variable '%s'." % s)
+                        sliceVar=s[x+1:-1]
+                        s = s[:x]
+
+                        """ Since we be using an 'eval' to do the actual slicing, we 
+                            check the slice string to make sure it's looking valid.
+                            The easy way out makes as much sense as anything else ... just
+                            step through the slice string and make sure we ONLY have
+                            integers or empty slots.
+                        """
+
+                        for test in sliceVar.split(":"):
+                            try:
+                                test == '' or int(test)
+                            except:
+                                error("Invalid index in slice notation '%s'." % sliceVar)
+
+                    else:
+                        sliceVar = None
+                    
                     # we have a var, see if system or user. Set 'ex'
 
-                    elif frst ==  '_':   # system var
+                    if frst ==  '_':   # system var
                         ex=self.sysvar(s[1:])
-                    
                     
                     elif s in self.vars:  # user var?
                         ex = self.vars[s]
@@ -340,18 +413,31 @@ class Macros:
                     else:                 # unknown var...error
                         error("User variable '%s'  has not been defined" % s )
 
-
                     if type(ex) == type([]):    # MSET variable
+                        if sliceVar:
+                            ex = sliceVariable(ex, sliceVar)
+                            sliceVar = None
+
                         if len(ex):
                             gbl.inpath.push( ex[1:], [gbl.lineno] * len(ex[1:]))
                             if len(ex):
                                 ex=ex[0]
                             else:
                                 ex=[]
+
                     else:                       # regular SET variable
                         ex=ex.split()
+                        if sliceVar:
+                            ex = sliceVariable(ex, sliceVar)
+                            sliceVar = None
 
-                    l=l[:i] + ex + l[i+1:]    # ex might be a list, so this is needed
+                    """ we have a simple variable (ie $_TEMPO) converted to a list,
+                        or a list-like var (ie $_Bass_Volume) converted to a list,
+                        or the 1st element of a multi-line variable
+                        We concat this into the existing line, process some more
+                    """
+
+                    l=l[:i] + ex + l[i+1:]    
                     sub=1
                     break
 
@@ -423,6 +509,9 @@ class Macros:
 
         if v[0] in ('$', '_'):
             error("Variable names cannot start with a '$' or '_'")
+        if '[' in v or ']' in v:
+            error("Variable names cannot contain [ or ] characters.")
+
         return v.upper()
 
     def rndvar(self, ln):
@@ -507,7 +596,6 @@ class Macros:
             lm.append(l)
 
         self.vars[v]=lm
-
 
     def unsetvar(self, ln):
         """ Delete a variable reference. """

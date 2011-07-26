@@ -18,7 +18,7 @@ Solo Voice Tenorsax
 // the notes from channel 1 to the SOLO track. Also,
 // we change the volume and the octave.
 
-midiInc file=rec1.mid Solo=1 Volume=70 octave=-1
+midiInc file=rec1.mid Solo=1 Volume=70 octave=-1 
 
 // Generate the accomp. 
 

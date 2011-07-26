@@ -48,6 +48,12 @@ Continuing will probably cause all kinds of strange errors
 and a generally unsatisfactory experience. But, we can try...
 """)
 
+rootdir = "/usr/local/share"
+rootexe = "/usr/local/bin"
+
+dest = rootdir + "/mma"
+exe = rootexe + "/mma"
+
 print """
 We recommend that you install the package with this script
 in the default locations. This script will create a
@@ -57,32 +63,47 @@ script's directory locations. But, please note that ONLY
 /usr/local/share and /usr/share are supported as default
 locations.
 
-The main executable script will be installed in /usr/local/bin.
+The main executable script will be installed in %s.
 
 If you ever decide to get rid of MMA, just delete the executable
 in /usr/local/mma and the directory tree in /usr/local/share/mma.
 
-"""
+""" % rootexe
 
 okay("")
+
+
+# Check to make sure install directories exist. Offer to create
+# ... these might need to be created in Mac OS X
+
+if not os.path.exists(rootdir):
+        okay("""The directory %s does not exist. Create okay?""" % rootdir)
+        if os.system("mkdir -p %s" % rootdir):
+                print "Opps, create failed. Were you root?"
+                sys.exit(1)
+        
+if not os.path.exists(rootexe):
+        okay("""The directory %s does not exist. Create okay?""" % rootexe)
+        if os.system("mkdir -p %s" % rootexe):
+                print "Opps, create failed. Were you root?"
+                sys.exit(1)
+        
 
 ###########################################
 ######## Copy the executable.
 
-bin='/usr/local/bin/mma'
 
-if os.path.exists(bin):
-	okay("Existing mma executable '%s' is being overwritten." % bin)
-	os.remove(bin)
+if os.path.exists(exe):
+	okay("Existing mma executable '%s' is being overwritten." % exe)
+	os.remove(exe)
 
-print "Copying mma to", bin
+print "Copying mma to", exe
 
-shutil.copy( 'mma.py', bin)
+shutil.copy( 'mma.py', exe)
 
 ###########################################
 ######## Copy the library
 
-dest = '/usr/local/share/mma'
 
 if os.path.exists(dest):
    bu=dest.rsplit('/', 1)[0] + '/mma-old'

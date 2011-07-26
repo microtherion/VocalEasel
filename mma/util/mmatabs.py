@@ -67,6 +67,9 @@ def dochords():
     for n in sorted(chordlist.keys()):
         nm=n.replace("#", '$\\sharp$')
         nm=nm.replace('b', '$\\flat$')
+        nm=nm.replace(chr(176), '\\diminished')
+        nm=nm.replace(chr(248), '\\halfdim')
+
         outfile.write( "\\insline{%s}{%s}\n" % (nm, chordlist[n][2]) )
 
 

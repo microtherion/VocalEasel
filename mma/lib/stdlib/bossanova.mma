@@ -220,6 +220,44 @@ End
 DefGroove BossaNova3Sus  A combination of BossaNova1Sus and BossaNova2Sus. Alternating \
                          bars of decending strings with full chords.
 
+
+/////////////////////////////
+/// Plus versions ... add in arpeggiating guitar
+
+Groove BossaNova
+
+Begin Arpeggio
+   Voice JazzGuitar
+   Octave 6
+   Articulate 120
+   Volume m
+   Rtime 10
+   Rskip 25
+   Harmony OpenBelow
+   Rvolume 10
+   Range .9
+   Direction Random
+   Sequence  {1 4 90; 2 4 90; 3 4 90; 3.5 8 90; 4. 8 90 } {1.5 8 90; 2.5 8 90; 3 4 90; 4 4 90}
+End
+
+DefGroove BossaNovaPlus    Basic rhythm with apreggiating guitar.
+
+Groove BossaNovaSus
+Arpeggio Groove BossaNovaPlus
+DefGroove BossaNovaSusPlus   Sustained choir and arpeggios.
+
+Groove BossaNova1Sus
+Arpeggio Groove BossaNovaPlus
+DefGroove BossaNova1SusPlus   Sustained strings and arpeggios.
+
+Groove BossaNova2Sus
+Arpeggio Groove BossaNovaPlus
+DefGroove BossaNova2SusPlus   Descending strings and arpeggios.
+
+Groove BossaNova3Sus
+Arpeggio Groove BossaNovaPlus
+DefGroove BossaNova3SusPlus   Alternating 1Sus/2Sus and arpeggios.
+
 //////////////////////////
 // BossaNovaFill
 // Add some bells. Good for a 1/2 bar transition

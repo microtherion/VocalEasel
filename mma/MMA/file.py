@@ -29,6 +29,17 @@ import os
 import gbl
 from   MMA.common import *
 
+def fixfname(f):
+    """ Convert embedded space characters in filename to real spaces. 
+
+        Originally this was done with .decode("string-escape") but that
+        doesn't work with windows path names. So, now we just replace
+        any \x20 sequences with single spaces.
+    """
+
+    f = f.replace('\\x20', ' ')
+    return os.path.expanduser(f)
+
 def locFile(name, lib):
     """ Locate a filename.
 
@@ -42,7 +53,7 @@ def locFile(name, lib):
     ext=gbl.ext
     exists = os.path.exists
 
-    name=os.path.expanduser(name)  # for ~ expansion only
+    name=fixfname(name)  # for ~ expansion only
 
     if lib:
         if not name.endswith(ext):
@@ -91,7 +102,6 @@ class ReadFile:
 
         self.que    = []     # que for pushed lines (mainly for REPEAT)
         self.qnums  = []
-
 
         dataStore = self.FileData # shortcut to avoid '.'s
 
@@ -170,7 +180,6 @@ class ReadFile:
                 Also note that XXX lines are stripped from input as well as NNN lines
                 with only a NNN.
             """
-
 
             if l[0].upper()=='LABEL':
                 if len(l) !=2:
@@ -287,10 +296,7 @@ class ReadFile:
         """
 
         while 1:
-
-            # Return a queued line if possible.
-
-            if self.que:
+            if self.que:            # Return a queued line if possible.
                 ln = self.que.pop(-1)
 
                 gbl.lineno = self.qnums.pop()
@@ -300,13 +306,9 @@ class ReadFile:
 
                 return ln
 
-
             # Return the next line in the file.
-
-
             if self.lineptr>=self.lastline:
                 return None        ####  EOF
-
 
             ln=self.fdata[self.lineptr].data
             gbl.lineno = self.fdata[self.lineptr].lnum

@@ -1,19 +1,20 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+<!--Converted with LaTeX2HTML 2008 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Low Level MIDI Commands</TITLE>
-<META NAME="description" CONTENT="Low Level MIDI Commands">
+<TITLE>Variables, Conditionals and Jumps</TITLE>
+<META NAME="description" CONTENT="Variables, Conditionals and Jumps">
 <META NAME="keywords" CONTENT="mma">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="mma.css">
@@ -27,22 +28,22 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY  bgcolor="#ffffff">
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html650"
+<A NAME="tex2html700"
   HREF="node21.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html648"
+<A NAME="tex2html698"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html642"
+<A NAME="tex2html692"
   HREF="node19.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html651"
-  HREF="node21.html">Patch Management</A>
-<B> Up:</B> <A NAME="tex2html649"
+<B> Next:</B> <A NAME="tex2html701"
+  HREF="node21.html">Low Level MIDI Commands</A>
+<B> Up:</B> <A NAME="tex2html699"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html643"
-  HREF="node19.html">Variables, Conditionals and Jumps</A>
+<B> Previous:</B> <A NAME="tex2html693"
+  HREF="node19.html">Repeats</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
@@ -50,349 +51,983 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html652"
-  HREF="node20.html#SECTION002010000000000000000">Channel</A>
-<LI><A NAME="tex2html653"
-  HREF="node20.html#SECTION002020000000000000000">ChannelPref</A>
-<LI><A NAME="tex2html654"
-  HREF="node20.html#SECTION002030000000000000000">ChShare</A>
-<LI><A NAME="tex2html655"
-  HREF="node20.html#SECTION002040000000000000000">ForceOut</A>
-<LI><A NAME="tex2html656"
-  HREF="node20.html#SECTION002050000000000000000">MIDI</A>
-<LI><A NAME="tex2html657"
-  HREF="node20.html#SECTION002060000000000000000">MIDIClear</A>
-<LI><A NAME="tex2html658"
-  HREF="node20.html#SECTION002070000000000000000">MIDIFile</A>
-<LI><A NAME="tex2html659"
-  HREF="node20.html#SECTION002080000000000000000">MIDIGlis</A>
-<LI><A NAME="tex2html660"
-  HREF="node20.html#SECTION002090000000000000000">MIDIInc</A>
-<LI><A NAME="tex2html661"
-  HREF="node20.html#SECTION0020100000000000000000">MIDIMark</A>
-<LI><A NAME="tex2html662"
-  HREF="node20.html#SECTION0020110000000000000000">MIDIPan</A>
-<LI><A NAME="tex2html663"
-  HREF="node20.html#SECTION0020120000000000000000">MIDISeq</A>
+<LI><A NAME="tex2html702"
+  HREF="node20.html#SECTION002010000000000000000">Variables</A>
 <UL>
-<LI><A NAME="tex2html664"
-  HREF="node20.html#SECTION0020121000000000000000">MIDIDef</A>
+<LI><A NAME="tex2html703"
+  HREF="node20.html#SECTION002011000000000000000">Set</A>
+<LI><A NAME="tex2html704"
+  HREF="node20.html#SECTION002012000000000000000">NewSet</A>
+<LI><A NAME="tex2html705"
+  HREF="node20.html#SECTION002013000000000000000">Mset</A>
+<LI><A NAME="tex2html706"
+  HREF="node20.html#SECTION002014000000000000000">RndSet</A>
+<LI><A NAME="tex2html707"
+  HREF="node20.html#SECTION002015000000000000000">UnSet VariableName</A>
+<LI><A NAME="tex2html708"
+  HREF="node20.html#SECTION002016000000000000000">ShowVars</A>
+<LI><A NAME="tex2html709"
+  HREF="node20.html#SECTION002017000000000000000">Inc and Dec</A>
+<LI><A NAME="tex2html710"
+  HREF="node20.html#SECTION002018000000000000000">VExpand On or Off</A>
+<LI><A NAME="tex2html711"
+  HREF="node20.html#SECTION002019000000000000000">StackValue</A>
 </UL>
 <BR>
-<LI><A NAME="tex2html665"
-  HREF="node20.html#SECTION0020130000000000000000">MIDISplit</A>
-<LI><A NAME="tex2html666"
-  HREF="node20.html#SECTION0020140000000000000000">MIDITname</A>
-<LI><A NAME="tex2html667"
-  HREF="node20.html#SECTION0020150000000000000000">MIDIVoice</A>
-<LI><A NAME="tex2html668"
-  HREF="node20.html#SECTION0020160000000000000000">MIDIVolume</A>
+<LI><A NAME="tex2html712"
+  HREF="node20.html#SECTION002020000000000000000">Predefined Variables</A>
+<LI><A NAME="tex2html713"
+  HREF="node20.html#SECTION002030000000000000000">Indexing and Slicing</A>
+<LI><A NAME="tex2html714"
+  HREF="node20.html#SECTION002040000000000000000">Mathematical Expressions</A>
+<LI><A NAME="tex2html715"
+  HREF="node20.html#SECTION002050000000000000000">Conditionals</A>
+<LI><A NAME="tex2html716"
+  HREF="node20.html#SECTION002060000000000000000">Goto</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
 <H1><A NAME="SECTION002000000000000000000"></A>
-<A NAME="sec-mididirectives"></A>
+<A NAME="sec-variables"></A>
 <BR>
-Low Level MIDI Commands
+Variables, Conditionals and Jumps
 </H1>
 
 <P>
-The commands discussed in this chapter directly effect your MIDI
-output devices.
-
-<P>
-Not all MIDI devices are equal. Many of the effects in this chapter
-may be ignored by your devices. Sorry, but that's just the way MIDI
-is.
+To make the processing of your music easier, 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  supports a very
+primitive set for variable manipulations along with some conditional
+testing and the oft-frowned-upon <SMALL>GOTO</SMALL> command.
 
 <P>
 
-<H1><A NAME="SECTION002010000000000000000"></A> <A NAME="set-channel"></A>
+<H1><A NAME="SECTION002010000000000000000">
+Variables</A>
+</H1>
+
+<P>
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  lets you set a variable, much like in other programming
+languages and to do some basic manipulations on them. Variables are
+most likely to be used for two reasons:
+
+<P>
+
+<UL>
+<LI>For use in setting up conditional segments of your file,
+
+<P>
+</LI>
+<LI>As a shortcut to entering complex chord sequences.
+
+<P>
+</LI>
+</UL>
+
+<P>
+To begin, the following list shows the available commands to set and
+manipulate variables:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Set VariableName <SPAN  CLASS="textit">String</SPAN> 
 <BR>
-Channel
-</H1> 
-
-<P>
-As noted in <A HREF="node3.html#sec-tracks">Tracks and Channels</A> 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  assigns MIDI channels
-dynamically as it creates tracks. In most cases this works fine;
-however, you can if you wish force the assignment of a specific MIDI
-channel to a track with the C<SMALL>HANNEL</SMALL> command.
-
-<P>
-You cannot assign a channel number to a track if it already defined
-(well, see the section C<SMALL>H</SMALL>S<SMALL>HARE</SMALL>, below, for the inevitable
-exception), nor can you change the channel assignments for any of the
-D<SMALL>RUM</SMALL> tracks.
-
-<P>
-Let us assume that you want the <SPAN  CLASS="textit">Bass</SPAN> track assigned to MIDI
-channel 8. Simply use:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Bass Channel 8   </B> 
+Mset VariableName ...MsetEnd 
+<BR>
+UnSet VariableName 
+<BR>
+ShowVars 
+<BR>
+Inc Variablename [value] 
+<BR>
+Dec Variablename [value] 
+<BR>
+Vexpand ON/Off   </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-Caution: If the selected channel is already in use an error will be
-generated. Due to the way 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  allocates tracks, if you really need
-to manually assign track it is recommended that you do this in a
-MMA<SMALL>RC</SMALL> file.
+All variable names are case-insensitive. Any characters can be used in
+a variable name. The only exceptions are that a variable name cannot
+start with a &#8220;$&#8221; or a &#8220;_&#8221; (an underscore--this is reserved for
+internal variables, see below) <SPAN  CLASS="textit">and</SPAN> names cannot contain a
+&#8220;[&#8221; or &#8220;]&#8221; character (brace characters are reserved for
+indexing, <A HREF="#slicing">details here</A>).
 
 <P>
-<A NAME="channel0"></A>
-<P>
-You can disable a channel at any time by using a channel number of 0:
+Variables are set and manipulated by using their names. Variables are
+expanded when their name is prefaced by a space followed by single
+&#8220;$&#8221; sign. For example:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Arpeggio-1 Channel 0  </B> 
+    <B>Set Silly Am / Bm / 
+<BR>
+1 $Silly   </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-will disable the Arpeggio-1 channel, freeing it for use by other
-tracks. A warning message is generated. Disabling a track without a
-valid channel is fine. When you set a channel to 0 the track is also
-disabled. You can restart the track with the O<SMALL>N</SMALL> command
-(<A HREF="node23.html#set-on">here</A>).
+The first line creates the variable &#8220;Silly&#8221;; the second creates a
+bar of music with the chords &#8220;Am / Bm /&#8221;.
 
 <P>
-You don't need to have a valid MIDI channel assigned to a track to do
-things like: MIDIP<SMALL>AN</SMALL>, MIDIG<SMALL>LIS</SMALL>, MIDIV<SMALL>OLUME</SMALL> or
-even the assignment of any music to a track. MIDI data is created in
-tracks and then sent out to the MIDI buffers. Channel assignment is
-checked and allocated at this point, and an error will be generated if
-no channels are available.
-
-<P>
-It's quite acceptable to do channel reassignments in the middle of a
-song. Just assign channel 0 to the unneeded track first.
-
-<P>
-MIDI channel settings are <SPAN  CLASS="textit">not</SPAN> saved in G<SMALL>ROOVE</SMALL>s.
+Note that the &#8220;$&#8221; must be the first item on a line or follow a
+space character. For example, the following will NOT work:
 
 <P>
 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  inserts a MIDI ``track name'' meta event when the channel
-buffers are first assigned at a MIDI offset of 0. If the MIDI channel
-is reassigned, a new ``track name'' is inserted at the current song
-offset.
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Set Silly 4a;b;c;d; 
+<BR>
+1 Am {$Silly}   </B> 
+   
+	    </td></tr>
+      </Table>
 
 <P>
-A more general method is to use C<SMALL>HANNEL</SMALL>P<SMALL>REF</SMALL> detailed below.
+However:
 
 <P>
-You can access the currently assigned channel with the
-$_TRACK_C<SMALL>HANNEL</SMALL> macro.
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>1 Am { $Silly}   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will work fine.
+
+<P>
+Following are details on all the available variable commands:
+
+<P>
+
+<H2><A NAME="SECTION002011000000000000000">
+Set</A>
+</H2>
+
+<P>
+Set or create a variable. You can skip the <SPAN  CLASS="textit">String</SPAN> if you do
+want to assign an empty string to the variable. A valid example is:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Set PassCount 1  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+You can concatenate variables or constants by using a single &#8220;+&#8221;.
+For example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Groove Rhumba 
+<BR>
+Repeat 
+<BR>  ...
+<BR>
+Set a $_Groove + Sus 
+<BR>
+Groove $a 
+<BR>  ...
+<BR>
+Groove Rhumba1 
+<BR>
+Repeatend   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This can be useful in calling G<SMALL>ROOVE</SMALL> variations.
+
+<P>
+
+<H2><A NAME="SECTION002012000000000000000">
+NewSet</A>
+</H2>
+
+<P>
+The N<SMALL>EW</SMALL>S<SMALL>ET</SMALL> command works the same as S<SMALL>ET</SMALL> with the
+exception that that it is completely ignored if the variable already
+exists. So,
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>NewSet ChordVoice JazzGuitar   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+and
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>If NDef ChordVoice
+<BR>
+Set ChordVoice JazzGuitar
+<BR>
+Endif  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+have identical results.
+
+<P>
+
+<H2><A NAME="SECTION002013000000000000000"></A> <A NAME="sec-mset"></A>
+<BR>
+Mset
+</H2>     
+
+<P>
+This command is quite similar to S<SMALL>ET</SMALL>, but M<SMALL>SET</SMALL> expects
+multiple lines. An example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>MSet LongVar 
+<BR>
+1 Cm 
+<BR>
+2 Gm 
+<BR>
+3 G7 
+<BR>
+MsetEnd   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+It is quite possible to set a variable to hold an entire section of
+music (perhaps a chorus) and insert this via macro expansion at
+various places in your file.
+
+<P>
+Each M<SMALL>SET</SMALL> must be terminated by a E<SMALL>ND</SMALL>M<SMALL>SET</SMALL> or
+M<SMALL>SET</SMALL>E<SMALL>ND</SMALL> command (on its own separate line).
+
+<P>
+Be careful if you use an MS<SMALL>ET</SMALL> variable in a P<SMALL>RINT</SMALL>
+statement ... you'll probably get an error. The P<SMALL>RINT</SMALL>
+command will print the <SPAN  CLASS="textit">first</SPAN> line of the variable and the
+remainder will be reinserted into the input stream for interpretation.
+
+<P>
+Special code in 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will maintain the block settings from
+B<SMALL>EGIN</SMALL>/E<SMALL>ND</SMALL>. So, you can do something like:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Mset Spam 
+<BR>&nbsp;&nbsp;Line one 
+<BR>&nbsp;&nbsp;Line 2 
+<BR>&nbsp;&nbsp;333 
+<BR>
+EndMset 
+<BR>
+Begin Print 
+<BR>&nbsp;&nbsp;$Spam 
+<BR>
+End   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+
+<H2><A NAME="SECTION002014000000000000000"></A>
+
+<A NAME="rndset"></A>
+<BR>
+RndSet
+</H2>
+
+<P>
+There are times when you may want a random value to use in selecting a
+G<SMALL>ROOVE</SMALL> or for other more creative purposes. The R<SMALL>ND</SMALL>S<SMALL>ET</SMALL>
+command sets a variable from a value in a list. The list can be
+anything; just remember that each white space forms the start of a new
+item. So,
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>RndSet Var 1 2 3 4 5  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will set $V<SMALL>AR</SMALL> to one of the values 1, 2, 3, 4 or 5.
+
+<P>
+You could use this to randomly select a G<SMALL>ROOVE</SMALL>:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Groove $var Groove1 Groove2 Groove3  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Alternately,
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>RndSet Grv Groove1 Groove2 Groove3  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will set $G<SMALL>RV</SMALL> to one of &#8220;Groove1&#8221;, &#8220;Groove2&#8221; or
+&#8220;Groove3&#8221;.
+
+<P>
+Then you can do the same as in the earlier example with:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Groove $Grv  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+You can also have fun using random values for timing, transposition,
+etc.
+
+<P>
+
+<H2><A NAME="SECTION002015000000000000000">
+UnSet VariableName</A>
+</H2>
+
+<P>
+Removes the variable. This can be useful if you have conditional tests
+which simply rely on a certain variable being &#8220;defined&#8221;.
+
+<P>
+
+<H2><A NAME="SECTION002016000000000000000">
+ShowVars</A>
+</H2>
+
+<P>
+Mainly used for debugging, this command displays the names of the
+defined variables and their contents.  The display will preface each
+variable name with a &#8220;$&#8221;. Note that internal 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  variables are
+not displayed with this command.
+
+<P>
+You can call S<SMALL>HOW</SMALL>V<SMALL>ARS</SMALL> with an argument list. In this case the
+values of the variables names in the list will be printed. Variables
+which do not exist will <SPAN  CLASS="textit">not</SPAN> cause an error, e.g.:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>ShowVars xXx Count foo 
+<BR>&nbsp;&nbsp;&nbsp;$XXX - not defined 
+<BR>&nbsp;&nbsp;&nbsp;$COUNT: 11 
+<BR>&nbsp;&nbsp;&nbsp;$FOO: This is Foo   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+
+<H2><A NAME="SECTION002017000000000000000">
+Inc and Dec</A>
+</H2>
+
+<P>
+These commands increment or decrement a variable. If no argument is
+given, a value of 1 is used; otherwise, the value specified is used.
+The value can be an integer or a floating point number.
+
+<P>
+A short example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Set PassCount 1 
+<BR>
+Set Foobar 4 
+<BR>
+Showvars 
+<BR>
+Inc FooBar 4 
+<BR>
+Inc PassCount 
+<BR>
+ShowVars   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This command is quite useful for creating conditional tests for proper
+handling of codas or groove changes in repeats.
+
+<P>
+
+<H2><A NAME="SECTION002018000000000000000">
+VExpand On or Off</A>
+</H2>
+
+<P>
+Normally variable expansion is enabled. These two options will turn
+expansion on or off. Why would you want to do this? Well, here's a
+simple example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Set LeftC Am Em 
+<BR>
+Set RightC G / 
+<BR>
+VExpand Off 
+<BR>
+Set Full $LeftC $RightC 
+<BR>
+VExpand On   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+In this case the actual contents of the variable &#8220;Full&#8221; is &#8220;$LeftC
+$RightC&#8221;. If the O<SMALL>FF/</SMALL>O<SMALL>N</SMALL> option lines had not been used, the
+contents would be &#8220;Am Em G /&#8221;. You can easily verify this with the
+S<SMALL>HOW</SMALL>V<SMALL>ARS</SMALL> option.
+
+<P>
+When 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  processes a file it expands variables in a recursive
+manner. This means that, in the above example, the line:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>1 $Full  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will be changed to:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>1 Am Em G /  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+However, if later in the file, you change the definition of one of the
+variables ... for example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Set LeftC Am /  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+the same line will now be &#8220;1 Am / G /&#8221;.
+
+<P>
+Most of 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> 's internal commands <SPAN  CLASS="textit">can</SPAN> be redefined with
+variables. However, you really shouldn't use this feature.  It's been
+left for two reasons: it might be useful, and, it's hard to disable.
+
+<P>
+However, not all commands can be redefined. The following is short
+list of things which will work (but, again, not all suggestions should
+be used!):
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Set Rate Tempo 120 
+<BR>  $Rate 
+<BR>
+Set  R Repeat 
+<BR>  $R   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+But, the following will <SPAN  CLASS="textit">not</SPAN> work:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Set B Begin 
+<BR>
+Set  E End 
+<BR>  $B Arpeggio Define 
+<BR>  ...
+<BR>  $E   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+This fails since the Begin/End constructs are expanded before variable
+expansion. However:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Set A Define Arpeggio 
+<BR>
+Begin $a ...End   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+is quite alright.
+
+<P>
+Even though you can use a variable to substitute for the R<SMALL>EPEAT</SMALL>
+or I<SMALL>F</SMALL> directives, using one for R<SMALL>EPEAT</SMALL>E<SMALL>ND</SMALL>,
+E<SMALL>ND</SMALL>R<SMALL>EPEAT</SMALL>, R<SMALL>EPEAT</SMALL>E<SMALL>NDING</SMALL>, L<SMALL>ABEL</SMALL>, I<SMALL>F</SMALL>E<SMALL>ND</SMALL> or
+E<SMALL>ND</SMALL>I<SMALL>F</SMALL> will fail.
+
+<P>
+Variable expansion should usually not be a concern. In most normal
+files, 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will expand variables as they are encountered. However,
+when reading the data in a R<SMALL>EPEAT</SMALL>, I<SMALL>F</SMALL> or M<SMALL>SET</SMALL>
+section the expansion function is skipped--but, when the lines are
+processed, after being stored in an internal queue, variables are
+expanded.
+
+<P>
+
+<H2><A NAME="SECTION002019000000000000000">
+StackValue</A>
+</H2>
+
+<P>
+Sometimes you just want to save a value for a few lines of code. The
+S<SMALL>TACK</SMALL>V<SMALL>ALUE</SMALL> command will save its arguments. You can later
+retrieve them via the $_StackValue macro. For example (taken from
+the <TT><SPAN  CLASS="textbf">stdpats.mma</SPAN></TT> file):
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>StackValue $_SwingMode 
+<BR>
+SwingMode On 
+<BR>
+Begin Drum Define 
+<BR>&nbsp;&nbsp;Swing8 1 0 90 * 8 
+<BR>
+End 
+<BR>&nbsp;&nbsp;...
+<BR>
+SwingMode $_StackValue   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Note that the $_StackValue macro removes the last value from the
+stack. If you invoke the macro when there is nothing saved an error
+will occur.
 
 <P>
 
 <H1><A NAME="SECTION002020000000000000000">
-ChannelPref</A>
+Predefined Variables</A>
 </H1>
 
 <P>
-If you prefer to have certain tracks assigned to certain channels you
-can use the C<SMALL>HANNEL</SMALL>P<SMALL>REF</SMALL> command to create a custom set of
-preferences. By default, 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  assigns channels starting at 16 and
-working down to 1 (with the expectation of drum tracks which are all
-assigned channel 10). If, for example, you would like the <SPAN  CLASS="textit">Bass</SPAN>
-track to be on channel 9, sustained bass on channel 3, and
-<SPAN  CLASS="textit">Arpeggio</SPAN> on channel 5, you can have a command like:
+For your convenience 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  tracks a number of internal settings and
+you can access these values with special macros.<A NAME="tex2html70"
+  HREF="#foot9019"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>  All of these &#8220;system&#8221; variables are
+prefaced with a single underscore. For example, the current tempo is
+displayed with the variable $_TEMPO.
+
+<P>
+There are two categories of system variables. The first are the simple
+values for global settings:
+
+<P>
+<DL>
+<DT><STRONG>&nbsp;&nbsp;$_AutoLibPath</STRONG></DT>
+<DD>Current A<SMALL>UTO</SMALL>L<SMALL>IB</SMALL>P<SMALL>ATH</SMALL> setting.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_BarNum</STRONG></DT>
+<DD>Current bar number of song.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_Debug</STRONG></DT>
+<DD>Current debug settings.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_Groove</STRONG></DT>
+<DD>Name of the currently selected groove. May be
+  empty if no groove has been selected.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_KeySig</STRONG></DT>
+<DD>Key signature as defined in song file. If no key
+  signature is set the somewhat cryptic 0# will be returned.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_IncPath</STRONG></DT>
+<DD>Current I<SMALL>NC</SMALL>P<SMALL>ATH</SMALL> setting.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_LastDebug</STRONG></DT>
+<DD>Debug settings prior to last D<SMALL>EBUG</SMALL>
+  command. This setting can be used to restore settings, e.g.:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>ChannelPref Bass=9 Arpeggio=5 Bass-Sus=3   </B> 
+    <B>Debug Warnings=off 
+<BR>    ...stuff generating annoying warnings
+<BR>
+Debug $_LastDebug   </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-Most likely this will be in your <SMALL>MMARC</SMALL> file.
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_LastGroove</STRONG></DT>
+<DD>Name of the groove selected <SPAN  CLASS="textit">before</SPAN> the
+  currently selected groove.
 
 <P>
-You can use multiple command lines, or have multiple assignments on a
-single line. Just make sure that each item consists of a trackname, an
-``='' and a channel number in the range 1 to 16.
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_LastVolume</STRONG></DT>
+<DD>Previously set global volume setting.
 
 <P>
-
-<H1><A NAME="SECTION002030000000000000000"></A> <A NAME="set-chshare"></A>
-<BR>
-ChShare
-</H1> 
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_LibPath</STRONG></DT>
+<DD>Current L<SMALL>IB</SMALL>P<SMALL>ATH</SMALL> setting.
 
 <P>
-
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  is fairly conservative in its use of MIDI tracks. ``Out of the
-box'' it demands a separate MIDI channel for each of its tracks, but
-only as they are actually used. In most cases, this works just fine.
-
-<P>
-However, there are times when you might need more tracks than the
-available MIDI channels or you may want to free up some channels for
-other programs.
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_LineNum</STRONG></DT>
+<DD>Line number in current file.
 
 <P>
-If you have different tracks with the same voicing, it's quite simple.
-For example, you might have an arpeggio and scale track:
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_Lyric</STRONG></DT>
+<DD>Current L<SMALL>YRIC</SMALL> settings.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_MIDISplit</STRONG></DT>
+<DD>List of S<SMALL>PLIT</SMALL>C<SMALL>HANNELS</SMALL>.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_OutPath</STRONG></DT>
+<DD>Current O<SMALL>UT</SMALL>P<SMALL>ATH</SMALL> setting.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_MIDIPlayer</STRONG></DT>
+<DD>Current M<SMALL>IDI</SMALL>P<SMALL>LAYER</SMALL> setting, including options.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_Seq</STRONG></DT>
+<DD>Current S<SMALL>EQ</SMALL> point (0 to
+  S<SMALL>EQ</SMALL>S<SMALL>IZE</SMALL>). Useful in debugging.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_SeqRnd</STRONG></DT>
+<DD>Global S<SMALL>EQ</SMALL>R<SMALL>ND</SMALL> setting (on, off or track
+  list).
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_SeqRndWeight</STRONG></DT>
+<DD>Global S<SMALL>EQ</SMALL>R<SMALL>ND</SMALL>W<SMALL>EIGHT</SMALL> settings.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_SeqSize</STRONG></DT>
+<DD>Current S<SMALL>EQ</SMALL>S<SMALL>IZE</SMALL> setting.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_SwingMode</STRONG></DT>
+<DD>Current S<SMALL>WING</SMALL>M<SMALL>ODE</SMALL> setting (On or Off)
+  and the Skew value.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_StackValue</STRONG></DT>
+<DD>The last value stored on the S<SMALL>TACK</SMALL>V<SMALL>ALUE</SMALL>
+  stack.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_Tempo</STRONG></DT>
+<DD>Current T<SMALL>EMPO</SMALL>. Note that if you have used
+  the optional <SPAN  CLASS="textit">bar count</SPAN> in setting the tempo this will be the
+  target tempo.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_Time</STRONG></DT>
+<DD>The current T<SMALL>IME</SMALL> (beats per bar) setting.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_ToneTr</STRONG></DT>
+<DD>List of all T<SMALL>ONE</SMALL>TR settings.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_Transpose</STRONG></DT>
+<DD>Current T<SMALL>RANSPOSE</SMALL> setting.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_VExpand</STRONG></DT>
+<DD>VExpand value (On/Off). Not very useful since you
+  can't enable VEXPAND back with a macro.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_VoiceTr</STRONG></DT>
+<DD>List of all V<SMALL>OICE</SMALL>TR settings.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_Volume</STRONG></DT>
+<DD>Current global volume setting.
+
+<P>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_VolumeRatio</STRONG></DT>
+<DD>Global volume ratio (track vrs. master) from
+  A<SMALL>DJUST</SMALL>V<SMALL>OLUME</SMALL> Ratio setting.
+
+<P>
+</DD>
+</DL>
+
+<P>
+The second type of system variable is for settings in a certain track.
+Each of these variables is in the form $_TRACKNAME_VALUE. For
+example, the current voice setting for the &#8220;Bass-Sus&#8221; track can be
+accessed with the variable $_Bass-Sus_Voice.
+
+<P>
+If the associated command permits a value for each sequence in your
+pattern, the macro will more than one value. For example (assuming a
+S<SMALL>EQ</SMALL>S<SMALL>IZE</SMALL> of 4):
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Arpeggio Sequence A16 z 
+    <B>Bass Octave 3 4 2 4 
 <BR>
-Arpeggio Voice Piano1 
+Print $_Bass_Octave  
+<BR>  ...
 <BR>
-Scale Sequence z S8 
-<BR>
-Scale Voice Piano1   </B> 
+3 4 2 4   </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-In this example, 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will use different MIDI channels for the
-<SPAN  CLASS="textit">Arpeggio</SPAN> and the <SPAN  CLASS="textit">Scale</SPAN>. Now, if you force channel
-sharing:
+The following are the available &#8220;TrackName&#8221; macros:
+
+<P>
+<DL>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Accent</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Articulate</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Channel</STRONG></DT>
+<DD>Assigned MIDI channel 1-16, 0 if not
+  assigned.
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Compress</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Direction</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_DupRoot</STRONG></DT>
+<DD>(only permitted in Chord Tracks)
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Harmony</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_HarmonyVolume</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Invert</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Limit</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Mallet</STRONG></DT>
+<DD>Rate and delay values (only valid in
+  Solo and Melody tracks)
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_MidiNote</STRONG></DT>
+<DD>Current setting
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_NoteSpan</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Octave</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Range</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Rskip</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Rtime</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Rvolume</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_SeqRnd</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_SeqRndWeight</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Sequence</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Span</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Strum</STRONG></DT>
+<DD>(only permitted in Chord tracks)
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Tone</STRONG></DT>
+<DD>(only permitted in Drum tracks)
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Unify</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Voice</STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Voicing</STRONG></DT>
+<DD>(only permitted in Chord tracks)
+</DD>
+<DT><STRONG>&nbsp;&nbsp;$_TRACKNAME_Volume</STRONG></DT>
+<DD><P>
+</DD>
+</DL>
+
+<P>
+The &#8220;TrackName&#8221; macros are useful in copying values between
+non-similar tracks and C<SMALL>H</SMALL>S<SMALL>HARE</SMALL> tracks. For example:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Scale ChShare Arpeggio  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-both tracks will use the same MIDI channel.
-
-<P>
-This is really foolproof in the above example, especially since the
-same voice is being used for both. Now, what if you wanted to use a
-different voice for the tracks?
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Arpeggio Sequence A16 z 
+    <B>Begin Bass
+<BR>&nbsp;&nbsp;Voice AcousticBass  
+<BR>&nbsp;&nbsp;Octave 3    
+<BR>&nbsp;&nbsp;...
 <BR>
-Arpeggio Voice Piano1 Strings 
+End
 <BR>
-Scale Sequence z S8 
-<BR>
-Scale ChShare Arpeggio  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-You might think that this would work, but it doesn't. 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  ignores
-voice changes for bars which don't have a sequence, so it will set
-``Piano1'' for the first bar, then ``Strings'' for the second (so far,
-so good). But, when it does the third bar (an A<SMALL>RPEGGIO</SMALL>) it will
-not know that the voice has been changed to ``Strings'' by the
-<SPAN  CLASS="textit">Scale</SPAN> track.
-
-<P>
-So, the general rule for track channel sharing is to use only one
-voice.
-
-<P>
-One more example which doesn't work:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Arpeggio Sequence A8 
-<BR>
-Scale Sequence S4 
-<BR>
-Arpeggio Voice Piano1 
-<BR>
-Scale Voice Piano1 
-<BR>
-Scale ChShare Arpeggio   </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-This example has an active scale and arpeggio sequence in each
-bar. Since both use the same voice, you may think that it will work
-just fine ...but it may not. The problem here is that 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will
-generate MIDI on and off events which may overlap each other. One or
-the other will be truncated. If you are using a different octave, it
-will work much better. It may sound okay, but you should probably find
-a better way to do this.
-
-<P>
-When a C<SMALL>H</SMALL>S<SMALL>HARE</SMALL> directive is parsed the ``shared'' channel is
-first checked to ensure that it has been assigned. If not currently
-assigned, the assignment is first done. What this means is that you
-are subverting 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> 's normal dynamic channel allocation scheme. This
-may cause is a depletion of available channels.
-
-<P>
-Please note that that the use of the C<SMALL>H</SMALL>S<SMALL>HARE</SMALL> command is
-probably never really needed, so it might have more problems than
-outlined here. If you want to see how much a bother channel sharing
-becomes, have a look at the standard library file
-<TT><SPAN  CLASS="textbf">frenchwaltz.mma</SPAN></TT>. All this so the accordion bass can use one
-channel instead of 6. If I were to write it again I'd just let it suck
-up the MIDI channels.
-
-<P>
-For another, simpler, way of reassigning MIDI tracks and letting 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  do most of the work for you, refer to the
-<A HREF="node23.html#sec-delete">D<SMALL>ELETE</SMALL> command</A>.
-
-<P>
-
-<H1><A NAME="SECTION002040000000000000000">
-ForceOut</A>
-</H1>
-
-<P>
-Under normal conditions 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  only generates the MIDI tracks it thinks
-are valid or relevant. So, if you create a track but insert no note
-data into that track it will not be generated. An easy way to verify
-this is by creating file and running 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  with the -c command line
-option. Lets start off by creating a file you might think will set the
-keyboard channel on your synth to a TenorSax voice:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Begin Solo-Keyboard
-<BR>&nbsp;&nbsp;Channel 1
-<BR>&nbsp;&nbsp;Voice TenorSax
-<BR>&nbsp;&nbsp;MIDIVolume 100
+Begin Walk
+<BR>&nbsp;&nbsp;ChShare Bass
+<BR>&nbsp;&nbsp;Voice $_Bass_Voice
+<BR>&nbsp;&nbsp;Octave $_Bass_Octave
+<BR>&nbsp;&nbsp;...
 <BR>
 End  </B> 
    
@@ -400,1165 +1035,676 @@ End  </B>
       </Table>
 
 <P>
-If you compile this you should get:
 
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>$ mma test -c
-<BR>&nbsp;&nbsp;
+<H1><A NAME="SECTION002030000000000000000"></A>
+ <A NAME="slicing"></A>
 <BR>
-File 'test' parsed, but no MIDI file produced!
-<BR>&nbsp;
-<BR>
-Tracks allocated:
-<BR>&nbsp;SOLO-KEYBOARD
-<BR>&nbsp;
-<BR>
-Channel assignments:
-<BR>
-1 SOLO-KEYBOARD
-<BR>  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-So, a 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  track was created, but if you compile this file and
-examine the resulting MIDI file you will find that the voice <SPAN  CLASS="textit">has
-  not</SPAN> been set.
-
-<P>
-To overcome this, insert the F<SMALL>ORCE</SMALL>O<SMALL>UT</SMALL> command at the end of the
-track setup. For example, here is a more complete file which will set
-the keyboard track to TenorSax with a volume of 100, play a bar of
-accompaniment, set a Trumpet voice with a louder volume, play another
-bar, and finally reset the keyboard to the default Piano voice.
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Groove BossaNova
-<BR>&nbsp;
-<BR>
-Begin Solo
-<BR>&nbsp;&nbsp;Channel 1
-<BR>&nbsp;&nbsp;Voice TenorSax
-<BR>&nbsp;&nbsp;MIDIVolume 100
-<BR>&nbsp;&nbsp;ForceOut
-<BR>
-End
-<BR>&nbsp;
-<BR>
-1 C
-<BR>&nbsp;
-<BR>
-Begin Solo
-<BR>&nbsp;&nbsp;Voice Trumpet
-<BR>&nbsp;&nbsp;MIDIVolume 120
-<BR>&nbsp;&nbsp;ForceOut
-<BR>
-End
-<BR>&nbsp;
-<BR>
-2 G
-<BR>&nbsp;
-<BR>
-Begin Solo
-<BR>&nbsp;&nbsp;Voice Piano1
-<BR>&nbsp;&nbsp;MIDIVolume 127
-<BR>&nbsp;&nbsp;ForceOut
-<BR>
-End
-<BR>  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-Note: The same or similar results could be accomplished with the
-MIDI command; however, it's a bit harder to use and the
-commands would be in the Meta track.
-
-<P>
-
-<H1><A NAME="SECTION002050000000000000000"></A>
-<A NAME="sec-midi"></A>
-<BR>
-MIDI
+Indexing and Slicing
 </H1>
 
 <P>
-The complete set of MIDI commands is not limitless--but from this end
-it seems that adding commands to suit every possible configuration is
-never-ending. So, in an attempt to satisfy everyone, a command which
-will place any arbitrary MIDI stream in your tracks has been
-implemented. In most cases this will be a MIDI ``Sysex'' or ``Meta''
-event.
-
-<P>
-For example, you might want to start a song off with a MIDI reset:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>MIDI 0xF0 0x05 0x7e 0x7f 0x09 0x01 0xf7  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-The values passed to the MIDI command are normal integers; however,
-they must all be in the range of 0x00 to 0xff. In most cases it is
-easiest to use hexadecimal numbers by using the ``0x'' prefix. But,
-you can use plain decimal integers if you prefer.
-
-<P>
-In the above example:
+All variables can have an option <SPAN  CLASS="textit">slice</SPAN> or <SPAN  CLASS="textit">index</SPAN> appended
+to them using &#8220;[]&#8221; notation. The exact syntax of the data in the
+&#8220;[]&#8221;s is dependent on the underlying Python interpreter. But, as a
+summary:
 
 <P>
 <DL COMPACT>
-<DT>&nbsp;&nbsp;0xF0</DT>
-<DD>Designates a SYSEX message
-
-<P>
+<DT></DT>
+<DD><SPAN  CLASS="textbf">[2]</SPAN> - selects the 3rd item in the list,
 </DD>
-<DT>&nbsp;&nbsp;0x05</DT>
-<DD>The length of the message
-
-<P>
+<DT></DT>
+<DD><SPAN  CLASS="textbf">[1:2]</SPAN> - selects the 2nd to 3rd item (which means only the
+  2nd),
 </DD>
-<DT>&nbsp;&nbsp;0x7e</DT>
-<DD>...The actual message
-
-<P>
+<DT></DT>
+<DD><SPAN  CLASS="textbf">[0:2]</SPAN> - selects items 1 and 2,
+</DD>
+<DT></DT>
+<DD><SPAN  CLASS="textbf">[-1]</SPAN> - selects the last item.
 </DD>
 </DL>
 
 <P>
-Another example places the key signature of F major (1 flat) in the
-meta track:<A NAME="tex2html66"
-  HREF="#foot9027"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>
+It is possible to use the <SPAN  CLASS="textit">step</SPAN> option as well, but we don't
+know when you would.
+
+<P>
+When indexing or slicing a variable, the following should be kept in
+mind:
+
+<P>
+
+<UL>
+<LI>For simple variables which contain only one element
+  (ie. $_Tempo) any index other than &#8220;[0]&#8221;, &#8220;[-1]&#8221;, etc. will
+  return an empty string.
+
+<P>
+</LI>
+<LI>Variables containing multiple values (ie. $_Bass_Volume) are
+  treated as list. Slicing and indexing is useful to extract a single
+  value.
+
+<P>
+</LI>
+<LI>Variables created with M<SMALL>SET</SMALL> are treated a list of
+  lines. Slicing returns multiple (or single) lines. This can be
+  useful in selecting only a portion of a previously created variable.
+
+<P>
+</LI>
+</UL>
+The &#8220;[]&#8221; must follow the variable <SPAN  CLASS="textit">without</SPAN> any space
+characters. The expression inside the &#8220;[]&#8221; must not contain any
+spaces.
+
+<P>
+The index or slice expression cannot be a variable.
+
+<P>
+An example:
+
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>MIDI 0xff 0x59 0x02 0xff 0x00  </B> 
+    <B>Groove bossanova 
+<BR>
+Bass Volume m mf p mp 
+<BR>
+print $_Bass_Volume 
+<BR>
+print $_Bass_Volume[1:3] 
+<BR>
+print $_Bass_volume[2]   </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-Some <SPAN  CLASS="textit">cautions:</SPAN>
+will display:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>100 110 40 70 
+<BR>
+110 40 
+<BR>
+40   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+
+<H1><A NAME="SECTION002040000000000000000">
+Mathematical Expressions</A>
+</H1>
+
+<P>
+Anywhere you can use a variable (user defined or built-in) you can
+also use a mathematical expression. Expressions delimited in a
+$(...) set are passed to the underlying Python interpreter, parsed
+and expanded. Included in an expression can be any combination of
+values, operators, and 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  variables.
+
+<P>
+Here are a couple of examples with the 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  generated values:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Print  $( 123 * (4.0/5) ) 
+<BR>
+98.4   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Tempo 100 
+<BR>
+Set V $( $_Tempo + 44) 
+<BR>
+Print $v 
+<BR>
+144   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+How it works: 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  first parses each line and expands any variables
+it finds. In the second example this means that the $_Tempo is
+converted to &#8220;100&#8221;. After all the variable expansion is done a check
+is made to find math delimiters. Anything inside these delimiters is
+evaluated by Python.
+
+<P>
+You can even use this feature to modify values stored in
+lists.<A NAME="tex2html71"
+  HREF="#foot9165"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A> A bit complex, but well worthwhile! In the following
+example we add &#8220;10&#8221; to the current A<SMALL>RTICULATE</SMALL> setting. It's
+split into three lines to make it clearer:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>set a $( ' $_Chord_Articulate '.split() )   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Note the use of single quotes to convert the 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  &#8220;string&#8221; to
+something Python can deal with. You could just as easily use double
+quotes, but do note that the spaces before the &#8220;$&#8221; and before the
+final &#8220; ' &#8221; are needed. The result of the above is that the variable
+&#8220;$a&#8221; now is set to something like: &#8220;['100', '100', '90', '80']&#8221;.
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>set b $([str(int(x)+10)for x in $a ] )   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Next we use a list comprehension to add &#8220;10&#8221; to each value in the
+list. Our new list (contained in &#8220;$b&#8221;) will be: &#8220;['110', '110',
+'100', '90']&#8221;. Notice how the strings were converted from strings to
+integers (for the addition) and then back to strings.
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>set c $( ' '.join( $b ) )   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+The new list is now converted to a string which 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  can deal with
+and store it in &#8220;$c&#8221;. In this case: &#8220;110 110 100 90&#8221;.
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord Articulate $c   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Finally, C<SMALL>HORD</SMALL> A<SMALL>RTICULATE</SMALL> is modified.
+
+<P>
+Now, that that is clear, you can easily combine the operation using no
+variables at all:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Chord Articulate $(' '.join([str(int(x)+10)for x in'
+  $_Chord_Articulate '.split()]))   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Some additional notes:
+
+<P>
 
 <UL>
-<LI>
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  makes no attempt to verify the validity of the data!
+<LI>To keep your computer safe from malicious scripts, only the
+  following operators and functions are permitted.
+
+<P>
+The unary operators:
+
+<P>
+<PRE>
+    - + ~
+</PRE>
+
+<P>
+the basic operators:
+
+<P>
+<PRE>
+    + - / // % * **
+</PRE>
+
+<P>
+the bitwise operators:
+
+<P>
+<PRE>
+    &amp; | ^ &lt;&lt; &gt;&gt;
+</PRE>
+
+<P>
+the constants:
+
+<P>
+<PRE>
+    e pi
+</PRE>
+
+<P>
+the functions:
+
+<P>
+<PRE>
+    ceil() fabs() floor() exp() log() log10() pow()
+    sqrt() acos() asin()  atan() atan2() cos() hypot()
+    sin()  tan()  degrees() radians() cosh() sinh()
+    tanh() abs()  chr()  int()
+</PRE>
+
+<P>
+the miscellaneous functions:<A NAME="tex2html72"
+  HREF="#foot9098"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A>
+<P>
+<PRE>
+    for, in, str(), .join(), .split()
+</PRE>
+
+<P>
+and values and parentheses.
 
 <P>
 </LI>
-<LI>The ``Length'' field must be manually calculated.
+<LI>For details on the use/format of the above please refer to the
+  Python documentation.
 
 <P>
 </LI>
-<LI>Malformed sequences can create non-playable MIDI files. In extreme
-  situations, these might even damage your synth. You are on your own
-  with this command ...be careful.
+<LI>$(...) expressions cannot be nested.
 
 <P>
 </LI>
-<LI>The M<SMALL>IDI</SMALL> directive always places data in the <SPAN  CLASS="textit">Meta</SPAN>
-  track at the current time offset into the file. This should not be a
-  problem.
+<LI>There must be a whitespace character before the leading $.
+
+<P>
+</LI>
+<LI>Any 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  variables must be delimited with whitespace. For
+  example $( $_Tempo + 44) will work; however, both $($_Tempo +
+  44) and $( $_Tempo+ 44) will cause an error.
+
+<P>
+</LI>
+<LI>The supplied file <TT><SPAN  CLASS="textbf">egs/misc/math.mma</SPAN></TT> shows a number of
+  examples.
 
 <P>
 </LI>
 </UL>
 
 <P>
-Cautions aside, <TT><SPAN  CLASS="textbf">includes/init.mma</SPAN></TT> has been included in this
-distribution. I use this without apparent problems; to use it add the
-command line:
 
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>MMAstart init  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-in your <SMALL>MMARC</SMALL> file. The file is pretty well commented and it
-sets a synth up to something reasonably sane.
-
-<P>
-If you need a brief delay after a raw MIDI command, it is possible to
-insert a silent beat with the <A HREF="node15.html#beatadjust">B<SMALL>EAT</SMALL>A<SMALL>DJUST</SMALL>
-  command</A>.  See
-the file <TT><SPAN  CLASS="textbf">includes/reset.mma</SPAN></TT> for an example.
-
-<P>
-
-<H1><A NAME="SECTION002060000000000000000"></A> <A NAME="sec-midiclear"></A>
-<BR>
-MIDIClear
-</H1> 
-
-<P>
-As noted earlier in this manual you should be very careful in
-programming MIDI sequences into your song and/or library files. Doing
-damage to a synthesizer is probably a remote possibility ...but
-leaving it in a unexpected mode is likely. For this reason the
-MIDIC<SMALL>LEAR</SMALL> command has been added as a companion to the
-MIDIV<SMALL>OICE</SMALL> and MIDIS<SMALL>EQ</SMALL> commands.
-
-<P>
-Each time a MIDI track (not necessary the same as a 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  track) is
-ended or a new G<SMALL>ROOVE</SMALL> is started, a check is done to see if any
-MIDI data has been inserted in the track with a MIDIV<SMALL>OICE</SMALL> or
-MIDIS<SMALL>EQ</SMALL> command. If it has, a further check is done to see if
-there is an ``undo'' sequence defined via a MIDIC<SMALL>LEAR</SMALL> command.
-That data is then sent; or, if data has not be defined for the track,
-a warning message is displayed.
-
-<P>
-The MIDIC<SMALL>LEAR</SMALL> command uses the same syntax as MIDIV<SMALL>OICE</SMALL>
-and MIDIS<SMALL>EQ</SMALL>; however, you can not specify different sequence
-for different bars in the sequence:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Bass-Funky MIDIClear 1 Modulation 0; 1 ReleaseTime 0  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-As in MIDIV<SMALL>OICE</SMALL> and MIDIS<SMALL>EQ</SMALL> you can include sequences
-defined in a MIDID<SMALL>EF</SMALL>. The &lt;beat&gt;offsets
-are required, but ignored.
-
-<P>
-
-<H1><A NAME="SECTION002070000000000000000"></A> <A NAME="midismf"></A>
-<BR>
-MIDIFile
-</H1> 
-
-<P>
-This option controls some fine points of the generated MIDI file. The
-command is issued with a series of parameters in the form
-``MODE=VALUE''. You can have multiple settings in a single
-MIDIF<SMALL>ILE</SMALL> command.
-
-<P>
-
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  can generate two types of SMF (Standard MIDI Files):
-<DL COMPACT>
-<DT>0.</DT>
-<DD>This file contains only one track into which the data for
-  all the different channel tracks has been merged. A number of synths
-  which accept SMF (Casio, Yamaha and others) only accept type 0
-  files.
-
-<P>
-</DD>
-<DT>1.</DT>
-<DD>This file has the data for each MIDI channel in its own
-  track. This is the default file generated by 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> .
-
-<P>
-</DD>
-</DL>
-
-<P>
-You can set the filetype in an RC file (or, for that matter, in any
-file processed by 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> ) with the command:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>MidiFile SMF=0  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-or
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>MidiFile SMF=1  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-You can also set it on the command line with the -M option. Using the
-command line option will override the M<SMALL>IDI</SMALL>SMF command if it is
-in a RC file.
-
-<P>
-By default 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  uses ``running status'' when generating MIDI files.
-This can be disabled with the command:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>MidiFile Running=0  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-or enabled (but this is the default) with:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>MidiFile Running=1  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-Files generated without running status will be about 20 to 30% larger
-than their compressed counterparts. They may be useful for use with
-brain-dead sequencers and in debugging generated code. There is no
-command line equivalent for this option.
-
-<P>
-
-<H1><A NAME="SECTION002080000000000000000">
-MIDIGlis</A>
+<H1><A NAME="SECTION002050000000000000000">
+Conditionals</A>
 </H1>
 
 <P>
-This sets the MIDI portamento<A NAME="tex2html67"
-  HREF="#foot8883"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A> (in case you're new to all this, portamento is like
-glissando between notes--wonderful, if you like trombones! To enable
-portamento:
+One of the most important reasons to have variables in 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  is to use
+them in conditionals. In 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  a conditional consists of a line
+starting with an I<SMALL>F</SMALL> directive, a test, a series of lines to
+process (depending upon the result of the test), and a closing
+E<SMALL>ND</SMALL>I<SMALL>F</SMALL> or I<SMALL>F</SMALL>E<SMALL>ND</SMALL><A NAME="tex2html73"
+  HREF="#foot9166"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">4</SPAN></SUP></A>  directive. An optional E<SMALL>LSE</SMALL> statement may be included.
 
 <P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Arpeggio MIDIGlis 30  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-The parameter can be any value between 1 and 127. To turn the sliding
-off:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Arpeggio MIDIGlis 0  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-This command will work with any track (including drum tracks).
-However, the results may be somewhat ``interesting'' or
-``disappointing'', and many MIDI devices don't support portamento at
-all. So, be cautious.  The data generated is not sent into the MIDI
-stream until musical data is created for the relevant MIDI channel.
-
-<P>
-
-<H1><A NAME="SECTION002090000000000000000">
-MIDIInc</A>
-</H1>
-
-<P>
-
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  has the ability to include a user supplied MIDI file at any
-point of its generated files. These included files can be used to play
-a melodic solo over a 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  pattern or to fill a section of a song
-with something like a drum solo.
-
-<P>
-When the MIDI<SMALL>INC</SMALL> command is encountered the current line is
-parsed for options, the file is inserted into the stored MIDI stream,
-and processing continues. The include has no effect on any song
-pointers, etc.
-
-<P>
-MIDI<SMALL>INC</SMALL> has a number of options, all set in the form
-OPTION=VALUE. Following are the recognized options:
+The first set of tests are unary (they take no arguments):
 
 <P>
 <DL>
-<DT><STRONG>FILENAME</STRONG></DT>
-<DD>The filename of the file to be included. This must be
-  a complete filename. The filename will be expanded by the Python
-  os.path.expanduser() function for tilde expansion. No prefixes or
-  extensions are added by 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> . Examples:
-  F<SMALL>ILENAME</SMALL>=<TT><SPAN  CLASS="textbf">/home/bob/midi/myfile.mid</SPAN></TT>.  or
-  F<SMALL>ILENAME</SMALL>=<TT><SPAN  CLASS="textbf">&nbsp;/sounds/myfile.mid</SPAN></TT>.
+<DT><STRONG>Def VariableName</STRONG></DT>
+<DD>Returns true if the variable has been defined.
 
 <P>
 </DD>
-<DT><STRONG>VOLUME</STRONG></DT>
-<DD>An adjustment for the volume of all the note on events
-  in the included MIDI file. The adjustment is specified as a
-  percentage with values under 100 decreasing the volume and over 100
-  increasing it. If the resultant volume (velocity) is less than 1 a
-  velocity of 1 will be used; if it is over 127, 127 will be
-  used. Example: V<SMALL>OLUME</SMALL>=80.
-
-<P>
-</DD>
-<DT><STRONG>OCTAVE</STRONG></DT>
-<DD>Octave adjustment for all notes in the file. Values in
-  the range -4 to 4 are permitted. Notes in drum tracks (channel 10)
-  will not be effected. Example: O<SMALL>CTAVE</SMALL>=2.
-
-<P>
-</DD>
-<DT><STRONG>TRANSPOSE</STRONG></DT>
-<DD>Transposition adjustment settings in the range -24 to
-  24 are permitted. If you do not set a value for this the global
-  transpose setting will be applied (expecting channel 10, drum,
-  notes). Example: T<SMALL>RANSPOSE</SMALL>=-2.
-
-<P>
-</DD>
-<DT><STRONG>LYRIC</STRONG></DT>
-<DD>This option will copy any <SPAN  CLASS="textit">Lyric</SPAN> events to the
-  
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  meta track. The valid settings are ``On'' or ``Off''. By
-  default this is set to ``Off''. Example L<SMALL>YRIC</SMALL>=On.
-
-<P>
-</DD>
-<DT><STRONG>TEXT</STRONG></DT>
-<DD>This option will copy any <SPAN  CLASS="textit">Text</SPAN> events to the 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>    meta track. The valid settings are ``On'' or ``Off''. By default
-  this is set to ``Off''. Example T<SMALL>EXT</SMALL>=On.
-
-<P>
-</DD>
-<DT><STRONG>START</STRONG></DT>
-<DD>Specifies the start point <SPAN  CLASS="textit">of the file to be
-    included</SPAN> in beats. For example, ``Start=22'' would start the
-  include process 22 beats into the file. The data will be inserted at
-  the current song position in your MMA file. The value used must
-  greater or equal to 0 and may be a fractional beat value (18.456 if
-  fine).
-
-<P>
-</DD>
-<DT><STRONG>END</STRONG></DT>
-<DD>Specifies the end point <SPAN  CLASS="textit">of the file to be included</SPAN>
-  in beats. For example, ``End=100'' would discard all data after 100
-  beats in the file. The value used must be greater that the
-  <SPAN  CLASS="textit">Start</SPAN> position and can be fractional.
-
-<P>
-</DD>
-<DT><STRONG><SPAN  CLASS="textit">TRACK</SPAN></STRONG></DT>
-<DD>A trackname <SPAN  CLASS="textit">must be set</SPAN> into which notes
-  are inserted. You can set more than one track/channel if you
-  wish. For example, if you had the option <SPAN  CLASS="textit">DRUM=10</SPAN> any notes in
-  the MIDI file with a channel 10 setting would be inserted into the
-  
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  <SPAN  CLASS="textit">Drum</SPAN> track. Similarity, <SPAN  CLASS="textit">Solo-Tenor=1</SPAN> will copy
-  notes from channel 1 into the <SPAN  CLASS="textit">Solo-Tenor</SPAN> track. If the track
-  doesn't exist, it will be created. Note: this means that the channel
-  assignment in your included file and the new 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  generated file
-  will most likely be different.
-
-<P>
-<SPAN  CLASS="textit">At least one T<SMALL>RACK</SMALL> option is required to include a MIDI
-    file. It is up to the user to examine existing MIDI files to
-    determine the tracks being used and which to include into 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> 's
-    output.</SPAN>
+<DT><STRONG>Ndef VariableName</STRONG></DT>
+<DD>Returns true if the variable has not been
+  defined.
 
 <P>
 </DD>
 </DL>
 
 <P>
-A complete example of usage is shown in the files in the directory
-<TT><SPAN  CLASS="textbf">egs/frankie</SPAN></TT> in the distribution. A short example:
+In the above tests you must supply the name of a variable--don't make
+the mistake of including a &#8220;$&#8221; which will invoke expansion and
+result in something you were not expecting.
+
+<P>
+A simple example:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>MIDIinc File=test.mid Solo-Piano=1 Drum=10 Volume=70  </B> 
+    <B>If Def InCoda 
+<BR>&nbsp;&nbsp;5 Cm 
+<BR>&nbsp;&nbsp;6 / 
+<BR>
+Endif  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-will include the MIDI file ``test.mid'' at the current position and
-assign all notes in channel 1 to the <SPAN  CLASS="textit">Solo-Piano</SPAN> track and the
-notes from channel 10 to the <SPAN  CLASS="textit">Drum</SPAN> track. The volumes for all
-the notes will be adjusted to 70% of that in the original.
+The other tests are binary (they take two arguments):
 
 <P>
-A few notes:
+<DL>
+<DT><STRONG>LT Str1 Str2</STRONG></DT>
+<DD>Returns true if <SPAN  CLASS="textit">Str1</SPAN> is less than
+  <SPAN  CLASS="textit">Str2</SPAN>. (Please see the discussion below on how the tests are
+  done.)
+
+<P>
+</DD>
+<DT><STRONG>LE Str1 Str2</STRONG></DT>
+<DD>Returns true if <SPAN  CLASS="textit">str1</SPAN> is less than or equal
+  to <SPAN  CLASS="textit">Str2</SPAN>.
+
+<P>
+</DD>
+<DT><STRONG>EQ Str1 Str2</STRONG></DT>
+<DD>Returns true if <SPAN  CLASS="textit">str1</SPAN> is equal to
+  <SPAN  CLASS="textit">Str2</SPAN>.
+
+<P>
+</DD>
+<DT><STRONG>NE Str1 Str2</STRONG></DT>
+<DD>Returns true if <SPAN  CLASS="textit">str1</SPAN> is not equal to
+  <SPAN  CLASS="textit">Str2</SPAN>.
+
+<P>
+</DD>
+<DT><STRONG>GT Str1 Str2</STRONG></DT>
+<DD>Returns true if <SPAN  CLASS="textit">str1</SPAN> is greater than
+  <SPAN  CLASS="textit">Str2</SPAN>.
+
+<P>
+</DD>
+<DT><STRONG>GE Str1 Str2</STRONG></DT>
+<DD>Returns true if <SPAN  CLASS="textit">str1</SPAN> is greater than or
+  equal to <SPAN  CLASS="textit">Str2</SPAN>.
+
+<P>
+</DD>
+</DL>
+
+<P>
+In the above tests you have several choices in specifying <SPAN  CLASS="textit">Str1</SPAN>
+and <SPAN  CLASS="textit">Str2</SPAN>. At some point, when 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  does the actual comparison,
+two strings or numeric values are expected. So, you really could do:
 
 <P>
 
-<UL>
-<LI>MIDI files to be included do not have to have the same tempo.
-  M<SMALL>IDI</SMALL>I<SMALL>NC</SMALL> adjusts this automatically during the importation.
-  However, the internal setting for beat division should be the same.
-  
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  assumes a beat division of 192 (this is set in bytes 12 and 13
-  of the MIDI file). If the included file differs a warning is printed
-  and 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will attempt to adjust the timings.
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>If EQ abc ABC  </B> 
+   
+	    </td></tr>
+      </Table>
 
 <P>
-</LI>
-<LI>All files are parsed to find the offset of the first note-on
-  event; notes to be included are set with their offsets compensated
-  by that time. This means that any silence at the start of the
-  included file is skipped (this may surprise you if you have used the
-  optional <SPAN  CLASS="textit">Start</SPAN> setting). If you want the included file to
-  start somewhere besides the start of the current bar you can use a
-  B<SMALL>EATADJUST</SMALL> before the M<SMALL>IDI</SMALL>I<SMALL>NC</SMALL>--use another to move
-  the pointer back right after the include to keep the song pointer
-  correct.
+and get a &#8220;true&#8221; result. The reason that &#8220;abc&#8221; equals &#8220;ABC&#8221; is
+that all the comparisons in 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  are case-insensitive.
 
 <P>
-</LI>
-<LI>Not all events in the included files are transferred: notably
-  all system and meta events (other than text and lyric, see above)
-  are ignored.
-
-<P>
-</LI>
-<LI>If you want to apply different V<SMALL>OLUME</SMALL> or other options to
-  different tracks, just do multiple includes of the same file (with
-  each include using a different track and options).
-
-<P>
-</LI>
-</UL>
+You can also compare a variable to a string:
 
 <P>
 
-<H1><A NAME="SECTION0020100000000000000000">
-MIDIMark</A>
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>If GT $foo abc  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+will evaluate to &#8220;true&#8221; if the <SPAN  CLASS="textit">contents</SPAN> of the variable
+&#8220;foo&#8221; evaluates to something &#8220;greater than&#8221; &#8220;abc&#8221;. But, there is
+a bit of a &#8220;gotcha&#8221; here. If you have set &#8220;foo&#8221; to a two word
+string, then 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  will choke on the command. In the following
+example:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Set Foo A B 
+<BR>
+If GT $Foo abc   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+the comparison is passed the line:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>If GT A B abc  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+and 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  seeing three arguments generates an error. If you want the
+comparison done on a variable which might be more than one word, use
+the &#8220;$$&#8221; syntax. This delays the expansion of the variable until
+the I<SMALL>F</SMALL> directive is entered. So:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>If $$foo abc  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+would generate a comparison between &#8220;A B&#8221; and &#8220;ABC&#8221;.
+
+<P>
+Delayed expansion can be applied to either variable. It only works in
+an I<SMALL>F</SMALL> directive.
+
+<P>
+Strings and numeric values can be confusing in comparisons. For
+example, if you have the strings &#8220;22&#8221; and &#8221;3&#8221; and compare them as
+strings, &#8220;3&#8221; is greater than &#8220;22&#8221;; however, if you compare them as
+values then 3 is less than 22.
+
+<P>
+The rule in 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  is quite simple: If either string in a comparison is
+a numeric value, both strings are converted to values. Otherwise they
+are compared as strings.<A NAME="tex2html74"
+  HREF="#foot9139"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">5</SPAN></SUP></A>
+<P>
+This lets you do consistent comparisons in situations like:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Set Count 1 
+<BR>
+If LE $$Count 4 
+<BR>&nbsp;&nbsp;...
+<BR>
+IfEnd  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Note that the above example could have used &#8220;$Count&#8221;, but you
+should probably always use the &#8220;$$&#8221; in tests.
+
+<P>
+Much like other programming languages, an optional E<SMALL>LSE</SMALL>
+condition may be used:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>If Def Coda 
+<BR>&nbsp;&nbsp;Groove Rhumba1 
+<BR>
+Else 
+<BR>&nbsp;&nbsp;Groove Rhumba 
+<BR>
+Endif   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+The E<SMALL>LSE</SMALL> statement(s) are processed only if the test for the
+I<SMALL>F</SMALL> test is false.
+
+<P>
+Nesting of I<SMALL>F</SMALL>s is permitted:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>If ndef Foo 
+<BR>&nbsp;&nbsp;Print Foo has been defined. 
+<BR>
+Else 
+<BR>&nbsp;&nbsp;If def bar 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;Print bar has been defined. Cool. 
+<BR>&nbsp;&nbsp;Else 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;Print no bar ...go thirsty. 
+<BR>&nbsp;&nbsp;Endif 
+<BR>
+Endif   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+works just fine. Indentation has been used in these examples to
+clearly show the nesting and conditions. You should do the same.
+
+<P>
+
+<H1><A NAME="SECTION002060000000000000000">
+Goto</A>
 </H1>
 
 <P>
-You can insert a MIDI Marker event into the Meta track with this
-command. The mark can be useful in debugging your MIDI output with a
-sequencer or editor which supports Mark events (most do).
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>MidiMark Label  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-will insert the text ``Label'' at the current position. You can add an
-optional negative or positive offset in beats:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>MidiMark 2 Label4  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-will insert ``Label4'' 2 beats into the next bar.
-
-<P>
-
-<H1><A NAME="SECTION0020110000000000000000">
-MIDIPan</A>
-</H1>
-
-<P>
-In MIDI-speak ``pan'' is the same as ``balance'' on a stereo. By
-adjusting the MIDIP<SMALL>AN</SMALL> for a track you can direct the output to
-the left, right or both speakers. Example:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Bass MIDIPan 4   </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-This command is only available in track mode. The data generated is
-not sent into the MIDI stream until musical data is created for the
-relevant MIDI channel.
-
-<P>
-The value specified must be in the range 0 to 127, and must be an
-integer.
-
-<P>
-A variation for this command is to have the pan value change over a
-range of beats:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Solo MidiPan 10 120 4  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-in this case you must give exactly 3 arguments:
+The G<SMALL>OTO</SMALL> command redirects the execution order of your script
+to the point at which a L<SMALL>ABEL</SMALL> or line number has been
+defined. There are really two parts to this:
 
 <P>
 
 <OL>
-<LI>The initial pan value (0 to 127),
+<LI>A command defining a label, and,
+
+<P>
 </LI>
-<LI>The final pan value (0 to 127),
-</LI>
-<LI>The number of beats to apply the pan over.
-</LI>
-</OL>
-
-<P>
-Using a beat count you can create interesting effects with different
-instruments moving between the left and right channels. 
-
-<P>
-MIDIP<SMALL>AN</SMALL> is not saved or restored by G<SMALL>ROOVE</SMALL> commands, nor
-is it effected by S<SMALL>EQ</SMALL>C<SMALL>LEAR</SMALL>. A MIDIP<SMALL>AN</SMALL> is inserted
-directly into the MIDI track at the point at which it is encountered
-in the music file. This means that the effect of MIDIP<SMALL>AN</SMALL> will
-be in use until another MIDIP<SMALL>AN</SMALL> is encountered.
-
-<P>
-MIDIP<SMALL>AN</SMALL> can be used in MIDI compositions to emulate the sound
-of an orchestra. By assigning different values to different groups of
-instruments, you can get the feeling of strings, horns, etc. all
-placed in the ``correct'' position on the stage.
-
-<P>
-MIDIP<SMALL>AN</SMALL> can be used for much cruder purposes. When creating
-accompaniment tracks for a mythical jazz group, you might set all the
-bass tracks (Bass, Walk, Bass-1, etc) set to aMIDIP<SMALL>AN</SMALL> 0. Now,
-when practicing at home you have a ``full band''; and the bass player
-can practice without the generated bass lines simply by turning off
-the left speaker.
-
-<P>
-Because most MIDI keyboard do not reset between tunes, there should be
-a MIDIP<SMALL>AN</SMALL> to undo the effects at the end of the
-file. Example:<A NAME="tex2html68"
-  HREF="#foot9031"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A>
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Include swing 
-<BR>
-Groove Swing
-<BR>
-Bass MIDIPan 0
-<BR>
-Walk MIDIPan 0
-<BR>
-1 C
-<BR>
-2 C
-<BR>  ...
-<BR>
-123 C
-<BR>
-Bass MIDIPan 64
-<BR>
-Walk MIDIPan 64   </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-
-<H1><A NAME="SECTION0020120000000000000000">
-MIDISeq</A>
-</H1>
-
-<P>
-It is possible to associate a set of MIDI controller messages with
-certain beats in a sequence. For example, you might want to have the
-Modulation Wheel set for the first beats in a bar, but not for the
-third. The following example shows how:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Seqsize 4 
-<BR>
-Begin Bass-2 
-<BR>
-Voice NylonGuitar 
-<BR>
-Octave 4 
-<BR>
-Sequence { 1 4 1 90; 2 4 3 90; 3 4 5 90; 4 4 1+ 90} 
-<BR>
-MIDIDef WheelStuff 1 1 0x7f ; 2 1 0x50; 3 1 0 
-<BR>
-MidiSeq WheelStuff 
-<BR>
-Articulate 90 
-<BR>
-End 
-<BR>    
-<BR>
-C <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
- SRC="img10.png"
- ALT="$*$"></SPAN> 4  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-The M<SMALL>IDI</SMALL>S<SMALL>EQ</SMALL> command is specific to a track and is saved as part
-of the G<SMALL>ROOVE</SMALL> definition. This lets style file writers use
-enhanced MIDI features to dress up their sounds.
-
-<P>
-The command has the following syntax:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>TrackName MidiSeq &lt;Beat&gt; &lt;Controller&gt; &lt;Datum&gt; [ ; ...]   </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-where:
-<DL>
-<DT><STRONG>Beat</STRONG></DT>
-<DD>is the Beat in the bar. This can be an integer (1,2, etc.)
-  or a floating point value (1.2, 2.25, etc.). It must be 1 or greater
-  and less than the end of bar (in <SPAN  CLASS="textbf">4/4</SPAN> it must be less than
-  5).
-
-<P>
-</DD>
-<DT><STRONG>Controller</STRONG></DT>
-<DD>A valid MIDI controller. This can be a value in the
-  range 0x00 to 0x7f or a symbolic name. See the appendix
-  <A HREF="node29.html#sec-controllers">, here,</A> for a list of
-  defined names.
-
-<P>
-</DD>
-<DT><STRONG>Datum</STRONG></DT>
-<DD>All controller messages use a single byte ``parameter''
-  in the range 0x00 to 0x7f.
-
-<P>
-</DD>
-</DL>
-
-<P>
-You can enter the values in either standard decimal notation or in
-hexadecimal with the prefixed ``0x''. In most cases, your code will be
-clearer if you use values like ``0x7f'' rather than the equivalent
-``127''.
-
-<P>
-The MIDI sequences specified can take several forms:
-
-<P>
-
-<OL>
-<LI>A simple series like:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>MIDISeq 1 ReleaseTime 50; 3 ReleaseTime 0   </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-in this case the commands are applied to beats 1 and 3 in each bar
-  of the sequence.
+<LI>The G<SMALL>OTO</SMALL> command.
 
 <P>
 </LI>
 </OL>
-<H2><A NAME="SECTION0020121000000000000000">.</A>
-
-</H2>
-
-<P>
-As a set of names predefined in an MIDID<SMALL>EF</SMALL> command:
 
 <P>
 
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>MIDIdef Rel1 1 ReleaseTime 50; 3 ReleaseTime 0 
-<BR>
-MIDIdef Rel2 2 ReleaseTime 50; 4 ReleaseTime 0 
-<BR>
-MIDISeq Rel1 Rel2   </B> 
-   
-	    </td></tr>
-      </Table>
-
 <P>
-Here, the commands defined in ``Rel1'' are applied to the first bar
-  in the sequence, ``Rel2'' to the second. And, if there are more bars
-  in the sequence than definitions in the line, the series will be
-  repeated for each bar.
-
-<P>
-A set of series enclosed in { } braces. Each braced series is
-  applied to a different bar in the sequence. The example above could
-  have been does as:
+A label is set with the L<SMALL>ABEL</SMALL> directive:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>MIDISeq { 1 ReleaseTime 50; 3 ReleaseTime 0 }  &#92;
-<BR>     { 2 ReleaseTime 50; 4 ReleaseTime 0 }   </B> 
+    <B>Label Point1  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-Finally, you can combine the above into different combinations.
-  For example:
+The string defining the label can be any sequence of characters.
+Labels are case-insensitive.
 
 <P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>MIDIDef Rel1 1 ReleaseTime 50 
-<BR>
-MIDIDef Rel2 2 ReleaseTime 50  
-<BR>
-MIDISeq { Rel1; 3 ReleaseTime 0 } { Rel2; 4 ReleaseTime 0 }   </B> 
-   
-	    </td></tr>
-      </Table>
+To make this look a lot more line those old BASIC programs, any lines
+starting with a line number are considered to be label lines as well.
 
 <P>
-
-<P>
-You can have specify different messages for different beats (or
-different messages/controllers for the same beat) by listing them on
-the same M<SMALL>IDI</SMALL>S<SMALL>EQ</SMALL> line separated by ``;''s.
-
-<P>
-If you need to repeat a sequence for a measure in a sequence you can
-use the special notation ``/'' to force the use of the previous line.
-The special symbol ``z'' or ''-'' can be used to disable a bar (or
-number of bars). For example:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Bass-Dumb MIDISeq 1 ReleaseTime 20 z / FOOBAR   </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-would set the ``ReleaseTime'' sequence for the first bar of the
-sequence, no MIDISeq events for the second and third, and the contents
-of ``FOOBAR'' for the fourth.
-
-<P>
-To disable the sending of messages just use a single ``-'':
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Bass-2 MidiSeq - // disable controllers  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-
-<H1><A NAME="SECTION0020130000000000000000">
-MIDISplit</A>
-</H1>
-
-<P>
-For certain post-processing effects it is convenient to have each
-different drum tone in a separate MIDI track. This makes it easier to
-apply an effect to, for example, the snare drum. Just to make this a
-bit more fun you can split any track created by 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> .
-
-<P>
-To use this feature:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>MIDISplit &lt;list of channels&gt;  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-So, to split out just the drum channel<A NAME="tex2html69"
-  HREF="#foot8981"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">4</SPAN></SUP></A> you would have the command:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>MIDISplit 10  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-somewhere in your song file.
-
-<P>
-When processing 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  creates an internal list of MIDI note-on events
-for each tone or pitch in the track. It then creates a separate MIDI
-track for each list. Any other events are written to another track.
-
-<P>
-
-<H1><A NAME="SECTION0020140000000000000000">
-MIDITname</A>
-</H1>
-
-<P>
-When creating a MIDI track, 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  inserts a MIDI Track Name event at
-the start of the track.  By default, this name is the same as the
-associated 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  track name. You can change this by issuing the
-MIDI<SMALL>T</SMALL>N<SMALL>AME</SMALL> command. For example, to change the C<SMALL>HORD</SMALL>
-track name you might do something like:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Chord MidiTname Piano  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-Please note that this <SPAN  CLASS="textit">only</SPAN> effects the tracks in the generated
-MIDI file.  You still refer to the track in your file as C<SMALL>HORD</SMALL>.
-
-<P>
-
-<H1><A NAME="SECTION0020150000000000000000">
-MIDIVoice</A>
-</H1>
-
-<P>
-Similar to the MIDIS<SMALL>EQ</SMALL> command discussed in the previous
-section, the MIDIV<SMALL>OICE</SMALL> command is used to insert MIDI
-controller messages into your files. Instead of sending the data for
-each bar as MIDIS<SMALL>EQ</SMALL> does, this command just sends the listed
-control events at the start of a track and then, if needed, at the
-start of each bar.
-
-<P>
-Again, a short example. Let us assume that you want to use the
-``Release Time'' controller to sustain notes in a bass line:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Seqsize 4 
-<BR>
-Begin Bass-2 
-<BR>
-Voice NylonGuitar 
-<BR>
-MidiVoice 1 ReleaseTime 50 
-<BR>
-Octave 4 
-<BR>
-Sequence { 1 4 1 90; 2 4 3 90; 3 4 5 90; 4 4 1+ 90} 
-<BR>
-Articulate 60 
-<BR>
-End 
-<BR>    
-<BR>
-C <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
- SRC="img10.png"
- ALT="$*$"></SPAN> 4  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-should give an interesting effect.
-
-<P>
-The syntax for the command is:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Track MIDIVoice &lt;beat&gt; &lt;controller&gt; &lt;Datum&gt; [; ...]   </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-This syntax is identical to that discussed in the section for
-MIDIS<SMALL>EQ</SMALL>, above. The &lt;beat&gt;value is
-required for the command--it determines if the data is sent before or
-after the V<SMALL>OICE</SMALL> command is sent. Some controllers are reset by
-a voice, others not. My experiments show that B<SMALL>ANK</SMALL> should be
-sent before, most others after. Using a ``beat'' of ``0'' forces the
-MidiVoice data to be sent before the Voice control; any other ``beat''
-value causes the data to be sent after the Voice control. In this
-silly example:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Voice Piano1 
-<BR>
-MidiVoice {0 Bank 5; 1 ReleaseTime 100}   </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-the MIDI data is created in an order like:
-
-<P>
-<P>
-<BLOCKQUOTE>0 Param Ch=xx Con=00 val=05 
-<BR>
-0 ProgCh Ch=xx Prog=00 
-<BR>
-0 Param Ch=xx Con=72 val=80
-
-</BLOCKQUOTE>
-
-<P>
-All the MIDI events occur at the same offset, but the order is (may
-be) important.
-
-<P>
-By default 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  assumes that the MIDIVoice data is to be used only
-for the first bar in the sequence. But, it's possible to have a
-different sequence for each bar in the sequence (just like you can
-have a different V<SMALL>OICE</SMALL> for each bar). In this case, group the
-different data groups with {} brackets:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Bass-1 MIDIVoice {1 ReleaseTime 50} {1 ReleaseTime 20}   </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-This list is stored with other G<SMALL>ROOVE</SMALL> data, so is ideal for
-inclusion in a style file.
-
-<P>
-If you want to disable this command after it has been issued you can
-use the form:
-
-<P>
-
-      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
-        <tr><td>
-    <B>Track MIDIVoice - // disable  </B> 
-   
-	    </td></tr>
-      </Table>
-
-<P>
-Some technical notes:
+A few considerations on labels and line numbers:
 
 <P>
 
 <UL>
-<LI>
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  tracks the events sent for each bar and will not duplicate
-  sequences.
+<LI>A duplicate label generated with a L<SMALL>ABEL</SMALL> command will
+  generate an error.
 
 <P>
 </LI>
-<LI>Be cautious in using this command to switch voice banks. If you
-  don't switch the voice bank back to a sane value you'll be playing
-  the wrong instruments!
+<LI>A line number label duplicating a L<SMALL>ABEL</SMALL> is an error.
 
 <P>
 </LI>
-<LI>Do use the MIDIC<SMALL>LEAR</SMALL> command
-  (<A HREF="#sec-midiclear">(details)</A>) to
-  ``undo'' anything you've done via a MIDIV<SMALL>OICE</SMALL> command.
+<LI>A L<SMALL>ABEL</SMALL> duplicating a line number is an error.
+
+<P>
+</LI>
+<LI>Duplicate line numbers are permitted. The last one encountered
+  will be the one used.
+
+<P>
+</LI>
+<LI>All label points are generated when the file is opened, not as
+  it is parsed.
+
+<P>
+</LI>
+<LI>Line numbers (really, just comments) do not need to be in any
+  order.
 
 <P>
 </LI>
@@ -1566,112 +1712,129 @@ Some technical notes:
 
 <P>
 
-<H1><A NAME="SECTION0020160000000000000000"></A> <A NAME="channelvol"></A>
-<BR>
-MIDIVolume
-</H1> 
-
 <P>
-MIDI devices equipped with mixer settings can make use of the
-``Channel'' or ``Master'' volume settings.<A NAME="tex2html70"
-  HREF="#foot9019"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">5</SPAN></SUP></A>
-<P>
-
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  doesn't set any channel volumes without your knowledge. If you
-want to use a set of reasonable defaults, look at the file
-<TT><SPAN  CLASS="textbf">includes/init.mma</SPAN></TT> which sets all channels other than ``1'' to
-``100''. Channel ``1'' is assumed to be a solo/keyboard track and is
-set to the maximum volume of ``127''.
-
-<P>
-You can set selected MIDIV<SMALL>OLUME</SMALL>s:
+The command:
 
 <P>
 
       <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
         <tr><td>
-    <B>Chord MIDIVolume 55  </B> 
+    <B>Goto Point1  </B> 
    
 	    </td></tr>
       </Table>
 
 <P>
-will set the Chord track channel. For most users, the use of this
-command is <SPAN  CLASS="textit">not</SPAN> recommended since it will upset the balance of
-the library grooves. If you need a track softer or louder you should
-use the volume setting for the track.
+causes an immediate jump to a new point in the file. If you are
+currently in repeat or conditional segment of the file, the remaining
+lines in that segment will be ignored.
 
 <P>
-The data generated is not sent into the MIDI stream until musical data
-is created for the relevant MIDI channel.
+
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  does not check to see if you are jumping into a repeat or
+conditional section of code--but doing so will usually cause an
+error. Jumping out of these sections is usually safe.
 
 <P>
-Caution: If you use the command with A<SMALL>LL</SMALL>T<SMALL>RACKS</SMALL> you should note
-that only existing 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  tracks will be effected.
+The following example shows the use of both types of label. In this
+example only lines 2, 3, 5 and 6 will be processed.
 
 <P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Goto Foo 
+<BR>
+1 Cm 
+<BR>
+Label Foo 
+<BR>
+2 Dm 
+<BR>
+3 / 
+<BR>
+Goto 5 
+<BR>
+4 Am 
+<BR>
+5 Cm 
+<BR>
+6 Dm   </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+For an example of how to use some simple labels to simulate a &#8220;DS al
+Coda&#8221; examine the file &#8220;lullaby-of-Broadway&#8221; in the sample songs
+directory.
 <BR><HR><H4>Footnotes</H4>
 <DL>
-<DT><A NAME="foot9027">... track:</A><A
- HREF="node20.html#tex2html66"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
-<DD>This is much easier to do with the KeySig
-  command, <A HREF="node10.html#keysig">here</A>
+<DT><A NAME="foot9019">... macros.</A><A
+ HREF="node20.html#tex2html70"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
+<DD>The values
+  are dynamically created and reflect the current settings, and may
+  not be exactly the same as the value you originally set due to
+  internal roundings, etc.
 
 </DD>
-<DT><A NAME="foot8883">... portamento</A><A
- HREF="node20.html#tex2html67"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A></DT>
-<DD>The name ``Glis'' is used
-  because ``MIDIPortamento'' gets to be a bit long to type and
-  ``MIDIPort'' might be interpreted as something to do with
-  ``ports''.
+<DT><A NAME="foot9165">...
+lists.</A><A
+ HREF="node20.html#tex2html71"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A></DT>
+<DD>this was written before the introduction of slices,
+  (<A HREF="#slicing">details here</A>). Slices make this
+  much easier, but lets leave the hard stuff in just to show what can
+  be done.
 
 </DD>
-<DT><A NAME="foot9031">... Example:</A><A
- HREF="node20.html#tex2html68"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A></DT>
-<DD>This is much easier to do with the MMAStart
-  and MMAEnd options <A HREF="node26.html#sec-paths">(details)</A>.
+<DT><A NAME="foot9098">... functions:</A><A
+ HREF="node20.html#tex2html72"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A></DT>
+<DD>It is possible that the
+    following functions could be used to do &#8220;bad&#8221; things. If you see
+    code using these commands from a suspect source you should be
+    careful.
 
 </DD>
-<DT><A NAME="foot8981">... channel</A><A
- HREF="node20.html#tex2html69"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">4</SPAN></SUP></A></DT>
-<DD>In 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  this will
-  always be channel 10.
+<DT><A NAME="foot9166">...I<SMALL>F</SMALL>E<SMALL>ND</SMALL></A><A
+ HREF="node20.html#tex2html73"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">4</SPAN></SUP></A></DT>
+<DD>
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT> 's author probably suffers
+  from mild dyslexia and can't remember if the command is IfEnd or
+  EndIf, so both are permitted. Use whichever is more comfortable for
+  you.
 
 </DD>
-<DT><A NAME="foot9019">... settings.</A><A
- HREF="node20.html#tex2html70"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">5</SPAN></SUP></A></DT>
-<DD>I discovered this
-  on my keyboard after many frustrating hours attempting to balance
-  the volumes in the library. Other programs would change the keyboard
-  settings, and not being aware of the changes, I'd end up scratching
-  my head.
+<DT><A NAME="foot9139">... strings.</A><A
+ HREF="node20.html#tex2html74"><SUP><SPAN CLASS="arabic">20</SPAN>.<SPAN CLASS="arabic">5</SPAN></SUP></A></DT>
+<DD>An attempt is made to convert each
+  string to a float. If conversion of both strings is successful, the
+  comparison is made between two floats, otherwise two strings are
+  used.
 
 </DD>
 </DL>
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html650"
+<A NAME="tex2html700"
   HREF="node21.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html648"
+<A NAME="tex2html698"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html642"
+<A NAME="tex2html692"
   HREF="node19.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html651"
-  HREF="node21.html">Patch Management</A>
-<B> Up:</B> <A NAME="tex2html649"
+<B> Next:</B> <A NAME="tex2html701"
+  HREF="node21.html">Low Level MIDI Commands</A>
+<B> Up:</B> <A NAME="tex2html699"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html643"
-  HREF="node19.html">Variables, Conditionals and Jumps</A></DIV>
+<B> Previous:</B> <A NAME="tex2html693"
+  HREF="node19.html">Repeats</A></DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 bob
-2008-09-28
+2010-11-07
 </ADDRESS>
 </BODY>
 </HTML>

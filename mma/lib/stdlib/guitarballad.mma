@@ -129,6 +129,12 @@ Arpeggio-8     Sequence  A8 / / A4
 
 DefGroove GuitarBalladIntro   A 4 bar introduction.
 
+Begin Chord-Sus
+   Groove GuitarBalladSus
+   Sequence  {1 1 90 0 90 0 * 4} {1 1 70 0 60 0 * 4} {1 1 60 0 40 0 * 4}  { 1 1 50 0 30 0 * 4 }
+End
+
+DefGroove GuitarBalladSusIntro  The same 4 bar intro with strings.
 
 ////////////////////////
 //// Ending

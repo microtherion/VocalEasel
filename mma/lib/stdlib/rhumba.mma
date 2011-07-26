@@ -11,6 +11,8 @@ End
 
 Author Bob van der Poel
 
+// Converted chord-guitar to plectrum, May/2010, bvdp.
+
 SeqClear
 Time 4
 Timesig 4 4
@@ -280,13 +282,14 @@ DefGroove Rhumba2Sus  Marimbas  and sustained strings.
 
 Groove Rhumba
 
-Begin Chord-Guitar
+Begin Plectrum
 	Voice JazzGuitar
-	Sequence  C1234 C134 C24 C13
+	Sequence  {1 5 90; 2 -5 5-6:0 1-4:80; 3 5 90; 4 -5  6:0 1-5:80} \
+              {1 5 90; 3 5 90; 4 -5 5-6:0 1-4:80 } \
+              {2 -5 70; 4 -5 70 } \
+              {1 5 80; 3 5 90}
 	SeqRnd On
-	Voicing  Mode=Optimal
-	Articulate 99
-	Octave 6
+	Octave 5
 	Accent 1 20 3 20 
 	Volume pp
 End

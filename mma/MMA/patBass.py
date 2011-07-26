@@ -34,9 +34,10 @@ from   MMA.pat import PC
 
 class Bass(PC):
     """ Pattern class for a bass track. """
+ 
 
     vtype = 'BASS'
-
+    
     def getPgroup(self, ev):
         """ Get group for bass pattern.
 
@@ -106,9 +107,7 @@ class Bass(PC):
             if ct.bassZ:
                 continue
 
-
             note = ct.chord.scaleList[p.noteoffset] + p.addoctave + p.accidental
-
 
             if not self.harmonyOnly[sc]:
                 self.sendNote(
@@ -117,16 +116,19 @@ class Bass(PC):
                     self.adjustNote(note),
                     self.adjustVolume(p.vol, p.offset))
 
-
             if self.harmony[sc]:
                 h = MMA.harmony.harmonize(self.harmony[sc], note, ct.chord.noteList)
+
+                strumOffset = self.getStrum(sc)
+                
                 for n in h:
                     self.sendNote(
-                        p.offset,
+                        p.offset + strumOffset,
                         self.getDur(p.duration),
                         self.adjustNote(n),
                         self.adjustVolume(p.vol * self.harmonyVolume[sc], -1))
 
+                    strumOffset += self.getStrum(sc)
 
 
 

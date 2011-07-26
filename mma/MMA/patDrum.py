@@ -34,18 +34,43 @@ class Drum(PC):
     """ Pattern class for a drum track. """
 
     vtype = 'DRUM'
-    toneList = [38]
 
     def __init__(self, ln):
         """ init for drum track. """
 
-        PC.__init__(self, ln)
-        
+        self.toneList = [38]        
+
+        PC.__init__(self, ln)   # This order is important!
+
         self.setChannel('10')
         if not gbl.mtrks[self.channel].trackname:
             gbl.mtrks[self.channel].addTrkName(0, 'Drum')
 
+    def saveGroove(self, gname):
+        """ Save special/local variables for groove. """
+
+        PC.saveGroove(self, gname)  # do this 1st. Creates storage.
+        self.grooves[gname]['TONES'] = self.toneList[:]
  
+    def restoreGroove(self, gname):
+        """ Restore special/local/variables for groove. """
+
+        self.toneList = self.grooves[gname]['TONES']
+        PC.restoreGroove(self, gname)
+
+    def setSeqSize(self):
+        """ Expand existing pattern list. """
+
+        self.toneList = seqBump(self.toneList)
+        PC.setSeqSize(self)
+
+    def clearSequence(self):
+        """ Set some initial values. Called from init and clear seq. """
+        
+        PC.clearSequence(self)
+        self.toneList = seqBump([38])
+
+
     def setTone(self, ln):
         """ Set a tone list. Only valid for DRUMs.
         ln[] is not nesc. the right length.

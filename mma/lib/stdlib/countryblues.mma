@@ -34,7 +34,7 @@ Begin Drum-Snare
 End
 
 Begin Drum-HH
-	Sequence { D8 Shift .5 }
+	Sequence { D8 Shift .5  }
 	Tone OpenHiHat
 	Rskip 40
 	Rtime 2
@@ -128,7 +128,7 @@ DefGroove CountryBluesWalkSus Walking bass and sustained strings.
 
 //////////////////////////////////////////////
 // CountryBlues1
-// Change chord for a random Triplet/Triplet/Chord/Chord
+// Change chord for a  Chord/Triplet/Chord/Triplet
 
 Groove CountryBlues
 
@@ -139,7 +139,7 @@ End
 
 Chord-1  Sequence  {C13 Shift .66} C13
 
-DefGroove CountryBlues1  Add piano triplets every 4 bars.
+DefGroove CountryBlues1  Add piano triplets every 2 bars.
 
 Chord-Sus Groove CountryBluesSus
 

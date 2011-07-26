@@ -76,7 +76,7 @@ Begin Bass-15
            {1.06 16 1 94; 2.57 4. 3 104; 4.06 8 5 102 }
 End
 
-DefGroove Main-A    Bass, Steel Guitar, Tenor Sax & Drums
+DefGroove TwiMainA    Bass, Steel Guitar, Tenor Sax & Drums
 
 
 //////////////////////
@@ -146,7 +146,7 @@ Begin Bass-15
  Sequence  {1.55 8 1 98; 2.07 8 3 105; 3.07 8 5 105; 4.07 8 6 98; 4.57 8 5 98 }
 End
 
-DefGroove Fill-In-AA    Fill for Main A style
+DefGroove TwiFillAA    Fill for Main A style
 
 
 //////////////////////
@@ -242,7 +242,7 @@ Begin Bass-15
  Sequence  {2.07 8 5 102; 2.57 8 5 102; 3.57 8 5 102; 4.07 8 5 102 }
 End
 
-DefGroove Fill-In-AB    Fill In AB, add the piano to prepare the B substyle
+DefGroove TwiFillAB    Fill In AB, add the piano to prepare the B substyle
 
 
 //////////////////////
@@ -339,7 +339,7 @@ Begin Bass-15
            {1.06 8 5 114; 2.55 8 5 114 }
 End
 
-DefGroove Main-B    Here it realy grooves and we have a piano
+DefGroove TwiMainB    Here it realy grooves and we have a piano
 
 
 //////////////////////
@@ -435,7 +435,7 @@ Begin Bass-15
  Sequence  {1.06 8 5 114; 4.1 4 5 91 }
 End
 
-DefGroove Fill-In-BA    Fill In BA, we go back to Main A so piano only on the first messure
+DefGroove TwiFillBA    Fill In BA, we go back to Main A so piano only on the first measure
 
 
 //////////////////////
@@ -513,7 +513,7 @@ Begin Bass-15
  Sequence  {2.07 4 3 105; 3.07 4 5 105; 4.07 4 3 98 }
 End
 
-DefGroove Fill-In-BB    Fill In BB, pause the piano
+DefGroove TwiFillBB    Fill In BB, pause the piano
 
 
 //////////////////////
@@ -593,7 +593,7 @@ Begin Bass-11
  Sequence   z  z  z {4.52 8 5 92 }
 End
 
-DefGroove Intro-B   Our Intro-B , drums, guitar & bass
+DefGroove TwiIntroB   Our Intro-B , drums, guitar & bass
 
 
 //////////////////////
@@ -706,31 +706,4 @@ Begin Bass-15
            {1.06 8 3 81; 2.55 8 3 81; 4.05 1 3 81 } z 
 End
 
-DefGroove Ending-B    The ending, all instruments involved
-
-
-
-Groove    Main-A
-DefGroove Main-C            /// Alias definition from Main-A
-
-Groove    Main-A
-DefGroove Main-D            /// Alias definition from Main-A
-
-Groove    Intro-B
-DefGroove Intro-A           /// Alias definition from Intro-B
-
-Groove    Intro-B
-DefGroove Intro-C           /// Alias definition from Intro-B
-
-Groove    Ending-B
-DefGroove Ending-A          /// Alias definition from Ending-B
-
-Groove    Ending-B
-DefGroove Ending-C          /// Alias definition from Ending-B
-
-Groove    Fill-In-AA
-DefGroove Fill-In-CC        /// Alias definition from Fill-In-AA
-
-Groove    Fill-In-AA
-DefGroove Fill-In-DD        /// Alias definition from Fill-In-AA
-
+DefGroove TwiEndingB    The ending, all instruments involved

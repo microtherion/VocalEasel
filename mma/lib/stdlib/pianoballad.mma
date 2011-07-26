@@ -59,8 +59,8 @@ Begin Arpeggio-High
 	Volume mp
 	Articulate 80
 	Octave 5
-	Sequence { 1 4 90; 2 8 90; 2.5 8 90; 3 4 90; 4 8 90; 4.5 8 90 } \
-             { 1 4. 90; 2.5 8 90; 3 4 90; 4 8 90; 4.5 8 90}
+	Sequence {1 4 90; 2 8 90; 2.5 8 90; 3 4 90; 4 8 90; 4.5 8 90} \
+             {1 4. 90; 2.5 8 90; 3 4 90; 4 8 90; 4.5 8 90} 
 End
 
 Begin Arpeggio-Low
@@ -68,8 +68,8 @@ Begin Arpeggio-Low
 	Volume p
 	Articulate 70
 	Octave 4
-	Sequence  { 1 8 90; 1.5 8 90; 2 4 90; 3.5 4 90; 4.5 8 90} \
-              { 1 8 90; 1.5 2 90; 3.5 8 90; 4 4 90}
+	Sequence  {1 8 90; 1.5 8 90; 2 4 90; 3.5 4 90; 4.5 8 90} \
+              {1 8 90; 1.5 2 90; 3.5 8 90; 4 4 90} 
 End
 
 DefGroove PianoBallad   Simple ballad with drums and piano.
@@ -115,6 +115,30 @@ Chord-Sus  Groove PianoBalladSus
 
 DefGroove PianoBallad1Sus   Piano arpeggios with chords and strings.
 
+
+/// block chords, no arpeggios
+
+Groove PianoBallad
+
+Arpeggio-High Sequence -
+Arpeggio-Low  Sequence -
+
+Begin Chord-Block
+  Voice $_Chord_Voice
+  Octave 6
+  Articulate 70
+  Volume mp
+  Sequence {1 4. 90; 2.5 8 80; 3 2 90} {C12; 3 2 90}
+End
+
+DefGroove PianoBallad2   PianoBallad with added block chords, no arpeggios.
+
+Groove PianoBallad2
+Chord-Sus  Groove PianoBalladSus
+
+DefGroove PianoBallad2Sus   Block chords and strings.
+
+
 //////////////////////
 //// Intro
 
@@ -130,6 +154,49 @@ Arpeggio-Low   Sequence  A1 A2 A4 A1
 
 DefGroove PianoBalladIntro   A 4 bar introduction.
 
+/// same intro using block chords
+
+Groove PianoBalladIntro
+
+Arpeggio-High Sequence -
+Arpeggio-Low  Sequence -
+
+Begin Chord-Block
+  Voice $_Chord_Voice
+  Octave 6
+  Articulate 70
+  Volume m
+  Sequence {1 4. 90; 2.5 8 80; 3 2 90} {C12; 3 2 90} / L1
+End
+
+DefGroove PianoBalladIntro2   Simple intro using additional block chords.
+
+/////////////////////////
+// Fill
+
+Groove PianoBallad
+
+Seqsize 2
+
+Drum-Kick      Sequence D13
+//  Drum-Side
+Drum-CHiHat    Sequence D4 
+Bass           Sequence B1234  B11
+Begin Arpeggio-High
+	  Range 2
+	  Direction Down
+	  Sequence A8  A4
+	  Rskip 10
+End
+
+Begin Arpeggio-Low
+	Range 1
+	Direction Down
+//	Sequence  {1 8 90; 1.5 8 90; 2 4 90; 3.5 4 90; 4.5 8 90} \
+  //            {1 8 90; 1.5 2 90; 3.5 8 90; 4 4 90} 
+End
+
+DefGroove  PianoBalladFill    A 2 bar fill.
 
 ////////////////////////
 //// Ending

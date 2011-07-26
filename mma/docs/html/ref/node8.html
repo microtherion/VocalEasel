@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+<!--Converted with LaTeX2HTML 2008 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
@@ -13,7 +13,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="mma.css">
@@ -27,21 +28,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY  bgcolor="#ffffff">
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html458"
+<A NAME="tex2html515"
   HREF="node9.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html456"
+<A NAME="tex2html513"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html450"
+<A NAME="tex2html507"
   HREF="node7.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html459"
+<B> Next:</B> <A NAME="tex2html516"
   HREF="node9.html">Lyrics</A>
-<B> Up:</B> <A NAME="tex2html457"
+<B> Up:</B> <A NAME="tex2html514"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html451"
+<B> Previous:</B> <A NAME="tex2html508"
   HREF="node7.html">Riffs</A>
 <BR>
 <BR></DIV>
@@ -50,16 +51,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html460"
+<LI><A NAME="tex2html517"
   HREF="node8.html#SECTION00810000000000000000">Bar Numbers</A>
-<LI><A NAME="tex2html461"
+<LI><A NAME="tex2html518"
   HREF="node8.html#SECTION00820000000000000000">Bar Repeat</A>
-<LI><A NAME="tex2html462"
+<LI><A NAME="tex2html519"
   HREF="node8.html#SECTION00830000000000000000">Chords</A>
-<LI><A NAME="tex2html463"
+<LI><A NAME="tex2html520"
   HREF="node8.html#SECTION00840000000000000000">Rests</A>
-<LI><A NAME="tex2html464"
-  HREF="node8.html#SECTION00850000000000000000">Case Sensitivity</A>
+<LI><A NAME="tex2html521"
+  HREF="node8.html#SECTION00850000000000000000">Positioning</A>
+<LI><A NAME="tex2html522"
+  HREF="node8.html#SECTION00860000000000000000">Case Sensitivity</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -89,7 +92,7 @@ A line for chord data consists of the following parts:
 
 <P>
 </LI>
-<LI>Chord or Rest data,
+<LI>Chord or Rest data (with optional position indicator),
 
 <P>
 </LI>
@@ -144,12 +147,12 @@ is completely valid. As is:
       </Table>
 
 <P>
-The optional solo or melody data is enclosed in ``{ }''s. The
+The optional solo or melody data is enclosed in &#8220;{ }&#8221;s. The
 complete format and use is detailed in the <A HREF="node10.html#chap-solo">Solo and
   Melody Tracks</A>.
 
 <P>
-Lyrics are enclosed in ''[ ]'' brackets. See the <A HREF="node9.html#sec-lyrics">Lyrics section</A>.
+Lyrics are enclosed in &#8221;[ ]&#8221; brackets. See the <A HREF="node9.html#sec-lyrics">Lyrics section</A>.
 
 <P>
 
@@ -167,7 +170,11 @@ Note that only a numeric item is permitted here.
 Get in the habit of using bar numbers. You'll thank yourself when a
 song seems to be missing a bar, or appears to have an extra one.
 Without the leading bar numbers it can be quite frustrating to match
-your input file to a piece of sheet music.
+your input file to a piece of sheet music.<A NAME="tex2html37"
+  HREF="#foot3695"><SUP><SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>
+<P>
+One important use of the leading bar number is for the -b command line
+option <A HREF="node2.html#b-option">detailed here</A>.
 
 <P>
 You should note that it is perfectly acceptable to have only a bar
@@ -205,7 +212,7 @@ Quite often music has several sequential identical bars. Instead of
 typing these bars over and over again, 
 <FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  has an optional
 <SPAN  CLASS="textit">multiplier</SPAN> which can be placed at the end of a line of music
-data. The multiplier or factor can is specified as ``* NN'' This will
+data. The multiplier or factor can is specified as &#8220;* NN&#8221; This will
 cause the current bar to repeated the specified number of times. For
 example:
 
@@ -220,7 +227,7 @@ example:
 
 <P>
 produces 4 bars of output with each the first 2 beats of each bar a Cm
-chord and the last 2 a Dm. (The ``/'' is explained below.)
+chord and the last 2 a Dm. (The &#8220;/&#8221; is explained below.)
 
 <P>
 
@@ -244,8 +251,8 @@ For example:
 
 <P>
 specifies four different chords in a bar. It should be obvious by now
-that in a piece in <SPAN  CLASS="textbf">4/4</SPAN> you'll end up with a ``Cm'' chord on
-beat 1, ``Dm'' on 2, etc.
+that in a piece in <SPAN  CLASS="textbf">4/4</SPAN> you'll end up with a &#8220;Cm&#8221; chord on
+beat 1, &#8220;Dm&#8221; on 2, etc.
 
 <P>
 If you have fewer chord names than beats, the bar will be filled
@@ -277,7 +284,7 @@ are equivalent (assuming 4 beats per bar). There must be one (or more)
 spaces between each chord.
 
 <P>
-One further shorthand is the ``/''. This simply means to repeat the
+One further shorthand is the &#8220;/&#8221;. This simply means to repeat the
 last chord. So:
 
 <P>
@@ -302,32 +309,38 @@ is the same as
       </Table>
 
 <P>
-It is perfectly okay to start a line with a ``/''. In this case the
+It is perfectly okay to start a line with a &#8220;/&#8221;. In this case the
 last chord from the previous line is used. If the first line of music
-data begins with a ``/'' you'll get an error--
+data begins with a &#8220;/&#8221; you'll get an error--
 <FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  tries to be
-smart, but it doesn't read minds.
+smart, but it doesn't read minds. Having &#8220;/&#8221; at the end of the bar
+is a tad silly since 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  just ends up throwing these away, but it
+does no harm.
 
 <P>
 
-<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  recognizes a wide variety of chords in standard notation. In
-addition, you can specify slash chords and shift the octave up or
-down. Refer to the complete table in the appendix for
-<A HREF="node29.html#sec-chordname">details</A>.
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  recognizes a wide variety of chords in standard and Roman
+numeral notation. In addition, you can specify slash chords,
+inversions, barre offsets, and shift the octave up or down. Refer to
+the complete table in the appendix for
+<A HREF="node30.html#sec-chordname">details</A>.
 
 <P>
 
-<H1><A NAME="SECTION00840000000000000000">
-Rests</A>
+<H1><A NAME="SECTION00840000000000000000"></A>
+<A NAME="rests"></A>
+<BR>
+Rests
 </H1>
 
 <P>
-To disable a voice for a beat you can use a ``z'' for a chord name. If
-used by itself a ``z'' will disable all but the drum tracks for the
-given beat. However, you can disable ``Chord'', ``Arpeggio'',
-``Scale'', ``Walk'', ``Aria'', or ``Bass'' tracks as well by appending a track
-specifier to the ``z''. Track specifiers are the single letters ``C'',
-``A'', ``S'', ``W'', ``B'', ``R'' or `D'' and ``!''. Track specifiers are
+To disable a voice for a beat you can use a &#8220;z&#8221; for a chord name. If
+used by itself a &#8220;z&#8221; will disable all but the drum tracks for the
+given beat. However, you can disable &#8220;Chord&#8221;, &#8220;Arpeggio&#8221;,
+&#8220;Scale&#8221;, &#8220;Walk&#8221;, &#8220;Aria&#8221;, or &#8220;Bass&#8221; tracks as well by appending a track
+specifier to the &#8220;z&#8221;. Track specifiers are the single letters &#8220;C&#8221;,
+&#8220;A&#8221;, &#8220;S&#8221;, &#8220;W&#8221;, &#8220;B&#8221;, &#8220;R&#8221; or `D&#8221; and &#8220;!&#8221;. Track specifiers are
 only valid if you also specify a chord. The track specifiers are:
 
 <P>
@@ -361,14 +374,18 @@ only valid if you also specify a chord. The track specifiers are:
 <DD>All aria tracks,
 
 <P>
+<DT>P
+<DD>All plectrum tracks,
+
+<P>
 <DT>!
-<DD>All tracks (almost the same as DWBCA, see below).
+<DD>All tracks (almost the same as DWBCAP, see below).
 
 <P>
 </DD>
 </DL>
 <P>
-Assuming the ``C'' is the chord and ``AB'' are the track specifiers:
+Assuming the &#8220;C&#8221; is the chord and &#8220;AB&#8221; are the track specifiers:
 
 <P>
 
@@ -428,57 +445,176 @@ would generate the following beats:
 </DD>
 </DL>
 <P>
-In addition, there is a super-z notation. ``z!'' forces all
-instruments to be silent for the given beats. ``z!'' is the same as
-``zABCDWR'', except that the latter is not valid since it needs a
+In addition, there is a super-z notation. &#8220;z!&#8221; forces all
+instruments to be silent for the given beats. &#8220;z!&#8221; is the same as
+&#8220;zABCDWR&#8221;, except that the latter is not valid since it needs a
 prefixed chord.
 
 <P>
-The ``z'' notation is used when you have a ``tacet'' beat or beats.
+The &#8220;z&#8221; notation is used when you have a &#8220;tacet&#8221; beat or beats.
 The alternate notations can be used to silence specific tracks for a
 beat or two, but this is used less frequently.
 
 <P>
 
 <H1><A NAME="SECTION00850000000000000000">
+Positioning</A>
+</H1>
+
+<P>
+In earlier versions of 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  all chords (and rests) were positioned on
+the beat, and one could only specify a limited number of chord changes
+per bar. Using the enhanced positioning syntax an unlimited number of
+chord changes per bar can be specified. But, please note <SPAN  CLASS="textit">the
+  changes you hear in your song depend on the specific pattern you are
+  using! You might specify a chord at, for example, beat 2.25, but if
+  the pattern doesn't sound a chord at that position it's a bit silly.</SPAN>
+
+<P>
+As discussed above, a normal set of chord changes is entered like:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Cm / Dm  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+which sets a &#8220;Cm&#8221; for beats 1 and 2, and &#8220;Dm&#8221; for beats 3 to the
+bar end.
+
+<P>
+To modify this, you can use the &#8220;@&#8221; symbol along with an offset to
+indicate other changes. So, the above example could also be written
+as:
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Cm Dm@3  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+Changing on the &#8220;off beat&#8221; is simple as well. Consider,
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>C D@3.5 F  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+In this case the &#8220;C&#8221; chord is in effect from the first beat until
+beat 3.5, a &#8220;D&#8221; chord is set for 3.5 until 4, and an &#8220;F&#8221; from 4 to
+the end of bar. 
+
+<P>
+In parsing, when 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  finds a chord name without the &#8220;@&#8221; it assumes
+that the position is the next full beat after the previous chord
+... which means that in the above example &#8220;F&#8221; and &#8220;F@4&#8221; are
+equivalent.
+
+<P>
+
+<UL>
+<LI>The offset used must be 1 or greater and less than the value of
+  the T<SMALL>IME</SMALL> parameter (<A HREF="node16.html#time">here</A>)
+  plus 1. Any partial beat (2.33, 3.9, 1.25, etc.) is permitted.
+
+<P>
+</LI>
+<LI>Chords must be specified in order. For example,
+
+<P>
+
+      <Table Hspace="40%" CellSpacing=0 CellPadding=10 BGColor="OldLace" Border=3>
+        <tr><td>
+    <B>Cm Dm E@1.5  </B> 
+   
+	    </td></tr>
+      </Table>
+
+<P>
+would generate an error.
+
+<P>
+</LI>
+<LI>No spaces are permitted between chord and the &#8220;@&#8221; symbol or
+  between the &#8220;@&#8221; and the value.
+
+<P>
+</LI>
+<LI>The &#8220;@&#8221; must be at the end of the chord following any chord
+  modifiers. The chords &#8220;+Cdim&gt;-2@2.5&#8221; and &#8220;E/G#@4&#8221; are perfectly acceptable.
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<H1><A NAME="SECTION00860000000000000000">
 Case Sensitivity</A>
 </H1>
 
 <P>
 In direct conflict with the rest of the rules for input files, all
-chord names <SPAN  CLASS="textit">are</SPAN> case sensitive. This means that you <SPAN  CLASS="textit">can
-  not</SPAN> use notations like ``cm''--use ``Cm'' instead.
+chord names (and modifiers) <SPAN  CLASS="textit">are</SPAN> case sensitive. This means that you <SPAN  CLASS="textit">can
+  not</SPAN> use notations like &#8220;cm&#8221;--use &#8220;Cm&#8221; instead.
 
 <P>
-The ``z'' and the associated track specifiers are also case sensitive.
-For example, the form ``Zc'' will <SPAN  CLASS="textit">not</SPAN> work!
-
-<P>
+The &#8220;z&#8221; and the associated track specifiers are also case sensitive.
+For example, the form &#8220;Zc&#8221; will <SPAN  CLASS="textit">not</SPAN> work!
 
 <P>
 
+<P>
+<BR><HR><H4>Footnotes</H4>
+<DL>
+<DT><A NAME="foot3695">... music.</A><A
+ HREF="node8.html#tex2html37"><SUP><SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
+<DD>If your line
+  numbers get out of order you can use the supplied utility
+  <SPAN  CLASS="textbf">mma-renum</SPAN> to renumber the comment lines. This utility is
+  installed in your default path or in the root 
+<FONT Face="Serif"  Color="Navy"><I>MMA</I></FONT>  directory,
+  depending on the distribution.
+
+</DD>
+</DL>
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html458"
+<A NAME="tex2html515"
   HREF="node9.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html456"
+<A NAME="tex2html513"
   HREF="mma.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html450"
+<A NAME="tex2html507"
   HREF="node7.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html459"
+<B> Next:</B> <A NAME="tex2html516"
   HREF="node9.html">Lyrics</A>
-<B> Up:</B> <A NAME="tex2html457"
+<B> Up:</B> <A NAME="tex2html514"
   HREF="mma.html">Reference Manual</A>
-<B> Previous:</B> <A NAME="tex2html451"
+<B> Previous:</B> <A NAME="tex2html508"
   HREF="node7.html">Riffs</A></DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 bob
-2008-09-28
+2010-11-07
 </ADDRESS>
 </BODY>
 </HTML>

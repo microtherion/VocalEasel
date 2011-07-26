@@ -112,7 +112,7 @@ def ctrlToValue(name):
 
     try:
         return ctrlInx[name.upper()]
-    except keyError:
+    except KeyError:
         return -1
 
                         

@@ -190,6 +190,37 @@ Groove ModernJazz1Sus
 
 DefGroove ModernJazz2Sus Slower alternate-bar trumpets with violins for faster tempos.
 
+/////////////////////////////////
+/// Fill
+
+Groove ModernJazz
+
+SeqSize 2
+
+Drum-Kick 	  Sequence   D13
+Drum-Side     Sequence   *
+Drum-PHH      Sequence   D24  {1 0 120}
+Drum-OHH      Sequence   D1   D1
+Drum-Ride     Sequence   -
+
+Walk          Sequence   W1234
+Chord-Guitar  Sequence   C1   /
+Chord-Piano   Sequence   C24
+
+Begin Bass-Trp
+	Voice $ArpeggioVoice
+	Octave 5
+	Harmony OpenBelow
+	Volume mf
+	Rvolume 5
+	Rtime 3
+	Rskip 2
+	Articulate 80
+    Sequence  {1 43 1 90; 1.6 43 1 90; 2 43 1 9; 3 4 3 100; 4 8 3 100; 4.5 8 5 90 } \
+	          {1 4 1 80; 2 4 3 90; 3 4 5 100; 4 4 5 120}
+End
+
+DefGroove ModernJazzFill   A 2 bar horn fill good for endings.
 
 /////////////////////////////////////////////////
 ///////// Intro

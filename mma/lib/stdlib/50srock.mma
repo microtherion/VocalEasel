@@ -124,6 +124,34 @@ End
 
 DefGroove 50sRockSus           Sustained strings added.
 
+/////////////////////////////////////////////
+/// Plus ... add in some random arps.
+
+Groove 50sRock
+SeqSize 4
+
+Begin Arpeggio
+	Voice CleanGuitar
+	Sequence  {A4; 1.75 8 90; 3.75 8 90} \
+              {A2; 1.75 4 90; 3.75 4 90} \
+              {A4 Shift .75} \
+              {A2; A4 Shift .75}
+    Harmony OpenBelow+OpenAbove
+	Articulate 130
+	Rvolume 0,20
+	Rskip 30
+    Range 1.5
+    SeqRnd ON
+    Direction Random
+	Volume m
+	Octave 5
+End
+
+DefGroove 50sRockPlus  Basic with extra guitar arpeggios.
+
+Groove 50sRockPlus
+Chord-Sus Groove 50sRockSus
+DefGroove 50sRockSusPlus  Basic sustained with arpeggions.
 
 ///////////////////////////////
 /// Turn off the shuffle-feel
@@ -152,6 +180,18 @@ Chord-Sus  Groove 50sRockSus
 
 DefGroove 50sRock1Sus   Unshuffled 50s with sustained strings.
 
+Groove 50sRock1
+SeqSize 4
+Begin Arpeggio
+ Groove 50sRockPlus
+ Sequence  A4 A8 A4 A2
+End
+DefGroove 50sRock1Plus   Unshuffled with arpeggios.
+
+Groove 50sRock1Sus
+SeqSize 4
+Arpeggio Groove 50sRock1Plus
+DefGroove 50sRock1SusPlus   Unshuffled with strings and arpeggios.
 
 ////////////////////////
 ////// Intro
@@ -208,5 +248,4 @@ Begin Bass
 End
 
 DefGroove 50sRockEnd          Simple, single bar ending.
-
 

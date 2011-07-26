@@ -29,7 +29,7 @@ MIDI expects.
 
 
 def intToWord(x):
-    """ Convert INT to a 2 byte MSB LSB value. """
+    """ Convert INT to a 2 byte MSB LSB value. Used in MIDI headers. """
 
     return    chr(x>>8 & 0xff) + chr(x & 0xff)
 
