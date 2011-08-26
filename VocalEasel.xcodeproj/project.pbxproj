@@ -961,6 +961,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = VocalEasel;
 				SDKROOT = macosx10.6;
 				WRAPPER_EXTENSION = app;
@@ -984,6 +985,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = VocalEasel;
 				SDKROOT = macosx10.6;
 				WRAPPER_EXTENSION = app;
@@ -1002,6 +1004,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = VocalEasel;
 				SDKROOT = macosx10.6;
 				WRAPPER_EXTENSION = app;
