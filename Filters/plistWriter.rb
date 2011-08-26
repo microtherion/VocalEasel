@@ -16,15 +16,26 @@ class PlistData
 end
 
 def _encodeEntities(string)
-  encoded = []
+  encoded = ''
   string.unpack('U*').each do |ch|
-    if ch <= 0x7F
+    case ch
+    when 0x22
+      encoded.concat('&quot;')
+    when 0x26
+      encoded.concat('&amp;')
+    when 0x27
+      encoded.concat('&apos;')
+    when 0x3C
+      encoded.concat('&lt;')
+    when 0x3E
+      encoded.concat('&gt;')
+    when 0..0x7F
       encoded << ch
     else
-      encoded.concat("&\##{ch};".unpack('C*'))
+      encoded.concat("&\##{ch};")
     end
   end
-  encoded.pack('C*')
+  encoded
 end
 
 def _encodePlist(destination, object, indent)
