@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2006-2007 Matthias Neeracher
+// Copyright © 2006-2011 Matthias Neeracher
 //
 
 #import "VLLilypondDocument.h"
@@ -87,9 +87,15 @@
 	}
 }
 
-
 - (void)substituteMacro:(NSString*)macro withValue:(NSString*)value
 {
+	[self substituteMacro:macro withValue:value repeat:NO];
+}
+
+- (void)substituteMacro:(NSString*)macro withValue:(NSString*)value escapingQuotes:(BOOL)escape
+{
+    if (escape)
+        value = [value stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
 	[self substituteMacro:macro withValue:value repeat:NO];
 }
 
@@ -149,10 +155,10 @@ static const char * 	sPaperNames[] = {
 	float 	  scaling= [[[pi dictionary] objectForKey:NSPrintScalingFactor]
 						   floatValue];
 
-	[ly substituteMacro:@"TITLE" withValue:songTitle];
-	[ly substituteMacro:@"POET" withValue:songLyricist];
-	[ly substituteMacro:@"COMPOSER" withValue:songComposer];
-	[ly substituteMacro:@"ARRANGER" withValue:songArranger];
+	[ly substituteMacro:@"TITLE" withValue:songTitle escapingQuotes:YES];
+	[ly substituteMacro:@"POET" withValue:songLyricist escapingQuotes:YES];
+	[ly substituteMacro:@"COMPOSER" withValue:songComposer escapingQuotes:YES];
+	[ly substituteMacro:@"ARRANGER" withValue:songArranger escapingQuotes:YES];
 	[ly substituteMacro:@"VLVERSION" withValue:
      [bndl objectForInfoDictionaryKey:@"CFBundleVersion"]];
 	[ly substituteMacro:@"PAPERSIZE" withValue:paper];
