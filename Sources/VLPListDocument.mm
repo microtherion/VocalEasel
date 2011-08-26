@@ -490,6 +490,11 @@ advanceAt:
 	[self readPropertiesFromPlist:[plist objectForKey:@"properties"]];
 	[self readMeasuresFromPlist:[plist objectForKey:@"measures"]];
 	[undoMgr enableUndoRegistration];
+    
+    if (song->fMeasures.empty()) {
+        delete song;
+        song = new VLSong(true);
+    }
 
 	return YES;
 }

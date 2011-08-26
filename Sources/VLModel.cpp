@@ -2288,6 +2288,8 @@ void VLSongVisitor::VisitMeasures(VLSong & song, bool performanceOrder)
 		}
 	} else {
 		size_t  e = song.CountMeasures() - song.EmptyEnding();
+        if (!e && song.CountMeasures())
+            e = 1;
 
 		for (size_t m=0; m!=e; ++m) {
 			VLMeasure 	& meas = song.fMeasures[m];
