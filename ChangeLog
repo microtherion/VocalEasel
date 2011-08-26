@@ -1,3 +1,1903 @@
+2011-08-26  Matthias Neeracher <neeracher@apple.com>
+
+	* NEWS: Update mma/lilypond version information
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLAppController.mm: Look for running copy of Lilypond.app
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@409
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* NEWS: Updated news file  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@408
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Resources/Info.plist, VocalEasel.xcodeproj/project.pbxproj,
+	scripts/ReleaseActions: Bump version numbers for 1.2 release
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@407
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* README.rtf: Update version information  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@406
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLPListDocument.mm: Fix multisyllabic words spanning
+	measures (Tracker #2001806)  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@405
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLAppController.mm, Sources/VLLilypondWriter.cpp,
+	Sources/VLMIDIWriter.cpp, Sources/VLMIDIWriter.h,
+	Sources/VLModel.cpp, Sources/VLModel.h, Sources/VLSheetViewNotes.h,
+	Sources/VLSheetViewNotes.mm: Update copyright notices  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@404
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLLilypondDocument.mm: Escape quotes in lilypond titles
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@403
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* English.lproj/Credits.rtf: Update Credits  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@402
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLModel.cpp, Sources/VLPListDocument.mm: Improve handling
+	of empty songs  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@401
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Filters/plistWriter.rb: Properly handle XML entities on reading
+	(Tracker #3284508)  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@400
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLModel.cpp, Sources/VLModel.h,
+	Sources/VLSheetViewNotes.mm: Play proper pitch for extended notes
+	(Tracker #3284515)  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@399
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLLayout.cpp, Sources/VLSheetView.mm: Some more robustness
+	against corrupt documents  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@398
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLMIDIWriter.cpp, Sources/VLMIDIWriter.h,
+	Sources/VLSheetViewNotes.h, Sources/VLSheetViewNotes.mm,
+	Sources/VLSheetViewSelection.mm: Draw proper pitch for note
+	highlights (Tracker #3288852)  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@397
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLAppController.mm, Tools/lameWrapper, Tools/lilyWrapper,
+	Tools/mmaWrapper: Handle spaces in path names (Tracker #3166409)
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@396
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-08-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Resources/Info.plist: Identify icon in UTI export declaration
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@395
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLSheetView.mm, mma/MMA/alloc.py, mma/MMA/auto.py,
+	mma/MMA/chords.py, mma/MMA/chordtable.py, mma/MMA/common.py,
+	mma/MMA/docs.py, mma/MMA/exits.py, mma/MMA/file.py, mma/MMA/gbl.py,
+	mma/MMA/grooves.py, mma/MMA/harmony.py, mma/MMA/keysig.py,
+	mma/MMA/lyric.py, mma/MMA/macro.py, mma/MMA/main.py,
+	mma/MMA/mdefine.py, mma/MMA/midi.py, mma/MMA/midiC.py,
+	mma/MMA/midiIn.py, mma/MMA/midiM.py, mma/MMA/midifuncs.py,
+	mma/MMA/midinote.py, mma/MMA/notelen.py, mma/MMA/options.py,
+	mma/MMA/parse.py, mma/MMA/pat.py, mma/MMA/patAria.py,
+	mma/MMA/patArpeggio.py, mma/MMA/patBass.py, mma/MMA/patChord.py,
+	mma/MMA/patDrum.py, mma/MMA/patPlectrum.py, mma/MMA/patScale.py,
+	mma/MMA/patSolo.py, mma/MMA/patWalk.py, mma/MMA/patch.py,
+	mma/MMA/paths.py, mma/MMA/player.py, mma/MMA/roman.py,
+	mma/MMA/safe_eval.py, mma/MMA/swing.py, mma/MMA/translate.py,
+	mma/MMA/volume.py, mma/cp-install, mma/docs/html/lib/black.gif,
+	mma/docs/html/lib/blue.gif, mma/docs/html/lib/index.html,
+	mma/docs/html/lib/kara/2beatp.html,
+	mma/docs/html/lib/kara/2beatp_2beatpa.html,
+	mma/docs/html/lib/kara/2beatp_2beatpb.html,
+	mma/docs/html/lib/kara/2beatp_2beatpc.html,
+	mma/docs/html/lib/kara/2beatp_2beatpd.html,
+	mma/docs/html/lib/kara/2beatp_2beatpendinga.html,
+	mma/docs/html/lib/kara/2beatp_2beatpendingb.html,
+	mma/docs/html/lib/kara/2beatp_2beatpendingc.html,
+	mma/docs/html/lib/kara/2beatp_2beatpfilla.html,
+	mma/docs/html/lib/kara/2beatp_2beatpfillb.html,
+	mma/docs/html/lib/kara/2beatp_2beatpfillc.html,
+	mma/docs/html/lib/kara/2beatp_2beatpfilld.html,
+	mma/docs/html/lib/kara/2beatp_2beatpintroa.html,
+	mma/docs/html/lib/kara/2beatp_2beatpintrob.html,
+	mma/docs/html/lib/kara/2beatp_2beatpintroc.html,
+	mma/docs/html/lib/kara/8beatmotown.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotowna.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownb.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownc.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownd.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownendinga.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownendingb.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownendingc.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownfilla.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownfillb.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownfillba.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownfillc.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownfilld.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownintroa.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownintrob.html,
+	mma/docs/html/lib/kara/8beatmotown_8beatmotownintroc.html,
+	mma/docs/html/lib/kara/K50s_rock.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rocka.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockb.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockc.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockd.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockendinga.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockendingb.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockendingc.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockfillaa.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockfillba.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockfillbb.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockfillcc.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockfilldd.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockintroa.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockintrob.html,
+	mma/docs/html/lib/kara/K50s_rock_50s_rockintroc.html,
+	mma/docs/html/lib/kara/Kfunk1.html,
+	mma/docs/html/lib/kara/Kfunk1_kfunk1a.html,
+	mma/docs/html/lib/kara/Kfunk1_kfunk1b.html,
+	mma/docs/html/lib/kara/Kfunk1_kfunk1endinga.html,
+	mma/docs/html/lib/kara/Kfunk1_kfunk1fillaa.html,
+	mma/docs/html/lib/kara/Kfunk1_kfunk1fillab.html,
+	mma/docs/html/lib/kara/Kfunk1_kfunk1fillba.html,
+	mma/docs/html/lib/kara/Kfunk1_kfunk1fillbb.html,
+	mma/docs/html/lib/kara/Kfunk1_kfunk1introa.html,
+	mma/docs/html/lib/kara/fasttwist.html,
+	mma/docs/html/lib/kara/fasttwist_fasttwista.html,
+	mma/docs/html/lib/kara/fasttwist_fasttwistb.html,
+	mma/docs/html/lib/kara/fasttwist_fasttwistendinga.html,
+	mma/docs/html/lib/kara/fasttwist_fasttwistendingb.html,
+	mma/docs/html/lib/kara/fasttwist_fasttwistfilla.html,
+	mma/docs/html/lib/kara/fasttwist_fasttwistfillb.html,
+	mma/docs/html/lib/kara/fasttwist_fasttwistintroa.html,
+	mma/docs/html/lib/kara/fasttwist_fasttwistintrob.html,
+	mma/docs/html/lib/kara/happyshuffle.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshufflea.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshuffleb.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshufflec.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshuffled.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshuffleendinga.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshuffleendingb.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshuffleendingc.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshufflefilla.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshufflefillb.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshufflefillc.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshufflefilld.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshuffleintroa.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshuffleintrob.html,
+	mma/docs/html/lib/kara/happyshuffle_happyshuffleintroc.html,
+	mma/docs/html/lib/kara/kbossa.html,
+	mma/docs/html/lib/kara/kbossa_kbossaa.html,
+	mma/docs/html/lib/kara/kbossa_kbossab.html,
+	mma/docs/html/lib/kara/kbossa_kbossac.html,
+	mma/docs/html/lib/kara/kbossa_kbossaendinga.html,
+	mma/docs/html/lib/kara/kbossa_kbossaendingb.html,
+	mma/docs/html/lib/kara/kbossa_kbossaendingc.html,
+	mma/docs/html/lib/kara/kbossa_kbossaendingd.html,
+	mma/docs/html/lib/kara/kbossa_kbossafilla.html,
+	mma/docs/html/lib/kara/kbossa_kbossafillab.html,
+	mma/docs/html/lib/kara/kbossa_kbossafillb.html,
+	mma/docs/html/lib/kara/kbossa_kbossafillc.html,
+	mma/docs/html/lib/kara/kbossa_kbossaintroa.html,
+	mma/docs/html/lib/kara/kbossa_kbossaintrob.html,
+	mma/docs/html/lib/kara/kbossa_kbossaintroc.html,
+	mma/docs/html/lib/kara/kwestballad.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballada.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballadb.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballadc.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballadd.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballadendinga.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballadendingb.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballadendingc.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballadendingd.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballadfilla.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballadfillab.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballadfillb.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballadfillc.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballadintroa.html,
+	mma/docs/html/lib/kara/kwestballad_kwestballadintrob.html,
+	mma/docs/html/lib/kara/twi.html,
+	mma/docs/html/lib/kara/twi_twiendingb.html,
+	mma/docs/html/lib/kara/twi_twifillaa.html,
+	mma/docs/html/lib/kara/twi_twifillab.html,
+	mma/docs/html/lib/kara/twi_twifillba.html,
+	mma/docs/html/lib/kara/twi_twifillbb.html,
+	mma/docs/html/lib/kara/twi_twiintrob.html,
+	mma/docs/html/lib/kara/twi_twimaina.html,
+	mma/docs/html/lib/kara/twi_twimainb.html,
+	mma/docs/html/lib/or-bar.gif,
+	mma/docs/html/lib/stdlib/50srock.html,
+	mma/docs/html/lib/stdlib/50srock_50srock.html,
+	mma/docs/html/lib/stdlib/50srock_50srock1.html,
+	mma/docs/html/lib/stdlib/50srock_50srock1plus.html,
+	mma/docs/html/lib/stdlib/50srock_50srock1sus.html,
+	mma/docs/html/lib/stdlib/50srock_50srock1susplus.html,
+	mma/docs/html/lib/stdlib/50srock_50srockend.html,
+	mma/docs/html/lib/stdlib/50srock_50srockintro.html,
+	mma/docs/html/lib/stdlib/50srock_50srockplus.html,
+	mma/docs/html/lib/stdlib/50srock_50srocksus.html,
+	mma/docs/html/lib/stdlib/50srock_50srocksusplus.html,
+	mma/docs/html/lib/stdlib/60srock.html,
+	mma/docs/html/lib/stdlib/60srock_60srock.html,
+	mma/docs/html/lib/stdlib/60srock_60srock1.html,
+	mma/docs/html/lib/stdlib/60srock_60srock1sus.html,
+	mma/docs/html/lib/stdlib/60srock_60srockend.html,
+	mma/docs/html/lib/stdlib/60srock_60srockintro.html,
+	mma/docs/html/lib/stdlib/60srock_60srocksus.html,
+	mma/docs/html/lib/stdlib/68march.html,
+	mma/docs/html/lib/stdlib/68march_68march.html,
+	mma/docs/html/lib/stdlib/68march_68marchend.html,
+	mma/docs/html/lib/stdlib/68march_68marchfill.html,
+	mma/docs/html/lib/stdlib/68march_68marchfill2.html,
+	mma/docs/html/lib/stdlib/68march_68marchintro.html,
+	mma/docs/html/lib/stdlib/68march_68marchmetronome.html,
+	mma/docs/html/lib/stdlib/68march_68marchplus.html,
+	mma/docs/html/lib/stdlib/68march_68marchsus.html,
+	mma/docs/html/lib/stdlib/68march_68marchsusplus.html,
+	mma/docs/html/lib/stdlib/8beat.html,
+	mma/docs/html/lib/stdlib/8beat_8beat.html,
+	mma/docs/html/lib/stdlib/8beat_8beat1.html,
+	mma/docs/html/lib/stdlib/8beat_8beat1plus.html,
+	mma/docs/html/lib/stdlib/8beat_8beat1sus.html,
+	mma/docs/html/lib/stdlib/8beat_8beat1susplus.html,
+	mma/docs/html/lib/stdlib/8beat_8beatend.html,
+	mma/docs/html/lib/stdlib/8beat_8beatfill.html,
+	mma/docs/html/lib/stdlib/8beat_8beatintro.html,
+	mma/docs/html/lib/stdlib/8beat_8beatplus.html,
+	mma/docs/html/lib/stdlib/8beat_8beatsus.html,
+	mma/docs/html/lib/stdlib/8beat_8beatsusplus.html,
+	mma/docs/html/lib/stdlib/ballad.html,
+	mma/docs/html/lib/stdlib/ballad128.html,
+	mma/docs/html/lib/stdlib/ballad128_ballad128.html,
+	mma/docs/html/lib/stdlib/ballad128_ballad128end.html,
+	mma/docs/html/lib/stdlib/ballad128_ballad128intro.html,
+	mma/docs/html/lib/stdlib/ballad128_ballad128intro1.html,
+	mma/docs/html/lib/stdlib/ballad128_ballad128plus.html,
+	mma/docs/html/lib/stdlib/ballad128_ballad128sus.html,
+	mma/docs/html/lib/stdlib/ballad128_ballad128susplus.html,
+	mma/docs/html/lib/stdlib/ballad68.html,
+	mma/docs/html/lib/stdlib/ballad68_ballad68-44.html,
+	mma/docs/html/lib/stdlib/ballad68_ballad68.html,
+	mma/docs/html/lib/stdlib/ballad68_ballad68end.html,
+	mma/docs/html/lib/stdlib/ballad68_ballad68intro.html,
+	mma/docs/html/lib/stdlib/ballad68_ballad68plus.html,
+	mma/docs/html/lib/stdlib/ballad68_ballad68sus.html,
+	mma/docs/html/lib/stdlib/ballad68_ballad68susplus.html,
+	mma/docs/html/lib/stdlib/ballad_ballad.html,
+	mma/docs/html/lib/stdlib/ballad_ballad1.html,
+	mma/docs/html/lib/stdlib/ballad_ballad1end.html,
+	mma/docs/html/lib/stdlib/ballad_ballad1sus.html,
+	mma/docs/html/lib/stdlib/ballad_balladend.html,
+	mma/docs/html/lib/stdlib/ballad_balladfill.html,
+	mma/docs/html/lib/stdlib/ballad_balladintro.html,
+	mma/docs/html/lib/stdlib/ballad_balladintro1.html,
+	mma/docs/html/lib/stdlib/ballad_balladintro2.html,
+	mma/docs/html/lib/stdlib/ballad_balladsus.html,
+	mma/docs/html/lib/stdlib/basicrock.html,
+	mma/docs/html/lib/stdlib/basicrock_basicrock.html,
+	mma/docs/html/lib/stdlib/basicrock_basicrock4.html,
+	mma/docs/html/lib/stdlib/basicrock_basicrock4sus.html,
+	mma/docs/html/lib/stdlib/basicrock_basicrockend.html,
+	mma/docs/html/lib/stdlib/basicrock_basicrockintro.html,
+	mma/docs/html/lib/stdlib/basicrock_basicrocksus.html,
+	mma/docs/html/lib/stdlib/beguine.html,
+	mma/docs/html/lib/stdlib/beguine_beguine.html,
+	mma/docs/html/lib/stdlib/beguine_beguine1.html,
+	mma/docs/html/lib/stdlib/beguine_beguine1sus.html,
+	mma/docs/html/lib/stdlib/beguine_beguine2end.html,
+	mma/docs/html/lib/stdlib/beguine_beguineend.html,
+	mma/docs/html/lib/stdlib/beguine_beguinefill.html,
+	mma/docs/html/lib/stdlib/beguine_beguineintro.html,
+	mma/docs/html/lib/stdlib/beguine_beguineintro8.html,
+	mma/docs/html/lib/stdlib/beguine_beguinesus.html,
+	mma/docs/html/lib/stdlib/bigband.html,
+	mma/docs/html/lib/stdlib/bigband_bigband.html,
+	mma/docs/html/lib/stdlib/bigband_bigband1.html,
+	mma/docs/html/lib/stdlib/bigband_bigband1end.html,
+	mma/docs/html/lib/stdlib/bigband_bigband1fill.html,
+	mma/docs/html/lib/stdlib/bigband_bigband1plus.html,
+	mma/docs/html/lib/stdlib/bigband_bigband1sus.html,
+	mma/docs/html/lib/stdlib/bigband_bigband1susplus.html,
+	mma/docs/html/lib/stdlib/bigband_bigband2end.html,
+	mma/docs/html/lib/stdlib/bigband_bigband4end.html,
+	mma/docs/html/lib/stdlib/bigband_bigband8.html,
+	mma/docs/html/lib/stdlib/bigband_bigband8sus.html,
+	mma/docs/html/lib/stdlib/bigband_bigbandend.html,
+	mma/docs/html/lib/stdlib/bigband_bigbandfill.html,
+	mma/docs/html/lib/stdlib/bigband_bigbandintro.html,
+	mma/docs/html/lib/stdlib/bigband_bigbandintro8.html,
+	mma/docs/html/lib/stdlib/bigband_bigbandplus.html,
+	mma/docs/html/lib/stdlib/bigband_bigbandsus.html,
+	mma/docs/html/lib/stdlib/bigband_bigbandsusplus.html,
+	mma/docs/html/lib/stdlib/bluegrass.html,
+	mma/docs/html/lib/stdlib/bluegrass_bluegrass.html,
+	mma/docs/html/lib/stdlib/bluegrass_bluegrassbottle.html,
+	mma/docs/html/lib/stdlib/bluegrass_bluegrassbottleclap.html,
+	mma/docs/html/lib/stdlib/bluegrass_bluegrassclap.html,
+	mma/docs/html/lib/stdlib/bluegrass_bluegrassend.html,
+	mma/docs/html/lib/stdlib/bluegrass_bluegrassintro.html,
+	mma/docs/html/lib/stdlib/bluegrass_bluegrasssus.html,
+	mma/docs/html/lib/stdlib/bluegrass_bluegrasssusclap.html,
+	mma/docs/html/lib/stdlib/blues.html,
+	mma/docs/html/lib/stdlib/blues_blues.html,
+	mma/docs/html/lib/stdlib/blues_blues1.html,
+	mma/docs/html/lib/stdlib/blues_blues1sus.html,
+	mma/docs/html/lib/stdlib/blues_bluesend.html,
+	mma/docs/html/lib/stdlib/blues_bluesintro.html,
+	mma/docs/html/lib/stdlib/blues_bluessus.html,
+	mma/docs/html/lib/stdlib/blues_bluestriple.html,
+	mma/docs/html/lib/stdlib/blues_bluestriplesus.html,
+	mma/docs/html/lib/stdlib/boggiewoggie.html,
+	mma/docs/html/lib/stdlib/boggiewoggie_boggiewoggie.html,
+	mma/docs/html/lib/stdlib/boggiewoggie_boggiewoggie1.html,
+	mma/docs/html/lib/stdlib/boggiewoggie_boggiewoggie2.html,
+	mma/docs/html/lib/stdlib/boggiewoggie_boggiewoggie3.html,
+	mma/docs/html/lib/stdlib/boggiewoggie_boggiewoggieend.html,
+	mma/docs/html/lib/stdlib/bolero.html,
+	mma/docs/html/lib/stdlib/bolero_bolero.html,
+	mma/docs/html/lib/stdlib/bolero_bolero1.html,
+	mma/docs/html/lib/stdlib/bolero_bolero1end.html,
+	mma/docs/html/lib/stdlib/bolero_bolero1fill.html,
+	mma/docs/html/lib/stdlib/bolero_bolero1intro.html,
+	mma/docs/html/lib/stdlib/bolero_bolero1sus.html,
+	mma/docs/html/lib/stdlib/bolero_bolero1susfill.html,
+	mma/docs/html/lib/stdlib/bolero_boleroalt.html,
+	mma/docs/html/lib/stdlib/bolero_boleroaltfill.html,
+	mma/docs/html/lib/stdlib/bolero_boleroaltsus.html,
+	mma/docs/html/lib/stdlib/bolero_boleroaltsusfill.html,
+	mma/docs/html/lib/stdlib/bolero_boleroend.html,
+	mma/docs/html/lib/stdlib/bolero_bolerofill.html,
+	mma/docs/html/lib/stdlib/bolero_bolerointro.html,
+	mma/docs/html/lib/stdlib/bolero_bolerosus.html,
+	mma/docs/html/lib/stdlib/bolero_bolerosusfill.html,
+	mma/docs/html/lib/stdlib/bossanova.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanova.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanova1end.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanova1sus.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanova1susplus.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanova2end.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanova2sus.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanova2susplus.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanova3sus.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanova3susplus.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanovaend.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanovafill.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanovaintro.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanovaintro8.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanovaplus.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanovasus.html,
+	mma/docs/html/lib/stdlib/bossanova_bossanovasusplus.html,
+	mma/docs/html/lib/stdlib/broadway.html,
+	mma/docs/html/lib/stdlib/broadway_broadway.html,
+	mma/docs/html/lib/stdlib/broadway_broadway1.html,
+	mma/docs/html/lib/stdlib/broadway_broadway1sus.html,
+	mma/docs/html/lib/stdlib/broadway_broadwayend.html,
+	mma/docs/html/lib/stdlib/broadway_broadwayintro.html,
+	mma/docs/html/lib/stdlib/broadway_broadwayintro8.html,
+	mma/docs/html/lib/stdlib/broadway_broadwaysus.html,
+	mma/docs/html/lib/stdlib/calypso.html,
+	mma/docs/html/lib/stdlib/calypso_calypso.html,
+	mma/docs/html/lib/stdlib/calypso_calypso1.html,
+	mma/docs/html/lib/stdlib/calypso_calypso1sus.html,
+	mma/docs/html/lib/stdlib/calypso_calypsoend.html,
+	mma/docs/html/lib/stdlib/calypso_calypsosus.html,
+	mma/docs/html/lib/stdlib/chacha.html,
+	mma/docs/html/lib/stdlib/chacha_chacha.html,
+	mma/docs/html/lib/stdlib/chacha_chacha1.html,
+	mma/docs/html/lib/stdlib/chacha_chacha1fill.html,
+	mma/docs/html/lib/stdlib/chacha_chacha1sus.html,
+	mma/docs/html/lib/stdlib/chacha_chachaend.html,
+	mma/docs/html/lib/stdlib/chacha_chachafill.html,
+	mma/docs/html/lib/stdlib/chacha_chachaintro.html,
+	mma/docs/html/lib/stdlib/chacha_chachaintro8.html,
+	mma/docs/html/lib/stdlib/chacha_chachasus.html,
+	mma/docs/html/lib/stdlib/charleston.html,
+	mma/docs/html/lib/stdlib/charleston_charleston.html,
+	mma/docs/html/lib/stdlib/charleston_charleston1.html,
+	mma/docs/html/lib/stdlib/charleston_charleston1plus.html,
+	mma/docs/html/lib/stdlib/charleston_charleston1sus.html,
+	mma/docs/html/lib/stdlib/charleston_charleston1susplus.html,
+	mma/docs/html/lib/stdlib/charleston_charleston1walk.html,
+	mma/docs/html/lib/stdlib/charleston_charleston1walkplus.html,
+	mma/docs/html/lib/stdlib/charleston_charleston1walksus.html,
+	mma/docs/html/lib/stdlib/charleston_charleston1walksusplus.html,
+	mma/docs/html/lib/stdlib/charleston_charleston2.html,
+	mma/docs/html/lib/stdlib/charleston_charleston2plus.html,
+	mma/docs/html/lib/stdlib/charleston_charleston2sus.html,
+	mma/docs/html/lib/stdlib/charleston_charleston2susplus.html,
+	mma/docs/html/lib/stdlib/charleston_charleston2walk.html,
+	mma/docs/html/lib/stdlib/charleston_charleston2walkplus.html,
+	mma/docs/html/lib/stdlib/charleston_charleston2walksus.html,
+	mma/docs/html/lib/stdlib/charleston_charleston2walksusplus.html,
+	mma/docs/html/lib/stdlib/charleston_charlestonend.html,
+	mma/docs/html/lib/stdlib/charleston_charlestonintro.html,
+	mma/docs/html/lib/stdlib/charleston_charlestonintro8.html,
+	mma/docs/html/lib/stdlib/charleston_charlestonplus.html,
+	mma/docs/html/lib/stdlib/charleston_charlestonsus.html,
+	mma/docs/html/lib/stdlib/charleston_charlestonsusplus.html,
+	mma/docs/html/lib/stdlib/charleston_charlestonwalk.html,
+	mma/docs/html/lib/stdlib/charleston_charlestonwalkplus.html,
+	mma/docs/html/lib/stdlib/charleston_charlestonwalksus.html,
+	mma/docs/html/lib/stdlib/charleston_charlestonwalksusplus.html,
+	mma/docs/html/lib/stdlib/countryblues.html,
+	mma/docs/html/lib/stdlib/countryblues_countryblues.html,
+	mma/docs/html/lib/stdlib/countryblues_countryblues1.html,
+	mma/docs/html/lib/stdlib/countryblues_countryblues1fill.html,
+	mma/docs/html/lib/stdlib/countryblues_countryblues1sus.html,
+	mma/docs/html/lib/stdlib/countryblues_countryblues1walk.html,
+	mma/docs/html/lib/stdlib/countryblues_countryblues1walkfill.html,
+	mma/docs/html/lib/stdlib/countryblues_countryblues1walksus.html,
+	mma/docs/html/lib/stdlib/countryblues_countrybluesend.html,
+	mma/docs/html/lib/stdlib/countryblues_countrybluesfill.html,
+	mma/docs/html/lib/stdlib/countryblues_countrybluessus.html,
+	mma/docs/html/lib/stdlib/countryblues_countryblueswalk.html,
+	mma/docs/html/lib/stdlib/countryblues_countryblueswalkfill.html,
+	mma/docs/html/lib/stdlib/countryblues_countryblueswalksus.html,
+	mma/docs/html/lib/stdlib/countryswing.html,
+	mma/docs/html/lib/stdlib/countryswing_countryswing.html,
+	mma/docs/html/lib/stdlib/countryswing_countryswing1.html,
+	mma/docs/html/lib/stdlib/countryswing_countryswing1sus.html,
+	mma/docs/html/lib/stdlib/countryswing_countryswing2.html,
+	mma/docs/html/lib/stdlib/countryswing_countryswing2sus.html,
+	mma/docs/html/lib/stdlib/countryswing_countryswingend.html,
+	mma/docs/html/lib/stdlib/countryswing_countryswingintro.html,
+	mma/docs/html/lib/stdlib/countryswing_countryswingsus.html,
+	mma/docs/html/lib/stdlib/countrywaltz.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltz.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltz1.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltz1sus.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltz1suswalk.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltz1walk.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltz2.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltz2sus.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltz2suswalk.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltz2walk.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltzend.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltzintro.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltzintro8.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltzsus.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltzwalk.html,
+	mma/docs/html/lib/stdlib/countrywaltz_countrywaltzwalksus.html,
+	mma/docs/html/lib/stdlib/descendingjazz.html,
+	mma/docs/html/lib/stdlib/descendingjazz_descendingjazz.html,
+	mma/docs/html/lib/stdlib/descendingjazz_descendingjazzend.html,
+	mma/docs/html/lib/stdlib/descendingjazz_descendingjazzintro.html,
+	mma/docs/html/lib/stdlib/descendingjazz_descendingjazzintro8.html,
+	mma/docs/html/lib/stdlib/descendingjazz_descendingjazzplus.html,
+	mma/docs/html/lib/stdlib/descendingjazz_descendingjazzplusintro.htm
+	l,
+	mma/docs/html/lib/stdlib/descendingjazz_descendingjazzplusintro8.ht
+	ml, mma/docs/html/lib/stdlib/descendingjazz_descendingjazzsus.html,
+	mma/docs/html/lib/stdlib/descendingjazz_descendingjazzsusplus.html,
+	mma/docs/html/lib/stdlib/desert.html,
+	mma/docs/html/lib/stdlib/desert_desert.html,
+	mma/docs/html/lib/stdlib/desert_desertend.html,
+	mma/docs/html/lib/stdlib/desert_desertfill.html,
+	mma/docs/html/lib/stdlib/desert_desertsus.html,
+	mma/docs/html/lib/stdlib/dixie.html,
+	mma/docs/html/lib/stdlib/dixie_dixie.html,
+	mma/docs/html/lib/stdlib/dixie_dixie1.html,
+	mma/docs/html/lib/stdlib/dixie_dixie1sus.html,
+	mma/docs/html/lib/stdlib/dixie_dixie2.html,
+	mma/docs/html/lib/stdlib/dixie_dixie2sus.html,
+	mma/docs/html/lib/stdlib/dixie_dixie3.html,
+	mma/docs/html/lib/stdlib/dixie_dixie3sus.html,
+	mma/docs/html/lib/stdlib/dixie_dixie4.html,
+	mma/docs/html/lib/stdlib/dixie_dixie4strum.html,
+	mma/docs/html/lib/stdlib/dixie_dixie4sus.html,
+	mma/docs/html/lib/stdlib/dixie_dixieend.html,
+	mma/docs/html/lib/stdlib/dixie_dixieintro.html,
+	mma/docs/html/lib/stdlib/dixie_dixieintro8.html,
+	mma/docs/html/lib/stdlib/dixie_dixiestrum.html,
+	mma/docs/html/lib/stdlib/dixie_dixiestrumsus.html,
+	mma/docs/html/lib/stdlib/dixie_dixiesus.html,
+	mma/docs/html/lib/stdlib/dixiemarch.html,
+	mma/docs/html/lib/stdlib/dixiemarch_dixiemarch.html,
+	mma/docs/html/lib/stdlib/dixiemarch_dixiemarchend.html,
+	mma/docs/html/lib/stdlib/dixiemarch_dixiemarchintro.html,
+	mma/docs/html/lib/stdlib/dixiemarch_dixiemarchplus.html,
+	mma/docs/html/lib/stdlib/dixiemarch_dixiemarchsus.html,
+	mma/docs/html/lib/stdlib/dixiemarch_dixiemarchsusplus.html,
+	mma/docs/html/lib/stdlib/easyswing.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswing.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswing1.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswing1fill.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswing1sus.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswing2.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswing2fill.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswing2sus.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswing42.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswing42fill.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswing42sus.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswing42walk.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswing42walkfill.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswing42walksus.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswingend.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswingfill.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswingintro.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswingintro1.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswingintro2.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswingintro3.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswingsus.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswingwalk.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswingwalkfill.html,
+	mma/docs/html/lib/stdlib/easyswing_easyswingwalksus.html,
+	mma/docs/html/lib/stdlib/fastblues.html,
+	mma/docs/html/lib/stdlib/fastblues_fastblues.html,
+	mma/docs/html/lib/stdlib/fastblues_fastblues1.html,
+	mma/docs/html/lib/stdlib/fastblues_fastblues1sus.html,
+	mma/docs/html/lib/stdlib/fastblues_fastbluesend.html,
+	mma/docs/html/lib/stdlib/fastblues_fastbluessus.html,
+	mma/docs/html/lib/stdlib/fastblues_fastblueswalk.html,
+	mma/docs/html/lib/stdlib/fastblues_fastblueswalksus.html,
+	mma/docs/html/lib/stdlib/fastswing.html,
+	mma/docs/html/lib/stdlib/fastswing_fastswing.html,
+	mma/docs/html/lib/stdlib/fastswing_fastswingend.html,
+	mma/docs/html/lib/stdlib/fastswing_fastswingintro.html,
+	mma/docs/html/lib/stdlib/fastswing_fastswingintro8.html,
+	mma/docs/html/lib/stdlib/fastswing_fastswingsus.html,
+	mma/docs/html/lib/stdlib/fastswing_fastswingwalk.html,
+	mma/docs/html/lib/stdlib/fastswing_fastswingwalksus.html,
+	mma/docs/html/lib/stdlib/fastwaltz.html,
+	mma/docs/html/lib/stdlib/fastwaltz_fastwaltz.html,
+	mma/docs/html/lib/stdlib/fastwaltz_fastwaltzend.html,
+	mma/docs/html/lib/stdlib/fastwaltz_fastwaltzintro.html,
+	mma/docs/html/lib/stdlib/fastwaltz_fastwaltzintro8.html,
+	mma/docs/html/lib/stdlib/fastwaltz_fastwaltzplus.html,
+	mma/docs/html/lib/stdlib/fastwaltz_fastwaltzsus.html,
+	mma/docs/html/lib/stdlib/fastwaltz_fastwaltzsusplus.html,
+	mma/docs/html/lib/stdlib/fastwaltz_fastwaltzwalk.html,
+	mma/docs/html/lib/stdlib/fastwaltz_fastwaltzwalkplus.html,
+	mma/docs/html/lib/stdlib/fastwaltz_fastwaltzwalksus.html,
+	mma/docs/html/lib/stdlib/fastwaltz_fastwaltzwalksusplus.html,
+	mma/docs/html/lib/stdlib/folk.html,
+	mma/docs/html/lib/stdlib/folk_folk.html,
+	mma/docs/html/lib/stdlib/folk_folkarticulated.html,
+	mma/docs/html/lib/stdlib/folk_folkarticulatedsus.html,
+	mma/docs/html/lib/stdlib/folk_folkend.html,
+	mma/docs/html/lib/stdlib/folk_folkintro.html,
+	mma/docs/html/lib/stdlib/folk_folksus.html,
+	mma/docs/html/lib/stdlib/folk_folkwalk.html,
+	mma/docs/html/lib/stdlib/folkballad.html,
+	mma/docs/html/lib/stdlib/folkballad_folkballad.html,
+	mma/docs/html/lib/stdlib/folkballad_folkballad1.html,
+	mma/docs/html/lib/stdlib/folkballad_folkballad1sus.html,
+	mma/docs/html/lib/stdlib/folkballad_folkballadend.html,
+	mma/docs/html/lib/stdlib/folkballad_folkballadintro.html,
+	mma/docs/html/lib/stdlib/folkballad_folkballadsus.html,
+	mma/docs/html/lib/stdlib/folkyjazz.html,
+	mma/docs/html/lib/stdlib/folkyjazz_folkyjazzguitar.html,
+	mma/docs/html/lib/stdlib/folkyjazz_folkyjazzguitarend.html,
+	mma/docs/html/lib/stdlib/folkyjazz_folkyjazzguitarintro.html,
+	mma/docs/html/lib/stdlib/folkyjazz_folkyjazzguitarplus.html,
+	mma/docs/html/lib/stdlib/folkyjazz_folkyjazzguitarsus.html,
+	mma/docs/html/lib/stdlib/folkyjazz_folkyjazzguitarsusplus.html,
+	mma/docs/html/lib/stdlib/foxtrot.html,
+	mma/docs/html/lib/stdlib/foxtrot_foxtrot.html,
+	mma/docs/html/lib/stdlib/foxtrot_foxtrot1.html,
+	mma/docs/html/lib/stdlib/foxtrot_foxtrot1end.html,
+	mma/docs/html/lib/stdlib/foxtrot_foxtrot1intro.html,
+	mma/docs/html/lib/stdlib/foxtrot_foxtrot1plus.html,
+	mma/docs/html/lib/stdlib/foxtrot_foxtrot1sus.html,
+	mma/docs/html/lib/stdlib/foxtrot_foxtrot1susplus.html,
+	mma/docs/html/lib/stdlib/foxtrot_foxtrotend.html,
+	mma/docs/html/lib/stdlib/foxtrot_foxtrotfill.html,
+	mma/docs/html/lib/stdlib/foxtrot_foxtrotintro.html,
+	mma/docs/html/lib/stdlib/foxtrot_foxtrotplus.html,
+	mma/docs/html/lib/stdlib/foxtrot_foxtrotsus.html,
+	mma/docs/html/lib/stdlib/foxtrot_foxtrotsusplus.html,
+	mma/docs/html/lib/stdlib/frenchwaltz.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz1.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz1end.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz1fill.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz1fillsus.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz1sus.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz2.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz2fill.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz2fillsus.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz2sus.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz3.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz3fill.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz3fillsus.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltz3sus.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltzend.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltzintro.html,
+	mma/docs/html/lib/stdlib/frenchwaltz_frenchwaltzsus.html,
+	mma/docs/html/lib/stdlib/guitarballad.html,
+	mma/docs/html/lib/stdlib/guitarballad_guitarballad.html,
+	mma/docs/html/lib/stdlib/guitarballad_guitarballad1.html,
+	mma/docs/html/lib/stdlib/guitarballad_guitarballad1sus.html,
+	mma/docs/html/lib/stdlib/guitarballad_guitarballadend.html,
+	mma/docs/html/lib/stdlib/guitarballad_guitarballadintro.html,
+	mma/docs/html/lib/stdlib/guitarballad_guitarballadsus.html,
+	mma/docs/html/lib/stdlib/guitarballad_guitarballadsusintro.html,
+	mma/docs/html/lib/stdlib/hillcountry.html,
+	mma/docs/html/lib/stdlib/hillcountry_hillcountry.html,
+	mma/docs/html/lib/stdlib/hillcountry_hillcountryend.html,
+	mma/docs/html/lib/stdlib/hillcountry_hillcountryfill.html,
+	mma/docs/html/lib/stdlib/hillcountry_hillcountryintro.html,
+	mma/docs/html/lib/stdlib/hillcountry_hillcountryplus.html,
+	mma/docs/html/lib/stdlib/hillcountry_hillcountrysus.html,
+	mma/docs/html/lib/stdlib/hillcountry_hillcountrysusplus.html,
+	mma/docs/html/lib/stdlib/jazz-54.html,
+	mma/docs/html/lib/stdlib/jazz-54_jazz54.html,
+	mma/docs/html/lib/stdlib/jazz-54_jazz54intro.html,
+	mma/docs/html/lib/stdlib/jazz-54_jazz54walk.html,
+	mma/docs/html/lib/stdlib/jazzcombo.html,
+	mma/docs/html/lib/stdlib/jazzcombo_jazzcombo.html,
+	mma/docs/html/lib/stdlib/jazzcombo_jazzcombo1.html,
+	mma/docs/html/lib/stdlib/jazzcombo_jazzcombo1sus.html,
+	mma/docs/html/lib/stdlib/jazzcombo_jazzcombo2.html,
+	mma/docs/html/lib/stdlib/jazzcombo_jazzcombo2sus.html,
+	mma/docs/html/lib/stdlib/jazzcombo_jazzcomboend.html,
+	mma/docs/html/lib/stdlib/jazzcombo_jazzcombointro.html,
+	mma/docs/html/lib/stdlib/jazzcombo_jazzcombosus.html,
+	mma/docs/html/lib/stdlib/jazzguitar.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar1.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar1intro.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar1sus.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar1walk.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar1walksus.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar2.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar2sus.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar2walk.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar2walksus.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar3.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar3sus.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar3walk.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitar3walksus.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitarend.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitarend1.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitarfill.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitarfill1.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitarintro.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitarsus.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitarwalk.html,
+	mma/docs/html/lib/stdlib/jazzguitar_jazzguitarwalksus.html,
+	mma/docs/html/lib/stdlib/jazzrhumba.html,
+	mma/docs/html/lib/stdlib/jazzrhumba_jazzrhumba.html,
+	mma/docs/html/lib/stdlib/jazzrhumba_jazzrhumbaend.html,
+	mma/docs/html/lib/stdlib/jazzrhumba_jazzrhumbafill.html,
+	mma/docs/html/lib/stdlib/jazzrhumba_jazzrhumbaintro.html,
+	mma/docs/html/lib/stdlib/jazzrhumba_jazzrhumbaplus.html,
+	mma/docs/html/lib/stdlib/jazzrhumba_jazzrhumbasus.html,
+	mma/docs/html/lib/stdlib/jazzrhumba_jazzrhumbasusplus.html,
+	mma/docs/html/lib/stdlib/jazzrock.html,
+	mma/docs/html/lib/stdlib/jazzrock_jazzrock.html,
+	mma/docs/html/lib/stdlib/jazzrock_jazzrockend.html,
+	mma/docs/html/lib/stdlib/jazzrock_jazzrockfill.html,
+	mma/docs/html/lib/stdlib/jazzrock_jazzrockintro.html,
+	mma/docs/html/lib/stdlib/jazzrock_jazzrockintro8.html,
+	mma/docs/html/lib/stdlib/jazzrock_jazzrockplus.html,
+	mma/docs/html/lib/stdlib/jazzrock_jazzrocksus.html,
+	mma/docs/html/lib/stdlib/jazzrock_jazzrocksusplus.html,
+	mma/docs/html/lib/stdlib/jazzrock_jazzrockwalk.html,
+	mma/docs/html/lib/stdlib/jazzrock_jazzrockwalkplus.html,
+	mma/docs/html/lib/stdlib/jazzrock_jazzrockwalksus.html,
+	mma/docs/html/lib/stdlib/jazzrock_jazzrockwalksusplus.html,
+	mma/docs/html/lib/stdlib/jazzwaltz.html,
+	mma/docs/html/lib/stdlib/jazzwaltz_jazzwaltz.html,
+	mma/docs/html/lib/stdlib/jazzwaltz_jazzwaltz1.html,
+	mma/docs/html/lib/stdlib/jazzwaltz_jazzwaltz1end.html,
+	mma/docs/html/lib/stdlib/jazzwaltz_jazzwaltz1sus.html,
+	mma/docs/html/lib/stdlib/jazzwaltz_jazzwaltz2.html,
+	mma/docs/html/lib/stdlib/jazzwaltz_jazzwaltz2sus.html,
+	mma/docs/html/lib/stdlib/jazzwaltz_jazzwaltzend.html,
+	mma/docs/html/lib/stdlib/jazzwaltz_jazzwaltzfill.html,
+	mma/docs/html/lib/stdlib/jazzwaltz_jazzwaltzintro.html,
+	mma/docs/html/lib/stdlib/jazzwaltz_jazzwaltzintro8.html,
+	mma/docs/html/lib/stdlib/jazzwaltz_jazzwaltzsus.html,
+	mma/docs/html/lib/stdlib/jive.html,
+	mma/docs/html/lib/stdlib/jive_jive.html,
+	mma/docs/html/lib/stdlib/jive_jive1.html,
+	mma/docs/html/lib/stdlib/jive_jive1clap.html,
+	mma/docs/html/lib/stdlib/jive_jive1clapsus.html,
+	mma/docs/html/lib/stdlib/jive_jive1plus.html,
+	mma/docs/html/lib/stdlib/jive_jive1sus.html,
+	mma/docs/html/lib/stdlib/jive_jive1susplus.html,
+	mma/docs/html/lib/stdlib/jive_jiveclap.html,
+	mma/docs/html/lib/stdlib/jive_jiveclapsus.html,
+	mma/docs/html/lib/stdlib/jive_jiveend.html,
+	mma/docs/html/lib/stdlib/jive_jiveintro.html,
+	mma/docs/html/lib/stdlib/jive_jiveintro8.html,
+	mma/docs/html/lib/stdlib/jive_jiveplus.html,
+	mma/docs/html/lib/stdlib/jive_jivesus.html,
+	mma/docs/html/lib/stdlib/jive_jivesusplus.html,
+	mma/docs/html/lib/stdlib/lfusion.html,
+	mma/docs/html/lib/stdlib/lfusion_lfusion.html,
+	mma/docs/html/lib/stdlib/lfusion_lfusion1.html,
+	mma/docs/html/lib/stdlib/lfusion_lfusion1end.html,
+	mma/docs/html/lib/stdlib/lfusion_lfusion1sus.html,
+	mma/docs/html/lib/stdlib/lfusion_lfusionend.html,
+	mma/docs/html/lib/stdlib/lfusion_lfusionsus.html,
+	mma/docs/html/lib/stdlib/lighttango.html,
+	mma/docs/html/lib/stdlib/lighttango_lighttango.html,
+	mma/docs/html/lib/stdlib/lighttango_lighttango1.html,
+	mma/docs/html/lib/stdlib/lighttango_lighttango1sus.html,
+	mma/docs/html/lib/stdlib/lighttango_lighttango4end.html,
+	mma/docs/html/lib/stdlib/lighttango_lighttangoend.html,
+	mma/docs/html/lib/stdlib/lighttango_lighttangofill.html,
+	mma/docs/html/lib/stdlib/lighttango_lighttangointro.html,
+	mma/docs/html/lib/stdlib/lighttango_lighttangointro1.html,
+	mma/docs/html/lib/stdlib/lighttango_lighttangosus.html,
+	mma/docs/html/lib/stdlib/lullaby.html,
+	mma/docs/html/lib/stdlib/lullaby_lullaby.html,
+	mma/docs/html/lib/stdlib/lullaby_lullaby1.html,
+	mma/docs/html/lib/stdlib/lullaby_lullaby1plus.html,
+	mma/docs/html/lib/stdlib/lullaby_lullaby1sus.html,
+	mma/docs/html/lib/stdlib/lullaby_lullaby1susplus.html,
+	mma/docs/html/lib/stdlib/lullaby_lullabyend.html,
+	mma/docs/html/lib/stdlib/lullaby_lullabyplus.html,
+	mma/docs/html/lib/stdlib/lullaby_lullabysus.html,
+	mma/docs/html/lib/stdlib/lullaby_lullabysusplus.html,
+	mma/docs/html/lib/stdlib/lullaby_lullabywalk.html,
+	mma/docs/html/lib/stdlib/lullaby_lullabywalkplus.html,
+	mma/docs/html/lib/stdlib/lullaby_lullabywalksus.html,
+	mma/docs/html/lib/stdlib/lullaby_lullabywalksusplus.html,
+	mma/docs/html/lib/stdlib/mambo.html,
+	mma/docs/html/lib/stdlib/mambo_mambo.html,
+	mma/docs/html/lib/stdlib/mambo_mambo1.html,
+	mma/docs/html/lib/stdlib/mambo_mambo1sus.html,
+	mma/docs/html/lib/stdlib/mambo_mambo2.html,
+	mma/docs/html/lib/stdlib/mambo_mambo2sus.html,
+	mma/docs/html/lib/stdlib/mambo_mambo3.html,
+	mma/docs/html/lib/stdlib/mambo_mambo3sus.html,
+	mma/docs/html/lib/stdlib/mambo_mamboend.html,
+	mma/docs/html/lib/stdlib/mambo_mambointro.html,
+	mma/docs/html/lib/stdlib/mambo_mambosus.html,
+	mma/docs/html/lib/stdlib/march.html,
+	mma/docs/html/lib/stdlib/march_march.html,
+	mma/docs/html/lib/stdlib/march_march1.html,
+	mma/docs/html/lib/stdlib/march_march1slow.html,
+	mma/docs/html/lib/stdlib/march_march2.html,
+	mma/docs/html/lib/stdlib/march_march3.html,
+	mma/docs/html/lib/stdlib/march_march4.html,
+	mma/docs/html/lib/stdlib/march_marchend.html,
+	mma/docs/html/lib/stdlib/march_milintro2.html,
+	mma/docs/html/lib/stdlib/march_milintro4.html,
+	mma/docs/html/lib/stdlib/merengue.html,
+	mma/docs/html/lib/stdlib/merengue_merengue.html,
+	mma/docs/html/lib/stdlib/merengue_merengue1.html,
+	mma/docs/html/lib/stdlib/merengue_merengue1sus.html,
+	mma/docs/html/lib/stdlib/merengue_merengue2.html,
+	mma/docs/html/lib/stdlib/merengue_merengue2sus.html,
+	mma/docs/html/lib/stdlib/merengue_merengueend.html,
+	mma/docs/html/lib/stdlib/merengue_merengueintro.html,
+	mma/docs/html/lib/stdlib/merengue_merenguesus.html,
+	mma/docs/html/lib/stdlib/metronome.html,
+	mma/docs/html/lib/stdlib/metronome3.html,
+	mma/docs/html/lib/stdlib/metronome3_metronome3.html,
+	mma/docs/html/lib/stdlib/metronome_metronome2-4.html,
+	mma/docs/html/lib/stdlib/metronome_metronome2.html,
+	mma/docs/html/lib/stdlib/metronome_metronome4.html,
+	mma/docs/html/lib/stdlib/modernjazz.html,
+	mma/docs/html/lib/stdlib/modernjazz_modernjazz.html,
+	mma/docs/html/lib/stdlib/modernjazz_modernjazz1.html,
+	mma/docs/html/lib/stdlib/modernjazz_modernjazz1sus.html,
+	mma/docs/html/lib/stdlib/modernjazz_modernjazz2.html,
+	mma/docs/html/lib/stdlib/modernjazz_modernjazz2sus.html,
+	mma/docs/html/lib/stdlib/modernjazz_modernjazzend.html,
+	mma/docs/html/lib/stdlib/modernjazz_modernjazzfill.html,
+	mma/docs/html/lib/stdlib/modernjazz_modernjazzintro.html,
+	mma/docs/html/lib/stdlib/modernjazz_modernjazzsus.html,
+	mma/docs/html/lib/stdlib/pianoballad.html,
+	mma/docs/html/lib/stdlib/pianoballad_pianoballad.html,
+	mma/docs/html/lib/stdlib/pianoballad_pianoballad1.html,
+	mma/docs/html/lib/stdlib/pianoballad_pianoballad1sus.html,
+	mma/docs/html/lib/stdlib/pianoballad_pianoballad2.html,
+	mma/docs/html/lib/stdlib/pianoballad_pianoballad2sus.html,
+	mma/docs/html/lib/stdlib/pianoballad_pianoballadend.html,
+	mma/docs/html/lib/stdlib/pianoballad_pianoballadfill.html,
+	mma/docs/html/lib/stdlib/pianoballad_pianoballadintro.html,
+	mma/docs/html/lib/stdlib/pianoballad_pianoballadintro2.html,
+	mma/docs/html/lib/stdlib/pianoballad_pianoballadsus.html,
+	mma/docs/html/lib/stdlib/polka.html,
+	mma/docs/html/lib/stdlib/polka_polka.html,
+	mma/docs/html/lib/stdlib/polka_polka1.html,
+	mma/docs/html/lib/stdlib/polka_polka1arp.html,
+	mma/docs/html/lib/stdlib/polka_polka1sus.html,
+	mma/docs/html/lib/stdlib/polka_polka1susarp.html,
+	mma/docs/html/lib/stdlib/polka_polkaarp.html,
+	mma/docs/html/lib/stdlib/polka_polkaend.html,
+	mma/docs/html/lib/stdlib/polka_polkaintro.html,
+	mma/docs/html/lib/stdlib/polka_polkaintro8.html,
+	mma/docs/html/lib/stdlib/polka_polkasus.html,
+	mma/docs/html/lib/stdlib/polka_polkasusarp.html,
+	mma/docs/html/lib/stdlib/popballad.html,
+	mma/docs/html/lib/stdlib/popballad_popballad.html,
+	mma/docs/html/lib/stdlib/popballad_popballad1.html,
+	mma/docs/html/lib/stdlib/popballad_popballad2.html,
+	mma/docs/html/lib/stdlib/popballad_popballadend.html,
+	mma/docs/html/lib/stdlib/popballad_popballadintro.html,
+	mma/docs/html/lib/stdlib/popballad_popballadsus.html,
+	mma/docs/html/lib/stdlib/quickstep.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstep.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstepduh.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstepduhsus.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstepduhsuswalk.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstepduhwalk.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstepend.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstephit.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstephitsus.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstephitsuswalk.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstephitwalk.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstepintro.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstepintro8.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstepsus.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstepsuswalk.html,
+	mma/docs/html/lib/stdlib/quickstep_quickstepwalk.html,
+	mma/docs/html/lib/stdlib/rb-ballad.html,
+	mma/docs/html/lib/stdlib/rb-ballad_r&b-ballad.html,
+	mma/docs/html/lib/stdlib/rb-ballad_r&b-balladend.html,
+	mma/docs/html/lib/stdlib/rb-ballad_r&b-balladintro.html,
+	mma/docs/html/lib/stdlib/rb-ballad_r&b-balladsus.html,
+	mma/docs/html/lib/stdlib/rb.html,
+	mma/docs/html/lib/stdlib/rb_r&b.html,
+	mma/docs/html/lib/stdlib/rb_r&bend.html,
+	mma/docs/html/lib/stdlib/rb_r&bintro.html,
+	mma/docs/html/lib/stdlib/rb_r&bplus.html,
+	mma/docs/html/lib/stdlib/rb_r&bsus.html,
+	mma/docs/html/lib/stdlib/rb_r&bsusplus.html,
+	mma/docs/html/lib/stdlib/rhumba.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumba.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumba1.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumba1sus.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumba2.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumba2sus.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumba3.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumba3sus.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumbaend.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumbaend1.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumbaintro.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumbasus.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumbatriple.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumbatriple12.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumbatriple12sus.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumbatriple34.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumbatriple34sus.html,
+	mma/docs/html/lib/stdlib/rhumba_rhumbatriplesus.html,
+	mma/docs/html/lib/stdlib/rock-128.html,
+	mma/docs/html/lib/stdlib/rock-128_rock128.html,
+	mma/docs/html/lib/stdlib/rock-128_rock128end.html,
+	mma/docs/html/lib/stdlib/rock-128_rock128intro.html,
+	mma/docs/html/lib/stdlib/rock-128_rock128introsus.html,
+	mma/docs/html/lib/stdlib/rock-128_rock128plain.html,
+	mma/docs/html/lib/stdlib/rock-128_rock128plainplus.html,
+	mma/docs/html/lib/stdlib/rock-128_rock128plainsus.html,
+	mma/docs/html/lib/stdlib/rock-128_rock128plainsusplus.html,
+	mma/docs/html/lib/stdlib/rock-128_rock128plus.html,
+	mma/docs/html/lib/stdlib/rock-128_rock128sus.html,
+	mma/docs/html/lib/stdlib/rock-128_rock128susplus.html,
+	mma/docs/html/lib/stdlib/rockballad.html,
+	mma/docs/html/lib/stdlib/rockballad_rockballad.html,
+	mma/docs/html/lib/stdlib/rockballad_rockballad1.html,
+	mma/docs/html/lib/stdlib/rockballad_rockballad1fill.html,
+	mma/docs/html/lib/stdlib/rockballad_rockballad1voice.html,
+	mma/docs/html/lib/stdlib/rockballad_rockballadend.html,
+	mma/docs/html/lib/stdlib/rockballad_rockballadend1.html,
+	mma/docs/html/lib/stdlib/rockballad_rockballadfill.html,
+	mma/docs/html/lib/stdlib/rockballad_rockballadintro.html,
+	mma/docs/html/lib/stdlib/rockballad_rockballadsusintro.html,
+	mma/docs/html/lib/stdlib/rockballad_rockballadvoice.html,
+	mma/docs/html/lib/stdlib/rockwaltz.html,
+	mma/docs/html/lib/stdlib/rockwaltz_rockwaltz.html,
+	mma/docs/html/lib/stdlib/rockwaltz_rockwaltz1.html,
+	mma/docs/html/lib/stdlib/rockwaltz_rockwaltz1intro.html,
+	mma/docs/html/lib/stdlib/rockwaltz_rockwaltz1intro8.html,
+	mma/docs/html/lib/stdlib/rockwaltz_rockwaltz1sus.html,
+	mma/docs/html/lib/stdlib/rockwaltz_rockwaltz1walk.html,
+	mma/docs/html/lib/stdlib/rockwaltz_rockwaltz1walksus.html,
+	mma/docs/html/lib/stdlib/rockwaltz_rockwaltzend.html,
+	mma/docs/html/lib/stdlib/rockwaltz_rockwaltzintro.html,
+	mma/docs/html/lib/stdlib/rockwaltz_rockwaltzintro8.html,
+	mma/docs/html/lib/stdlib/rockwaltz_rockwaltzsus.html,
+	mma/docs/html/lib/stdlib/rockwaltz_rockwaltzwalk.html,
+	mma/docs/html/lib/stdlib/rockwaltz_rockwaltzwalksus.html,
+	mma/docs/html/lib/stdlib/salsa.html,
+	mma/docs/html/lib/stdlib/salsa_salsa.html,
+	mma/docs/html/lib/stdlib/salsa_salsaend.html,
+	mma/docs/html/lib/stdlib/salsa_salsafill.html,
+	mma/docs/html/lib/stdlib/salsa_salsaintro.html,
+	mma/docs/html/lib/stdlib/salsa_salsaplus.html,
+	mma/docs/html/lib/stdlib/salsa_salsasus.html,
+	mma/docs/html/lib/stdlib/salsa_salsasusplus.html,
+	mma/docs/html/lib/stdlib/samba.html,
+	mma/docs/html/lib/stdlib/samba_samba.html,
+	mma/docs/html/lib/stdlib/samba_sambaend.html,
+	mma/docs/html/lib/stdlib/samba_sambafill.html,
+	mma/docs/html/lib/stdlib/samba_sambaintro.html,
+	mma/docs/html/lib/stdlib/samba_sambaintro1.html,
+	mma/docs/html/lib/stdlib/samba_sambaplus.html,
+	mma/docs/html/lib/stdlib/samba_sambasus.html,
+	mma/docs/html/lib/stdlib/samba_sambasusfill.html,
+	mma/docs/html/lib/stdlib/samba_sambasusplus.html,
+	mma/docs/html/lib/stdlib/showtune.html,
+	mma/docs/html/lib/stdlib/showtune_showtune.html,
+	mma/docs/html/lib/stdlib/showtune_showtune1.html,
+	mma/docs/html/lib/stdlib/showtune_showtune1plus.html,
+	mma/docs/html/lib/stdlib/showtune_showtune2.html,
+	mma/docs/html/lib/stdlib/showtune_showtune2plus.html,
+	mma/docs/html/lib/stdlib/showtune_showtuneend.html,
+	mma/docs/html/lib/stdlib/showtune_showtuneintro.html,
+	mma/docs/html/lib/stdlib/showtune_showtuneplus.html,
+	mma/docs/html/lib/stdlib/shuffleboggie.html,
+	mma/docs/html/lib/stdlib/shuffleboggie_shuffleboggie.html,
+	mma/docs/html/lib/stdlib/shuffleboggie_shuffleboggie1.html,
+	mma/docs/html/lib/stdlib/shuffleboggie_shuffleboggieend.html,
+	mma/docs/html/lib/stdlib/shuffleboggie_shuffleboggiefill.html,
+	mma/docs/html/lib/stdlib/shuffleboggie_shuffleboggieintro.html,
+	mma/docs/html/lib/stdlib/shuffleboggie_shuffleboggieintro4.html,
+	mma/docs/html/lib/stdlib/shuffleboggie_shuffleboggiesus.html,
+	mma/docs/html/lib/stdlib/ska.html,
+	mma/docs/html/lib/stdlib/ska_ska.html,
+	mma/docs/html/lib/stdlib/ska_ska1.html,
+	mma/docs/html/lib/stdlib/ska_ska1sus.html,
+	mma/docs/html/lib/stdlib/ska_skaclap.html,
+	mma/docs/html/lib/stdlib/ska_skaend.html,
+	mma/docs/html/lib/stdlib/ska_skasus.html,
+	mma/docs/html/lib/stdlib/slowblues.html,
+	mma/docs/html/lib/stdlib/slowblues_slowblues.html,
+	mma/docs/html/lib/stdlib/slowblues_slowbluesend.html,
+	mma/docs/html/lib/stdlib/slowblues_slowbluesfill.html,
+	mma/docs/html/lib/stdlib/slowblues_slowbluesfill1.html,
+	mma/docs/html/lib/stdlib/slowblues_slowbluesfill2.html,
+	mma/docs/html/lib/stdlib/slowblues_slowbluesfill3.html,
+	mma/docs/html/lib/stdlib/slowblues_slowbluesintro.html,
+	mma/docs/html/lib/stdlib/slowblues_slowbluessus.html,
+	mma/docs/html/lib/stdlib/slowblues_slowblueswalk4.html,
+	mma/docs/html/lib/stdlib/slowblues_slowblueswalk4sus.html,
+	mma/docs/html/lib/stdlib/slowblues_slowblueswalk8.html,
+	mma/docs/html/lib/stdlib/slowblues_slowblueswalk8sus.html,
+	mma/docs/html/lib/stdlib/slowbolero.html,
+	mma/docs/html/lib/stdlib/slowbolero_slowbolero.html,
+	mma/docs/html/lib/stdlib/slowbolero_slowboleroend.html,
+	mma/docs/html/lib/stdlib/slowbolero_slowbolerointro.html,
+	mma/docs/html/lib/stdlib/slowbolero_slowbolerosus.html,
+	mma/docs/html/lib/stdlib/slowbroadway.html,
+	mma/docs/html/lib/stdlib/slowbroadway_slowbroadway.html,
+	mma/docs/html/lib/stdlib/slowbroadway_slowbroadway1.html,
+	mma/docs/html/lib/stdlib/slowbroadway_slowbroadway1sus.html,
+	mma/docs/html/lib/stdlib/slowbroadway_slowbroadwayend.html,
+	mma/docs/html/lib/stdlib/slowbroadway_slowbroadwayintro.html,
+	mma/docs/html/lib/stdlib/slowbroadway_slowbroadwaysus.html,
+	mma/docs/html/lib/stdlib/slowcountry.html,
+	mma/docs/html/lib/stdlib/slowcountry_slowcountry.html,
+	mma/docs/html/lib/stdlib/slowcountry_slowcountryend.html,
+	mma/docs/html/lib/stdlib/slowcountry_slowcountryfill.html,
+	mma/docs/html/lib/stdlib/slowcountry_slowcountryintro.html,
+	mma/docs/html/lib/stdlib/slowcountry_slowcountrysus.html,
+	mma/docs/html/lib/stdlib/slowcountry_slowcountrywalk.html,
+	mma/docs/html/lib/stdlib/slowcountry_slowcountrywalkfill.html,
+	mma/docs/html/lib/stdlib/slowcountry_slowcountrywalksus.html,
+	mma/docs/html/lib/stdlib/slowjazz.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazz.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazz1.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazz1intro.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazz1sus.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazz1walk.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazz1walksus.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazz2.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazz2end.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazz2intro.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazz2sus.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazzend.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazzfill.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazzintro.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazzsus.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazzwalk.html,
+	mma/docs/html/lib/stdlib/slowjazz_slowjazzwalksus.html,
+	mma/docs/html/lib/stdlib/softrock.html,
+	mma/docs/html/lib/stdlib/softrock_softrock.html,
+	mma/docs/html/lib/stdlib/softrock_softrock1.html,
+	mma/docs/html/lib/stdlib/softrock_softrock1sus.html,
+	mma/docs/html/lib/stdlib/softrock_softrock2.html,
+	mma/docs/html/lib/stdlib/softrock_softrock2sus.html,
+	mma/docs/html/lib/stdlib/softrock_softrockend.html,
+	mma/docs/html/lib/stdlib/softrock_softrockfill.html,
+	mma/docs/html/lib/stdlib/softrock_softrockintro.html,
+	mma/docs/html/lib/stdlib/softrock_softrocksus.html,
+	mma/docs/html/lib/stdlib/softrock_softrocksusintro.html,
+	mma/docs/html/lib/stdlib/softshoe.html,
+	mma/docs/html/lib/stdlib/softshoe_softshoe.html,
+	mma/docs/html/lib/stdlib/softshoe_softshoeend.html,
+	mma/docs/html/lib/stdlib/softshoe_softshoeintro.html,
+	mma/docs/html/lib/stdlib/softshoe_softshoeplus.html,
+	mma/docs/html/lib/stdlib/softshoe_softshoesus.html,
+	mma/docs/html/lib/stdlib/softshoe_softshoesusplus.html,
+	mma/docs/html/lib/stdlib/son.html,
+	mma/docs/html/lib/stdlib/son_son.html,
+	mma/docs/html/lib/stdlib/son_sonend.html,
+	mma/docs/html/lib/stdlib/son_sonintro.html,
+	mma/docs/html/lib/stdlib/son_sonplus.html,
+	mma/docs/html/lib/stdlib/son_sonsus.html,
+	mma/docs/html/lib/stdlib/son_sonsusplus.html,
+	mma/docs/html/lib/stdlib/stringballad.html,
+	mma/docs/html/lib/stdlib/stringballad_stringballad.html,
+	mma/docs/html/lib/stdlib/stringballad_stringballadend.html,
+	mma/docs/html/lib/stdlib/stringballad_stringballadintro.html,
+	mma/docs/html/lib/stdlib/stringballad_stringballadplus.html,
+	mma/docs/html/lib/stdlib/stringballad_stringballadstrum.html,
+	mma/docs/html/lib/stdlib/stringballad_stringballadstrumplus.html,
+	mma/docs/html/lib/stdlib/stringballad_stringballadvoiceplus.html,
+	mma/docs/html/lib/stdlib/stringballad_stringballadvoicestrum.html,
+	mma/docs/html/lib/stdlib/swing.html,
+	mma/docs/html/lib/stdlib/swing_swing.html,
+	mma/docs/html/lib/stdlib/swing_swing1.html,
+	mma/docs/html/lib/stdlib/swing_swing1end.html,
+	mma/docs/html/lib/stdlib/swing_swing1plus.html,
+	mma/docs/html/lib/stdlib/swing_swing1plussus.html,
+	mma/docs/html/lib/stdlib/swing_swing1sus.html,
+	mma/docs/html/lib/stdlib/swing_swing1triple.html,
+	mma/docs/html/lib/stdlib/swing_swing1walk.html,
+	mma/docs/html/lib/stdlib/swing_swing1walkplus.html,
+	mma/docs/html/lib/stdlib/swing_swing1walkplussus.html,
+	mma/docs/html/lib/stdlib/swing_swing1walksus.html,
+	mma/docs/html/lib/stdlib/swing_swing2.html,
+	mma/docs/html/lib/stdlib/swing_swing2end.html,
+	mma/docs/html/lib/stdlib/swing_swing2plus.html,
+	mma/docs/html/lib/stdlib/swing_swing2plussus.html,
+	mma/docs/html/lib/stdlib/swing_swing2sus.html,
+	mma/docs/html/lib/stdlib/swing_swing2triple.html,
+	mma/docs/html/lib/stdlib/swing_swingend.html,
+	mma/docs/html/lib/stdlib/swing_swingfill.html,
+	mma/docs/html/lib/stdlib/swing_swingintro.html,
+	mma/docs/html/lib/stdlib/swing_swingintro2.html,
+	mma/docs/html/lib/stdlib/swing_swingplus.html,
+	mma/docs/html/lib/stdlib/swing_swingplussus.html,
+	mma/docs/html/lib/stdlib/swing_swingsus.html,
+	mma/docs/html/lib/stdlib/swing_swingtriple.html,
+	mma/docs/html/lib/stdlib/swing_swingwalk.html,
+	mma/docs/html/lib/stdlib/swing_swingwalkplus.html,
+	mma/docs/html/lib/stdlib/swing_swingwalkplussus.html,
+	mma/docs/html/lib/stdlib/swing_swingwalksus.html,
+	mma/docs/html/lib/stdlib/tango.html,
+	mma/docs/html/lib/stdlib/tango_tango.html,
+	mma/docs/html/lib/stdlib/tango_tango1.html,
+	mma/docs/html/lib/stdlib/tango_tangoend.html,
+	mma/docs/html/lib/stdlib/trance.html,
+	mma/docs/html/lib/stdlib/trance_trance.html,
+	mma/docs/html/lib/stdlib/trance_trance1.html,
+	mma/docs/html/lib/stdlib/trance_trance1bass1.html,
+	mma/docs/html/lib/stdlib/trance_trance2.html,
+	mma/docs/html/lib/stdlib/trance_trance2bass1.html,
+	mma/docs/html/lib/stdlib/trance_trancebass1.html,
+	mma/docs/html/lib/stdlib/trance_tranceend.html,
+	mma/docs/html/lib/stdlib/trance_tranceintro.html,
+	mma/docs/html/lib/stdlib/vienesewaltz.html,
+	mma/docs/html/lib/stdlib/vienesewaltz_vienesewaltz.html,
+	mma/docs/html/lib/stdlib/vienesewaltz_vienesewaltz1.html,
+	mma/docs/html/lib/stdlib/vienesewaltz_vienesewaltz1sus.html,
+	mma/docs/html/lib/stdlib/vienesewaltz_vienesewaltz2.html,
+	mma/docs/html/lib/stdlib/vienesewaltz_vienesewaltz2sus.html,
+	mma/docs/html/lib/stdlib/vienesewaltz_vienesewaltzend.html,
+	mma/docs/html/lib/stdlib/vienesewaltz_vienesewaltzintro.html,
+	mma/docs/html/lib/stdlib/vienesewaltz_vienesewaltzsus.html,
+	mma/docs/html/lib/stdlib/waltz.html,
+	mma/docs/html/lib/stdlib/waltz_waltz.html,
+	mma/docs/html/lib/stdlib/waltz_waltz1.html,
+	mma/docs/html/lib/stdlib/waltz_waltz1intro.html,
+	mma/docs/html/lib/stdlib/waltz_waltz1intro8.html,
+	mma/docs/html/lib/stdlib/waltz_waltz1sus.html,
+	mma/docs/html/lib/stdlib/waltz_waltz1walk.html,
+	mma/docs/html/lib/stdlib/waltz_waltz1walksus.html,
+	mma/docs/html/lib/stdlib/waltz_waltzend.html,
+	mma/docs/html/lib/stdlib/waltz_waltzintro.html,
+	mma/docs/html/lib/stdlib/waltz_waltzintro8.html,
+	mma/docs/html/lib/stdlib/waltz_waltzsus.html,
+	mma/docs/html/lib/stdlib/waltz_waltzwalk.html,
+	mma/docs/html/lib/stdlib/waltz_waltzwalksus.html,
+	mma/docs/html/lib/stdlib/zydeco.html,
+	mma/docs/html/lib/stdlib/zydeco_zydeco.html,
+	mma/docs/html/lib/stdlib/zydeco_zydecoend.html,
+	mma/docs/html/lib/stdlib/zydeco_zydecointro.html,
+	mma/docs/html/lib/stdlib/zydeco_zydecoplus.html,
+	mma/docs/html/lib/stdlib/zydeco_zydecoplusend.html,
+	mma/docs/html/lib/stdlib/zydeco_zydecosus.html,
+	mma/docs/html/lib/stdlib/zydeco_zydecosusplus.html,
+	mma/docs/html/lib/yamaha/jazzGrtrio.html,
+	mma/docs/html/lib/yamaha/jazzGrtrio_jazzgrtrioendinga.html,
+	mma/docs/html/lib/yamaha/jazzGrtrio_jazzgrtrioendingb.html,
+	mma/docs/html/lib/yamaha/jazzGrtrio_jazzgrtriofillaa.html,
+	mma/docs/html/lib/yamaha/jazzGrtrio_jazzgrtriofillab.html,
+	mma/docs/html/lib/yamaha/jazzGrtrio_jazzgrtriofillba.html,
+	mma/docs/html/lib/yamaha/jazzGrtrio_jazzgrtriofillbb.html,
+	mma/docs/html/lib/yamaha/jazzGrtrio_jazzgrtriointroa.html,
+	mma/docs/html/lib/yamaha/jazzGrtrio_jazzgrtriointrob.html,
+	mma/docs/html/lib/yamaha/jazzGrtrio_jazzgrtriomaina.html,
+	mma/docs/html/lib/yamaha/jazzGrtrio_jazzgrtriomainb.html,
+	mma/docs/html/lib/yamaha/jazzbasie.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasiea.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasieb.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasieendinga.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasieendingb.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasieendingc.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasiefillaa.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasiefillba.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasiefillbb.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasiefillcc.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasiefilldd.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasieintroa.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasieintrob.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasieintroc.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasiemainc.html,
+	mma/docs/html/lib/yamaha/jazzbasie_jazzbasiemaind.html,
+	mma/docs/html/lib/yamaha/jazzbossa.html,
+	mma/docs/html/lib/yamaha/jazzbossa_jazzbossaa.html,
+	mma/docs/html/lib/yamaha/jazzbossa_jazzbossab.html,
+	mma/docs/html/lib/yamaha/jazzbossa_jazzbossaendinga.html,
+	mma/docs/html/lib/yamaha/jazzbossa_jazzbossafillaa.html,
+	mma/docs/html/lib/yamaha/jazzbossa_jazzbossafillbb.html,
+	mma/docs/html/lib/yamaha/jazzbossa_jazzbossaintroa.html,
+	mma/docs/html/lib/yamaha/jazzbouncy.html,
+	mma/docs/html/lib/yamaha/jazzbouncy_jazzbouncyendinga.html,
+	mma/docs/html/lib/yamaha/jazzbouncy_jazzbouncyfillaa.html,
+	mma/docs/html/lib/yamaha/jazzbouncy_jazzbouncyfillbb.html,
+	mma/docs/html/lib/yamaha/jazzbouncy_jazzbouncyintroa.html,
+	mma/docs/html/lib/yamaha/jazzbouncy_jazzbouncymaina.html,
+	mma/docs/html/lib/yamaha/jazzbouncy_jazzbouncymainb.html,
+	mma/docs/html/lib/yamaha/jazzcountry.html,
+	mma/docs/html/lib/yamaha/jazzcountry_jazzcountryendinga.html,
+	mma/docs/html/lib/yamaha/jazzcountry_jazzcountryfillaa.html,
+	mma/docs/html/lib/yamaha/jazzcountry_jazzcountryfillbb.html,
+	mma/docs/html/lib/yamaha/jazzcountry_jazzcountryintroa.html,
+	mma/docs/html/lib/yamaha/jazzcountry_jazzcountrymaina.html,
+	mma/docs/html/lib/yamaha/jazzcountry_jazzcountrymainb.html,
+	mma/docs/html/lib/yamaha/jazzswing.html,
+	mma/docs/html/lib/yamaha/jazzswing_jazzswingendinga.html,
+	mma/docs/html/lib/yamaha/jazzswing_jazzswingfillaa.html,
+	mma/docs/html/lib/yamaha/jazzswing_jazzswingfillbb.html,
+	mma/docs/html/lib/yamaha/jazzswing_jazzswingintroa.html,
+	mma/docs/html/lib/yamaha/jazzswing_jazzswingmaina.html,
+	mma/docs/html/lib/yamaha/jazzswing_jazzswingmainb.html,
+	mma/docs/html/lib/yamaha/jazztrio.html,
+	mma/docs/html/lib/yamaha/jazztrio_jazztrioendinga.html,
+	mma/docs/html/lib/yamaha/jazztrio_jazztriofillaa.html,
+	mma/docs/html/lib/yamaha/jazztrio_jazztriofillbb.html,
+	mma/docs/html/lib/yamaha/jazztrio_jazztriointroa.html,
+	mma/docs/html/lib/yamaha/jazztrio_jazztriomaina.html,
+	mma/docs/html/lib/yamaha/jazztrio_jazztriomainb.html,
+	mma/docs/html/lib/yamaha/jazzwaltz.html,
+	mma/docs/html/lib/yamaha/jazzwaltz_jazzwaltzendinga.html,
+	mma/docs/html/lib/yamaha/jazzwaltz_jazzwaltzfillaa.html,
+	mma/docs/html/lib/yamaha/jazzwaltz_jazzwaltzfillbb.html,
+	mma/docs/html/lib/yamaha/jazzwaltz_jazzwaltzintroa.html,
+	mma/docs/html/lib/yamaha/jazzwaltz_jazzwaltzmaina.html,
+	mma/docs/html/lib/yamaha/jazzwaltz_jazzwaltzmainb.html,
+	mma/docs/html/lib/yamaha/mambo.html,
+	mma/docs/html/lib/yamaha/mambo_mambobreakaa.html,
+	mma/docs/html/lib/yamaha/mambo_mambobreakbb.html,
+	mma/docs/html/lib/yamaha/mambo_mamboendinga.html,
+	mma/docs/html/lib/yamaha/mambo_mamboendingb.html,
+	mma/docs/html/lib/yamaha/mambo_mambofillaa.html,
+	mma/docs/html/lib/yamaha/mambo_mambofillab.html,
+	mma/docs/html/lib/yamaha/mambo_mambofillba.html,
+	mma/docs/html/lib/yamaha/mambo_mambofillbb.html,
+	mma/docs/html/lib/yamaha/mambo_mambointroa.html,
+	mma/docs/html/lib/yamaha/mambo_mambointrob.html,
+	mma/docs/html/lib/yamaha/mambo_mambomaina.html,
+	mma/docs/html/lib/yamaha/mambo_mambomainb.html,
+	mma/docs/html/lib/yamaha/quando-g.s280.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsendinga.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsendingb.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsendingc.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsfillaa.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsfillba.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsfillbb.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsfillcc.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsfilldd.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsintroa.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsintrob.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsintroc.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsmaina.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsmainb.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsmainc.html,
+	mma/docs/html/lib/yamaha/quando-g.s280_quandogsmaind.html,
+	mma/docs/html/lib/yamaha/salsa1.html,
+	mma/docs/html/lib/yamaha/salsa1_salsa1endinga.html,
+	mma/docs/html/lib/yamaha/salsa1_salsa1endingb.html,
+	mma/docs/html/lib/yamaha/salsa1_salsa1fillaa.html,
+	mma/docs/html/lib/yamaha/salsa1_salsa1fillab.html,
+	mma/docs/html/lib/yamaha/salsa1_salsa1fillba.html,
+	mma/docs/html/lib/yamaha/salsa1_salsa1fillbb.html,
+	mma/docs/html/lib/yamaha/salsa1_salsa1introa.html,
+	mma/docs/html/lib/yamaha/salsa1_salsa1introb.html,
+	mma/docs/html/lib/yamaha/salsa1_salsa1maina.html,
+	mma/docs/html/lib/yamaha/salsa1_salsa1mainb.html,
+	mma/docs/html/lib/yamaha/salsa2.html,
+	mma/docs/html/lib/yamaha/salsa2_salsa2endinga.html,
+	mma/docs/html/lib/yamaha/salsa2_salsa2endingb.html,
+	mma/docs/html/lib/yamaha/salsa2_salsa2fillaa.html,
+	mma/docs/html/lib/yamaha/salsa2_salsa2fillab.html,
+	mma/docs/html/lib/yamaha/salsa2_salsa2fillba.html,
+	mma/docs/html/lib/yamaha/salsa2_salsa2fillbb.html,
+	mma/docs/html/lib/yamaha/salsa2_salsa2introa.html,
+	mma/docs/html/lib/yamaha/salsa2_salsa2introb.html,
+	mma/docs/html/lib/yamaha/salsa2_salsa2maina.html,
+	mma/docs/html/lib/yamaha/salsa2_salsa2mainb.html,
+	mma/docs/html/lib/yamaha/w-rock.html,
+	mma/docs/html/lib/yamaha/w-rock_w-rockendinga.html,
+	mma/docs/html/lib/yamaha/w-rock_w-rockendingb.html,
+	mma/docs/html/lib/yamaha/w-rock_w-rockfillaa.html,
+	mma/docs/html/lib/yamaha/w-rock_w-rockfillab.html,
+	mma/docs/html/lib/yamaha/w-rock_w-rockfillba.html,
+	mma/docs/html/lib/yamaha/w-rock_w-rockfillbb.html,
+	mma/docs/html/lib/yamaha/w-rock_w-rockintroa.html,
+	mma/docs/html/lib/yamaha/w-rock_w-rockmaina.html,
+	mma/docs/html/lib/yamaha/w-rock_w-rockmainb.html,
+	mma/docs/html/lib/yamaha/western.html,
+	mma/docs/html/lib/yamaha/western_westernendinga.html,
+	mma/docs/html/lib/yamaha/western_westernendingb.html,
+	mma/docs/html/lib/yamaha/western_westernfillaa.html,
+	mma/docs/html/lib/yamaha/western_westernfillab.html,
+	mma/docs/html/lib/yamaha/western_westernfillba.html,
+	mma/docs/html/lib/yamaha/western_westernfillbb.html,
+	mma/docs/html/lib/yamaha/western_westernintroa.html,
+	mma/docs/html/lib/yamaha/western_westernintrob.html,
+	mma/docs/html/lib/yamaha/western_westernmaina.html,
+	mma/docs/html/lib/yamaha/western_westernmainb.html,
+	mma/docs/html/ref/img1.png, mma/docs/html/ref/img10.png,
+	mma/docs/html/ref/img11.png, mma/docs/html/ref/img12.png,
+	mma/docs/html/ref/img13.png, mma/docs/html/ref/img14.png,
+	mma/docs/html/ref/img15.png, mma/docs/html/ref/img16.png,
+	mma/docs/html/ref/img17.png, mma/docs/html/ref/img18.png,
+	mma/docs/html/ref/img19.png, mma/docs/html/ref/img2.png,
+	mma/docs/html/ref/img20.png, mma/docs/html/ref/img21.png,
+	mma/docs/html/ref/img22.png, mma/docs/html/ref/img23.png,
+	mma/docs/html/ref/img24.png, mma/docs/html/ref/img25.png,
+	mma/docs/html/ref/img26.png, mma/docs/html/ref/img27.png,
+	mma/docs/html/ref/img28.png, mma/docs/html/ref/img3.png,
+	mma/docs/html/ref/img4.png, mma/docs/html/ref/img5.png,
+	mma/docs/html/ref/img6.png, mma/docs/html/ref/img7.png,
+	mma/docs/html/ref/img8.png, mma/docs/html/ref/img9.png,
+	mma/docs/html/ref/index.html, mma/docs/html/ref/mma.html,
+	mma/docs/html/ref/mupex/arp4s.png,
+	mma/docs/html/ref/mupex/bassb8.png,
+	mma/docs/html/ref/mupex/chord43.png,
+	mma/docs/html/ref/mupex/cmajor.png,
+	mma/docs/html/ref/mupex/fermata.png,
+	mma/docs/html/ref/mupex/fermata2.png,
+	mma/docs/html/ref/mupex/repeat.png,
+	mma/docs/html/ref/mupex/soloeg.png,
+	mma/docs/html/ref/mupex/swingconv.png,
+	mma/docs/html/ref/mupex/swingdrum8-3.png,
+	mma/docs/html/ref/mupex/swingdrum8.png,
+	mma/docs/html/ref/mupex/tilde.png,
+	mma/docs/html/ref/mupex/tilde2.png,
+	mma/docs/html/ref/mupex/trip1.png,
+	mma/docs/html/ref/mupex/trip3.png, mma/docs/html/ref/node1.html,
+	mma/docs/html/ref/node10.html, mma/docs/html/ref/node11.html,
+	mma/docs/html/ref/node12.html, mma/docs/html/ref/node13.html,
+	mma/docs/html/ref/node14.html, mma/docs/html/ref/node15.html,
+	mma/docs/html/ref/node16.html, mma/docs/html/ref/node17.html,
+	mma/docs/html/ref/node18.html, mma/docs/html/ref/node19.html,
+	mma/docs/html/ref/node2.html, mma/docs/html/ref/node20.html,
+	mma/docs/html/ref/node21.html, mma/docs/html/ref/node22.html,
+	mma/docs/html/ref/node23.html, mma/docs/html/ref/node24.html,
+	mma/docs/html/ref/node25.html, mma/docs/html/ref/node26.html,
+	mma/docs/html/ref/node27.html, mma/docs/html/ref/node28.html,
+	mma/docs/html/ref/node29.html, mma/docs/html/ref/node3.html,
+	mma/docs/html/ref/node30.html, mma/docs/html/ref/node31.html,
+	mma/docs/html/ref/node32.html, mma/docs/html/ref/node33.html,
+	mma/docs/html/ref/node4.html, mma/docs/html/ref/node5.html,
+	mma/docs/html/ref/node6.html, mma/docs/html/ref/node7.html,
+	mma/docs/html/ref/node8.html, mma/docs/html/ref/node9.html,
+	mma/docs/html/tut/index.html, mma/docs/html/tut/mma-tutorial.html,
+	mma/docs/html/tut/mup/bass.png, mma/docs/html/tut/mup/deep.png,
+	mma/docs/html/tut/mup/drums.png, mma/docs/html/tut/mup/fella.png,
+	mma/docs/html/tut/mup/piano.png, mma/docs/html/tut/node1.html,
+	mma/docs/html/tut/node2.html, mma/docs/html/tut/node3.html,
+	mma/docs/html/tut/node4.html, mma/docs/html/tut/node5.html,
+	mma/docs/html/tut/node6.html, mma/docs/man/mma-libdoc.1,
+	mma/docs/man/mma-libdoc.8, mma/docs/man/mma-renum.1,
+	mma/docs/man/mma.1, mma/egs/aria/barb.mid, mma/egs/aria/bossa.mid,
+	mma/egs/aria/bossa.mma, mma/egs/aria/girl.mid,
+	mma/egs/harmony/harmony.mid, mma/egs/lyrics/README,
+	mma/egs/lyrics/twinkle-kar.kar, mma/egs/lyrics/twinkle-kar.mma,
+	mma/egs/lyrics/twinkle.mid, mma/egs/lyrics/twinkle1.mid,
+	mma/egs/lyrics/twinkle2.mid, mma/egs/lyrics/twinkle3.mid,
+	mma/egs/lyrics/twinkle3.mma, mma/egs/midi-inc/README-riffs,
+	mma/egs/midi-inc/frankie.mid, mma/egs/midi-inc/frankie.mma,
+	mma/egs/midi-inc/frankie2.mid, mma/egs/midi-inc/frankie2.mma,
+	mma/egs/midi-inc/frankie3.mid, mma/egs/midi-inc/frankie3.mma,
+	mma/egs/midi-inc/frankie4.mid, mma/egs/midi-inc/frankie4.mma,
+	mma/egs/misc/cascade.mid, mma/egs/misc/extended-voice.mid,
+	mma/egs/misc/grooves.mid, mma/egs/misc/macros.mid,
+	mma/egs/misc/midinote.mid, mma/egs/misc/midinote.mma,
+	mma/egs/misc/roman.mma, mma/egs/misc/volumes.mid,
+	mma/egs/misc/volumes.mma, mma/egs/plectrum/README,
+	mma/egs/riffs/riffs.mid, mma/egs/rndset/rndchords.mid,
+	mma/egs/rndset/tempo.mid, mma/egs/scales/scales.mid,
+	mma/egs/simple/bill-bailey.mid, mma/egs/simple/marine-hymn.mid,
+	mma/egs/solo/solo.mid, mma/egs/solo/solo.mma,
+	mma/egs/tutorial/deep-river.mid, mma/egs/tutorial/deep-river.mma,
+	mma/egs/tutorial/fella1.mid, mma/egs/tutorial/fella2.mid,
+	mma/includes/casio-wk3000.mma, mma/includes/init.mma,
+	mma/lib/kara/.mmaDB, mma/lib/kara/2beatp.mma,
+	mma/lib/kara/8beatmotown.mma, mma/lib/kara/K50s_rock.mma,
+	mma/lib/kara/Kfunk1.mma, mma/lib/kara/fasttwist.mma,
+	mma/lib/kara/happyshuffle.mma, mma/lib/kara/kbossa.mma,
+	mma/lib/kara/kwestballad.mma, mma/lib/kara/twi.mma,
+	mma/lib/stdlib/.mmaDB, mma/lib/stdlib/50srock.mma,
+	mma/lib/stdlib/68march.mma, mma/lib/stdlib/8beat.mma,
+	mma/lib/stdlib/README, mma/lib/stdlib/ballad.mma,
+	mma/lib/stdlib/ballad128.mma, mma/lib/stdlib/basicrock.mma,
+	mma/lib/stdlib/beguine.mma, mma/lib/stdlib/bigband.mma,
+	mma/lib/stdlib/bluegrass.mma, mma/lib/stdlib/bolero.mma,
+	mma/lib/stdlib/bossanova.mma, mma/lib/stdlib/broadway.mma,
+	mma/lib/stdlib/chacha.mma, mma/lib/stdlib/charleston.mma,
+	mma/lib/stdlib/countryblues.mma, mma/lib/stdlib/countrywaltz.mma,
+	mma/lib/stdlib/descendingjazz.mma, mma/lib/stdlib/dixie.mma,
+	mma/lib/stdlib/easyswing.mma, mma/lib/stdlib/fastswing.mma,
+	mma/lib/stdlib/fastwaltz.mma, mma/lib/stdlib/folkballad.mma,
+	mma/lib/stdlib/folkyjazz.mma, mma/lib/stdlib/foxtrot.mma,
+	mma/lib/stdlib/frenchwaltz.mma, mma/lib/stdlib/guitarballad.mma,
+	mma/lib/stdlib/jazzcombo.mma, mma/lib/stdlib/jazzguitar.mma,
+	mma/lib/stdlib/jazzrhumba.mma, mma/lib/stdlib/jazzrock.mma,
+	mma/lib/stdlib/jazzwaltz.mma, mma/lib/stdlib/lullaby.mma,
+	mma/lib/stdlib/metronome.mma, mma/lib/stdlib/metronome3.mma,
+	mma/lib/stdlib/modernjazz.mma, mma/lib/stdlib/pianoballad.mma,
+	mma/lib/stdlib/quickstep.mma, mma/lib/stdlib/rb.mma,
+	mma/lib/stdlib/rhumba.mma, mma/lib/stdlib/rock-128.mma,
+	mma/lib/stdlib/salsa.mma, mma/lib/stdlib/samba.mma,
+	mma/lib/stdlib/softrock.mma, mma/lib/stdlib/stringballad.mma,
+	mma/lib/stdlib/swing.mma, mma/lib/stdlib/vienesewaltz.mma,
+	mma/lib/yamaha/.mmaDB, mma/lib/yamaha/README,
+	mma/lib/yamaha/jazzGrtrio.mma, mma/lib/yamaha/jazzbasie.mma,
+	mma/lib/yamaha/jazzbossa.mma, mma/lib/yamaha/jazzbouncy.mma,
+	mma/lib/yamaha/jazzcountry.mma, mma/lib/yamaha/jazzswing.mma,
+	mma/lib/yamaha/jazztrio.mma, mma/lib/yamaha/jazzwaltz.mma,
+	mma/lib/yamaha/mambo.mma, mma/lib/yamaha/quando-g.s280.mma,
+	mma/lib/yamaha/salsa1.mma, mma/lib/yamaha/salsa2.mma,
+	mma/lib/yamaha/w-rock.mma, mma/lib/yamaha/western.mma,
+	mma/ln-install, mma/mma-gb, mma/mma-libdoc, mma/mma-renum,
+	mma/mma.py, mma/text/ANNOUNCE, mma/text/CHANGES-1.0,
+	mma/text/CHANGES-1.0.rc1, mma/text/CHANGES-1.0.rc2,
+	mma/text/CHANGES-1.1, mma/text/CHANGES-1.2, mma/text/CHANGES-1.3,
+	mma/text/CHANGES-1.6, mma/text/CHANGES-beta, mma/text/FAQ,
+	mma/text/INSTALL, mma/text/PATFILE, mma/text/README,
+	mma/text/REALTIME-FILTER, mma/text/SYNTHS, mma/text/TODO,
+	mma/text/archive/CHANGES-1.0, mma/text/archive/CHANGES-1.0.rc1,
+	mma/text/archive/CHANGES-1.0.rc2, mma/text/archive/CHANGES-1.1,
+	mma/text/archive/CHANGES-1.2, mma/text/archive/CHANGES-1.3,
+	mma/text/archive/CHANGES-1.4, mma/text/archive/CHANGES-1.5,
+	mma/text/archive/CHANGES-beta, mma/util/README.rm2std,
+	mma/util/mma-rm2std.py, mma/util/mmatabs.py, mma/util/timsplit.py: 
+	Update to MMA 1.7  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@394
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* VocalEasel.xcodeproj/project.pbxproj: Deal with spaces in path
+	names  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@393
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Tools/lameWrapper, Tools/lilyWrapper, Tools/mmaWrapper: Deal with
+	spaces in path names  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@392
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Tools/rebuildGrooves: Fix typo in XML entity name  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@391
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-26  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* TODO: Need to preserve accidentals  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@383
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-24  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* English.lproj/VLDocument.xib, Resources/Templates/default.lyt,
+	Sources/VLDocument.h, Sources/VLDocument.mm,
+	Sources/VLLilypondDocument.mm: Add Lilypond 2.14 spacing model
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@381
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-24  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Filters/VLLilypondType.reader,
+	Filters/org.lilypond.lilypond-source.reader, Resources/Info.plist,
+	Sources/VLAIFFDocument.mm, Sources/VLDocument.h,
+	Sources/VLDocument.mm, Sources/VLMIDIDocument.mm,
+	Sources/VLMMADocument.mm, Sources/VLMP3Document.mm,
+	Sources/VLPDFDocument.mm, Sources/VLXMLDocument.mm,
+	VocalEasel.xcodeproj/project.pbxproj: Use UTIs instead of type names
+	throughout  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@380
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-24  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLLilypondWriter.cpp: Generate skips instead of rests for
+	chords  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@379
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-24  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLPDFWindow.h, Sources/VLSheetWindow.h: Use formal
+	delegate protocols  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@378
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-24  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	*
+	VocalEasel.xcodeproj/project.xcworkspace/contents.xcworkspacedata,
+	VocalEasel.xcodeproj/project.xcworkspace/xcuserdata/neeri.xcuserdat
+	ad/UserInterfaceState.xcuserstate,
+	VocalEasel.xcodeproj/project.xcworkspace/xcuserdata/neeri.xcuserdat
+	ad/WorkspaceSettings.xcsettings,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcdebugger/Breakp
+	oints.xcbkptlist,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcschemes/TVLChor
+	d.xcscheme,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcschemes/TVLEdit
+	.xcscheme,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcschemes/TVLLily
+	pond.xcscheme,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcschemes/TVLSoun
+	dOut.xcscheme,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcschemes/VocalEa
+	sel.xcscheme,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcschemes/xcschem
+	emanagement.plist: Remove workspace files  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@377
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-24  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* VocalEasel.xcodeproj/project.pbxproj,
+	VocalEasel.xcodeproj/project.xcworkspace/contents.xcworkspacedata,
+	VocalEasel.xcodeproj/project.xcworkspace/xcuserdata/neeri.xcuserdat
+	ad/UserInterfaceState.xcuserstate,
+	VocalEasel.xcodeproj/project.xcworkspace/xcuserdata/neeri.xcuserdat
+	ad/WorkspaceSettings.xcsettings,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcdebugger/Breakp
+	oints.xcbkptlist,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcschemes/TVLChor
+	d.xcscheme,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcschemes/TVLEdit
+	.xcscheme,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcschemes/TVLLily
+	pond.xcscheme,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcschemes/TVLSoun
+	dOut.xcscheme,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcschemes/VocalEa
+	sel.xcscheme,
+	VocalEasel.xcodeproj/xcuserdata/neeri.xcuserdatad/xcschemes/xcschem
+	emanagement.plist: Modernize project file  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@376
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-24  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/CoreAudioSDK/CAAudioFileFormats.cpp: Switch to more modern
+	int swapping routines  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@375
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-24  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Resources/Info.plist: Use more UTIs  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@374
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2011-07-24  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Resources/Templates/default.lyt: Deal with variable number of
+	arguments to vlBassNamer  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@373
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2010-05-24  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Resources/Info.plist, Sources/VLModel.cpp: Further refine
+	triplet/swing distinction  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@372
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2009-07-21  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Resources/Info.plist: Fixed Info.plist  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@371
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2009-05-17  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* mma/MMA/alloc.py, mma/MMA/auto.py, mma/MMA/chords.py,
+	mma/MMA/chordtable.py, mma/MMA/common.py, mma/MMA/docs.py,
+	mma/MMA/file.py, mma/MMA/gbl.py, mma/MMA/grooves.py,
+	mma/MMA/harmony.py, mma/MMA/lyric.py, mma/MMA/macro.py,
+	mma/MMA/main.py, mma/MMA/mdefine.py, mma/MMA/midi.py,
+	mma/MMA/midiC.py, mma/MMA/midiIn.py, mma/MMA/miditables.py,
+	mma/MMA/notelen.py, mma/MMA/options.py, mma/MMA/parse.py,
+	mma/MMA/pat.py, mma/MMA/patAria.py, mma/MMA/patArpeggio.py,
+	mma/MMA/patBass.py, mma/MMA/patChord.py, mma/MMA/patDrum.py,
+	mma/MMA/patScale.py, mma/MMA/patSolo.py, mma/MMA/patWalk.py,
+	mma/MMA/patch.py, mma/MMA/safe_eval.py, mma/MMA/seqrnd.py,
+	mma/MMA/translate.py, mma/MMA/volume.py, mma/cp-install,
+	mma/docs/html/lib/index.html,
+	mma/docs/html/lib/kara/K50s_rock.html,
+	mma/docs/html/lib/kara/Kfunk1.html,
+	mma/docs/html/lib/kara/twi.html,
+	mma/docs/html/lib/stdlib/50srock.html,
+	mma/docs/html/lib/stdlib/60srock.html,
+	mma/docs/html/lib/stdlib/8beat.html,
+	mma/docs/html/lib/stdlib/ballad.html,
+	mma/docs/html/lib/stdlib/ballad128.html,
+	mma/docs/html/lib/stdlib/ballad68.html,
+	mma/docs/html/lib/stdlib/basicrock.html,
+	mma/docs/html/lib/stdlib/beguine.html,
+	mma/docs/html/lib/stdlib/bigband.html,
+	mma/docs/html/lib/stdlib/bluegrass.html,
+	mma/docs/html/lib/stdlib/blues.html,
+	mma/docs/html/lib/stdlib/boggiewoggie.html,
+	mma/docs/html/lib/stdlib/bolero.html,
+	mma/docs/html/lib/stdlib/bossanova.html,
+	mma/docs/html/lib/stdlib/broadway.html,
+	mma/docs/html/lib/stdlib/calypso.html,
+	mma/docs/html/lib/stdlib/chacha.html,
+	mma/docs/html/lib/stdlib/countryblues.html,
+	mma/docs/html/lib/stdlib/countryswing.html,
+	mma/docs/html/lib/stdlib/countrywaltz.html,
+	mma/docs/html/lib/stdlib/desert.html,
+	mma/docs/html/lib/stdlib/dixie.html,
+	mma/docs/html/lib/stdlib/dixiemarch.html,
+	mma/docs/html/lib/stdlib/easyswing.html,
+	mma/docs/html/lib/stdlib/fastblues.html,
+	mma/docs/html/lib/stdlib/folk.html,
+	mma/docs/html/lib/stdlib/foxtrot.html,
+	mma/docs/html/lib/stdlib/frenchwaltz.html,
+	mma/docs/html/lib/stdlib/guitarballad.html,
+	mma/docs/html/lib/stdlib/hillcountry.html,
+	mma/docs/html/lib/stdlib/jazz-54.html,
+	mma/docs/html/lib/stdlib/jazzguitar.html,
+	mma/docs/html/lib/stdlib/jazzwaltz.html,
+	mma/docs/html/lib/stdlib/jive.html,
+	mma/docs/html/lib/stdlib/lfusion.html,
+	mma/docs/html/lib/stdlib/lighttango.html,
+	mma/docs/html/lib/stdlib/lullaby.html,
+	mma/docs/html/lib/stdlib/mambo.html,
+	mma/docs/html/lib/stdlib/march.html,
+	mma/docs/html/lib/stdlib/merengue.html,
+	mma/docs/html/lib/stdlib/metronome.html,
+	mma/docs/html/lib/stdlib/metronome3.html,
+	mma/docs/html/lib/stdlib/modernjazz.html,
+	mma/docs/html/lib/stdlib/pianoballad.html,
+	mma/docs/html/lib/stdlib/polka.html,
+	mma/docs/html/lib/stdlib/popballad.html,
+	mma/docs/html/lib/stdlib/quickstep.html,
+	mma/docs/html/lib/stdlib/rb-ballad.html,
+	mma/docs/html/lib/stdlib/rb.html,
+	mma/docs/html/lib/stdlib/rhumba.html,
+	mma/docs/html/lib/stdlib/rock-128.html,
+	mma/docs/html/lib/stdlib/rockballad.html,
+	mma/docs/html/lib/stdlib/rockwaltz.html,
+	mma/docs/html/lib/stdlib/salsa.html,
+	mma/docs/html/lib/stdlib/samba.html,
+	mma/docs/html/lib/stdlib/showtune.html,
+	mma/docs/html/lib/stdlib/shuffleboggie.html,
+	mma/docs/html/lib/stdlib/ska.html,
+	mma/docs/html/lib/stdlib/slowblues.html,
+	mma/docs/html/lib/stdlib/slowbolero.html,
+	mma/docs/html/lib/stdlib/slowbroadway.html,
+	mma/docs/html/lib/stdlib/slowcountry.html,
+	mma/docs/html/lib/stdlib/slowjazz.html,
+	mma/docs/html/lib/stdlib/softrock.html,
+	mma/docs/html/lib/stdlib/softshoe.html,
+	mma/docs/html/lib/stdlib/son.html,
+	mma/docs/html/lib/stdlib/swing.html,
+	mma/docs/html/lib/stdlib/tango.html,
+	mma/docs/html/lib/stdlib/trance.html,
+	mma/docs/html/lib/stdlib/vienesewaltz.html,
+	mma/docs/html/lib/stdlib/waltz.html,
+	mma/docs/html/lib/stdlib/zydeco.html,
+	mma/docs/html/lib/yamaha/mambo.html,
+	mma/docs/html/lib/yamaha/quando-g.s280.html,
+	mma/docs/html/lib/yamaha/salsa1.html,
+	mma/docs/html/lib/yamaha/salsa2.html,
+	mma/docs/html/lib/yamaha/w-rock.html,
+	mma/docs/html/lib/yamaha/western.html,
+	mma/docs/html/ref/crossref.png, mma/docs/html/ref/img1.png,
+	mma/docs/html/ref/img10.png, mma/docs/html/ref/img11.png,
+	mma/docs/html/ref/img12.png, mma/docs/html/ref/img13.png,
+	mma/docs/html/ref/img14.png, mma/docs/html/ref/img15.png,
+	mma/docs/html/ref/img16.png, mma/docs/html/ref/img17.png,
+	mma/docs/html/ref/img18.png, mma/docs/html/ref/img19.png,
+	mma/docs/html/ref/img2.png, mma/docs/html/ref/img20.png,
+	mma/docs/html/ref/img21.png, mma/docs/html/ref/img22.png,
+	mma/docs/html/ref/img23.png, mma/docs/html/ref/img24.png,
+	mma/docs/html/ref/img25.png, mma/docs/html/ref/img26.png,
+	mma/docs/html/ref/img27.png, mma/docs/html/ref/img28.png,
+	mma/docs/html/ref/img3.png, mma/docs/html/ref/img4.png,
+	mma/docs/html/ref/img5.png, mma/docs/html/ref/img6.png,
+	mma/docs/html/ref/img7.png, mma/docs/html/ref/img8.png,
+	mma/docs/html/ref/img9.png, mma/docs/html/ref/index.html,
+	mma/docs/html/ref/mma.css, mma/docs/html/ref/mma.html,
+	mma/docs/html/ref/mupex/arp4s.png,
+	mma/docs/html/ref/mupex/bassb8.png,
+	mma/docs/html/ref/mupex/chord43.png,
+	mma/docs/html/ref/mupex/cmajor.png,
+	mma/docs/html/ref/mupex/fermata.png,
+	mma/docs/html/ref/mupex/fermata2.png,
+	mma/docs/html/ref/mupex/repeat.png,
+	mma/docs/html/ref/mupex/soloeg.png,
+	mma/docs/html/ref/mupex/swingconv.png,
+	mma/docs/html/ref/mupex/swingdrum8-3.png,
+	mma/docs/html/ref/mupex/swingdrum8.png,
+	mma/docs/html/ref/mupex/tilde.png,
+	mma/docs/html/ref/mupex/tilde2.png,
+	mma/docs/html/ref/mupex/trip1.png,
+	mma/docs/html/ref/mupex/trip3.png, mma/docs/html/ref/node1.html,
+	mma/docs/html/ref/node10.html, mma/docs/html/ref/node11.html,
+	mma/docs/html/ref/node12.html, mma/docs/html/ref/node13.html,
+	mma/docs/html/ref/node14.html, mma/docs/html/ref/node15.html,
+	mma/docs/html/ref/node16.html, mma/docs/html/ref/node17.html,
+	mma/docs/html/ref/node18.html, mma/docs/html/ref/node19.html,
+	mma/docs/html/ref/node2.html, mma/docs/html/ref/node20.html,
+	mma/docs/html/ref/node21.html, mma/docs/html/ref/node22.html,
+	mma/docs/html/ref/node23.html, mma/docs/html/ref/node24.html,
+	mma/docs/html/ref/node25.html, mma/docs/html/ref/node26.html,
+	mma/docs/html/ref/node27.html, mma/docs/html/ref/node28.html,
+	mma/docs/html/ref/node29.html, mma/docs/html/ref/node3.html,
+	mma/docs/html/ref/node30.html, mma/docs/html/ref/node31.html,
+	mma/docs/html/ref/node32.html, mma/docs/html/ref/node4.html,
+	mma/docs/html/ref/node5.html, mma/docs/html/ref/node6.html,
+	mma/docs/html/ref/node7.html, mma/docs/html/ref/node8.html,
+	mma/docs/html/ref/node9.html, mma/docs/html/tut/index.html,
+	mma/docs/html/tut/mma-tutorial.css,
+	mma/docs/html/tut/mma-tutorial.html,
+	mma/docs/html/tut/mup/bass.png, mma/docs/html/tut/mup/deep.png,
+	mma/docs/html/tut/mup/drums.png, mma/docs/html/tut/mup/fella.png,
+	mma/docs/html/tut/mup/piano.png, mma/docs/html/tut/node1.html,
+	mma/docs/html/tut/node2.html, mma/docs/html/tut/node3.html,
+	mma/docs/html/tut/node4.html, mma/docs/html/tut/node5.html,
+	mma/docs/html/tut/node6.html, mma/docs/man/mma-libdoc.1,
+	mma/docs/man/mma-renum.1, mma/docs/man/mma.1,
+	mma/egs/aria/barb.mid, mma/egs/aria/girl.mid,
+	mma/egs/harmony/harmony.mid, mma/egs/lyrics/README,
+	mma/egs/lyrics/twinkle.mid, mma/egs/lyrics/twinkle1.mid,
+	mma/egs/lyrics/twinkle2.mid, mma/egs/lyrics/twinkle3.mid,
+	mma/egs/midi-inc/frankie.mid, mma/egs/misc/cascade.mid,
+	mma/egs/misc/extended-voice.mid, mma/egs/misc/grooves.mid,
+	mma/egs/misc/macros.mid, mma/egs/misc/math.mma,
+	mma/egs/misc/volumes.mid, mma/egs/riffs/riffs.mid,
+	mma/egs/rndset/rndchords.mid, mma/egs/rndset/tempo.mid,
+	mma/egs/scales/scales.mid, mma/egs/simple/bill-bailey.mid,
+	mma/egs/simple/marine-hymn.mid, mma/egs/tutorial/deep-river.mid,
+	mma/egs/tutorial/fella1.mid, mma/egs/tutorial/fella2.mid,
+	mma/includes/README, mma/includes/casio-wk3000.mma,
+	mma/includes/init-long.mma, mma/includes/init.mma,
+	mma/includes/stdpats.mma, mma/lib/stdlib/.mmaDB,
+	mma/lib/stdlib/60srock.mma, mma/lib/stdlib/ballad.mma,
+	mma/lib/stdlib/ballad128.mma, mma/lib/stdlib/ballad68.mma,
+	mma/lib/stdlib/bolero.mma, mma/lib/stdlib/broadway.mma,
+	mma/lib/stdlib/chacha.mma, mma/lib/stdlib/easyswing.mma,
+	mma/lib/stdlib/folk.mma, mma/lib/stdlib/foxtrot.mma,
+	mma/lib/stdlib/frenchwaltz.mma, mma/lib/stdlib/jazzguitar.mma,
+	mma/lib/stdlib/jazzwaltz.mma, mma/lib/stdlib/jive.mma,
+	mma/lib/stdlib/lighttango.mma, mma/lib/stdlib/merengue.mma,
+	mma/lib/stdlib/modernjazz.mma, mma/lib/stdlib/polka.mma,
+	mma/lib/stdlib/quickstep.mma, mma/lib/stdlib/rb-ballad.mma,
+	mma/lib/stdlib/rockballad.mma, mma/lib/stdlib/rockwaltz.mma,
+	mma/lib/stdlib/salsa.mma, mma/lib/stdlib/samba.mma,
+	mma/lib/stdlib/showtune.mma, mma/lib/stdlib/shuffleboggie.mma,
+	mma/lib/stdlib/slowbolero.mma, mma/lib/stdlib/slowbroadway.mma,
+	mma/lib/stdlib/slowjazz.mma, mma/lib/stdlib/son.mma,
+	mma/lib/stdlib/trance.mma, mma/lib/stdlib/waltz.mma,
+	mma/lib/yamaha/.mmaDB, mma/lib/yamaha/salsa1.mma,
+	mma/lib/yamaha/salsa2.mma, mma/ln-install, mma/mma-libdoc,
+	mma/mma-renum, mma/mma.py, mma/text/ANNOUNCE, mma/text/CHANGES-1.0,
+	mma/text/CHANGES-1.1, mma/text/CHANGES-1.2, mma/text/CHANGES-1.3,
+	mma/text/CONTRIB, mma/text/PATFILE, mma/text/TIMIDITY,
+	mma/util/README.mklibdoc, mma/util/README.pg2mma,
+	mma/util/README.timsplit, mma/util/mklibdoc.py,
+	mma/util/mma-renum.py, mma/util/mmatabs.py, mma/util/mup2mma.py,
+	mma/util/pg2mma.py, mma/util/timsplit.py: Updated to MMA 1.4
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@370
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2009-05-17  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* BUGS: Test commits  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@367
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2009-03-14  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLModel.cpp: Preserve third triplet in group  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@366
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2009-03-14  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLModel.cpp: Check minimal length triplets for swing notes
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@365
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2009-03-14  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLSheetViewInternal.h, Sources/VLSheetViewNotes.mm: Draw
+	triplet brackets  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@364
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2009-03-14  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Resources/Templates/default.lyt: Add 7b13b9  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@363
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2009-03-14  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLAppController.mm: Fix bash syntax  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@362
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2009-03-14  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLModel.cpp: Further improvements in decomposition
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@361
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2009-03-14  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLModel.cpp: Further sanity checks against bad triplets
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@360
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2009-03-14  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLPListDocument.mm: Smarter division handling  git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@359
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-08-16  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLSheetViewNotes.mm: Properly print cursor & accidentals
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@358
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-08-16  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Filters/VLLilypondType.reader: Handle smart quotes   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@357
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-08-16  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLModel.cpp: Fix crasher on division change   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@356
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-08-15  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Filters/VLLilypondType.reader: Tweak parsing of punctuation in
+	lyrics   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@355
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-08-15  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLLilypondWriter.cpp: Need to quote and escape in some
+	further situations   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@354
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-08-15  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Filters/VLLilypondType.reader: Handle slurs in Lilypond input
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@353
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-08-15  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLLilypondWriter.cpp, Sources/VLLilypondWriter.h: Actually
+	made manual page break / auto line break work (I promise)
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@352
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-08-15  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLSheetViewNotes.mm: Fixed hang when pressing return after
+	opening new document   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@351
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-08-15  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLSheetView.mm: Highlight both systems of line break
+	git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@350
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-08-15  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLLilypondWriter.cpp: Automatic line breaking / manual
+	page breaks   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@349
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-08-15  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Sources/VLLilypondWriter.cpp, Sources/VLLilypondWriter.h: 
+	Automatic default line breaking   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@348
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-08-15  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Resources/Info.plist: Bump version number   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@347
+	6297c069-241d-0410-966f-f05c6a69f112
+
+2008-08-15  neeri <neeri@6297c069-241d-0410-966f-f05c6a69f112>
+
+	* Tempo changes should not call willChangeSong   git-svn-id:
+	https://vocaleasel.svn.sourceforge.net/svnroot/vocaleasel/trunk@346
+	6297c069-241d-0410-966f-f05c6a69f112
+
 2008-07-13  Matthias Neeracher <neeri@accelerando.local>
 
 	* Sources/VLDocument.mm: Fix disastrous playback problem
