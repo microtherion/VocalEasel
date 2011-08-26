@@ -129,11 +129,23 @@
 		else
 			appPath		= lilyPath;
 	}
-	if (!appPath) 
-		appPath = 	
-			[[[NSWorkspace sharedWorkspace]
-				absolutePathForAppBundleWithIdentifier:@"org.lilypond.lilypond"]
-				stringByAppendingPathComponent:@"Contents/Resources/bin/lilypond"];
+	if (!appPath) {
+        //
+        // Look for running copies of Lilypond first
+        //
+        NSArray * runningApps = [[NSWorkspace sharedWorkspace] launchedApplications];
+        for (NSDictionary * app in runningApps)
+            if ([[app objectForKey:@"NSApplicationBundleIdentifier"] isEqual:@"org.lilypond.lilypond"]
+             || [[app objectForKey:@"NSApplicationName"] isEqual:@"LilyPond"]
+        )
+            if ((appPath = [[app objectForKey:@"NSApplicationPath"] stringByAppendingPathComponent:@"Contents/Resources/bin/lilypond"]))
+                break;
+        if (!appPath) 
+            appPath = 	
+                [[[NSWorkspace sharedWorkspace]
+                  absolutePathForAppBundleWithIdentifier:@"org.lilypond.lilypond"]
+                 stringByAppendingPathComponent:@"Contents/Resources/bin/lilypond"];        
+    }
 	if (!toolPath) 
 		toolPath = [self getLineFromCommand:@"bash -l -c 'which lilypond'"];
 
