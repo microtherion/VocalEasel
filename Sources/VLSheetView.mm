@@ -582,6 +582,9 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 
 - (void)drawRect:(NSRect)rect
 {
+    if (![self song])
+        return;
+    
 	if (fNeedsRecalc || [self inLiveResize] || [self song]->CountMeasures() != fLastMeasures) {
 		[self recalculateDimensions];
 		rect = [self bounds];

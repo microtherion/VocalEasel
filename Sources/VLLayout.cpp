@@ -38,7 +38,7 @@ static size_t NextBreak(const VLSong & song, size_t after=0)
 
 VLLayout::VLLayout(const VLSong & song, float width)
 {
-	size_t nextBreak = NextBreak(song);
+	size_t nextBreak = song.fMeasures.empty() ? 0 : NextBreak(song);
 	for (size_t meas = 0; meas<song.fMeasures.size(); ) {
 		push_back(VLSystemLayout(song.Properties(meas), width, nextBreak-meas));
 		meas += back().NumMeasures();
