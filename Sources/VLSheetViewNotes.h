@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2007 Matthias Neeracher
+// Copyright © 2005-2011 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>

@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2008 Matthias Neeracher
+// Copyright © 2008-2011 Matthias Neeracher
 //
 
 #include "VLMIDIWriter.h"

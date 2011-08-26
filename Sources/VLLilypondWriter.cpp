@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright Â© 2007 Matthias Neeracher
+// Copyright © 2007-2011 Matthias Neeracher
 //
 
 #include "VLLilypondWriter.h"
