@@ -17,6 +17,7 @@ struct VLMIDIUserEvent {
 	int8_t		fPitch;		// 0 -> Chord
 	uint8_t		fStanza;
 	int16_t		fMeasure;
+    uint32_t    fVisual;
 	VLFract		fAt;
 };
 

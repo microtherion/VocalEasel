@@ -54,7 +54,7 @@ void VLMIDIWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 void VLMIDIWriter::VisitNote(VLLyricsNote & n)
 {
 	if (!(n.fTied & VLNote::kTiedWithPrev)) {
-		VLMIDIUserEvent	event = {8, n.fPitch, fStanza, fMeasure, fAt};
+		VLMIDIUserEvent	event = {12, n.fPitch, fStanza, fMeasure, n.fVisual, fAt};
 		MusicTrackNewUserEvent(fTrack, fNoteTime, 
 			 reinterpret_cast<const MusicEventUserData *>(&event));
 	}
@@ -65,7 +65,7 @@ void VLMIDIWriter::VisitNote(VLLyricsNote & n)
 void VLMIDIWriter::VisitChord(VLChord & c)
 {
 	if (c.fPitch != VLNote::kNoPitch) {
-		VLMIDIUserEvent	event = {8, 0, fStanza, fMeasure, fAt};
+		VLMIDIUserEvent	event = {12, 0, fStanza, fMeasure, 0, fAt};
 		MusicTrackNewUserEvent(fTrack, fChordTime, 
 			 reinterpret_cast<const MusicEventUserData *>(&event));
 	}

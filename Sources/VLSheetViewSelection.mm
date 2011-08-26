@@ -23,6 +23,7 @@
 	size_t			fNoteMeasure;
 	VLFract			fNoteAt;
 	int				fNotePitch;
+    VLMusicElement  fNoteAccidental;
 	size_t 			fChordMeasure;
 	VLFract 		fChordAt;
 }
@@ -50,6 +51,8 @@
 	VLMIDIUserEvent * event = (VLMIDIUserEvent *)[ev pointerValue];
 	if (event->fPitch) {
 		fNotePitch 		= event->fPitch;
+        fNoteAccidental = (event->fVisual & VLNote::kWantFlat) ? kMusicFlat 
+            : ((event->fVisual & VLNote::kWantSharp) ? kMusicSharp : kMusicNothing);
 		fNoteMeasure	= event->fMeasure;
 		fNoteAt			= event->fAt;
 		fStanza			= event->fStanza;
@@ -65,7 +68,7 @@
 - (void) highlightCursor
 {
 	if (fNoteMeasure != 0x80000000 && fNotePitch != VLNote::kNoPitch)
-		[fView drawNoteCursor:fNotePitch inMeasure:fNoteMeasure at:fNoteAt];
+		[fView drawNoteCursor:fNotePitch inMeasure:fNoteMeasure at:fNoteAt accidental:fNoteAccidental];
 	if (fChordMeasure != 0x80000000)
 		[fView highlightChordInMeasure:fChordMeasure at:fChordAt];
 }

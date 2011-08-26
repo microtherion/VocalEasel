@@ -160,9 +160,10 @@
 }
 
 - (void) drawNoteCursor:(int)pitch inMeasure:(size_t)measure at:(VLFract)at
+             accidental:(VLMusicElement)accidental
 {
 	[self drawNoteCursor:pitch inMeasure:measure at:at 
-		  accidental:kMusicNothing mode:' '];
+		  accidental:accidental mode:' '];
 }
 
 - (void) drawNoteCursor
