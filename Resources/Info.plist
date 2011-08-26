@@ -254,6 +254,8 @@
 			</array>
 			<key>UTTypeDescription</key>
 			<string>VocalEasel song</string>
+			<key>UTTypeIconFile</key>
+			<string>vlsong</string>
 			<key>UTTypeIdentifier</key>
 			<string>org.aereperennius.vocaleasel-song</string>
 			<key>UTTypeTagSpecification</key>
