@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2007 Matthias Neeracher
+// Copyright © 2007-2011 Matthias Neeracher
 //
 
 #import "VLPListDocument.h"
@@ -228,14 +228,12 @@ enum {
 	kPotentialSwing16th
 };
 
-- (void)readMelody:(NSArray *)melody inMeasure:(size_t)measNo onsets:(int *)onsets
+- (void)readMelody:(NSArray *)melody inMeasure:(size_t)measNo onsets:(int *)onsets lyrics:(uint8_t *)prevKind
 {
 	VLFraction		at(0);
 	int				lastOnset = 0;
 	VLFraction		tiedStart(0);
 	VLLyricsNote	tiedNote;
-	uint8_t  		prevKind[20];
-	memset(prevKind, 0, 20);
 
 	for (NSEnumerator * ne 	  = [melody objectEnumerator];
 		 NSDictionary * ndict = [ne nextObject];
@@ -349,6 +347,8 @@ advanceAt:
 
 	size_t measNo = 0;
 	int onsets[14] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	uint8_t  		lyricsKind[20];
+	memset(lyricsKind, 0, 20*sizeof(lyricsKind[0]));
 	for (NSEnumerator * me 	  = [measures objectEnumerator];
 		 NSDictionary * mdict = [me nextObject];
 		 ++measNo
@@ -358,7 +358,7 @@ advanceAt:
 		if (NSNumber * mPx = [mdict objectForKey:@"properties"]) 
 			song->SetProperties(measNo, [mPx intValue]);
 
-		[self readMelody:[mdict objectForKey:@"melody"] inMeasure:measNo onsets:onsets];
+		[self readMelody:[mdict objectForKey:@"melody"] inMeasure:measNo onsets:onsets lyrics:&lyricsKind[0]];
 		[self readChords:[mdict objectForKey:@"chords"] inMeasure:measNo];
 
 		if ([[mdict objectForKey:@"tocoda"] boolValue])
