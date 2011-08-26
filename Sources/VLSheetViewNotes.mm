@@ -32,7 +32,7 @@
 		}
 		[[self document] willChangeSong];
 		if (fCursorAccidental == kMusicExtendCursor) 
-			[self song]->ExtendNote(fCursorMeasure, fCursorAt);
+			newNote = [self song]->ExtendNote(fCursorMeasure, fCursorAt);
 		else if (fClickMode == 'k')
 			[self song]->DelNote(fCursorMeasure, fCursorAt);
 		else	

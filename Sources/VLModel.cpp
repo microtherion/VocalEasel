@@ -887,18 +887,21 @@ void VLSong::DelNote(size_t measure, VLFraction at)
 		fMeasures.pop_back();
 }
 
-void VLSong::ExtendNote(size_t measure, VLFraction at)
+VLNote VLSong::ExtendNote(size_t measure, VLFraction at)
 {
 	VLNoteList::iterator i 	= fMeasures[measure].fMelody.begin();
 	VLNoteList::iterator end= fMeasures[measure].fMelody.end();
 	
+    if (i==end)
+        return VLNote(); // Empty song, do nothing
+    
 	for (VLFraction t(0); i != end && t+i->fDuration <= at; ++i) 
 		t += i->fDuration;
 
 	if (i == end)
 		--i;
 	if (i->fPitch == VLNote::kNoPitch)
-		return; // Don't extend rests
+		return *i; // Don't extend rests
 
 	for (;;) {
 		VLNoteList::iterator j=i;
@@ -942,6 +945,7 @@ void VLSong::ExtendNote(size_t measure, VLFraction at)
 		}
 		break;
 	} 
+    return *i;
 }
 
 bool VLSong::IsNonEmpty() const

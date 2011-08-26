@@ -334,7 +334,7 @@ public:
 	void AddNote(VLLyricsNote note, size_t measure, VLFraction at);
 	void DelChord(size_t measure, VLFraction at);
 	void DelNote(size_t measure, VLFraction at);
-	void ExtendNote(size_t measure, VLFraction at);
+	VLNote ExtendNote(size_t measure, VLFraction at);
 	void AddRepeat(size_t beginMeasure, size_t endMeasure, int times);
 	void DelRepeat(size_t beginMeasure, size_t endMeasure);
 	void AddEnding(size_t beginMeasure, size_t endMeasure, size_t volta);
