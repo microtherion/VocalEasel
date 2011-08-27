@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'TVLPitchNames' target in the 'TVLPitchNames' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif

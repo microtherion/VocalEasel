@@ -11,7 +11,6 @@
 		8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
 		8D15AC310486D014006FF6A4 /* VLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* VLDocument.mm */; settings = {ATTRIBUTES = (); }; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
-		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		95003B4B0D4B9A5D00C9849C /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95003B3F0D4B9A5D00C9849C /* MainMenu.xib */; };
 		95003B4C0D4B9A5D00C9849C /* VLDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95003B410D4B9A5D00C9849C /* VLDocument.xib */; };
 		95003B4D0D4B9A5D00C9849C /* VLGroove.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95003B430D4B9A5D00C9849C /* VLGroove.xib */; };
@@ -26,18 +25,14 @@
 		95009B7F0B0EDC7900EB33A4 /* CAAudioFileFormats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B240B0ECF9000EB33A4 /* CAAudioFileFormats.cpp */; };
 		95009B800B0EDC7B00EB33A4 /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B4E0B0ED0BB00EB33A4 /* CADebugMacros.cpp */; };
 		95009B810B0EDC7D00EB33A4 /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B260B0ECF9000EB33A4 /* CAStreamBasicDescription.cpp */; };
-		95009B830B0EDCD800EB33A4 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95009B820B0EDCD800EB33A4 /* CoreFoundation.framework */; };
 		95049CF30BDC32EB0015EE6E /* installLilypond.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 95049CF20BDC32CD0015EE6E /* installLilypond.scpt */; };
 		95049D020BDC436A0015EE6E /* installPython.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 95049D010BDC43510015EE6E /* installPython.scpt */; };
 		95140E3C0C944F7F00966576 /* org.lilypond.lilypond-source.reader in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95140E3B0C944F7F00966576 /* org.lilypond.lilypond-source.reader */; };
 		9524DAFB0BE569C50002AC03 /* Help in Resources */ = {isa = PBXBuildFile; fileRef = 9524DAF70BE569C50002AC03 /* Help */; };
-		9524DB390BE5CA070002AC03 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9524DB380BE5CA070002AC03 /* Carbon.framework */; };
 		95297F310C9ADA33007EFD6B /* VLBIABType.reader in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95297F300C9ADA33007EFD6B /* VLBIABType.reader */; };
 		952CBB9C095FD1CA00434E43 /* VLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */; };
 		952CBB9D095FD1CA00434E43 /* VLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */; };
 		952CBB9F095FD1D900434E43 /* TVLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9E095FD1D900434E43 /* TVLSoundOut.cpp */; };
-		952CBBB4095FD34F00434E43 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB2095FD34F00434E43 /* AudioToolbox.framework */; };
-		952CBBB5095FD34F00434E43 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB3095FD34F00434E43 /* AudioUnit.framework */; };
 		952CBBB6095FD37300434E43 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		952DCD78096BBB11001C2316 /* VLSheetViewChords.mm in Sources */ = {isa = PBXBuildFile; fileRef = 952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */; };
 		9530A7020BD9E16700635FEC /* display.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 9530A7010BD9E16700635FEC /* display.tiff */; };
@@ -60,8 +55,6 @@
 		95795CE70C88B25D00E4A21F /* VLMusicXMLType.reader in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95795CE50C88B25D00E4A21F /* VLMusicXMLType.reader */; };
 		9588363C0C6F9C7D004B4162 /* VLPListDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9588363B0C6F9C7D004B4162 /* VLPListDocument.mm */; };
 		9588365C0C6FABBA004B4162 /* VLDebugFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9588365A0C6FABBA004B4162 /* VLDebugFlags.cpp */; };
-		95932B91096527700008B0DB /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB3095FD34F00434E43 /* AudioUnit.framework */; };
-		95932B92096527710008B0DB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 952CBBB2095FD34F00434E43 /* AudioToolbox.framework */; };
 		9593E4E80AE0ED1F00035816 /* vlsong.icns in Resources */ = {isa = PBXBuildFile; fileRef = 9593E4E60AE0ED1F00035816 /* vlsong.icns */; };
 		9593E4E90AE0ED1F00035816 /* vlapp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 9593E4E70AE0ED1F00035816 /* vlapp.icns */; };
 		959408AD096922EA007CCCF8 /* TVLEdit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959408AC096922EA007CCCF8 /* TVLEdit.cpp */; };
@@ -75,9 +68,9 @@
 		959A3A290DE78BCD00EF207B /* toend.icns in Resources */ = {isa = PBXBuildFile; fileRef = 959A3A250DE78BCD00EF207B /* toend.icns */; };
 		959A3A6E0DE8CB5B00EF207B /* VLMIDIWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959A3A6C0DE8CB5B00EF207B /* VLMIDIWriter.cpp */; };
 		959B77C20DE3139F004432E0 /* installLame.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 958139C20DE2FBE4003C00B4 /* installLame.scpt */; };
-		95A1C37C0AF1D4370076597D /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A1C37B0AF1D4370076597D /* Quartz.framework */; };
 		95A1C3860AF2ACE20076597D /* VLSheetWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */; };
 		95A55C540BD5E5770068A203 /* VLPDFDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A55C530BD5E5770068A203 /* VLPDFDocument.mm */; };
+		95AC700014094108007EA050 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC6FFF14094107007EA050 /* Cocoa.framework */; };
 		95B3E1A70960E58B000E9C0D /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 95B3E1980960E58B000E9C0D /* Music */; };
 		95B66658096BCA1F00FE18C9 /* VLSheetViewNotes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */; };
 		95BDA15909540BF1009F9D65 /* VLSheetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */; };
@@ -87,6 +80,13 @@
 		95C461FE0B04432700649F92 /* MMA in Copy MMA Library */ = {isa = PBXBuildFile; fileRef = 95C461DD0B04430F00649F92 /* MMA */; };
 		95C462000B04472E00649F92 /* mmaWrapper in Copy Tools */ = {isa = PBXBuildFile; fileRef = 95C461FF0B04472900649F92 /* mmaWrapper */; };
 		95C462830B045CB700649F92 /* lilyWrapper in Copy Tools */ = {isa = PBXBuildFile; fileRef = 95C4627A0B045C8E00649F92 /* lilyWrapper */; };
+		95CFA83814091B7800D0DB0D /* VLPitchName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95CFA83714091B7800D0DB0D /* VLPitchName.cpp */; };
+		95CFA8491409291500D0DB0D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95CFA8481409291500D0DB0D /* SenTestingKit.framework */; };
+		95CFA8511409291500D0DB0D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 95CFA84F1409291500D0DB0D /* InfoPlist.strings */; };
+		95CFA8531409291500D0DB0D /* TVLPitchNames.h in Resources */ = {isa = PBXBuildFile; fileRef = 95CFA8521409291500D0DB0D /* TVLPitchNames.h */; };
+		95CFA8551409291500D0DB0D /* TVLPitchNames.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95CFA8541409291500D0DB0D /* TVLPitchNames.mm */; };
+		95CFA85B140930CD00D0DB0D /* VLPitchName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95CFA83714091B7800D0DB0D /* VLPitchName.cpp */; };
+		95CFA85F1409356900D0DB0D /* TVLStringAccidentals.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95CFA85D1409355D00D0DB0D /* TVLStringAccidentals.mm */; };
 		95D0597A0D1E6B0D00E28FAE /* VLLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95D059780D1E6B0D00E28FAE /* VLLayout.cpp */; };
 		95D0C2FC0B785D020061080E /* rebuildGrooves in Copy Tools */ = {isa = PBXBuildFile; fileRef = 95D0C2FB0B785D020061080E /* rebuildGrooves */; };
 		95E04DA70AEB486E006F30A0 /* TVLLilypond.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */; };
@@ -94,7 +94,6 @@
 		95E04DA90AEB487A006F30A0 /* VLLilypondDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */; };
 		95E04DAA0AEB487E006F30A0 /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
 		95E04DAB0AEB4886006F30A0 /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
-		95E04DC70AEB4B57006F30A0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		95E04DCE0AEB4D9B006F30A0 /* Templates in Resources */ = {isa = PBXBuildFile; fileRef = 95E04DCA0AEB4D9B006F30A0 /* Templates */; };
 		95E299C00B2006F5001977D2 /* VLSheetViewLyrics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95E299BE0B2006F5001977D2 /* VLSheetViewLyrics.mm */; };
 		95EDA5AB0B06DE47004D8D6E /* VLMIDIDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95EDA5A90B06DE46004D8D6E /* VLMIDIDocument.mm */; };
@@ -164,14 +163,10 @@
 
 /* Begin PBXFileReference section */
 		089C1660FE840EACC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		2A37F4ACFDCFA73011CA2CEA /* VLDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLDocument.mm; path = Sources/VLDocument.mm; sourceTree = "<group>"; };
 		2A37F4AEFDCFA73011CA2CEA /* VLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLDocument.h; path = Sources/VLDocument.h; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Sources/main.m; sourceTree = "<group>"; };
 		2A37F4BAFDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
-		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
-		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF750370BD2300C91783 /* Vocalese_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vocalese_Prefix.pch; path = Sources/Vocalese_Prefix.pch; sourceTree = "<group>"; };
 		8D15AC360486D014006FF6A4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* VocalEasel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VocalEasel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,19 +186,15 @@
 		95009B4F0B0ED0BB00EB33A4 /* CADebugMacros.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CADebugMacros.h; path = Sources/CoreAudioSDK/CADebugMacros.h; sourceTree = "<group>"; };
 		95009B620B0ED18700EB33A4 /* CAConditionalMacros.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CAConditionalMacros.h; path = Sources/CoreAudioSDK/CAConditionalMacros.h; sourceTree = "<group>"; };
 		95009B630B0ED18700EB33A4 /* CAMath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CAMath.h; path = Sources/CoreAudioSDK/CAMath.h; sourceTree = "<group>"; };
-		95009B820B0EDCD800EB33A4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		95049CF20BDC32CD0015EE6E /* installLilypond.scpt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = file; name = installLilypond.scpt; path = Resources/installLilypond.scpt; sourceTree = "<group>"; };
 		95049D010BDC43510015EE6E /* installPython.scpt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = file; name = installPython.scpt; path = Resources/installPython.scpt; sourceTree = "<group>"; };
 		95140E3B0C944F7F00966576 /* org.lilypond.lilypond-source.reader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = "org.lilypond.lilypond-source.reader"; sourceTree = "<group>"; };
 		9524DAF70BE569C50002AC03 /* Help */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Help; path = Resources/Help; sourceTree = "<group>"; };
-		9524DB380BE5CA070002AC03 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		95297F300C9ADA33007EFD6B /* VLBIABType.reader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = VLBIABType.reader; sourceTree = "<group>"; };
 		952CBB98095FD19D00434E43 /* TVLSoundOut */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TVLSoundOut; sourceTree = BUILT_PRODUCTS_DIR; };
 		952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = VLSoundOut.cpp; path = Sources/VLSoundOut.cpp; sourceTree = "<group>"; };
 		952CBB9B095FD1CA00434E43 /* VLSoundOut.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSoundOut.h; path = Sources/VLSoundOut.h; sourceTree = "<group>"; };
 		952CBB9E095FD1D900434E43 /* TVLSoundOut.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = TVLSoundOut.cpp; path = Tests/TVLSoundOut.cpp; sourceTree = "<group>"; };
-		952CBBB2095FD34F00434E43 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
-		952CBBB3095FD34F00434E43 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = /System/Library/Frameworks/AudioUnit.framework; sourceTree = "<absolute>"; };
 		952DCD76096BBB11001C2316 /* VLSheetViewChords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSheetViewChords.h; path = Sources/VLSheetViewChords.h; sourceTree = "<group>"; };
 		952DCD77096BBB11001C2316 /* VLSheetViewChords.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetViewChords.mm; path = Sources/VLSheetViewChords.mm; sourceTree = "<group>"; };
 		9530A7010BD9E16700635FEC /* display.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = display.tiff; path = Resources/display.tiff; sourceTree = "<group>"; };
@@ -255,11 +246,11 @@
 		959A3A250DE78BCD00EF207B /* toend.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = toend.icns; path = Resources/toend.icns; sourceTree = "<group>"; };
 		959A3A6C0DE8CB5B00EF207B /* VLMIDIWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VLMIDIWriter.cpp; path = Sources/VLMIDIWriter.cpp; sourceTree = "<group>"; };
 		959A3A6D0DE8CB5B00EF207B /* VLMIDIWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLMIDIWriter.h; path = Sources/VLMIDIWriter.h; sourceTree = "<group>"; };
-		95A1C37B0AF1D4370076597D /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
 		95A1C3840AF2ACE20076597D /* VLSheetWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSheetWindow.h; path = Sources/VLSheetWindow.h; sourceTree = "<group>"; };
 		95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetWindow.mm; path = Sources/VLSheetWindow.mm; sourceTree = "<group>"; };
 		95A55C520BD5E5760068A203 /* VLPDFDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLPDFDocument.h; path = Sources/VLPDFDocument.h; sourceTree = "<group>"; };
 		95A55C530BD5E5770068A203 /* VLPDFDocument.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPDFDocument.mm; path = Sources/VLPDFDocument.mm; sourceTree = "<group>"; };
+		95AC6FFF14094107007EA050 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		95B3E1980960E58B000E9C0D /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Music; path = Resources/Music; sourceTree = "<group>"; };
 		95B66653096BC6A100FE18C9 /* VLSheetViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSheetViewInternal.h; path = Sources/VLSheetViewInternal.h; sourceTree = "<group>"; };
 		95B66656096BCA1F00FE18C9 /* VLSheetViewNotes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSheetViewNotes.h; path = Sources/VLSheetViewNotes.h; sourceTree = "<group>"; };
@@ -272,6 +263,17 @@
 		95C461DD0B04430F00649F92 /* MMA */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MMA; path = mma/MMA; sourceTree = "<group>"; };
 		95C461FF0B04472900649F92 /* mmaWrapper */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; name = mmaWrapper; path = Tools/mmaWrapper; sourceTree = "<group>"; };
 		95C4627A0B045C8E00649F92 /* lilyWrapper */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; name = lilyWrapper; path = Tools/lilyWrapper; sourceTree = "<group>"; };
+		95CFA83714091B7800D0DB0D /* VLPitchName.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VLPitchName.cpp; path = Sources/VLPitchName.cpp; sourceTree = "<group>"; };
+		95CFA83914091B9000D0DB0D /* VLPitchName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLPitchName.h; path = Sources/VLPitchName.h; sourceTree = "<group>"; };
+		95CFA8471409291500D0DB0D /* TVLPitchNames.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TVLPitchNames.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		95CFA8481409291500D0DB0D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		95CFA84E1409291500D0DB0D /* TVLPitchNames-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "TVLPitchNames-Info.plist"; path = "Tests/TVLPitchNames/TVLPitchNames-Info.plist"; sourceTree = "<group>"; };
+		95CFA8501409291500D0DB0D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		95CFA8521409291500D0DB0D /* TVLPitchNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TVLPitchNames.h; path = Tests/TVLPitchNames/TVLPitchNames.h; sourceTree = SOURCE_ROOT; };
+		95CFA8541409291500D0DB0D /* TVLPitchNames.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = TVLPitchNames.mm; path = Tests/TVLPitchNames/TVLPitchNames.mm; sourceTree = SOURCE_ROOT; };
+		95CFA8561409291500D0DB0D /* TVLPitchNames-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TVLPitchNames-Prefix.pch"; path = "Tests/TVLPitchNames/TVLPitchNames-Prefix.pch"; sourceTree = "<group>"; };
+		95CFA85C1409355D00D0DB0D /* TVLStringAccidentals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TVLStringAccidentals.h; path = Tests/TVLStringAccidentals.h; sourceTree = "<group>"; };
+		95CFA85D1409355D00D0DB0D /* TVLStringAccidentals.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TVLStringAccidentals.mm; path = Tests/TVLStringAccidentals.mm; sourceTree = "<group>"; };
 		95D059780D1E6B0D00E28FAE /* VLLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VLLayout.cpp; path = Sources/VLLayout.cpp; sourceTree = "<group>"; };
 		95D059790D1E6B0D00E28FAE /* VLLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLLayout.h; path = Sources/VLLayout.h; sourceTree = "<group>"; };
 		95D0C2FB0B785D020061080E /* rebuildGrooves */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; name = rebuildGrooves; path = Tools/rebuildGrooves; sourceTree = "<group>"; };
@@ -308,11 +310,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */,
-				95932B91096527700008B0DB /* AudioUnit.framework in Frameworks */,
-				95932B92096527710008B0DB /* AudioToolbox.framework in Frameworks */,
-				95A1C37C0AF1D4370076597D /* Quartz.framework in Frameworks */,
-				9524DB390BE5CA070002AC03 /* Carbon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,9 +317,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				952CBBB4095FD34F00434E43 /* AudioToolbox.framework in Frameworks */,
-				952CBBB5095FD34F00434E43 /* AudioUnit.framework in Frameworks */,
-				95009B830B0EDCD800EB33A4 /* CoreFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,40 +334,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		95CFA8431409291500D0DB0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95AC700014094108007EA050 /* Cocoa.framework in Frameworks */,
+				95CFA8491409291500D0DB0D /* SenTestingKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		95E04D9E0AEB4837006F30A0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				95E04DC70AEB4B57006F30A0 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				9524DB380BE5CA070002AC03 /* Carbon.framework */,
-				95009B820B0EDCD800EB33A4 /* CoreFoundation.framework */,
-				95A1C37B0AF1D4370076597D /* Quartz.framework */,
-				1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */,
-				952CBBB2095FD34F00434E43 /* AudioToolbox.framework */,
-				952CBBB3095FD34F00434E43 /* AudioUnit.framework */,
-			);
-			name = "Linked Frameworks";
-			sourceTree = "<group>";
-		};
-		1058C7A8FEA54F5311CA2CBB /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */,
-				13E42FBA07B3F13500E4EEF1 /* CoreData.framework */,
-				2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */,
-			);
-			name = "Other Frameworks";
-			sourceTree = "<group>";
-		};
 		19C28FB0FE9D524F11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -382,6 +361,7 @@
 				952CBB98095FD19D00434E43 /* TVLSoundOut */,
 				959408A0096922CA007CCCF8 /* TVLEdit */,
 				95E04DA00AEB4837006F30A0 /* TVLLilypond */,
+				95CFA8471409291500D0DB0D /* TVLPitchNames.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -464,8 +444,8 @@
 		2A37F4C3FDCFA73011CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */,
-				1058C7A8FEA54F5311CA2CBB /* Other Frameworks */,
+				95AC6FFF14094107007EA050 /* Cocoa.framework */,
+				95CFA8481409291500D0DB0D /* SenTestingKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -490,10 +470,13 @@
 		955E59560957C0C50045FDA5 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				95CFA84C1409291500D0DB0D /* TVLPitchNames */,
 				95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */,
 				959408AC096922EA007CCCF8 /* TVLEdit.cpp */,
 				952CBB9E095FD1D900434E43 /* TVLSoundOut.cpp */,
 				955E59600957C1400045FDA5 /* TVLChord.cpp */,
+				95CFA85C1409355D00D0DB0D /* TVLStringAccidentals.h */,
+				95CFA85D1409355D00D0DB0D /* TVLStringAccidentals.mm */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -523,6 +506,10 @@
 		95CFA8321408885300D0DB0D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				955E58E3095658AB0045FDA5 /* VLModel.h */,
+				955E58E4095658AB0045FDA5 /* VLModel.cpp */,
+				95CFA83914091B9000D0DB0D /* VLPitchName.h */,
+				95CFA83714091B7800D0DB0D /* VLPitchName.cpp */,
 				959A3A6D0DE8CB5B00EF207B /* VLMIDIWriter.h */,
 				959A3A6C0DE8CB5B00EF207B /* VLMIDIWriter.cpp */,
 				9531F34D0DE2B4CD004F78C2 /* VLAIFFDocument.h */,
@@ -543,8 +530,6 @@
 				95F820AA0AF884A30010963D /* VLMMADocument.mm */,
 				2A37F4AEFDCFA73011CA2CEA /* VLDocument.h */,
 				2A37F4ACFDCFA73011CA2CEA /* VLDocument.mm */,
-				955E58E3095658AB0045FDA5 /* VLModel.h */,
-				955E58E4095658AB0045FDA5 /* VLModel.cpp */,
 				95F5F50D0ADCC433003980B2 /* VLXMLDocument.h */,
 				95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */,
 				953722650AE9F0E100B6E483 /* VLLilypondDocument.h */,
@@ -616,6 +601,26 @@
 				955CBA4D0B2366DD001CF4A1 /* VLKeyValueUndo.mm */,
 			);
 			name = Misc;
+			sourceTree = "<group>";
+		};
+		95CFA84C1409291500D0DB0D /* TVLPitchNames */ = {
+			isa = PBXGroup;
+			children = (
+				95CFA8521409291500D0DB0D /* TVLPitchNames.h */,
+				95CFA8541409291500D0DB0D /* TVLPitchNames.mm */,
+				95CFA84D1409291500D0DB0D /* Supporting Files */,
+			);
+			path = TVLPitchNames;
+			sourceTree = "<group>";
+		};
+		95CFA84D1409291500D0DB0D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				95CFA84E1409291500D0DB0D /* TVLPitchNames-Info.plist */,
+				95CFA84F1409291500D0DB0D /* InfoPlist.strings */,
+				95CFA8561409291500D0DB0D /* TVLPitchNames-Prefix.pch */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		95EF92110C786B2C0093E5F4 /* Filters */ = {
@@ -705,6 +710,24 @@
 			productReference = 959408A0096922CA007CCCF8 /* TVLEdit */;
 			productType = "com.apple.product-type.tool";
 		};
+		95CFA8461409291500D0DB0D /* TVLPitchNames */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 95CFA8571409291500D0DB0D /* Build configuration list for PBXNativeTarget "TVLPitchNames" */;
+			buildPhases = (
+				95CFA8421409291500D0DB0D /* Sources */,
+				95CFA8431409291500D0DB0D /* Frameworks */,
+				95CFA8441409291500D0DB0D /* Resources */,
+				95CFA8451409291500D0DB0D /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TVLPitchNames;
+			productName = TVLPitchNames;
+			productReference = 95CFA8471409291500D0DB0D /* TVLPitchNames.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 		95E04D9F0AEB4837006F30A0 /* TVLLilypond */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 95E04DA20AEB485A006F30A0 /* Build configuration list for PBXNativeTarget "TVLLilypond" */;
@@ -738,6 +761,7 @@
 				Japanese,
 				French,
 				German,
+				en,
 			);
 			mainGroup = 2A37F4AAFDCFA73011CA2CEA /* Vocalese */;
 			projectDirPath = "";
@@ -748,6 +772,7 @@
 				952CBB97095FD19D00434E43 /* TVLSoundOut */,
 				9594089F096922CA007CCCF8 /* TVLEdit */,
 				95E04D9F0AEB4837006F30A0 /* TVLLilypond */,
+				95CFA8461409291500D0DB0D /* TVLPitchNames */,
 			);
 		};
 /* End PBXProject section */
@@ -789,6 +814,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		95CFA8441409291500D0DB0D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95CFA8511409291500D0DB0D /* InfoPlist.strings in Resources */,
+				95CFA8531409291500D0DB0D /* TVLPitchNames.h in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -804,6 +838,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$BUILT_PRODUCTS_DIR\"/VocalEasel.app/Contents/Resources/bin/mmaWrapper -g\n\"$SRCROOT\"/Tools/rebuildGrooves \"$BUILT_PRODUCTS_DIR\"/VocalEasel.app/Contents/Resources/share/mma/lib \"$BUILT_PRODUCTS_DIR\"/VocalEasel.app/Contents/Resources/Grooves.plist\n";
+		};
+		95CFA8451409291500D0DB0D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -848,6 +895,7 @@
 				9531F3510DE2B4CD004F78C2 /* VLAIFFDocument.mm in Sources */,
 				9531F3520DE2B4CD004F78C2 /* VLMP3Document.mm in Sources */,
 				959A3A6E0DE8CB5B00EF207B /* VLMIDIWriter.cpp in Sources */,
+				95CFA83814091B7800D0DB0D /* VLPitchName.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -880,6 +928,16 @@
 			files = (
 				959408AD096922EA007CCCF8 /* TVLEdit.cpp in Sources */,
 				959408AE096922F7007CCCF8 /* VLModel.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95CFA8421409291500D0DB0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95CFA8551409291500D0DB0D /* TVLPitchNames.mm in Sources */,
+				95CFA85B140930CD00D0DB0D /* VLPitchName.cpp in Sources */,
+				95CFA85F1409356900D0DB0D /* TVLStringAccidentals.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -962,12 +1020,104 @@
 			name = VLPDFWindow.xib;
 			sourceTree = "<group>";
 		};
+		95CFA84F1409291500D0DB0D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				95CFA8501409291500D0DB0D /* en */,
+			);
+			name = InfoPlist.strings;
+			path = Tests/TVLPitchNames;
+			sourceTree = SOURCE_ROOT;
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		95CFA8581409291500D0DB0D /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Tests/TVLPitchNames/TVLPitchNames-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Tests/TVLPitchNames/TVLPitchNames-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.7;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Development;
+		};
+		95CFA8591409291500D0DB0D /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Tests/TVLPitchNames/TVLPitchNames-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Tests/TVLPitchNames/TVLPitchNames-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.7;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Deployment;
+		};
+		95CFA85A1409291500D0DB0D /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Tests/TVLPitchNames/TVLPitchNames-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Tests/TVLPitchNames/TVLPitchNames-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.7;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Default;
+		};
 		95D7BF750AA699C600D5E02C /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx10.6;
 				USER_HEADER_SEARCH_PATHS = "Sources/**";
 			};
@@ -976,6 +1126,7 @@
 		95D7BF760AA699C600D5E02C /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx10.6;
 			};
 			name = Deployment;
@@ -983,6 +1134,7 @@
 		95D7BF770AA699C600D5E02C /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx10.6;
 			};
 			name = Default;
@@ -1303,6 +1455,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		95CFA8571409291500D0DB0D /* Build configuration list for PBXNativeTarget "TVLPitchNames" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95CFA8581409291500D0DB0D /* Development */,
+				95CFA8591409291500D0DB0D /* Deployment */,
+				95CFA85A1409291500D0DB0D /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
 		95D7BF740AA699C600D5E02C /* Build configuration list for PBXProject "VocalEasel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1311,7 +1473,7 @@
 				95D7BF770AA699C600D5E02C /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		95D7BF780AA699C600D5E02C /* Build configuration list for PBXNativeTarget "VocalEasel" */ = {
 			isa = XCConfigurationList;
@@ -1321,7 +1483,7 @@
 				95D7BF7B0AA699C600D5E02C /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		95D7BF7C0AA699C600D5E02C /* Build configuration list for PBXNativeTarget "TVLChord" */ = {
 			isa = XCConfigurationList;
@@ -1331,7 +1493,7 @@
 				95D7BF7F0AA699C600D5E02C /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		95D7BF800AA699C600D5E02C /* Build configuration list for PBXNativeTarget "TVLSoundOut" */ = {
 			isa = XCConfigurationList;
@@ -1341,7 +1503,7 @@
 				95D7BF830AA699C600D5E02C /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		95D7BF840AA699C600D5E02C /* Build configuration list for PBXNativeTarget "TVLEdit" */ = {
 			isa = XCConfigurationList;
@@ -1351,7 +1513,7 @@
 				95D7BF870AA699C600D5E02C /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		95E04DA20AEB485A006F30A0 /* Build configuration list for PBXNativeTarget "TVLLilypond" */ = {
 			isa = XCConfigurationList;
@@ -1361,7 +1523,7 @@
 				95E04DA50AEB485A006F30A0 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 /* End XCConfigurationList section */
 	};

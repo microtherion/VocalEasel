@@ -13,10 +13,6 @@
 #include <string>
 #include <inttypes.h>
 
-const int 	kVLSharpChar	= 0x266F;
-const int 	kVLFlatChar		= 0x266D;
-#define		kVLSharpStr		"\xE2\x99\xAF"
-#define		kVLFlatStr		"\xE2\x99\xAD"
 
 struct VLFract {
 	uint16_t	fNum;	// Numerator
@@ -135,20 +131,31 @@ struct VLNote {
 	//
 	// Hint at visual representation (Computed in DecomposeNotes)
 	//
-	uint8_t 	fVisual;
+	uint16_t 	fVisual;
 	enum {
-		kWhole		= 0,
-		kHalf		= 1,
-		kQuarter	= 2,
-		kEighth		= 3,
-		k16th		= 4,
-		k32nd		= 5,
+		kWhole          = 0,
+		kHalf           = 1,
+		kQuarter        = 2,
+		kEighth         = 3,
+		k16th           = 4,
+		k32nd           = 5,
 		
-		kNoteHead	= 0x07,
-		kWantSharp	= 0x20,
-		kWantFlat	= 0x40,
-		kAccidentals= 0x60,
-		kTriplet	= 0x80
+		kNoteHeadMask	= 0x0007,
+        
+		kWantSharp      = 0x10,
+        kWant2Sharp     = 0x20,
+        kPreferSharps   = 0x30, // kWantSharp   |   kWant2Sharp
+		kWantFlat       = 0x40,
+        kWant2Flat      = 0x80,
+        kPreferFlats    = 0xC0, // kWantFlat    |   kWant2Flat
+        kWantNatural    = 0x50, // kWantSharp   |   kWantFlat
+        kNaturalOrSharp = 0x70, // kPreferSharps|   kWantFlat
+        kNaturalOrFlat  = 0xD0, // kPreferFlats |   kWantSharp
+        
+		kAccidentalsMask= 0x00F0,
+        
+        kTriplet        = 0x300,
+		kTupletMask     = 0x0F00
 	};
 	VLNote(VLFraction dur=0, int pitch=kNoPitch);
 	VLNote(std::string name);
