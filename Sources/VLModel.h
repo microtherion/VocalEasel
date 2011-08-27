@@ -13,6 +13,8 @@
 #include <string>
 #include <inttypes.h>
 
+#pragma mark -
+#pragma mark class VLFraction
 
 struct VLFract {
 	uint16_t	fNum;	// Numerator
@@ -93,23 +95,9 @@ inline bool operator>=(VLFraction one, VLFraction other)
 	return one.fNum*other.fDenom >= other.fNum*one.fDenom;
 }
 
-class VLProperties;
+#pragma mark -
+#pragma mark class VLNote
 
-struct VLSyllable {
-	std::string	fText;	   // Syllable text
-	uint8_t		fKind;     // Adjacency information
-	enum {
-		kSingle			= 0,
-		kBegin			= 1,
-		kEnd			= 2,
-		kMiddle			= 3,
-		kHasNext		= 1,
-		kHasPrev		= 2
-	};
-
-	operator bool() const { return fText.size() > 0; }
-};
-	
 struct VLNote {
 	VLFraction 	fDuration;
 	int8_t		fPitch;		// Semitones
@@ -155,15 +143,47 @@ struct VLNote {
 		kAccidentalsMask= 0x00F0,
         
         kTriplet        = 0x300,
+        
 		kTupletMask     = 0x0F00
 	};
-	VLNote(VLFraction dur=0, int pitch=kNoPitch);
+	VLNote(VLFraction dur=0, int pitch=kNoPitch, uint16_t visual=0);
 	VLNote(std::string name);
-	void Name(std::string & name, bool useSharps = false) const;
+	std::string Name(uint16_t accidentals=0) const;
 	void MakeRepresentable();
-	void AdjustAccidentals();
 	void AlignToGrid(VLFraction at, VLFraction grid);
 };
+
+#pragma mark class VLSyllable
+
+struct VLSyllable {
+	std::string	fText;	   // Syllable text
+	uint8_t		fKind;     // Adjacency information
+	enum {
+		kSingle			= 0,
+		kBegin			= 1,
+		kEnd			= 2,
+		kMiddle			= 3,
+		kHasNext		= 1,
+		kHasPrev		= 2
+	};
+    
+	operator bool() const { return fText.size() > 0; }
+};
+
+#pragma mark class VLLyricsNote
+
+struct VLLyricsNote : VLNote {
+	VLLyricsNote(const VLNote & note);
+	VLLyricsNote(VLFraction dur=0, int pitch = kNoPitch, uint16_t visual=0);
+    
+	std::vector<VLSyllable>	fLyrics;
+};
+
+
+typedef std::list<VLLyricsNote> VLNoteList;
+
+#pragma mark -
+#pragma mark VLChord
 
 struct VLChord : VLNote {
 	uint32_t	fSteps;		// Notes in chord, listed in semitones
@@ -215,11 +235,16 @@ struct VLChord : VLNote {
 		kmMaj13th	= (1 << kMaj13th)
 	};
 	int8_t		fRootPitch;	// kNoPitch == no root
+    uint16_t    fRootAccidental;
 	
 	VLChord(VLFraction dur=0, int pitch=kNoPitch, int rootPitch=kNoPitch);
 	VLChord(std::string name);
-	void	Name(std::string & base, std::string & ext, std::string & root, bool useSharps = false) const;
+	void	Name(std::string & base, std::string & ext, std::string & root, uint16_t accidental=0) const;
 };
+
+typedef std::list<VLChord>		VLChordList;
+
+#pragma mark class VLChordModifier
 
 struct VLChordModifier {
 	const char *	fName;
@@ -227,28 +252,25 @@ struct VLChordModifier {
 	uint32_t		fDelSteps;
 };
 
+#pragma mark -
+#pragma mark class VLProperties
+
 struct VLProperties {
 	VLFraction	fTime;		// Time (non-normalized)
 	int8_t		fKey;		// Circle of fifths from C, >0 sharps, <0 flats
 	int8_t		fMode;		// 1 = major -1 = minor
 	int8_t		fDivisions;	// Number of divisions per quarter note
 	std::string	fGroove;	// MMA Groove
-
+    
 	bool operator==(const VLProperties & other)
 	{ return fTime == other.fTime && fKey == other.fKey && fMode == other.fMode
-			&& fDivisions == other.fDivisions && fGroove == other.fGroove;
+        && fDivisions == other.fDivisions && fGroove == other.fGroove;
 	}
 };
 
-struct VLLyricsNote : VLNote {
-	VLLyricsNote(const VLNote & note);
-	VLLyricsNote(VLFraction dur=0, int pitch = kNoPitch);
+typedef std::vector<VLProperties>	VLPropertyList;
 
-	std::vector<VLSyllable>	fLyrics;
-};
-
-typedef std::list<VLChord>		VLChordList;
-typedef std::list<VLLyricsNote> VLNoteList;
+#pragma mark class VLMeasure
 
 struct VLMeasure {
 	enum {
@@ -268,6 +290,10 @@ struct VLMeasure {
 	void DecomposeNotes(const VLProperties & prop, VLNoteList & decomposed) const;
 };
 
+typedef std::vector<VLMeasure>		VLMeasureList;
+
+#pragma mark class VLRepeat
+
 struct VLRepeat {
 	int8_t				fTimes;
 	
@@ -281,9 +307,10 @@ struct VLRepeat {
 	std::vector<Ending>	fEndings;
 };
 
-typedef std::vector<VLProperties>	VLPropertyList;
-typedef std::vector<VLMeasure>		VLMeasureList;
 typedef std::vector<VLRepeat>		VLRepeatList;
+
+#pragma mark -
+#pragma mark class VLSong
 
 class VLSong {
 public:
@@ -399,6 +426,8 @@ public:
 private:
 	void	AddMeasure();
 };
+
+#pragma mark class VLSongVisitor
 
 class VLSongVisitor {
 public:

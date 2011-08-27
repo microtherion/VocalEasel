@@ -5,11 +5,11 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2006-2007 Matthias Neeracher
+// Copyright © 2006-2011 Matthias Neeracher
 //
 
 #import "VLPitchTransformer.h"
-#import "VLModel.h"
+#import "VLPitchName.h"
 
 @implementation VLPitchTransformer
 

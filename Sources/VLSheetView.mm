@@ -179,7 +179,7 @@ VLMusicElement sSemi2Accidental[13][12] = {
 {
 	int 	semi 		= pitch % 12;
 	int		key			= [self song]->fProperties[section].fKey;
-	bool 	useSharps	= (visual & VLNote::kAccidentals)
+	bool 	useSharps	= (visual & VLNote::kAccidentalsMask)
 		? (visual & VLNote::kWantSharp) : (key > 0);
 	
 	return	sSemi2Pitch[useSharps][semi];
@@ -525,7 +525,7 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 	NSArray * colors = [NSColor controlAlternatingRowBackgroundColors];
 	NSColor * color= [colors objectAtIndex:1];
 	if (kAltColors) {
-		float hue, saturation, brightness, alpha;
+		CGFloat hue, saturation, brightness, alpha;
 		
 		[[color colorUsingColorSpaceName:NSCalibratedRGBColorSpace] getHue:&hue saturation:&saturation 
 				 brightness:&brightness alpha:&alpha];

@@ -249,7 +249,7 @@ static std::string EscapeSyllable(std::string syll)
 
 static bool PreferSharps(bool globalSharps, int noteAccidentals)
 {
-	return (noteAccidentals & VLNote::kAccidentals)
+	return (noteAccidentals & VLNote::kAccidentalsMask)
 		? (noteAccidentals & VLNote::kWantSharp)
 		: globalSharps;
 }
@@ -277,10 +277,10 @@ void VLLilypondWriter::VisitNote(VLLyricsNote & n)
 		strcpy(duration, ".");
 	else if (n.fVisual & VLNote::kTriplet)
 		sprintf(duration, "%s\\times 2/3 { %s%d%s }", 
-				space, nm.c_str(), kValue[n.fVisual & VLNote::kNoteHead], tie);
+				space, nm.c_str(), kValue[n.fVisual & VLNote::kNoteHeadMask], tie);
 	else 
 		sprintf(duration, "%s%s%d%s", 
-				space, nm.c_str(), kValue[n.fVisual & VLNote::kNoteHead], tie); 
+				space, nm.c_str(), kValue[n.fVisual & VLNote::kNoteHeadMask], tie); 
 
 	fAccum	+= duration;
 	fPrevNote= n;

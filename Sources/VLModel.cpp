@@ -9,7 +9,9 @@
 //
 
 #include "VLModel.h"
-#include <ctype.h>
+#include "VLPitchName.h"
+
+#pragma mark class VLFraction
 
 VLFraction & VLFraction::Normalize()
 {
@@ -75,75 +77,40 @@ VLFraction & VLFraction::operator%=(VLFraction other)
 	return *this *= other;
 }
 
-static const char kScale[] = "c d ef g a b";
-
-static std::string	PitchName(int8_t pitch, bool useSharps)
-{
-	if (pitch == VLNote::kNoPitch)
-		return "r";
-	pitch %= 12;
-	if (kScale[pitch] != ' ')
-		return static_cast<char>(std::toupper(kScale[pitch])) + std::string();
-	else if (useSharps)
-		return static_cast<char>(std::toupper(kScale[pitch-1])) 
-			+ std::string(kVLSharpStr);
-	else
-		return static_cast<char>(std::toupper(kScale[pitch+1])) 
-			+ std::string(kVLFlatStr);
-}
+#pragma mark -
+#pragma mark class VLNote
 
 VLNote::VLNote(std::string name)
 {
-	//
-	// Determine key
-	//
-	if (const char * key = strchr(kScale, name[0])) 
-		fPitch	= key-kScale+kMiddleC;
-	else
-		goto failed;
-	name.erase(0, 1);
-	//
-	// Look for sharp / flat
-	//	
-	fVisual = 0;
-	if (name.size())
-		if (name[0] == '#') {
-			++fPitch;
-			fVisual |= kWantSharp;
-			name.erase(0);
-		} else if (name[0] == 'b') {
-			--fPitch;
-			fVisual |= kWantFlat;
-			name.erase(0, 1);
-		}
-	AdjustAccidentals();
-	if (name == "")
-		return;
+	fPitch = VLParsePitch(name, 0, &fVisual);
 
- failed:
-	fPitch = kNoPitch; // Failed to parse completely
+    if (!name.empty()) {  // Failed to parse completely
+        fPitch = kNoPitch;
+        fVisual= 0;
+    }
 }	
 
-VLNote::VLNote(VLFraction dur, int pitch)
-	: fDuration(dur), fPitch(pitch), fTied(0), fVisual(0)
+VLNote::VLNote(VLFraction dur, int pitch, uint16_t visual)
+	: fDuration(dur), fPitch(pitch), fTied(0), fVisual(visual)
 {
 }
 
-void VLNote::Name(std::string & name, bool useSharps) const
+std::string VLNote::Name(uint16_t accidental) const
 {
-	if (fVisual & kWantSharp)
-		useSharps = true;
-	else if (fVisual & kWantFlat)
-		useSharps = false;
+	if (uint16_t acc = (fVisual & kAccidentalsMask))
+        if (acc == kWantNatural)
+            accidental |= acc;
+        else
+            accidental = acc;
 
-	name = PitchName(fPitch, useSharps);
+	return VLPitchName(fPitch, accidental);
 }
 
 void VLNote::MakeRepresentable()
 {
 	if (fDuration > 1)
 		fDuration = 1;
-	fVisual	= kWhole | (fVisual & kAccidentals);
+	fVisual	= kWhole | (fVisual & kAccidentalsMask);
 	VLFraction part(1,1);
 	VLFraction triplet(2,3);
 	//
@@ -168,26 +135,6 @@ void VLNote::MakeRepresentable()
 	abort();
 }
 
-void VLNote::AdjustAccidentals()
-{
-	//
-	// Don't store accidental preferences for whole notes:
-	// There is no way to represent these in MusicXML, so saving and
-	// reloading would change behavior.
-	//
-	enum {
-		kC = 1<<0,
-		kD = 1<<2,
-		kE = 1<<4,
-		kF = 1<<5,
-		kG = 1<<7,
-		kA = 1<<9,
-		kB = 1<<11
-	};	
-	if ((1 << (fPitch % 12)) & (kC | kD | kE | kF | kG | kA | kB))
-		fVisual &= ~kAccidentals;
-}
-
 void VLNote::AlignToGrid(VLFraction at, VLFraction grid)
 {
 	if (at+fDuration > grid) {	
@@ -201,43 +148,13 @@ VLLyricsNote::VLLyricsNote(const VLNote & note)
 { 
 }
 
-VLLyricsNote::VLLyricsNote(VLFraction dur, int pitch)
-	: VLNote(dur, pitch)
+VLLyricsNote::VLLyricsNote(VLFraction dur, int pitch, uint16_t visual)
+	: VLNote(dur, pitch, visual)
 {
 } 
 
-#define _ VLChord::
-
-static const VLChordModifier kModifiers[] = {
-	{"b13", _ kmMin13th, 0},
-	{"add13", _ kmMaj13th, 0},
-	{"13", _ kmMin7th | _ kmMaj9th | _ km11th | _ kmMaj13th, 0},
-	{"#11", _ kmAug11th, 0},
-	{"add11", _ km11th, 0},
-	{"11", _ kmMin7th | _ kmMaj9th | _ km11th, 0},
-	{"#9", _ kmAug9th, _ kmMaj9th},
-	{"+9", _ kmAug9th, _ kmMaj9th},
-	{"b9", _ kmMin9th, _ kmMaj9th},
-	{"-9", _ kmMin9th, _ kmMaj9th},
-	{"69", _ kmDim7th | _ kmMaj9th, 0},
-	{"add9", _ kmMaj9th, 0},
-	{"9", _ kmMin7th | _ kmMaj9th, 0},
-	{"7", _ kmMin7th, 0},
-	{"maj", _ kmMaj7th, _ kmMin7th},
-	{"6", _ kmDim7th, 0},
-	{"#5", _ kmAug5th, _ km5th},
-	{"+5", _ kmAug5th, _ km5th},
-	{"aug", _ kmAug5th, _ km5th},
-	{"+", _ kmAug5th, _ km5th},
-	{"b5", _ kmDim5th, _ km5th},
-	{"-5", _ kmDim5th, _ km5th},
-	{"sus4", _ km4th, _ kmMaj3rd},
-	{"sus2", _ kmMaj2nd, _ kmMaj3rd},
-	{"sus", _ km4th, _ kmMaj3rd},
-	{"4", _ km4th, _ kmMaj3rd},
-	{"2", _ kmMaj2nd, _ kmMaj3rd},
-	{NULL, 0, 0}
-};
+#pragma mark -
+#pragma mark class VLChord
 
 VLChord::VLChord(VLFraction dur, int pitch, int rootPitch)
 	: VLNote(dur, pitch), fSteps(0), fRootPitch(kNoPitch)
@@ -246,171 +163,39 @@ VLChord::VLChord(VLFraction dur, int pitch, int rootPitch)
 
 VLChord::VLChord(std::string name)
 {
-	size_t		root;
-	//
-	// Determine key
-	//
-	if (const char * key = strchr(kScale, name[0])) 
-		fPitch	= key-kScale+kMiddleC;
-	else
-		goto failed;
-	name.erase(0, 1);
-	//
-	// Look for sharp / flat
-	//
-	if (name.size())
-		if (name[0] == '#') {
-			++fPitch;
-			fVisual |= kWantSharp;
-			name.erase(0, 1);
-		} else if (name[0] == 'b') {
-			--fPitch;
-			fVisual |= kWantFlat;
-			name.erase(0, 1);
-		}
-	AdjustAccidentals();
-	//
-	// Root
-	//
-	fRootPitch	= kNoPitch;
-	if ((root = name.find('/')) != std::string::npos) {
-		if (root+1 >= name.size())
-			goto failed;
-		if (const char * key = strchr(kScale, name[root+1])) 
-			fRootPitch	= key-kScale+kMiddleC-12;
-		else
-			goto failed;
-		if (root+2 < name.size()) {
-			switch (name[root+2]) {
-			case 'b':
-				--fRootPitch;
-				break;
-			case '#':
-				++fRootPitch;
-				break;
-			default:
-				goto failed;
-			}
-			name.erase(root, 3);
-		} else
-			name.erase(root, 2);
-	}
-			
-	//
-	// Apply modifiers
-	//
-	fSteps	= kmUnison | kmMaj3rd | km5th;
-	
-	for (const VLChordModifier * mod = kModifiers; mod->fName && name.size() && name != "dim" && name != "m" && name != "-"; ++mod) {
-		size_t pos = name.find(mod->fName);
-		if (pos != std::string::npos) {
-			name.erase(pos, strlen(mod->fName));
-			fSteps	&=	~mod->fDelSteps;
-			fSteps	|=	mod->fAddSteps;
-		}
-	}
-	if (name == "m" || name == "-") {
-		fSteps	= (fSteps & ~kmMaj3rd) | kmMin3rd;
-		name.erase(0, 1);
-	} else if (name == "dim") {
-		uint32_t steps	= fSteps & (kmMaj3rd | km5th | kmMin7th);
-		fSteps		   ^= steps;
-		fSteps		   |= steps >> 1; // Diminish 3rd, 5th, and 7th, if present
-		name.erase(0, 3);
-	}
-	if (name == "")
-		return;		// Success
-failed:
-	fPitch = kNoPitch;
+    fPitch = VLParseChord(name, &fVisual, &fSteps, &fRootPitch, &fRootAccidental);
+    
+    if (fPitch < 0) 
+        fPitch = kNoPitch;
 }
 
-static const char * kStepNames[] = {
-	"", "", "sus2", "", "", "sus", kVLFlatStr "5", "", kVLSharpStr "5", "6", 
-	"7", kVLSharpStr "7", "", kVLFlatStr "9", "9", kVLSharpStr "9", "", 
-	"11", kVLSharpStr "11", "", kVLFlatStr "13", "13"
-};
-
-void	VLChord::Name(std::string & base, std::string & ext, std::string & root, bool useSharps) const
+void VLChord::Name(std::string & base, std::string & ext, std::string & root, uint16_t accidental) const
 {
-	if (fVisual & kWantSharp)
-		useSharps = true;
-	else if (fVisual & kWantFlat)
-		useSharps = false;
-
-	base = PitchName(fPitch, useSharps);
-	ext  = "";
-	root = "";
-	
-	uint32_t steps = fSteps;
-	//
-	// m / dim
-	//
-	if (steps & kmMin3rd)
-		if (steps & (kmDim5th|kmDim7th) 
-		 && !(steps & (km5th|kmMin7th|kmMaj7th|kmMin9th|kmMaj9th|km11th|kmAug11th|kmMin13th|kmMaj13th))
-		) {
-			ext += "dim";
-			steps|= (steps & kmDim7th) << 1;
-			steps&=	~(kmMin3rd|kmDim5th|kmDim7th);
-		} else {
-			base += "m";
-			steps&= ~kmMin3rd;
-		}
-	//	
-	// +
-	//
-	steps &= ~(kmUnison | kmMaj3rd | km5th);
-	if (steps == kmAug5th) {
-		ext += "+";
-		steps= 0;
-	}
-	//
-	// Maj
-	//
-	if (steps & kmMaj7th) {
-		ext += "Maj";
-		steps&= ~kmMaj7th;
-		steps|= kmMin7th; // Write out the 7 for clarification
-	}
-	//
-	// 6/9
-	//
-	if ((steps & (kmDim7th|kmMaj9th)) == (kmDim7th|kmMaj9th)) {
-		ext += "69";
-		steps&= ~(kmDim7th|kmMaj9th);
-	}
-	//
-	// Other extensions. Only the highest unaltered extension is listed.
-	//
-	bool has7th = steps & (kmMin7th|kmMaj7th);
-	bool has9th	= steps & (kmMin9th|kmMaj9th|kmAug9th);
-	if ((steps & kmMaj13th) && has7th && has9th ) {	
-		ext 	+= kStepNames[kMaj13th];
-		steps	&= ~(kmMin7th | kmMaj9th | km11th | kmMaj13th);
-	} else if ((steps & km11th) && has7th && has9th) {
-		ext 	+= kStepNames[k11th];
-		steps	&= ~(kmMin7th | kmMaj9th | km11th);
-	} else if ((steps & kmMaj9th) && has7th) {
-		ext 	+= kStepNames[kMaj9th];
-		steps	&= ~(kmMin7th | kmMaj9th);
-	} else if (steps & kmMin7th) {
-		ext		+= kStepNames[kMin7th];
-		steps   &= ~(kmMin7th);
-	}
-		
-	for (int step = kMin2nd; steps; ++step) 
-		if (steps & (1 << step)) {
-			if ((1 << step) & (kmMaj9th|km11th|kmMaj13th))
-				ext += "add";
-			ext += kStepNames[step];
-			steps &= ~(1 << step);
-		}
-	//
-	// Root
-	//
-	if (fRootPitch != kNoPitch)
-		root = PitchName(fRootPitch, useSharps);
+    uint16_t    pitchAccidental;
+    uint16_t    rootAccidental;
+    uint16_t    acc;
+    
+	if ((acc = (fVisual & kAccidentalsMask)))
+        if (acc == kWantNatural)
+            pitchAccidental = accidental | acc;
+        else
+            pitchAccidental = acc;
+    else
+        pitchAccidental = accidental;
+    if ((acc = fRootAccidental))
+        if (acc == kWantNatural)
+            rootAccidental = accidental | acc;
+        else
+            rootAccidental = acc;
+    else
+        rootAccidental = accidental;
+    
+    VLChordName(fPitch, pitchAccidental, fSteps, fRootPitch, rootAccidental, 
+                base, ext, root);
 }
+
+#pragma mark -
+#pragma mark class VLMeasure
 
 VLMeasure::VLMeasure()
 	: fBreak(0), fPropIdx(0)
@@ -574,7 +359,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 			}
 		haveDuration:
 			if (p.fVisual & VLNote::kTriplet) 
-				if (prevTriplets = (prevTriplets+1)%3) {
+				if ((prevTriplets = (prevTriplets+1)%3)) {
 					prevTripDur = p.fDuration;
 					prevVisual  = p.fVisual;
 				}
@@ -595,6 +380,9 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 		i = n;
 	}
 }
+
+#pragma mark -
+#pragma mark class VLSong
 
 VLSong::VLSong(bool initialize)
 {
@@ -765,8 +553,6 @@ void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
 	//
 	while (measure+1 >= fMeasures.size())
 		AddMeasure();
-	
-	note.AdjustAccidentals();
 
 	VLNoteList::iterator	i = fMeasures[measure].fMelody.begin();
 	VLFraction			  	t(0);
@@ -1004,7 +790,6 @@ void VLSong::ChangeKey(int section, int newKey, int newMode, bool transpose)
 		for (; i!=e; ++i) {
 			TransposePinned(i->fPitch, semi);
 			TransposePinned(i->fRootPitch, semi);
-			i->AdjustAccidentals();
 		}
 	}
 	for (int pass=0; pass<2 && semi;) {
@@ -1023,7 +808,6 @@ void VLSong::ChangeKey(int section, int newKey, int newMode, bool transpose)
 				i->fPitch	+= semi;
 				low			 = std::min(low, i->fPitch);
 				high		 = std::max(high, i->fPitch);
-				i->AdjustAccidentals();
 			}
 		}
 		if (low < VLNote::kMiddleC-6 && high < VLNote::kMiddleC+7)

@@ -71,6 +71,11 @@
 		95A1C3860AF2ACE20076597D /* VLSheetWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */; };
 		95A55C540BD5E5770068A203 /* VLPDFDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A55C530BD5E5770068A203 /* VLPDFDocument.mm */; };
 		95AC700014094108007EA050 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC6FFF14094107007EA050 /* Cocoa.framework */; };
+		95AC700114099A60007EA050 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC6FFF14094107007EA050 /* Cocoa.framework */; };
+		95AC700414099C64007EA050 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC700214099C64007EA050 /* AudioToolbox.framework */; };
+		95AC700514099C64007EA050 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC700314099C64007EA050 /* AudioUnit.framework */; };
+		95AC700714099CF0007EA050 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC700614099CF0007EA050 /* Quartz.framework */; };
+		95AC70091409A291007EA050 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC70081409A291007EA050 /* Carbon.framework */; };
 		95B3E1A70960E58B000E9C0D /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 95B3E1980960E58B000E9C0D /* Music */; };
 		95B66658096BCA1F00FE18C9 /* VLSheetViewNotes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */; };
 		95BDA15909540BF1009F9D65 /* VLSheetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */; };
@@ -251,6 +256,10 @@
 		95A55C520BD5E5760068A203 /* VLPDFDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLPDFDocument.h; path = Sources/VLPDFDocument.h; sourceTree = "<group>"; };
 		95A55C530BD5E5770068A203 /* VLPDFDocument.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPDFDocument.mm; path = Sources/VLPDFDocument.mm; sourceTree = "<group>"; };
 		95AC6FFF14094107007EA050 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		95AC700214099C64007EA050 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		95AC700314099C64007EA050 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/AudioUnit.framework; sourceTree = DEVELOPER_DIR; };
+		95AC700614099CF0007EA050 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Quartz.framework; sourceTree = DEVELOPER_DIR; };
+		95AC70081409A291007EA050 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Carbon.framework; sourceTree = DEVELOPER_DIR; };
 		95B3E1980960E58B000E9C0D /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Music; path = Resources/Music; sourceTree = "<group>"; };
 		95B66653096BC6A100FE18C9 /* VLSheetViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSheetViewInternal.h; path = Sources/VLSheetViewInternal.h; sourceTree = "<group>"; };
 		95B66656096BCA1F00FE18C9 /* VLSheetViewNotes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSheetViewNotes.h; path = Sources/VLSheetViewNotes.h; sourceTree = "<group>"; };
@@ -310,6 +319,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95AC70091409A291007EA050 /* Carbon.framework in Frameworks */,
+				95AC700714099CF0007EA050 /* Quartz.framework in Frameworks */,
+				95AC700414099C64007EA050 /* AudioToolbox.framework in Frameworks */,
+				95AC700514099C64007EA050 /* AudioUnit.framework in Frameworks */,
+				95AC700114099A60007EA050 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,6 +459,10 @@
 			isa = PBXGroup;
 			children = (
 				95AC6FFF14094107007EA050 /* Cocoa.framework */,
+				95AC70081409A291007EA050 /* Carbon.framework */,
+				95AC700214099C64007EA050 /* AudioToolbox.framework */,
+				95AC700314099C64007EA050 /* AudioUnit.framework */,
+				95AC700614099CF0007EA050 /* Quartz.framework */,
 				95CFA8481409291500D0DB0D /* SenTestingKit.framework */,
 			);
 			name = Frameworks;

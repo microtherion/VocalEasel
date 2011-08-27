@@ -245,7 +245,7 @@ enum {
 					   true);
 		note.fPitch	   = [[ndict objectForKey:@"pitch"] intValue];	
 		note.fVisual  |= [[ndict objectForKey:@"visual"] intValue]
-			& VLNote::kAccidentals;
+			& VLNote::kAccidentalsMask;
 		note.fTied	   = 0;
 		
 		if ([[ndict objectForKey:@"tied"] intValue] & VLNote::kTiedWithPrev) {

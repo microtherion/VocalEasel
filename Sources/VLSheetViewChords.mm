@@ -26,16 +26,6 @@ std::string NormalizeName(NSString* rawName)
 	for (;;) {
 		size_t found;
 
-		found = chordName.find(kVLSharpStr, 0, 3);
-		if (found != std::string::npos) {
-			chordName.replace(found, 3, 1, '#');
-			continue;
-		}
-		found = chordName.find(kVLFlatStr, 0, 3);
-		if (found != std::string::npos) {
-			chordName.replace(found, 3, 1, 'b');
-			continue;
-		} 
 		found = chordName.find(" ", 0, 1);
 		if (found != std::string::npos) {
 			chordName.erase(found);

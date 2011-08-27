@@ -185,7 +185,7 @@
 	// Draw note head
 	//
 	NSImage * head;
-	switch (visual & VLNote::kNoteHead) {
+	switch (visual & VLNote::kNoteHeadMask) {
 	case VLNote::kWhole:
 		head = [self musicElement:kMusicWholeNote];
 		break;
@@ -341,11 +341,11 @@
 	const VLSong 		*	song 	  	= [self song];
 	const VLProperties & 	kProp 	  	= song->Properties(kFirstMeas);
 	const VLSystemLayout & 	kLayout 	= (*fLayout)[system];
-	const float 			kSystemY 	= [self systemY:system];
+	const CGFloat 			kSystemY 	= [self systemY:system];
 
 	float	tripletStartX;
 	float	tripletEndX;
-	float	tripletY;
+	CGFloat	tripletY;
 	bool	hasTriplets	= false;
 
 	for (int m = 0; m<kLayout.NumMeasures(); ++m) {
@@ -388,7 +388,7 @@
 						acc = kProp.fKey < 0 ? kMusicFlat : kMusicSharp;
 					else 
 						acc = kMusicNatural;
-				[self drawNote:note->fVisual & VLNote::kNoteHead
+				[self drawNote:note->fVisual & VLNote::kNoteHeadMask
 					  at: pos
 					  accidental: acc
 					  tied:tied];
@@ -399,7 +399,7 @@
 								  kSystemY+[self noteYInSection:measure.fPropIdx
 												 withPitch:65 visual:0
 												 accidental:&accidental]);
-				[self drawRest:note->fVisual & VLNote::kNoteHead at: pos];
+				[self drawRest:note->fVisual & VLNote::kNoteHeadMask at: pos];
 			}
 			if (note->fVisual & VLNote::kTriplet) {
 				tripletEndX	= pos.x+kNoteW*0.5f;
