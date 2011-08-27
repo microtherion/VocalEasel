@@ -99,7 +99,7 @@
 }
 
 #define TestParsePitchAtOffset(pitch, accidental, str, at) \
-    { std::string cppStr = [str UTF8String]; uint16_t acc; \
+    do { std::string cppStr = [str UTF8String]; uint16_t acc; \
       STAssertEquals(pitch, (int)VLParsePitch(cppStr, at, &acc),@"VLParsePitch(%@, %lu)", str, at); \
       STAssertEquals((uint16_t)accidental, acc,                 @"VLParsePitch(%@, %lu) [accidental]", str, at); \
       STAssertEquals((size_t)at, cppStr.size(),                 @"VLParsePitch(%@, %lu) [cleanup]", str, at); \
@@ -134,6 +134,93 @@
     TestParsePitchAtOffset(kF, VLNote::kWant2Flat,  @"CGBb",            1);
     TestParsePitchAtOffset(kB, VLNote::kWant2Sharp, [@"gA" doubleSharp],1);
     TestParsePitchAtOffset(kB, 0,                   @"C/B",             2);
+}
+
+#define TestChord(base, ext, root, stp, str) \
+    do {   int8_t pitch; uint16_t accidental; uint32_t steps; int8_t rootPitch; uint16_t rootAccidental; \
+        std::string baseName, extName, rootName, cppStr = [str UTF8String]; \
+        pitch = VLParseChord(cppStr, &accidental, &steps, &rootPitch, &rootAccidental); \
+        STAssertEquals((size_t)0, cppStr.size(),                @"VLParseChord(%@)", str); \
+        STAssertEquals((uint32_t)stp, steps,                    @"VLParseChord(%@)", str); \
+        VLChordName(pitch, accidental, steps, rootPitch, rootAccidental, baseName, extName, rootName); \
+        STAssertEqualObjects(base, [NSString stringWithUTF8String:baseName.c_str()], \
+                             @"VLChordName(%@ <%d,%d,%08x,%d,%d>) [base]", str, \
+                             pitch, accidental, steps, rootPitch, rootAccidental); \
+        STAssertEqualObjects(ext, [NSString stringWithUTF8String:extName.c_str()], \
+                             @"VLChordName(%@ <%d,%d,%08x,%d,%d>) [ext]", str, \
+                            pitch, accidental, steps, rootPitch, rootAccidental); \
+        STAssertEqualObjects(root, [NSString stringWithUTF8String:rootName.c_str()], \
+                            @"VLChordName(%@ <%d,%d,%08x,%d,%d>) [root]", str, \
+                            pitch, accidental, steps, rootPitch, rootAccidental); \
+    } while (0)
+
+- (void)testChords
+{
+    //
+    // Chords appearing in The New Real Book
+    //
+    TestChord(@"C",         @"",        @"",                0x00000091, @"c");
+    TestChord(@"C",         @"6",       [@"B" sharp],       0x00000291, @"c6/b#");
+    TestChord(@"C",         @"69",      [@"G" flat],        0x00004291, @"c69/gb");
+    TestChord(@"C",         @"add9",    @"",                0x00004091, @"cadd9");
+    TestChord([@"C" sharp], @"Maj7",    @"",                0x00000891, @"c#maj");
+    TestChord([@"C" flat],  @"Maj7add13", @"",              0x00200891, @"cbmajadd13");
+    TestChord(@"C",         @"Maj9",    @"",                0x00004891, @"cmaj9");
+    TestChord(@"C",         @"Maj13",   @"",                0x00224891, @"cmaj13");
+    TestChord(@"C",         @"7",       @"",                0x00000491, @"c7");
+    TestChord(@"C",         @"9",       @"",                0x00004491, @"C9");
+    TestChord(@"C",         @"13",      @"",                0x00224491, @"c13");
+    TestChord(@"Dm",        @"",        @"",                0x00000089, @"dm");
+    TestChord(@"Em",        @"6",       @"",                0x00000289, @"e-6");
+    TestChord(@"Fm",        @"69",      @"",                0x00004289, @"fm69");
+    TestChord(@"Gm",        @"add9",    @"",                0x00004089, @"gmadd9");
+    TestChord(@"Am",        @"7",       @"",                0x00000489, @"am7");
+    TestChord(@"Bm",        @"7add11",  @"",                0x00020489, @"bm7add11");
+    TestChord(@"Cm",        @"9",       @"",                0x00004489, @"cm9");
+    TestChord(@"Cm",        @"11",      @"",                0x00024489, @"cm11");
+    TestChord(@"Cm",        @"13",      @"",                0x00224489, @"cm13");
+    TestChord(@"Cm",        @"Maj7",    @"",                0x00000889, @"cmmaj");
+    TestChord(@"Cm",        @"Maj9",    @"",                0x00004889, @"cm9maj7");
+    TestChord(@"Cm",        [@"7" flat5],   @"",            0x00000449, @"cm7b5");
+    TestChord(@"Cm",        [@"9" flat5],   @"",            0x00004449, @"cm9b5");
+    TestChord(@"Cm",        [@"11" flat5],  @"",            0x00024449, @"cm11b5");
+    TestChord(@"C",         @"dim",     @"",                0x00000049, @"cdim");
+    TestChord(@"C",         @"dim7",    @"",                0x00000249, @"cdim7");
+    // TestChord(@"C",         @"dim7Maj7",@"",             0x00000A49, @"cdim7maj");
+    TestChord(@"C",         @"+",       @"",                0x00000111, @"c+");
+    TestChord(@"C",         @"sus",     @"",                0x000000A1, @"csus");    
+    TestChord(@"C",         @"7sus",    @"",                0x000004A1, @"csus7");    
+    TestChord(@"C",         @"9sus",    @"",                0x000044A1, @"csus9");    
+    TestChord(@"C",         @"13sus",   @"",                0x002244A1, @"csus13");
+    // TestChord(@"C",      @"???", @"",                    ???, @"c7sus4-3");
+    TestChord(@"C",         [@"Maj7" flat5], @"",           0x00000851, @"cmaj7b5");
+    TestChord(@"C",         [@"Maj7" sharp5], @"",          0x00000911, @"cmaj7#5");
+    TestChord(@"C",         [@"Maj7" sharp11], @"",         0x00040891, @"cmaj7#11");
+    TestChord(@"C",         [@"Maj9" sharp11], @"",         0x00044891, @"cmaj9#11");
+    TestChord(@"C",         [@"Maj13" sharp11], @"",        0x00244891, @"cmaj13#11");
+    TestChord(@"C",         [@"7" flat5], @"",              0x00000451, @"c7b5");
+    TestChord(@"C",         [@"9" flat5], @"",              0x00004451, @"c9-5");
+    TestChord(@"C",         [@"7" sharp5], @"",             0x00000511, @"c7+5");
+    TestChord(@"C",         [@"9" sharp5], @"",             0x00004511, @"c9#5");
+    TestChord(@"C",         [@"7" flat9], @"",              0x00002491, @"c7b9");
+    TestChord(@"C",         [@"7" sharp9], @"",             0x00008491, @"c7+9");
+    TestChord(@"C",         [[@"7" flat5] flat9], @"",      0x00002451, @"c7b9b5");
+    TestChord(@"C",         [[@"7" sharp5] sharp9], @"",    0x00008511, @"c7+9+5");
+    TestChord(@"C",         [[@"7" sharp5] flat9], @"",     0x00002511, @"c7b9#5");
+    TestChord(@"C",         [@"7" sharp11], @"",            0x00040491, @"c7#11");
+    TestChord(@"C",         [@"9" sharp11], @"",            0x00044491, @"c9#11");
+    TestChord(@"C",         [[@"7" flat9] sharp11], @"",    0x00042491, @"c7#11b9");
+    TestChord(@"C",         [[@"7" sharp9] sharp11], @"",   0x00048491, @"c7+11+9");
+    TestChord(@"C",         [@"13" flat5], @"",             0x00224451, @"c13-5");
+    TestChord(@"C",         [@"13" flat9], @"",             0x00222491, @"c13-9");
+    TestChord(@"C",         [@"13" sharp11], @"",           0x00244491, @"c13+11");
+    TestChord(@"C",         [@"7sus" flat9], @"",           0x000024A1, @"csus7b9");    
+    TestChord(@"C",         [@"13sus" flat9], @"",          0x002224A1, @"csus13b9");
+    TestChord(@"C",         [@"Maj7sus" flat5], @"",        0x00000861, @"cmaj7sus-5");        
+    // TestChord(@"C",         @"7susadd3", @"",            0x000004B1, @"csus7add3");    
+    TestChord(@"C",         [@"add9" flat13], @"",          0x00104091, @"cadd9b13");
+    TestChord(@"C",     [[[@"" sharp5] flat9] sharp9], @"", 0x0000A111, @"c+b9+9");
+    TestChord(@"C",         @"Maj7sus",    @"",             0x000008A1, @"cmaj7sus");    
 }
 
 @end

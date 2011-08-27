@@ -11,8 +11,11 @@
 #include "VLPitchName.h"
 #include "VLModel.h"
 
-const char *	kVLSharpStr     =   "\xE2\x99\xAF";
-const char *    kVLFlatStr      =   "\xE2\x99\xAD";
+#define	SHARP   "\xE2\x99\xAF"
+#define FLAT    "\xE2\x99\xAD"
+
+const char *	kVLSharpStr     =   SHARP;
+const char *    kVLFlatStr      =   FLAT;
 const char *    kVL2SharpStr    =   "\xF0\x9D\x84\xAA";
 const char *    kVL2FlatStr     =   "\xF0\x9D\x84\xAB";
 const char *    kVLNaturalStr   =   "\xE2\x99\xAE";
@@ -119,4 +122,170 @@ int8_t VLParsePitch(std::string & str, size_t at, uint16_t * accidental)
     (*accidental = 0);
 
     return pitch;
+}
+
+
+static const char * kStepNames[] = {
+	"", "", "sus2", "", "", "sus", FLAT "5", "", SHARP "5", "6", 
+	"7", SHARP "7", "", FLAT "9", "9", SHARP "9", "", 
+	"11", SHARP "11", "", FLAT "13", "13"
+};
+
+#define _ VLChord::
+
+void VLChordName(int8_t pitch, uint16_t accidental, uint32_t steps, 
+                 int8_t rootPitch, uint16_t rootAccidental,
+                 std::string & baseName, std::string & extName, std::string & rootName)
+{
+    baseName = VLPitchName(pitch, accidental);
+    if (rootPitch == VLNote::kNoPitch)
+        rootName.clear();
+    else
+        rootName = VLPitchName(rootPitch, rootAccidental);
+	//
+	// m / dim
+	//
+    extName.erase();
+	if (steps & _ kmMin3rd)
+		if (steps & _ kmDim5th
+         && !(steps & (_ km5th|_ kmMin7th|_ kmMaj7th|_ kmMin9th|_ kmMaj9th|
+                       _ km11th|_ kmAug11th|_ kmMin13th|_ kmMaj13th))
+        ) {
+			extName += "dim";
+			steps|= (steps & _ kmDim7th) << 1;
+			steps&=	~(_ kmMin3rd|_ kmDim5th|_ kmDim7th);
+		} else {
+			baseName += "m";
+			steps&= ~_ kmMin3rd;
+		}
+	//	
+	// +
+	//
+	steps &= ~(_ kmUnison | _ kmMaj3rd | _ km5th);
+	if (steps == _ kmAug5th) {
+		extName += "+";
+		steps= 0;
+	}
+	//
+	// Maj
+	//
+	if (steps & _ kmMaj7th) {
+		extName +=  "Maj";
+		steps   &=  ~_ kmMaj7th;
+		steps   |=  +_ kmMin7th; // Write out the 7 for clarification
+	}
+	//
+	// 6/9
+	//
+	if ((steps & (_ kmDim7th|_ kmMaj9th)) == (_ kmDim7th|_ kmMaj9th)) {
+		extName += "69";
+		steps   &= ~(_ kmDim7th|_ kmMaj9th);
+	}
+	//
+	// Other extensions. Only the highest unaltered extension is listed.
+	//
+	bool has7th = steps & (_ kmMin7th|_ kmMaj7th);
+	bool has9th	= steps & (_ kmMin9th|_ kmMaj9th|_ kmAug9th);
+	if ((steps & _ kmMaj13th) && has7th && has9th ) {	
+		extName += kStepNames[_ kMaj13th];
+		steps	&= ~(_ kmMin7th |_ kmMaj9th |_ km11th |_ kmMaj13th);
+	} else if ((steps & _ km11th) && has7th && has9th) {
+		extName += kStepNames[_ k11th];
+		steps	&= ~(_ kmMin7th | _ kmMaj9th | _ km11th);
+	} else if ((steps & _ kmMaj9th) && has7th) {
+		extName += kStepNames[_ kMaj9th];
+		steps	&= ~(_ kmMin7th | _ kmMaj9th);
+	} else if (steps & _ kmMin7th) {
+		extName	+= kStepNames[_ kMin7th];
+		steps   &= ~(_ kmMin7th);
+	}
+    
+	for (int step = _ kMin2nd; steps; ++step) 
+		if (steps & (1 << step)) {
+			if ((1 << step) & (_ kmMaj9th|_ km11th|_ kmMaj13th))
+				extName += "add";
+			extName += kStepNames[step];
+			steps &= ~(1 << step);
+		}
+}
+
+static const VLChordModifier kModifiers[] = {
+	{"b13", _ kmMin13th, 0},
+	{FLAT "13", _ kmMin13th, 0},
+	{"add13", _ kmMaj13th, 0},
+	{"13", _ kmMin7th | _ kmMaj9th | _ km11th | _ kmMaj13th, 0},
+	{"#11", _ kmAug11th, _ km11th},
+	{SHARP "11", _ kmAug11th, _ km11th},
+	{"+11", _ kmAug11th, _ km11th},
+	{"add11", _ km11th, 0},
+	{"11", _ kmMin7th | _ kmMaj9th | _ km11th, 0},
+	{"#9", _ kmAug9th, _ kmMaj9th},
+	{SHARP "9", _ kmAug9th, _ kmMaj9th},
+	{"+9", _ kmAug9th, _ kmMaj9th},
+	{"b9", _ kmMin9th, _ kmMaj9th},
+	{FLAT "9", _ kmMin9th, _ kmMaj9th},
+	{"-9", _ kmMin9th, _ kmMaj9th},
+	{"69", _ kmDim7th | _ kmMaj9th, 0},
+	{"add9", _ kmMaj9th, 0},
+	{"9", _ kmMin7th | _ kmMaj9th, 0},
+	{"7", _ kmMin7th, 0},
+	{"maj", _ kmMaj7th, _ kmMin7th},
+	{"6", _ kmDim7th, 0},
+	{"#5", _ kmAug5th, _ km5th},
+	{SHARP "5", _ kmAug5th, _ km5th},
+	{"+5", _ kmAug5th, _ km5th},
+	{"aug", _ kmAug5th, _ km5th},
+	{"+", _ kmAug5th, _ km5th},
+	{"b5", _ kmDim5th, _ km5th},
+	{FLAT "5", _ kmDim5th, _ km5th},
+	{"-5", _ kmDim5th, _ km5th},
+	{"sus4", _ km4th, _ kmMaj3rd},
+	{"sus2", _ kmMaj2nd, _ kmMaj3rd},
+	{"sus", _ km4th, _ kmMaj3rd},
+	{"4", _ km4th, _ kmMaj3rd},
+    {"add3", _ kmMaj3rd, 0},
+	{"2", _ kmMaj2nd, _ kmMaj3rd},
+	{NULL, 0, 0}
+};
+
+int8_t      VLParseChord(std::string & str, uint16_t * accidental, uint32_t * steps, 
+                         int8_t * rootPitch, uint16_t * rootAccidental)
+{
+    int8_t pitch = VLParsePitch(str, 0, accidental);
+    if (pitch < 0)
+        return pitch;
+    size_t root = str.find('/');
+    if (root != std::string::npos) {
+        *rootPitch = VLParsePitch(str, root+1, rootAccidental);
+        if (*rootPitch < 0)
+            return kPitchError;
+        str.erase(root, 1);
+    } else {
+        *rootPitch      = VLNote::kNoPitch;
+        *rootAccidental = 0;
+    }
+	//
+	// Apply modifiers
+	//
+	*steps	= _ kmUnison | _ kmMaj3rd | _ km5th;
+	
+	for (const VLChordModifier * mod = kModifiers; mod->fName && str.size() 
+      && str != "dim" && str != "m" && str != "-"; ++mod
+    ) {
+		size_t pos = str.find(mod->fName);
+		if (pos != std::string::npos) {
+			str.erase(pos, strlen(mod->fName));
+			*steps	&=	~mod->fDelSteps;
+			*steps	|=	mod->fAddSteps;
+		}
+	}
+	if (str == "m" || str == "-") {
+		*steps	= (*steps & ~_ kmMaj3rd) | _ kmMin3rd;
+		str.erase(0, 1);
+	} else if (str == "dim") {
+		uint32_t st     = *steps & (_ kmMaj3rd |_ km5th |_ kmMin7th);
+		*steps		    = (*steps ^ st) | (st >> 1); // Diminish 3rd, 5th, and 7th, if present
+		str.erase(0, 3);
+	}
+    return str.empty() ? pitch : kPitchError;
 }

@@ -29,3 +29,16 @@ std::string VLPitchName(int8_t pitch, uint16_t accidental);
 //
 enum { kPitchError = -1 };
 int8_t      VLParsePitch(std::string & str, size_t at, uint16_t * accidental);
+
+//
+// UTF-8 representation of chord
+//
+void VLChordName(int8_t pitch, uint16_t accidental, uint32_t steps, 
+                 int8_t rootPitch, uint16_t rootAccidental,
+                 std::string & baseName, std::string & extName, std::string & rootName);
+
+//
+// Parse chord name, erase from string
+//
+int8_t      VLParseChord(std::string & str, uint16_t * accidental, uint32_t * steps, 
+                         int8_t * rootPitch, uint16_t * rootAccidental);

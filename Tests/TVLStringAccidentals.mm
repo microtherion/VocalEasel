@@ -37,4 +37,34 @@
     return [self stringByAppendingString:[NSString stringWithUTF8String:kVL2FlatStr]];
 }
 
+- (NSString *)flat5
+{
+    return [[self flat] stringByAppendingString:@"5"];
+}
+
+- (NSString *)sharp5
+{
+    return [[self sharp] stringByAppendingString:@"5"];
+}
+
+- (NSString *)flat9
+{
+    return [[self flat] stringByAppendingString:@"9"];    
+}
+
+- (NSString *)sharp9
+{
+    return [[self sharp] stringByAppendingString:@"9"];
+}
+
+- (NSString *)sharp11
+{
+    return [[self sharp] stringByAppendingString:@"11"];
+}
+
+- (NSString *)flat13
+{
+    return [[self flat] stringByAppendingString:@"13"];
+}
+
 @end
