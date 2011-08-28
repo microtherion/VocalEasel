@@ -68,6 +68,11 @@
 
 @implementation VLDocument
 
++ (BOOL)autosavesInPlace
+{
+    return YES;
+}
+
 - (id)init
 {
     self = [super init];

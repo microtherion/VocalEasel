@@ -282,6 +282,11 @@
 	}
 }
 
+- (void) applicationDidFinishLaunching:(NSNotification *)notification
+{
+    [[NSDocumentController sharedDocumentController] setAutosavingDelay:30.0];
+}
+
 - (BOOL) lameIsInstalled
 {
 	if (!lamePath) {
