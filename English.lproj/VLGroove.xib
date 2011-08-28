@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.01">
+<archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">9B18</string>
-		<string key="IBDocument.InterfaceBuilderVersion">629</string>
-		<string key="IBDocument.AppKitVersion">949</string>
-		<string key="IBDocument.HIToolboxVersion">343.00</string>
-		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="14"/>
+		<int key="IBDocument.SystemTarget">1070</int>
+		<string key="IBDocument.SystemVersion">11B26</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1617</string>
+		<string key="IBDocument.AppKitVersion">1138</string>
+		<string key="IBDocument.HIToolboxVersion">566.00</string>
+		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
+			<string key="NS.object.0">1617</string>
 		</object>
-		<object class="NSArray" key="IBDocument.PluginDependencies">
-			<bool key="EncodedWithXMLCoder">YES</bool>
-			<string id="200677836">com.apple.InterfaceBuilder.CocoaPlugin</string>
-		</object>
-		<object class="NSMutableArray" key="IBDocument.RootObjects" id="985745297">
-			<bool key="EncodedWithXMLCoder">YES</bool>
+		<array key="IBDocument.IntegratedClassDependencies">
+			<string>NSTextField</string>
+			<string>NSBrowser</string>
+			<string>NSWindowTemplate</string>
+			<string>NSView</string>
+			<string>NSTextFieldCell</string>
+			<string>NSButtonCell</string>
+			<string>NSButton</string>
+			<string>NSCustomObject</string>
+		</array>
+		<array key="IBDocument.PluginDependencies">
+			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+		</array>
+		<dictionary class="NSMutableDictionary" key="IBDocument.Metadata"/>
+		<array class="NSMutableArray" key="IBDocument.RootObjects" id="985745297">
 			<object class="NSCustomObject" id="865861558">
 				<string key="NSClassName">VLGrooveController</string>
 			</object>
@@ -36,13 +45,12 @@
 				<object class="NSMutableString" key="NSViewClass">
 					<characters key="NS.bytes">View</characters>
 				</object>
-				<string key="NSWindowContentMaxSize">{3.40282e+38, 3.40282e+38}</string>
+				<nil key="NSUserInterfaceItemIdentifier"/>
 				<string key="NSWindowContentMinSize">{213, 107}</string>
 				<object class="NSView" key="NSWindowView" id="553751565">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
-					<object class="NSMutableArray" key="NSSubviews">
-						<bool key="EncodedWithXMLCoder">YES</bool>
+					<array class="NSMutableArray" key="NSSubviews">
 						<object class="NSBrowser" id="154742234">
 							<reference key="NSNextResponder" ref="553751565"/>
 							<int key="NSvFlags">256</int>
@@ -54,10 +62,10 @@
 							<object class="NSBrowserCell" key="NSCellPrototype">
 								<int key="NSCellFlags">67239488</int>
 								<int key="NSCellFlags2">2048</int>
-								<string key="NSContents"> </string>
+								<string type="base64-UTF8" key="NSContents">IA</string>
 								<object class="NSFont" key="NSSupport">
-									<string key="NSName" id="403339837">LucidaGrande</string>
-									<double key="NSSize">1.200000e+01</double>
+									<string key="NSName">LucidaGrande</string>
+									<double key="NSSize">12</double>
 									<int key="NSfFlags">16</int>
 								</object>
 							</object>
@@ -68,9 +76,10 @@
 							<int key="NSMinColumnWidth">150</int>
 							<int key="NSNumberOfVisibleColumns">2</int>
 							<int key="NSColumnResizingType">1</int>
-							<double key="NSPreferedColumnWidth">3.000000e+02</double>
+							<double key="NSPreferedColumnWidth">300</double>
 							<bool key="NSAllowsTypeSelect">YES</bool>
 							<int key="NSBrFlags">402800640</int>
+							<double key="NSBrowserRowHeight">17</double>
 						</object>
 						<object class="NSTextField" id="58605456">
 							<reference key="NSNextResponder" ref="553751565"/>
@@ -84,23 +93,23 @@
 								<int key="NSCellFlags2">272629760</int>
 								<string key="NSContents">System Font Text</string>
 								<object class="NSFont" key="NSSupport" id="739559195">
-									<reference key="NSName" ref="403339837"/>
-									<double key="NSSize">1.300000e+01</double>
+									<string key="NSName">LucidaGrande</string>
+									<double key="NSSize">13</double>
 									<int key="NSfFlags">1044</int>
 								</object>
 								<reference key="NSControlView" ref="58605456"/>
 								<object class="NSColor" key="NSBackgroundColor" id="1004780981">
 									<int key="NSColorSpace">6</int>
-									<string key="NSCatalogName" id="921164285">System</string>
+									<string key="NSCatalogName">System</string>
 									<string key="NSColorName">controlColor</string>
 									<object class="NSColor" key="NSColor">
 										<int key="NSColorSpace">3</int>
-										<bytes key="NSWhite">MC42NjY2NjY2OQA</bytes>
+										<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
 									</object>
 								</object>
 								<object class="NSColor" key="NSTextColor" id="90938658">
 									<int key="NSColorSpace">6</int>
-									<reference key="NSCatalogName" ref="921164285"/>
+									<string key="NSCatalogName">System</string>
 									<string key="NSColorName">controlTextColor</string>
 									<object class="NSColor" key="NSColor">
 										<int key="NSColorSpace">3</int>
@@ -122,12 +131,12 @@
 								<int key="NSCellFlags2">134217728</int>
 								<string key="NSContents">OK</string>
 								<reference key="NSSupport" ref="739559195"/>
-								<int key="NSTag">1000</int>
 								<reference key="NSControlView" ref="873023645"/>
+								<int key="NSTag">1000</int>
 								<int key="NSButtonFlags">-2038284033</int>
 								<int key="NSButtonFlags2">1</int>
 								<reference key="NSAlternateImage" ref="739559195"/>
-								<string key="NSAlternateContents" id="657599933"/>
+								<string key="NSAlternateContents"/>
 								<string type="base64-UTF8" key="NSKeyEquivalent">DQ</string>
 								<int key="NSPeriodicDelay">200</int>
 								<int key="NSPeriodicInterval">25</int>
@@ -146,12 +155,12 @@
 								<int key="NSCellFlags2">134217728</int>
 								<string key="NSContents">Cancel</string>
 								<reference key="NSSupport" ref="739559195"/>
-								<int key="NSTag">1001</int>
 								<reference key="NSControlView" ref="795340218"/>
+								<int key="NSTag">1001</int>
 								<int key="NSButtonFlags">-2038284033</int>
 								<int key="NSButtonFlags2">1</int>
 								<reference key="NSAlternateImage" ref="739559195"/>
-								<reference key="NSAlternateContents" ref="657599933"/>
+								<string key="NSAlternateContents"/>
 								<string type="base64-UTF8" key="NSKeyEquivalent">Gw</string>
 								<int key="NSPeriodicDelay">200</int>
 								<int key="NSPeriodicInterval">25</int>
@@ -167,7 +176,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="1052561470">
 								<int key="NSCellFlags">71433728</int>
 								<int key="NSCellFlags2">272629760</int>
-								<reference key="NSContents" ref="657599933"/>
+								<string key="NSContents"/>
 								<reference key="NSSupport" ref="739559195"/>
 								<reference key="NSControlView" ref="413051750"/>
 								<bool key="NSDrawsBackground">YES</bool>
@@ -197,28 +206,28 @@
 								<object class="NSButtonImageSource" key="NSAlternateImage">
 									<string key="NSImageName">NSSwitch</string>
 								</object>
-								<reference key="NSAlternateContents" ref="657599933"/>
-								<reference key="NSKeyEquivalent" ref="657599933"/>
+								<string key="NSAlternateContents"/>
+								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">200</int>
 								<int key="NSPeriodicInterval">25</int>
 							</object>
 						</object>
-					</object>
+					</array>
 					<string key="NSFrameSize">{634, 396}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{213, 129}</string>
-				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
+				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
+				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
 			<object class="NSCustomObject" id="986721188">
 				<string key="NSClassName">NSApplication</string>
 			</object>
-		</object>
+		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
-			<object class="NSMutableArray" key="connectionRecords">
-				<bool key="EncodedWithXMLCoder">YES</bool>
+			<array class="NSMutableArray" key="connectionRecords">
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">window</string>
@@ -229,7 +238,7 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label" id="655727558">endSheet:</string>
+						<string key="label">endSheet:</string>
 						<reference key="source" ref="865861558"/>
 						<reference key="destination" ref="795340218"/>
 					</object>
@@ -237,7 +246,7 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<reference key="label" ref="655727558"/>
+						<string key="label">endSheet:</string>
 						<reference key="source" ref="865861558"/>
 						<reference key="destination" ref="873023645"/>
 					</object>
@@ -299,52 +308,47 @@
 					</object>
 					<int key="connectionID">100029</int>
 				</object>
-			</object>
+			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
-				<object class="NSArray" key="orderedObjects">
-					<bool key="EncodedWithXMLCoder">YES</bool>
+				<array key="orderedObjects">
 					<object class="IBObjectRecord">
 						<int key="objectID">0</int>
-						<object class="NSArray" key="object" id="1069240565">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-						</object>
+						<array key="object" id="0"/>
 						<reference key="children" ref="985745297"/>
 						<nil key="parent"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">-2</int>
 						<reference key="object" ref="865861558"/>
-						<reference key="parent" ref="1069240565"/>
-						<string type="base64-UTF8" key="objectName">RmlsZSdzIE93bmVyA</string>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">File's Owner</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">-1</int>
 						<reference key="object" ref="752203305"/>
-						<reference key="parent" ref="1069240565"/>
+						<reference key="parent" ref="0"/>
 						<string key="objectName">First Responder</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">13</int>
 						<reference key="object" ref="224281390"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
+						<array class="NSMutableArray" key="children">
 							<reference ref="553751565"/>
-						</object>
-						<reference key="parent" ref="1069240565"/>
+						</array>
+						<reference key="parent" ref="0"/>
 						<string key="objectName">Panel</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">14</int>
 						<reference key="object" ref="553751565"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
+						<array class="NSMutableArray" key="children">
 							<reference ref="154742234"/>
 							<reference ref="58605456"/>
 							<reference ref="873023645"/>
 							<reference ref="795340218"/>
 							<reference ref="413051750"/>
 							<reference ref="659418216"/>
-						</object>
+						</array>
 						<reference key="parent" ref="224281390"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -355,37 +359,33 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">16</int>
 						<reference key="object" ref="58605456"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
+						<array class="NSMutableArray" key="children">
 							<reference ref="501896149"/>
-						</object>
+						</array>
 						<reference key="parent" ref="553751565"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">17</int>
 						<reference key="object" ref="873023645"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
+						<array class="NSMutableArray" key="children">
 							<reference ref="606150018"/>
-						</object>
+						</array>
 						<reference key="parent" ref="553751565"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">18</int>
 						<reference key="object" ref="795340218"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
+						<array class="NSMutableArray" key="children">
 							<reference ref="79109941"/>
-						</object>
+						</array>
 						<reference key="parent" ref="553751565"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">24</int>
 						<reference key="object" ref="413051750"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
+						<array class="NSMutableArray" key="children">
 							<reference ref="1052561470"/>
-						</object>
+						</array>
 						<reference key="parent" ref="553751565"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -411,16 +411,15 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">-3</int>
 						<reference key="object" ref="986721188"/>
-						<reference key="parent" ref="1069240565"/>
+						<reference key="parent" ref="0"/>
 						<string key="objectName">Application</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100025</int>
 						<reference key="object" ref="659418216"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
+						<array class="NSMutableArray" key="children">
 							<reference ref="324743914"/>
-						</object>
+						</array>
 						<reference key="parent" ref="553751565"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -428,250 +427,99 @@
 						<reference key="object" ref="324743914"/>
 						<reference key="parent" ref="659418216"/>
 					</object>
-				</object>
+				</array>
 			</object>
-			<object class="NSMutableDictionary" key="flattenedProperties">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="NSMutableArray" key="dict.sortedKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>-1.IBPluginDependency</string>
-					<string>-2.IBPluginDependency</string>
-					<string>100025.IBPluginDependency</string>
-					<string>100026.IBPluginDependency</string>
-					<string>13.IBPluginDependency</string>
-					<string>13.IBWindowTemplateEditedContentRect</string>
-					<string>13.ImportedFromIB2</string>
-					<string>13.editorWindowContentRectSynchronizationRect</string>
-					<string>13.windowTemplate.hasMaxSize</string>
-					<string>13.windowTemplate.hasMinSize</string>
-					<string>13.windowTemplate.maxSize</string>
-					<string>13.windowTemplate.minSize</string>
-					<string>14.IBPluginDependency</string>
-					<string>14.ImportedFromIB2</string>
-					<string>15.IBPluginDependency</string>
-					<string>15.ImportedFromIB2</string>
-					<string>16.IBPluginDependency</string>
-					<string>16.ImportedFromIB2</string>
-					<string>17.IBPluginDependency</string>
-					<string>17.ImportedFromIB2</string>
-					<string>18.IBPluginDependency</string>
-					<string>18.ImportedFromIB2</string>
-					<string>24.IBPluginDependency</string>
-					<string>24.ImportedFromIB2</string>
-				</object>
-				<object class="NSMutableArray" key="dict.values">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<reference ref="200677836"/>
-					<reference ref="200677836"/>
-					<reference ref="200677836"/>
-					<reference ref="200677836"/>
-					<reference ref="200677836"/>
-					<string id="933665269">{{173, 57}, {634, 396}}</string>
-					<integer value="1" id="9"/>
-					<reference ref="933665269"/>
-					<integer value="1" id="5"/>
-					<reference ref="5"/>
-					<string>{3.40282e+38, 3.40282e+38}</string>
-					<string>{213, 107}</string>
-					<reference ref="200677836"/>
-					<reference ref="9"/>
-					<reference ref="200677836"/>
-					<reference ref="9"/>
-					<reference ref="200677836"/>
-					<reference ref="9"/>
-					<reference ref="200677836"/>
-					<reference ref="9"/>
-					<reference ref="200677836"/>
-					<reference ref="9"/>
-					<reference ref="200677836"/>
-					<reference ref="9"/>
-				</object>
-			</object>
-			<object class="NSMutableDictionary" key="unlocalizedProperties">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="NSArray" key="dict.sortedKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-				</object>
-				<object class="NSMutableArray" key="dict.values">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-				</object>
-			</object>
+			<dictionary class="NSMutableDictionary" key="flattenedProperties">
+				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="-3.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="100016.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="100017.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="100018.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="100024.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="100025.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="100026.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="13.IBWindowTemplateEditedContentRect">{{173, 57}, {634, 396}}</string>
+				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="18.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="24.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+			</dictionary>
+			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
-			<object class="NSMutableDictionary" key="localizations">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="NSArray" key="dict.sortedKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-				</object>
-				<object class="NSMutableArray" key="dict.values">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-				</object>
-			</object>
+			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
 			<int key="maxID">100029</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<bool key="EncodedWithXMLCoder">YES</bool>
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">VLGrooveController</string>
 					<string key="superclassName">NSWindowController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSMutableArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>endSheet:</string>
-							<string>togglePlay:</string>
-							<string>updateDescription:</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="endSheet:">id</string>
+						<string key="togglePlay:">id</string>
+						<string key="updateDescription:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="endSheet:">
+							<string key="name">endSheet:</string>
+							<string key="candidateClassName">id</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string id="1069517551">id</string>
-							<reference ref="1069517551"/>
-							<reference ref="1069517551"/>
+						<object class="IBActionInfo" key="togglePlay:">
+							<string key="name">togglePlay:</string>
+							<string key="candidateClassName">id</string>
 						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSMutableArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>fBrowser</string>
-							<string>fDescription</string>
-							<string>fOKButton</string>
-							<string>fPlayButton</string>
+						<object class="IBActionInfo" key="updateDescription:">
+							<string key="name">updateDescription:</string>
+							<string key="candidateClassName">id</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>NSBrowser</string>
-							<string>NSTextField</string>
-							<string id="247353473">NSButton</string>
-							<reference ref="247353473"/>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="fBrowser">NSBrowser</string>
+						<string key="fDescription">NSTextField</string>
+						<string key="fOKButton">NSButton</string>
+						<string key="fPlayButton">NSButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="fBrowser">
+							<string key="name">fBrowser</string>
+							<string key="candidateClassName">NSBrowser</string>
 						</object>
-					</object>
+						<object class="IBToOneOutletInfo" key="fDescription">
+							<string key="name">fDescription</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="fOKButton">
+							<string key="name">fOKButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="fPlayButton">
+							<string key="name">fPlayButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Sources/VLGrooveController.h</string>
+						<string key="minorKey">./Classes/VLGrooveController.h</string>
 					</object>
 				</object>
-			</object>
+			</array>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
-		<string key="IBDocument.LastKnownRelativeProjectPath">../../VocalEasel.xcodeproj</string>
+		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
+			<real value="1070" key="NS.object.0"/>
+		</object>
+		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<object class="NSMutableData" key="IBDocument.RunnableNib">
-			<bytes key="NS.bytes">YnBsaXN0MDDUAAEAAgADAAQABQAGAAkAClgkdmVyc2lvblQkdG9wWSRhcmNoaXZlclgkb2JqZWN0cxIA
-AYag0QAHAAhdSUIub2JqZWN0ZGF0YYABXxAPTlNLZXllZEFyY2hpdmVyrxCdAAsADAAxADUANgA8AD0A
-QQBFAFIAWgB8AIUACwCGAJAAkQCZAJoAnQChAKUAqQCqALAAsQC1ALoAwgDDANgA2QDeAN8A4ADkAOcA
-6ADtAPYA9wEDAQQBCQEKAQsBDgEKARIBFQEWARkBHgE5AToBPQFAAUMBRAFFAU4BVgFXAWIBYwFtAW4B
-bwFzAXUBegF7AX4BgQGEAY0BjgGWAZcBmAGgAaEBqwGvAAsBsAGyAbMBQwG0AbcBuAG9Ab4BwwHEAckB
-ygHPAdAB1QHaAdsB7AHvAfAB8gIDAhUCJwE8AigCKQIqAisCLAItAi4CLwIwAjECMgIzAjQCNQI4AjsC
-VwJzAnQCdQDPAnYCdwJ4AJgCeQJ6AnsCfAJ9An4CfwKAAoECggKDAoQChQKGAocCiAKJAooCjQKQApNV
-JG51bGzfEBIADQAOAA8AEAARABIAEwAUABUAFgAXABgAGQAaABsAHAAdAB4AHwAgACEAIgAjACQAJQAm
-ACcAKAApACoAKwAsAC0ALgAvADBWTlNSb290ViRjbGFzc11OU09iamVjdHNLZXlzXxAPTlNDbGFzc2Vz
-VmFsdWVzXxAZTlNBY2Nlc3NpYmlsaXR5T2lkc1ZhbHVlc11OU0Nvbm5lY3Rpb25zW05TTmFtZXNLZXlz
-W05TRnJhbWV3b3JrXU5TQ2xhc3Nlc0tleXNaTlNPaWRzS2V5c11OU05hbWVzVmFsdWVzXxAZTlNBY2Nl
-c3NpYmlsaXR5Q29ubmVjdG9yc11OU0ZvbnRNYW5hZ2VyXxAQTlNWaXNpYmxlV2luZG93c18QD05TT2Jq
-ZWN0c1ZhbHVlc18QF05TQWNjZXNzaWJpbGl0eU9pZHNLZXlzWU5TTmV4dE9pZFxOU09pZHNWYWx1ZXOA
-AoCcgGaAfYCbgAiAa4AFgHyAfoBsgJmAAIAGgGqAmhIAAYa/gH/SAA4AMgAzADRbTlNDbGFzc05hbWWA
-BIADXxASVkxHcm9vdmVDb250cm9sbGVy0gA3ADgAOQA6WCRjbGFzc2VzWiRjbGFzc25hbWWiADoAO15O
-U0N1c3RvbU9iamVjdFhOU09iamVjdF8QEElCQ29jb2FGcmFtZXdvcmvSAA4APgA/AEBaTlMub2JqZWN0
-c4AHoNIANwA4AEIAQ6MAQwBEADtcTlNNdXRhYmxlU2V0VU5TU2V00gAOAD4ARgBHgFKqAEgASQBKAEsA
-TABNAE4ATwBQAFGACYAagCWAM4BbgF2AX4BhgGOAZNQADgBTAFQAVQBWAB8AWABZXU5TRGVzdGluYXRp
-b25YTlNTb3VyY2VXTlNMYWJlbIAZgAKACoAY3xARAFsADgBcAF0AXgBfAGAAYQBiAGMAZABlAGYAZwBo
-AGkAagBrAGwAbQBuAG8AcABxAHIAcwB0AHMAdgB3AHgAawB6AHtfEA9OU05leHRSZXNwb25kZXJXTlNG
-cmFtZV8QD05TUGF0aFNlcGFyYXRvcllOU0JyRmxhZ3NfEBJOU0ZpcnN0Q29sdW1uVGl0bGVfEA9OU0Nl
-bGxQcm90b3R5cGVfEBVOU1ByZWZlcmVkQ29sdW1uV2lkdGhfEBJOU0FsbG93c1R5cGVTZWxlY3RYTlN2
-RmxhZ3NZTlNFbmFibGVkWE5TV2luZG93XxAQTlNNaW5Db2x1bW5XaWR0aF8QGE5TTnVtYmVyT2ZWaXNp
-YmxlQ29sdW1uc1tOU1N1cGVydmlld1VOU1RhZ18QFE5TQ29sdW1uUmVzaXppbmdUeXBlgAuAF4AMgBQS
-GAJAAIAWgA4jQHLAAAAAAAAJEQEACYANEJYQAoALEQPoEAHXAFsADgB9AGMAfgBlAGgAdgCAAIEAdACC
-AHYAhFpOU1N1YnZpZXdzW05TRnJhbWVTaXplgA2AVYA7gFOADYBUXxAWe3syMCwgOTh9LCB7MzkwLCAy
-OTh9fdUAhwAOAIgAiQCKAIsAjACNAI4Aj1tOU0NlbGxGbGFnc1pOU0NvbnRlbnRzWU5TU3VwcG9ydFxO
-U0NlbGxGbGFnczISBAH+QIATgA+AEBEIAFEg1AAOAJIAkwCUAJUAlgCXAJhWTlNTaXplVk5TTmFtZVhO
-U2ZGbGFnc4ASI0AoAAAAAAAAgBEQEFxMdWNpZGFHcmFuZGXSADcAOACbAJyiAJwAO1ZOU0ZvbnTSADcA
-OACeAJ+jAJ8AoAA7XU5TQnJvd3NlckNlbGxWTlNDZWxs0gAOAKIAowCkWU5TLnN0cmluZ4AVUS/SADcA
-OACmAKejAKcAqAA7XxAPTlNNdXRhYmxlU3RyaW5nWE5TU3RyaW5nVVN0eWxl0gA3ADgAqwCspQCsAK0A
-rgCvADtZTlNCcm93c2VyWU5TQ29udHJvbFZOU1ZpZXdbTlNSZXNwb25kZXJfEBJ1cGRhdGVEZXNjcmlw
-dGlvbjrSADcAOACyALOjALMAtAA7XxAVTlNOaWJDb250cm9sQ29ubmVjdG9yXk5TTmliQ29ubmVjdG9y
-1AAOAFMAVABVAFYAHwC4ALmAGYACgBuAJNkAWwAOAFwAoABjAGQAZQBoAGkAawC8AL0AvgB0AHMAdgBr
-AHqAC4AjgByAHQmADYALXxAVe3s1MzgsIDEyfSwgezgyLCAzMn193gCHAA4AxADFAMYAxwDIAIgAiQDJ
-AMoAigDLAGkAzADNAM4AzwB7ANAA0QDSANAAuADVANYA1wB6XxATTlNBbHRlcm5hdGVDb250ZW50c18Q
-Ek5TUGVyaW9kaWNJbnRlcnZhbF5OU0J1dHRvbkZsYWdzMl8QEE5TQWx0ZXJuYXRlSW1hZ2VfEA9OU0tl
-eUVxdWl2YWxlbnRdTlNDb250cm9sVmlld18QD05TUGVyaW9kaWNEZWxheV1OU0J1dHRvbkZsYWdzEiQB
-/gCAIoAgEBmAH4AhgB6AH4AbEMgSCAAAABP/////hoJA/1JPS9QADgCSAJMAlACVANsAlwDdgBIjQCoA
-AAAAAACAEREEFFBRDdIANwA4AOEA4qQA4gDjAKAAO1xOU0J1dHRvbkNlbGxcTlNBY3Rpb25DZWxs0gA3
-ADgA5QDmpQDmAK0ArgCvADtYTlNCdXR0b25ZZW5kU2hlZXQ61AAOAFMAVABVAOkA6gAfAOyAMoAmgAKA
-MdgAWwAOAFwAoABjAGQAZQBoAGsAvADwAPEA8gBzAHYAa4ALgCOAJ4AoEQEMCYANgAtfEBV7ezE4LCAx
-NH0sIHsxNTIsIDMyfX3eAIcADgDEAPgAxQDGAMcAyACIAIkAyQDKAIoAywDMAM0AzgD7AM8AeAD8AM4A
-/gDQAOoA1QEBAQJdTlNOb3JtYWxJbWFnZYAigCCAKoAugCCAKYAfgCYQABJIPFH/XxAUUGxheSBTZWxl
-Y3RlZCBHcm9vdmXTAA4AMgEFAQYBBwEIXk5TUmVzb3VyY2VOYW1lgC2AK4AsV05TSW1hZ2VYTlNTd2l0
-Y2jSADcAOAEMAQ2iAQ0AO18QEE5TQ3VzdG9tUmVzb3VyY2XSAA4BDwEQARFbTlNJbWFnZU5hbWWAMIAv
-0gA3ADgBEwEUogEUADtfEBNOU0J1dHRvbkltYWdlU291cmNlW2ZQbGF5QnV0dG9u0gA3ADgBFwEYowEY
-ALQAO18QFE5TTmliT3V0bGV0Q29ubmVjdG9y1AAOAFMAVABVAOkBGwAfAR2AMoA0gAKAWt4BHwAOASAB
-IQEiASMBJAElASYBJwEoASkBKgErAGsBLQEuAS8BMAExATIBMwE0ATUAeAE2ATcBOFxOU1dpbmRvd1Zp
-ZXdfEBZOU1dpbmRvd0NvbnRlbnRNYXhTaXplXE5TU2NyZWVuUmVjdF1OU1dpbmRvd1RpdGxlWU5TV1RG
-bGFnc11OU1dpbmRvd0NsYXNzXxAWTlNXaW5kb3dDb250ZW50TWluU2l6ZVxOU1dpbmRvd1JlY3RZTlNN
-YXhTaXplXxAPTlNXaW5kb3dCYWNraW5nXxARTlNXaW5kb3dTdHlsZU1hc2tZTlNNaW5TaXplW05TVmll
-d0NsYXNzgAuAWYA5gFaANhJweAAAgDeAOoA1gFgQA4BXgDhfEBh7ezE3NiwgMTY1fSwgezYzNCwgMzk2
-fX3SAA4AogCjATyAFVVQYW5lbNIADgCiAKMBP4AVV05TUGFuZWzSAA4AogCjAUKAFVRWaWV3XxAaezMu
-NDAyODJlKzM4LCAzLjQwMjgyZSszOH1aezIxMywgMTA3fdIADgA+AEYBR4BSpgBYAUkAuAFLAUwA6oAK
-gDyAG4BKgE+AJtgAWwAOAFwAoABjAGQAZQBoAGsBUAFRAVIAdABzAHYAa4ALgEmAPYA+CYANgAtfEBh7
-ezM4MCwgMjQ5fSwgezIyNCwgMjU3fX3YAIcADgFYAIgAiQDJAIoBWQFaAVsBXAFdANABSQFgAWFfEBFO
-U0JhY2tncm91bmRDb2xvcltOU1RleHRDb2xvchIEAf4AgEiAQIA/gB+APBIQQAAAgEVfEBBTeXN0ZW0g
-Rm9udCBUZXh01QAOAWQBZQFmAWcBaAFpAWoBawFsV05TQ29sb3JcTlNDb2xvclNwYWNlW05TQ29sb3JO
-YW1lXU5TQ2F0YWxvZ05hbWWARIBDEAaAQoBBVlN5c3RlbVxjb250cm9sQ29sb3LTAA4BZQFwAWgBNgFy
-V05TV2hpdGWAREswLjY2NjY2NjY5ANIANwA4AXQBZKIBZAA71QAOAWQBZQFmAWcBaAF3AWoBeAFsgESA
-R4BGgEFfEBBjb250cm9sVGV4dENvbG9y0wAOAWUBcAFoATYBfYBEQjAA0gA3ADgBfwGApAGAAOMAoAA7
-XxAPTlNUZXh0RmllbGRDZWxs0gA3ADgBggGDpQGDAK0ArgCvADtbTlNUZXh0RmllbGTZAFsADgBcAKAA
-YwBkAGUAaABpAGsAvAGHAYgAdABzAHYAawGMgAuAI4BLgEwJgA2ACxED6V8QFXt7NDQyLCAxMn0sIHs4
-MiwgMzJ9fd4AhwAOAMQAxQDGAMcAyACIAIkAyQDKAIoAywBpAVoAzQDOAM8AewDQAZIBkwDQAUsA1QDW
-ANcBjIAigCCAH4BOgE2AH4BKVkNhbmNlbFEb2ABbAA4AXACgAGMAZABlAGgAawFQAZsBnAB0AHMAdgBr
-gAuASYBQgFEJgA2AC18QF3t7NDE1LCA5OH0sIHsyMDIsIDI3Nn192QCHAA4BWACIAIkAyQCKAaIBWQGj
-AVsBXADOANABTAFgAHMBYV8QEU5TRHJhd3NCYWNrZ3JvdW5kEgRB/gCASIBAgCCAH4BPCYBF0gA3ADgB
-rAGtowGtAa4AO15OU011dGFibGVBcnJheVdOU0FycmF5Wns2MzQsIDM5Nn3SADcAOAGxAK6jAK4ArwA7
-XxAVe3swLCAwfSwgezEyODAsIDc3OH19WnsyMTMsIDEyOX3SADcAOAG1AbaiAbYAO18QEE5TV2luZG93
-VGVtcGxhdGVWd2luZG931AAOAFMAVABVAOkAuAAfAbyAMoAbgAKAXFlmT0tCdXR0b27UAA4AUwBUAFUA
-6QFMAB8BwoAygE+AAoBeXGZEZXNjcmlwdGlvbtQADgBTAFQAVQDpAB8AWAHIgDKAAoAKgGBYZGVsZWdh
-dGXUAA4AUwBUAFUAVgAfAOoBzoAZgAKAJoBiW3RvZ2dsZVBsYXk61AAOAFMAVABVAFYAHwFLALmAGYAC
-gEqAJNQADgBTAFQAVQDpAFgAHwHZgDKACoACgGVYZkJyb3dzZXLSAA4APgHcAd2Aaa4BTAEbAUsAWAGc
-AVIBiABrAUkB5wDxALgAvgDqgE+ANIBKgAqAUYA+gEyAC4A8gGeAKIAbgB2AJtIADgAyADMB7oAEgGhd
-TlNBcHBsaWNhdGlvbtIANwA4AfEBrqIBrgA70gAOAD4B3AH0gGmuAGsAHwBrAGsBTAFJAUsBGwBrAB8A
-6gBrALgAa4ALgAKAC4ALgE+APIBKgDSAC4ACgCaAC4AbgAvSAA4APgHcAgWAaa8QDwFMARsBSwAfAFgB
-nAFSAYgAawFJAecA8QC4AL4A6oBPgDSASoACgAqAUYA+gEyAC4A8gGeAKIAbgB2AJtIADgA+AdwCF4Bp
-rxAPAhgCGQIaAhsCHAIdAh4CHwIgAiECIgIjAiQCJQImgG2AboBvgHCAcYBygHOAdIB1gHaAd4B4gHmA
-eoB7WlRleHQgRmllbGRfEBRQdXNoIEJ1dHRvbiAoQ2FuY2VsKVxGaWxlJ3MgT3duZXJXQnJvd3Nlcl8Q
-D1RleHQgRmllbGQgQ2VsbF8QIlRleHQgRmllbGQgQ2VsbCAoU3lzdGVtIEZvbnQgVGV4dClfEBRCdXR0
-b24gQ2VsbCAoQ2FuY2VsKVxDb250ZW50IFZpZXdfEB5TdGF0aWMgVGV4dCAoU3lzdGVtIEZvbnQgVGV4
-dClbQXBwbGljYXRpb25fECJCdXR0b24gQ2VsbCAoUGxheSBTZWxlY3RlZCBHcm9vdmUpXxAQUHVzaCBC
-dXR0b24gKE9LKV8QEEJ1dHRvbiBDZWxsIChPSylfECBDaGVjayBCb3ggKFBsYXkgU2VsZWN0ZWQgR3Jv
-b3ZlKdIADgA+AdwCN4BpoNIADgA+AdwCOoBpoNIADgA+AdwCPYBprxAZARsBSwGcAE0ASwBIAGsBSQDq
-AUwASgBQAB8AWABJAVIBiAHnAE8ATABOAPEAuAC+AFGANIBKgFGAXYAzgAmAC4A8gCaAT4AlgGOAAoAK
-gBqAPoBMgGeAYYBbgF+AKIAbgB2AZNIADgA+AdwCWYBprxAZAloCWwJcAl0CXgJfAmACYQJiAmMCZAJl
-AmYCZwJoAmkCagJrAmwCbQJuAm8CcAJxAnKAgICBgIKAg4CEgIWAhoCHgIiAiYCKgIuAjICNgI6Aj4CQ
-gJGAkoCTgJSAlYCWgJeAmBANEBISAAGGuBATEBoQDhIAAYa5EBgSAAGGvRAUEgABhr4QDxAVEgABhrAS
-AAGGshP//////////RIAAYa8EBsQFhIAAYa6EBESAAGGsRAX0gAOAD4ARgKMgFKg0gAOAD4B3AKPgGmg
-0gAOAD4B3AKSgGmg0gA3ADgClAKVogKVADteTlNJQk9iamVjdERhdGEACAAZACIAJwAxADoAPwBEAFIA
-VABmAaMBqQH0AfsCAgIQAiICPgJMAlgCZAJyAn0CiwKnArUCyALaAvQC/gMLAw0DDwMRAxMDFQMXAxkD
-GwMdAx8DIQMjAyUDJwMpAysDMAMyAzsDRwNJA0sDYANpA3IDfQOCA5EDmgOtA7YDwQPDA8QDzQPUA+ED
-5wPwA/IEBwQJBAsEDQQPBBEEEwQVBBcEGQQbBCwEOgRDBEsETQRPBFEEUwSaBKwEtATGBNAE5QT3BQ8F
-JAUtBTcFQAVTBW4FegWABZcFmQWbBZ0FnwWkBaYFqAWxBbIFtQW2BbgFugW8Bb4FwQXDBeAF6wX3BfkF
-+wX9Bf8GAQYDBhwGMQY9BkgGUgZfBmQGZgZoBmoGbQZvBoAGhwaOBpcGmQaiBqQGpgazBrwGwQbIBtEG
-2AbmBu0G9gcABwIHBAcNBxQHJgcvBzUHPgdJB1MHXQdkB3AHhQeOB5UHrQe8B80HzwfRB9MH1Qf6B/wH
-/ggACAIIAwgFCAcIHwhYCG4IgwiSCKUItwjFCNcI5QjqCOwI7gjwCPII9Aj2CPgI+gj8CQEJCgkNCR4J
-IAkpCSsJLgkvCTEJOglDCVAJXQlmCXEJegmECZUJlwmZCZsJnQm+CcAJwgnECcYJyQnKCcwJzgnmCh8K
-LQovCjEKMwo1CjcKOQo7Cj0KPwpEClsKaAp3CnkKewp9CoUKjgqXCpwKrwq4CsQKxgrICtEK1grsCvgL
-AQsICx8LMAsyCzQLNgs4C3ELfguXC6QLsgu8C8oL4wvwC/oMDAwgDCoMNgw4DDoMPAw+DEAMRQxHDEkM
-SwxNDE8MUQxTDG4Mdwx5DH8MiAyKDJIMmwydDKIMvwzKDNMM1QziDOQM5gzoDOoM7AzuDQ8NEQ0TDRUN
-Fw0YDRoNHA03DVgNbA14DX0Nfw2BDYMNhQ2HDYwNjg2hDbYNvg3LDdcN5Q3nDekN6w3tDe8N9g4DDhAO
-GA4aDiYOLw40DkkOSw5NDk8OUQ5kDnEOcw52Dn8OiA6aDqMOrg66Dt8O4Q7jDuUO5w7oDuoO7A7vDwcP
-QA9CD0QPRg9ID0oPTA9OD1UPVw94D3oPfA9+D4APgQ+DD4UPnw/ED9gP3Q/fD+EP4w/lD+cP6A/qD/MP
-+hAJEBEQHBAlECwQRBBPEFgQXRBwEHcQiBCKEIwQjhCQEJoQqxCtEK8QsRCzEMAQ0RDTENUQ1xDZEOIQ
-8xD1EPcQ+RD7EQcRGBEaERwRHhEgETERMxE1ETcRORFCEUsRTRFqEWwRbhFwEXIRdBF2EXgRehF8EX4R
-gBGCEYQRhhGPEZERkxGhEaoRrxG4EboR1xHZEdsR3RHfEeER4xHlEecR6RHrEe0R7xHxEfMR/BH+Eh8S
-IRIjEiUSJxIpEisSLRIvEjESMxI1EjcSORI7Ej0SRhJIEmkSaxJtEm8ScRJzEnUSdxJ5EnsSfRJ/EoES
-gxKFEocSkhKpErYSvhLQEvUTDBMZEzoTRhNrE34TkRO0E70TvxPAE8kTyxPME9UT1xQMFA4UEBQSFBQU
-FhQYFBoUHBQeFCAUIhQkFCYUKBQqFCwULhQwFDIUNBQ2FDgUOhQ8FD4URxRJFH4UgBSCFIQUhhSIFIoU
-jBSOFJAUkhSUFJYUmBSaFJwUnhSgFKIUpBSmFKgUqhSsFK4UsBSyFLQUuRS7FL0UvxTEFMYUyxTNFNIU
-1BTWFNsU4BTpFO4U8BTyFPcU+RT+FQAVCRULFQwVFRUXFRgVIRUjFSQVLRUyAAAAAAAAAgIAAAAAAAAC
-lgAAAAAAAAAAAAAAAAAAFUE</bytes>
+		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="NS.key.0">NSSwitch</string>
+			<string key="NS.object.0">{15, 15}</string>
 		</object>
 	</data>
 </archive>
