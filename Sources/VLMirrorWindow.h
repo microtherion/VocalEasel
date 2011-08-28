@@ -9,10 +9,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <Quartz/Quartz.h>
 
 
 @interface VLMirrorWindow : NSWindowController {
-	IBOutlet id	mirrorComposition;
+	IBOutlet QCView *	mirrorComposition;
 }
 
 @end
