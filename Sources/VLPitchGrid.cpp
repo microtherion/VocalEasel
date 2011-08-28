@@ -80,10 +80,9 @@ static inline int8_t StepToSemi(int step)
     return sSemi[step];
 }
 
-int VLPitchToGrid(int8_t pitch, uint16_t & visual, int key)
+uint16_t VLPitchAccidental(int8_t pitch, uint16_t visual, int key)
 {
     int semi    = pitch % 12;
-    int octave  = (pitch/12)-5;
     
     if ((visual &= VLNote::kAccidentalsMask)) {
         //
@@ -91,62 +90,73 @@ int VLPitchToGrid(int8_t pitch, uint16_t & visual, int key)
         //
         switch (visual) {
         case VLNote::kWantNatural:
-            if (!IsBasicNote(semi))
-                break;
-            visual = 0; // Don't draw naturals unless needed 
-            goto computePosition;
+            if (IsBasicNote(semi))
+                return visual;
+            break;
         case VLNote::kWant2Flat:
-            if (IsBasicNote(semi+2)) {
-                semi    +=  2;
-                goto computePosition;
-            } 
-            visual = VLNote::kWantFlat;
-            goto flatIsPossible;
+            if (IsBasicNote(semi+2)) 
+                return visual;
+            else
+                return VLNote::kWantFlat;
         case VLNote::kWantFlat:
-            if (!IsBasicNote(semi+1)) 
-                break;
-        flatIsPossible:
-            semi    +=  1;
-			if (key < 0 && HasFlat(semi, key))
-				visual = 0;
-            goto computePosition;
+            if (IsBasicNote(semi+1)) 
+                return visual;
+            break;
         case VLNote::kWant2Sharp:
-            if (IsBasicNote(semi-2)) {
-                semi    -=  2;
-                goto computePosition;
-            } 
-            visual = VLNote::kWantSharp;
-            goto sharpIsPossible;
+            if (IsBasicNote(semi-2)) 
+                return visual;
+            else
+                return VLNote::kWantSharp;
         case VLNote::kWantSharp:
-            if (!IsBasicNote(semi-1)) 
-                break;
-        sharpIsPossible:
-            semi    -=  1;
-            if (key > 0 && HasSharp(semi, key))
-                visual = 0;
-            goto computePosition;
+            if (IsBasicNote(semi-1)) 
+                return visual;
+            break;
+        default:
+            break;
         }
     }
     //
     // No visuals, or no match
     //
-    visual = 0;
     if (IsBasicNote(semi)) {
-        if (key < 0 ? HasFlat(semi, key) : key > 0 && HasSharp(semi, key))
-            visual  = VLNote::kWantNatural;
-    } else if (key < 0) {
-        semi       += 1;
-        if (!HasFlat(semi, key))
-            visual  = VLNote::kWantFlat;
-    } else if (key > 0) {
-        semi       -= 1;
-        if (!HasSharp(semi, key))
-            visual  = VLNote::kWantSharp;
+        return VLNote::kWantNatural;
+    } else if (key <= 0) {
+        return VLNote::kWantFlat;
     } else {
-        semi       += 1;
-        visual      = VLNote::kWantFlat;
+        return VLNote::kWantSharp;
+    } 
+}
+
+int VLPitchToGrid(int8_t pitch, uint16_t visual, int key)
+{
+    int semi    = pitch % 12;
+    int octave  = (pitch/12)-5;
+    
+    switch (visual & VLNote::kAccidentalsMask) {
+    case VLNote::kWantNatural:
+        break;
+    case VLNote::kWant2Flat:
+        semi    +=  2;
+        break;
+    case VLNote::kWantFlat:
+        semi    +=  1;
+        break;
+    case VLNote::kWant2Sharp:
+        semi    -=  2;
+        break;
+    case VLNote::kWantSharp:
+        semi    -=  1;
+        break;
+    default:
+        if (IsBasicNote(semi)) {
+            ;
+        } else if (key <= 0) {
+            semi       += 1;
+        } else {
+            semi       -= 1;
+        } 
+        break;
     }
-computePosition:
     return SemiToStep(semi)+7*octave;
 }
 
@@ -192,56 +202,52 @@ int8_t  VLGridToPitch(int gridPos, uint16_t visual, int key)
     return octave+semi+accidental;
 }
 
-VLVisualFilter::VLVisualFilter(int key)
+void VLVisualFilter::ResetWithKey(int key)
 {
-    memset(&fKeyState[0], 0, 7*sizeof(fKeyState[0]));
+    memset(&fState[0], 0, 7*sizeof(fState[0]));
     switch (key) { // Almost every state falls through
     case -6:
-        fKeyState[0]   = VLNote::kWantFlat;
+        fState[0]   = VLNote::kWantFlat;
     case -5:
-        fKeyState[5]   = VLNote::kWantFlat;
+        fState[5]   = VLNote::kWantFlat;
     case -4:
-        fKeyState[1]   = VLNote::kWantFlat;
+        fState[1]   = VLNote::kWantFlat;
     case -3:
-        fKeyState[4]   = VLNote::kWantFlat;
+        fState[4]   = VLNote::kWantFlat;
     case -2:
-        fKeyState[2]   = VLNote::kWantFlat;
+        fState[2]   = VLNote::kWantFlat;
     case -1:
-        fKeyState[6]   = VLNote::kWantFlat;
+        fState[6]   = VLNote::kWantFlat;
     case 0:
         break;
     case 6:
-        fKeyState[2]   = VLNote::kWantSharp;
+        fState[2]   = VLNote::kWantSharp;
     case 5:
-        fKeyState[5]   = VLNote::kWantSharp;
+        fState[5]   = VLNote::kWantSharp;
     case 4:
-        fKeyState[1]   = VLNote::kWantSharp;
+        fState[1]   = VLNote::kWantSharp;
     case 3:
-        fKeyState[4]   = VLNote::kWantSharp;
+        fState[4]   = VLNote::kWantSharp;
     case 2:
-        fKeyState[0]   = VLNote::kWantSharp;
+        fState[0]   = VLNote::kWantSharp;
     case 1:
-        fKeyState[3]   = VLNote::kWantSharp;
+        fState[3]   = VLNote::kWantSharp;
     default:
         break;
     }
-    memcpy(fState, fKeyState, 7*sizeof(fKeyState[0]));
 }
 
 uint16_t VLVisualFilter::operator()(int gridPos, uint16_t visual)
 {
-    gridPos %= 12;
-    if (!visual)
-        visual = fKeyState[gridPos];
-    if (visual != fState[gridPos])
-        if (!fState[gridPos] && visual == VLNote::kWantNatural) {
-            visual = 0;
-        } else {
-            if (!visual)
-                visual = VLNote::kWantNatural;
-            fState[gridPos] = visual==VLNote::kWantNatural ? 0 : visual;
-        }
-    else
+    gridPos = (gridPos+60) % 12;
+    if (visual == VLNote::kWantNatural)
         visual = 0;
+    if (visual != fState[gridPos]) {
+        fState[gridPos] = visual;
+        if (!visual) 
+            visual          = VLNote::kWantNatural;
+    } else {
+        visual = 0;
+    }
     return visual;
 }

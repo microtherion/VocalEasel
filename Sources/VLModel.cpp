@@ -10,6 +10,7 @@
 
 #include "VLModel.h"
 #include "VLPitchName.h"
+#include "VLPitchGrid.h"
 
 #pragma mark class VLFraction
 
@@ -548,6 +549,11 @@ uint8_t & LastTie(VLMeasure & measure)
 //
 void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
 {
+    //
+    // Sanity check on accidentals
+    //
+    note.fVisual = (note.fVisual & ~VLNote::kAccidentalsMask)
+        | VLPitchAccidental(note.fPitch, note.fVisual, Properties(measure).fKey);
 	//	
 	// Always keep an empty measure in reserve
 	//
@@ -771,9 +777,17 @@ static void TransposePinned(int8_t & pitch, int semi)
 		pitch 		  = octave+pitchInOctave;
 }
 
+static inline void FlipAccidentals(uint16_t & visual)
+{
+    visual = (visual & ~VLNote::kAccidentalsMask)
+        | ((visual & VLNote::kPreferSharps) << 2)
+        | ((visual & VLNote::kPreferFlats) << 2);
+}
+
 void VLSong::ChangeKey(int section, int newKey, int newMode, bool transpose)
 {
 	VLProperties & prop = fProperties[section];
+    bool flipAcc= newKey*prop.fKey < 0;
 	int semi 	= 7*(newKey-prop.fKey) % 12;
 	prop.fKey 	= newKey;
 	prop.fMode	= newMode;	
@@ -790,6 +804,10 @@ void VLSong::ChangeKey(int section, int newKey, int newMode, bool transpose)
 		for (; i!=e; ++i) {
 			TransposePinned(i->fPitch, semi);
 			TransposePinned(i->fRootPitch, semi);
+            if (flipAcc) {
+                FlipAccidentals(i->fVisual);
+                FlipAccidentals(i->fRootAccidental);
+            }
 		}
 	}
 	for (int pass=0; pass<2 && semi;) {
@@ -806,6 +824,8 @@ void VLSong::ChangeKey(int section, int newKey, int newMode, bool transpose)
 				if (i->fPitch == VLNote::kNoPitch)
 					continue;
 				i->fPitch	+= semi;
+                if (flipAcc)
+                    FlipAccidentals(i->fVisual);
 				low			 = std::min(low, i->fPitch);
 				high		 = std::max(high, i->fPitch);
 			}
@@ -816,6 +836,7 @@ void VLSong::ChangeKey(int section, int newKey, int newMode, bool transpose)
 			semi 	= -12;	// Transpose an Octave down
 		else
 			break;			// Looks like we're done
+        flipAcc = false;
 	}
 }
 

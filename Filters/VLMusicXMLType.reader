@@ -348,6 +348,10 @@ class MusicXMLListener
           @note['visual'] = VL::WantSharp
         when 'flat'
           @note['visual'] = VL::WantFlat
+        when 'double-sharp'
+          @note['visual'] = VL::Want2Sharp
+        when 'flat-flat'
+          @note['visual'] = VL::Want2Flat
         end
       when 'root-step' 
         @note['pitch'] = PITCH[@text]

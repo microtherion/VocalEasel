@@ -353,7 +353,7 @@
 					  visual:note->fVisual
 					  at:NSMakePoint([self noteXInMeasure:measIdx at:at], 
 									 kSystemY)];
-                uint16_t    visual  = note->fVisual;
+                uint16_t    visual  = VLPitchAccidental(note->fPitch, note->fVisual, kProp.fKey);
 				pos                 = 
                     NSMakePoint([self noteXInMeasure:measIdx at:at],
                                 kSystemY+[self noteYInSection:measure.fPropIdx

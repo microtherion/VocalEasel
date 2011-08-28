@@ -9,7 +9,6 @@ require 'rexml/document'
 
 INPUT = readPlist(INFILE)
 
-$USE_FLATS = false
 $DIVISIONS = 3
 
 def newTextElement(name, text)
@@ -59,7 +58,6 @@ def _part_list
 end
 
 def _attributes(prop)
-  $USE_FLATS = prop['key'] <= 0
   $DIVISIONS = prop['divisions']
   attr = REXML::Element.new('attributes')
   attr.add_element newTextElement('divisions', prop['divisions'])
@@ -100,28 +98,23 @@ def _tempo(tempo)
   return dir
 end
 
-STEPS = 'C DbD EbE F GbG AbA BbB '
+STEPS = ' BC D EF G A B C '
 
-def _pitch(name, pitch, preferFlats, prefix="")
-  oct  = pitch/12 - 1
-  stp  = 2*(pitch%12)
-  step = STEPS[stp]
-  alt  = STEPS[stp+1] == ?b
-  if alt
-    if preferFlats
-      alt = -1
-    else
-      step = step == ?A ? ?G : step-1
-      alt  = 1
-    end
+def _pitch(name, pitch, accidental, prefix="")
+  pitch-= accidental
+  oct   = pitch/12 - 1
+  stp   = (pitch%12)+2
+  step  = STEPS[stp]
+  if step == 0x20
+    abort "Pitch #{pitch} not representable"
   end
   if prefix.length > 0
     prefix += "-"
   end
   pitch= REXML::Element.new(name)
   pitch.add_element newTextElement(prefix+'step', step.chr)
-  if alt
-    pitch.add_element newTextElement(prefix+'alter', alt)
+  if accidental != 0
+    pitch.add_element newTextElement(prefix+'alter', accidental)
   end
   if prefix.length == 0
     pitch.add_element newTextElement('octave', oct)
@@ -130,28 +123,28 @@ def _pitch(name, pitch, preferFlats, prefix="")
   return pitch
 end
 
-def _addAccidental(note, pitch, preferFlats)
-  stp  = 2*(pitch%12)
-  alt  = STEPS[stp+1] == ?b 
-  if alt
-    note.add_element newTextElement('accidental', 
-                                    preferFlats ? 'flat' : 'sharp')
-  end
-end
-
 TYPE = %w[whole half quarter eighth 16th 32nd]
+ACC  = %w[flat-flat flat natural sharp double-sharp]
 
 def _note(pitch, dur, visual, tied)
-  preferFlats = (visual & VL::WantSharp) == 0 &&
-    ((visual & VL::WantFlat) != 0 || $USE_FLATS)
+  accidental = nil
+  case visual & VL::Accidentals
+  when VL::Want2Flat
+    accidental = -2
+  when VL::WantFlat
+    accidental = -1
+  when VL::WantNatural
+    accidental = 0
+  when VL::WantSharp
+    accidental =  1
+  when VL::Want2Sharp
+    accidental =  2
+  end
   note = REXML::Element.new('note')
   if pitch == VL::NoPitch
     note.add_element(REXML::Element.new('rest'))
   else
-    if (tied & VL::InChord) != 0
-      note.add_element 'chord'
-    end
-    note.add_element(_pitch('pitch', pitch, preferFlats))
+    note.add_element(_pitch('pitch', pitch, accidental))
   end
   note.add_element newTextElement('duration', dur)
   if (tied & VL::TiedWithPrev) != 0
@@ -162,8 +155,8 @@ def _note(pitch, dur, visual, tied)
   end
   note.add_element newTextElement('voice', 1)
   note.add_element newTextElement('type', TYPE[visual & 7]) 
-  if (visual & (VL::WantSharp | VL::WantFlat)) != 0
-    _addAccidental(note, pitch, preferFlats)
+  if accidental
+    note.add_element newTextElement('accidental', ACC[accidental+2])
   end
 
   return note

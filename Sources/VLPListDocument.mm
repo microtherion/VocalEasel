@@ -10,6 +10,7 @@
 
 #import "VLPListDocument.h"
 #import "VLModel.h"
+#import "VLPitchGrid.h"
 
 //
 // To convert from and to complex file formats, we use ruby scripts operating
@@ -40,6 +41,7 @@ protected:
 	NSMutableArray *		fChords;
 	bool					fPerfOrder;
 	const VLSong *			fSong;
+    VLVisualFilter          fVisFilter;
 };
 
 NSArray * VLPlistVisitor::EncodeProperties(const std::vector<VLProperties> & properties)
@@ -79,7 +81,8 @@ void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 {
 	fNotes = [NSMutableArray arrayWithCapacity:1];
 	fChords= [NSMutableArray arrayWithCapacity:1];
-	
+    
+    fVisFilter.ResetWithKey(p.fKey);
 	VisitNotes(meas, p, true);
 	VisitChords(meas);
 
@@ -137,14 +140,15 @@ void VLPlistVisitor::VisitNote(VLLyricsNote & n)
 			 [NSNumber numberWithInt:n.fLyrics[i].fKind], @"kind",
 			 nil]
 		  : [NSDictionary dictionary]];
-		  
+    
+    int grid = VLPitchToGrid(n.fPitch, n.fVisual, 0);
 	NSDictionary * nd =
 		[NSDictionary dictionaryWithObjectsAndKeys:
 		 [NSNumber numberWithInt:n.fDuration.fNum], @"durNum",
 		 [NSNumber numberWithInt:n.fDuration.fDenom], @"durDenom",
 		 [NSNumber numberWithInt:n.fPitch], @"pitch",
 		 [NSNumber numberWithInt:n.fTied], @"tied",
-		 [NSNumber numberWithInt:n.fVisual], @"visual",
+		 [NSNumber numberWithInt:fVisFilter(grid, n.fVisual)], @"visual",
 		 ly, @"lyrics",
 		 nil];
 	[fNotes addObject:nd];
