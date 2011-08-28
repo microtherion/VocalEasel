@@ -1199,7 +1199,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Development;
@@ -1224,7 +1224,7 @@
 				INFOPLIST_FILE = "Tests/TVLPitchGrid/TVLPitchGrid-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Deployment;
@@ -1249,7 +1249,7 @@
 				INFOPLIST_FILE = "Tests/TVLPitchGrid/TVLPitchGrid-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Default;
@@ -1340,7 +1340,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.7;
 				USER_HEADER_SEARCH_PATHS = "Sources/**";
 			};
 			name = Development;
@@ -1349,7 +1349,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.7;
 			};
 			name = Deployment;
 		};
@@ -1357,7 +1357,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.7;
 			};
 			name = Default;
 		};
