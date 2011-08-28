@@ -32,7 +32,7 @@ void VLMMAWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 
 	if (p.fKey != fKey) {
 		fKey       = p.fKey;
-		sprintf(buf, "KeySig %d%c\n", labs(fKey), fKey>=0 ? '#' : '&');
+		sprintf(buf, "KeySig %ld%c\n", labs(fKey), fKey>=0 ? '#' : '&');
 		fMeasures += buf;
 	}
 	if (!fPreview && p.fGroove != fGroove) {

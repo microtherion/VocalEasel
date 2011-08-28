@@ -44,12 +44,12 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 {
 	char measNo[8];	
 	if (!(m % 4))
-		sprintf(measNo, " %% %d", m+1);
+		sprintf(measNo, " %% %lu", m+1);
 	else 	
 		measNo[0] = 0;
 
 	fUseSharps	= p.fKey > 0;
-	if (fInPickup = fInPickup && !m && meas.NoChords())
+	if (fInPickup && !m && meas.NoChords())
 		++fPrevBreak;
 
 	//
