@@ -13,6 +13,7 @@
 #import "VLSheetViewInternal.h"
 #import "VLDocument.h"
 #import "VLSoundOut.h"
+#import "VLPitchGrid.h"
 
 #include <algorithm>
 
@@ -29,6 +30,9 @@
 		case kMusicSharpCursor:
 			newNote.fVisual |= VLNote::kWantSharp;
 			break;
+        case kMusicNaturalCursor:
+            newNote.fVisual |= VLNote::kWantNatural;
+            break;
 		}
 		[[self document] willChangeSong];
 		if (fCursorAccidental == kMusicExtendCursor) 
@@ -56,14 +60,10 @@
 	}
 }
 
-- (void) drawLedgerLinesInSection:(int)section withPitch:(int)pitch visual:(int)visual at:(NSPoint)p
+- (void) drawLedgerLinesInSection:(int)section withPitch:(int)pitch visual:(uint16_t)visual at:(NSPoint)p
 {
-	p.x	   += kLedgerX;
-	int	octave	= (pitch / 12) - 5;
-	int step	= (octave*7
-				   + [self stepInSection:section withPitch:pitch visual:visual]
-				   - 2
-				  ) / 2;
+	p.x        += kLedgerX;
+    int step    = ([self gridInSection:section withPitch:pitch visual:visual]-2)/2;
 	
 	for (int i=0; i-- > step; ) {
 		NSPoint p0	= p;
@@ -88,17 +88,12 @@
 	int 			cursorX;
 	int				cursorY;
 	int				cursorSect;
-	int 			cursorVisual = 0;
-	VLMusicElement	acc;
+	uint16_t 		cursorVisual = 0;
 	VLMusicElement	cursorElt;
 	
 	cursorX = [self noteXInMeasure:measure at:at];
 	if (accidental == kMusicExtendCursor) {
-		cursorY 	= 
-			[self noteYInMeasure:measure 
-				  withPitch:pitch
-				  visual:0
-				  accidental:&acc];
+		cursorY 	= [self noteYInMeasure:measure withPitch:pitch];
 		cursorElt	= accidental;
 	} else
 		switch (mode) {
@@ -110,10 +105,12 @@
 			case kMusicFlat:
 				cursorVisual = VLNote::kWantFlat;
 				break;
+            default:
+                break;
 			}
 			cursorY 	= 
 				[self noteYInMeasure:measure withPitch:pitch 
-					  visual:cursorVisual accidental:&acc] - kNoteY;
+					  visual:&cursorVisual] - kNoteY;
 			cursorSect  = [self song]->fMeasures[measure].fPropIdx;
 			[self drawLedgerLinesInSection:cursorSect withPitch:pitch 
 				  visual:cursorVisual at:NSMakePoint(cursorX, 
@@ -121,14 +118,11 @@
 			cursorElt 	= kMusicNoteCursor;
 			break;
 		case 'r':
-			cursorY 	= [self noteYInMeasure:measure 
-								withPitch:65 visual:0 accidental:&acc];
+			cursorY 	= [self noteYInMeasure:measure withPitch:65];
 			cursorElt	= kMusicRestCursor;
 			break;
 		case 'k':
-			cursorY 	= [self noteYInMeasure:measure 
-								withPitch:pitch visual:0 
-								accidental:&acc];
+			cursorY 	= [self noteYInMeasure:measure withPitch:pitch];
 			cursorElt	= kMusicKillCursor;
 			break;
 		}
@@ -219,6 +213,8 @@
 			at.x	+= kNaturalW;
 			at.y	+= kNaturalY;
 			break;
+        default:
+            break;
 		}
 		[[self musicElement:accidental] 
 			compositeToPoint:at operation: NSCompositeSourceOver];
@@ -349,8 +345,7 @@
 	bool	hasTriplets	= false;
 
 	for (int m = 0; m<kLayout.NumMeasures(); ++m) {
-		VLMusicElement accidentals[7];
-		memset(accidentals, 0, 7*sizeof(VLMusicElement));
+		VLVisualFilter  filterVisuals(kProp.fKey);
 		int	measIdx = m+kFirstMeas;
 		if (measIdx >= song->CountMeasures())
 			break;
@@ -371,34 +366,21 @@
 					  visual:note->fVisual
 					  at:NSMakePoint([self noteXInMeasure:measIdx at:at], 
 									 kSystemY)];
-				VLMusicElement		accidental;
-				pos = NSMakePoint([self noteXInMeasure:measIdx at:at],
-								  kSystemY+[self noteYInSection:measure.fPropIdx
-												 withPitch:pitch 
-												 visual:note->fVisual
-												 accidental:&accidental]);
-				VLMusicElement 	acc = accidental;
-				int				step= [self stepInSection:measure.fPropIdx
-											withPitch:pitch 	
-											visual:note->fVisual];
-				if (acc == accidentals[step])
-					acc = kMusicNothing; 	// Don't repeat accidentals
-				else if (acc == kMusicNothing) 
-					if (accidentals[step] == kMusicNatural) // Resume signature
-						acc = kProp.fKey < 0 ? kMusicFlat : kMusicSharp;
-					else 
-						acc = kMusicNatural;
+                uint16_t    visual  = note->fVisual;
+				pos                 = 
+                    NSMakePoint([self noteXInMeasure:measIdx at:at],
+                                kSystemY+[self noteYInSection:measure.fPropIdx
+                                                    withPitch:pitch visual:&visual]);
+				int			step    = [self gridInSection:measure.fPropIdx
+                                                withPitch:pitch visual:note->fVisual];
 				[self drawNote:note->fVisual & VLNote::kNoteHeadMask
 					  at: pos
-					  accidental: acc
+					  accidental:[self accidentalForVisual:filterVisuals(step, visual)]
 					  tied:tied];
-				accidentals[step] = accidental;
 			} else {
 				VLMusicElement		accidental;
 				pos = NSMakePoint([self noteXInMeasure:measIdx at:at],
-								  kSystemY+[self noteYInSection:measure.fPropIdx
-												 withPitch:65 visual:0
-												 accidental:&accidental]);
+								  kSystemY+[self noteYInSection:measure.fPropIdx withPitch:65]);
 				[self drawRest:note->fVisual & VLNote::kNoteHeadMask at: pos];
 			}
 			if (note->fVisual & VLNote::kTriplet) {

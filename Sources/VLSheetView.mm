@@ -17,6 +17,8 @@
 #import "VLSoundOut.h"
 #import "VLGrooveController.h"
 
+#import "VLPitchGrid.h"
+
 #import "VLDocument.h"
 
 #include <cmath>
@@ -139,85 +141,60 @@ static float sFlatPos[] = {
 	return kSystemBaseline+b.origin.y+b.size.height-(system+1)*kSystemH;
 }
 
-int8_t sSemi2Pitch[4][12] = {{
- // C  Db D  Eb E  F  Gb G  Ab A  Bb B 
-	0, 1, 1, 2, 2, 3, 4, 4, 5, 5, 6, 6,
-},{
- // C  C# D  D# E  F  F# G  G# A  A# B 
-	0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6,
-}};
-
-#define S	kMusicSharp,
-#define F	kMusicFlat,
-#define N	kMusicNatural,
-#define _	kMusicNothing,
-
-VLMusicElement sSemi2Accidental[13][12] = {
- //  C DbD EbE F GbG AbA BbB 
-	{N _ N _ N _ _ N _ N _ N}, // Gb major - 6 flats
-	{_ _ N _ N _ _ N _ N _ N}, // Db major - 5 flats
-	{_ _ N _ N _ F _ _ N _ N}, // Ab major - 4 flats
-	{_ F _ _ N _ F _ _ N _ N}, // Eb major - 3 flats
-	{_ F _ _ N _ F _ F _ _ N}, // Bb major - 2 flats
-	{_ F _ F _ _ F _ F _ _ N}, // F major  - 1 flat
-	{_ F _ F _ _ F _ F _ F _}, // C major
- //  C C#D D#E F F#G G#A A#B 	
-	{_ S _ S _ N _ _ S _ S _}, // G major - 1 sharp
-	{N _ _ S _ N _ _ S _ S _}, // D major - 2 sharps
-	{N _ _ S _ N _ N _ _ S _}, // A major - 3 sharps
-	{N _ N _ _ N _ N _ _ S _}, // E major - 4 sharps
-	{N _ N _ _ N _ N _ N _ _}, // B major - 5 sharps
-	{N _ N _ N N _ N _ N _ _}, // F# major - 6 sharps
-};
-
-#undef S
-#undef F
-#undef N
-#undef _
-
-- (int) stepInSection:(int)section withPitch:(int)pitch visual:(int)visual
+- (int) gridInSection:(int)section withPitch:(int)pitch visual:(uint16_t)visual
 {
-	int 	semi 		= pitch % 12;
-	int		key			= [self song]->fProperties[section].fKey;
-	bool 	useSharps	= (visual & VLNote::kAccidentalsMask)
-		? (visual & VLNote::kWantSharp) : (key > 0);
-	
-	return	sSemi2Pitch[useSharps][semi];
+	int key     = [self song]->fProperties[section].fKey;
+    
+    return VLPitchToGrid(pitch, visual, key);
 }
 
-- (float) noteYInSection:(int)section withPitch:(int)pitch 
-				  visual:(int)visual accidental:(VLMusicElement*)accidental
+- (float) noteYInSection:(int)section withPitch:(int)pitch visual:(uint16_t *)visual
 {
-	int 	semi 		= pitch % 12;
-	int		octave  	= (pitch / 12) - 5;
-	int		key			= [self song]->fProperties[section].fKey;
+	int key     = [self song]->fProperties[section].fKey;
+    int grid    = VLPitchToGrid(pitch, *visual, key);
 
-	switch (*accidental = sSemi2Accidental[key+6][semi]) {
-	case kMusicSharp:
-		if (visual & VLNote::kWantFlat) 
-			*accidental = kMusicFlat;
-		break;
-	case kMusicFlat:
-		if (visual & VLNote::kWantSharp) 
-			*accidental = kMusicSharp;
-		break;
-	default:
-		visual = 0;
-		break;
-	}
-
-	return (octave*3.5f
-			+ [self stepInSection:section withPitch:pitch visual:visual]*0.5f
-			- 1.0f
-		   )* kLineH;
+	return (grid*0.5f - 1.0) * kLineH;
 }
 
-- (float) noteYInMeasure:(int)measure withPitch:(int)pitch
-				  visual:(int)visual accidental:(VLMusicElement*)accidental
+- (float) noteYInSection:(int)section withPitch:(int)pitch
+{
+	int         key     = [self song]->fProperties[section].fKey;
+    uint16_t    visual  = 0;
+    int         grid    = VLPitchToGrid(pitch, visual, key);
+    
+	return (grid*0.5f - 1.0) * kLineH;
+}
+
+- (VLMusicElement)accidentalForVisual:(uint16_t)visual
+{
+    switch (visual & VLNote::kAccidentalsMask) {
+    case VLNote::kWantSharp:
+    case VLNote::kWant2Sharp: // TODO
+        return kMusicSharp;
+    case VLNote::kWantFlat:
+    case VLNote::kWant2Flat: // TODO
+        return kMusicFlat;
+    case VLNote::kWantNatural:
+        return kMusicNatural;
+    default:
+        return kMusicNothing;
+    }
+}
+
+- (float) noteYInMeasure:(int)measure withPitch:(int)pitch visual:(uint16_t *)visual
 {
 	return [self systemY:fLayout->SystemForMeasure(measure)]
 		+ [self noteYInSection:[self song]->fMeasures[measure].fPropIdx
-				withPitch:pitch visual:visual accidental:accidental];
+				withPitch:pitch visual:visual];
+}
+
+- (float) noteYInMeasure:(int)measure withPitch:(int)pitch
+{
+    uint16_t dummyVis = 0;
+    
+	return [self systemY:fLayout->SystemForMeasure(measure)]
+    + [self noteYInSection:[self song]->fMeasures[measure].fPropIdx
+                 withPitch:pitch visual:&dummyVis];
 }
 
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at
@@ -810,8 +787,10 @@ static int8_t sSharpAcc[] = {
 		fCursorAccidental	= kMusicSharpCursor; // G -> G#
 		fCursorActualPitch	= fCursorPitch+1;
 		break;
+    case NSAlternateKeyMask|NSCommandKeyMask:
+        fCursorAccidental	= kMusicNaturalCursor; 
+        // Fall through
 	default:
-	case NSAlternateKeyMask|NSCommandKeyMask:
 		fCursorActualPitch	= fCursorPitch;
 		break;				  					 // G -> G
 	}

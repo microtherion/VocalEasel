@@ -40,6 +40,13 @@
 		9531F3520DE2B4CD004F78C2 /* VLMP3Document.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9531F3500DE2B4CD004F78C2 /* VLMP3Document.mm */; };
 		9531F3670DE2B872004F78C2 /* lameWrapper in Copy Tools */ = {isa = PBXBuildFile; fileRef = 9531F3660DE2B872004F78C2 /* lameWrapper */; };
 		953722670AE9F0E100B6E483 /* VLLilypondDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */; };
+		953F4B3D1409B01200C627F9 /* VLPitchGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 953F4B3C1409B01200C627F9 /* VLPitchGrid.cpp */; };
+		953F4B441409C42100C627F9 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95CFA8481409291500D0DB0D /* SenTestingKit.framework */; };
+		953F4B451409C42100C627F9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC6FFF14094107007EA050 /* Cocoa.framework */; };
+		953F4B4F1409C42100C627F9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 953F4B4D1409C42100C627F9 /* InfoPlist.strings */; };
+		953F4B511409C42100C627F9 /* TVLPitchGrid.h in Resources */ = {isa = PBXBuildFile; fileRef = 953F4B501409C42100C627F9 /* TVLPitchGrid.h */; };
+		953F4B531409C42100C627F9 /* TVLPitchGrid.mm in Sources */ = {isa = PBXBuildFile; fileRef = 953F4B521409C42100C627F9 /* TVLPitchGrid.mm */; };
+		953F4B591409C54600C627F9 /* VLPitchGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 953F4B3C1409B01200C627F9 /* VLPitchGrid.cpp */; };
 		9545C5C30C092F4600251547 /* VLMMAWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9545C5C10C092F4600251547 /* VLMMAWriter.cpp */; };
 		95498DBD0AE3812F006B5F81 /* VLSoundSched.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95498DBC0AE3812F006B5F81 /* VLSoundSched.mm */; };
 		954BBD860AEDDE5300BBFD5F /* VLAppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954BBD850AEDDE5300BBFD5F /* VLAppController.mm */; };
@@ -210,6 +217,17 @@
 		9531F3660DE2B872004F78C2 /* lameWrapper */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = lameWrapper; path = Tools/lameWrapper; sourceTree = "<group>"; };
 		953722650AE9F0E100B6E483 /* VLLilypondDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLLilypondDocument.h; path = Sources/VLLilypondDocument.h; sourceTree = "<group>"; };
 		953722660AE9F0E100B6E483 /* VLLilypondDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLLilypondDocument.mm; path = Sources/VLLilypondDocument.mm; sourceTree = "<group>"; };
+		953F4B3A1409AFFA00C627F9 /* VLPitchGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLPitchGrid.h; path = Sources/VLPitchGrid.h; sourceTree = "<group>"; };
+		953F4B3C1409B01200C627F9 /* VLPitchGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VLPitchGrid.cpp; path = Sources/VLPitchGrid.cpp; sourceTree = "<group>"; };
+		953F4B431409C42100C627F9 /* TVLPitchGrid.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TVLPitchGrid.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		953F4B471409C42100C627F9 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		953F4B481409C42100C627F9 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		953F4B491409C42100C627F9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		953F4B4C1409C42100C627F9 /* TVLPitchGrid-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TVLPitchGrid-Info.plist"; path = "Tests/TVLPitchGrid/TVLPitchGrid-Info.plist"; sourceTree = SOURCE_ROOT; };
+		953F4B4E1409C42100C627F9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		953F4B501409C42100C627F9 /* TVLPitchGrid.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TVLPitchGrid.h; path = Tests/TVLPitchGrid/TVLPitchGrid.h; sourceTree = SOURCE_ROOT; };
+		953F4B521409C42100C627F9 /* TVLPitchGrid.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = TVLPitchGrid.mm; path = Tests/TVLPitchGrid/TVLPitchGrid.mm; sourceTree = SOURCE_ROOT; };
+		953F4B541409C42100C627F9 /* TVLPitchGrid-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TVLPitchGrid-Prefix.pch"; path = "Tests/TVLPitchGrid/TVLPitchGrid-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		9545C5C10C092F4600251547 /* VLMMAWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = VLMMAWriter.cpp; path = Sources/VLMMAWriter.cpp; sourceTree = "<group>"; };
 		9545C5C20C092F4600251547 /* VLMMAWriter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLMMAWriter.h; path = Sources/VLMMAWriter.h; sourceTree = "<group>"; };
 		95498DBB0AE3812F006B5F81 /* VLSoundSched.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSoundSched.h; path = Sources/VLSoundSched.h; sourceTree = "<group>"; };
@@ -334,6 +352,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		953F4B3F1409C42100C627F9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				953F4B441409C42100C627F9 /* SenTestingKit.framework in Frameworks */,
+				953F4B451409C42100C627F9 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		955E595A0957C0FC0045FDA5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -376,6 +403,7 @@
 				959408A0096922CA007CCCF8 /* TVLEdit */,
 				95E04DA00AEB4837006F30A0 /* TVLLilypond */,
 				95CFA8471409291500D0DB0D /* TVLPitchNames.octest */,
+				953F4B431409C42100C627F9 /* TVLPitchGrid.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -464,8 +492,39 @@
 				95AC700314099C64007EA050 /* AudioUnit.framework */,
 				95AC700614099CF0007EA050 /* Quartz.framework */,
 				95CFA8481409291500D0DB0D /* SenTestingKit.framework */,
+				953F4B461409C42100C627F9 /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		953F4B461409C42100C627F9 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				953F4B471409C42100C627F9 /* AppKit.framework */,
+				953F4B481409C42100C627F9 /* CoreData.framework */,
+				953F4B491409C42100C627F9 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		953F4B4A1409C42100C627F9 /* TVLPitchGrid */ = {
+			isa = PBXGroup;
+			children = (
+				953F4B501409C42100C627F9 /* TVLPitchGrid.h */,
+				953F4B521409C42100C627F9 /* TVLPitchGrid.mm */,
+				953F4B4B1409C42100C627F9 /* Supporting Files */,
+			);
+			path = TVLPitchGrid;
+			sourceTree = "<group>";
+		};
+		953F4B4B1409C42100C627F9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				953F4B4C1409C42100C627F9 /* TVLPitchGrid-Info.plist */,
+				953F4B4D1409C42100C627F9 /* InfoPlist.strings */,
+				953F4B541409C42100C627F9 /* TVLPitchGrid-Prefix.pch */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		9546A1090B08B47A0028503B /* CoreAudio SDK Sources */ = {
@@ -488,6 +547,7 @@
 		955E59560957C0C50045FDA5 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				953F4B4A1409C42100C627F9 /* TVLPitchGrid */,
 				95CFA84C1409291500D0DB0D /* TVLPitchNames */,
 				95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */,
 				959408AC096922EA007CCCF8 /* TVLEdit.cpp */,
@@ -528,6 +588,8 @@
 				955E58E4095658AB0045FDA5 /* VLModel.cpp */,
 				95CFA83914091B9000D0DB0D /* VLPitchName.h */,
 				95CFA83714091B7800D0DB0D /* VLPitchName.cpp */,
+				953F4B3A1409AFFA00C627F9 /* VLPitchGrid.h */,
+				953F4B3C1409B01200C627F9 /* VLPitchGrid.cpp */,
 				959A3A6D0DE8CB5B00EF207B /* VLMIDIWriter.h */,
 				959A3A6C0DE8CB5B00EF207B /* VLMIDIWriter.cpp */,
 				9531F34D0DE2B4CD004F78C2 /* VLAIFFDocument.h */,
@@ -696,6 +758,24 @@
 			productReference = 952CBB98095FD19D00434E43 /* TVLSoundOut */;
 			productType = "com.apple.product-type.tool";
 		};
+		953F4B421409C42100C627F9 /* TVLPitchGrid */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 953F4B551409C42100C627F9 /* Build configuration list for PBXNativeTarget "TVLPitchGrid" */;
+			buildPhases = (
+				953F4B3E1409C42100C627F9 /* Sources */,
+				953F4B3F1409C42100C627F9 /* Frameworks */,
+				953F4B401409C42100C627F9 /* Resources */,
+				953F4B411409C42100C627F9 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TVLPitchGrid;
+			productName = TVLPitchGrid;
+			productReference = 953F4B431409C42100C627F9 /* TVLPitchGrid.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 		955E595B0957C0FC0045FDA5 /* TVLChord */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 95D7BF7C0AA699C600D5E02C /* Build configuration list for PBXNativeTarget "TVLChord" */;
@@ -791,6 +871,7 @@
 				9594089F096922CA007CCCF8 /* TVLEdit */,
 				95E04D9F0AEB4837006F30A0 /* TVLLilypond */,
 				95CFA8461409291500D0DB0D /* TVLPitchNames */,
+				953F4B421409C42100C627F9 /* TVLPitchGrid */,
 			);
 		};
 /* End PBXProject section */
@@ -832,6 +913,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		953F4B401409C42100C627F9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				953F4B4F1409C42100C627F9 /* InfoPlist.strings in Resources */,
+				953F4B511409C42100C627F9 /* TVLPitchGrid.h in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		95CFA8441409291500D0DB0D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -844,6 +934,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		953F4B411409C42100C627F9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
 		95C462020B04475300649F92 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -914,6 +1017,7 @@
 				9531F3520DE2B4CD004F78C2 /* VLMP3Document.mm in Sources */,
 				959A3A6E0DE8CB5B00EF207B /* VLMIDIWriter.cpp in Sources */,
 				95CFA83814091B7800D0DB0D /* VLPitchName.cpp in Sources */,
+				953F4B3D1409B01200C627F9 /* VLPitchGrid.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -928,6 +1032,15 @@
 				95009B7F0B0EDC7900EB33A4 /* CAAudioFileFormats.cpp in Sources */,
 				95009B800B0EDC7B00EB33A4 /* CADebugMacros.cpp in Sources */,
 				95009B810B0EDC7D00EB33A4 /* CAStreamBasicDescription.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		953F4B3E1409C42100C627F9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				953F4B531409C42100C627F9 /* TVLPitchGrid.mm in Sources */,
+				953F4B591409C54600C627F9 /* VLPitchGrid.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1038,6 +1151,15 @@
 			name = VLPDFWindow.xib;
 			sourceTree = "<group>";
 		};
+		953F4B4D1409C42100C627F9 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				953F4B4E1409C42100C627F9 /* en */,
+			);
+			name = InfoPlist.strings;
+			path = Tests/TVLPitchGrid;
+			sourceTree = SOURCE_ROOT;
+		};
 		95CFA84F1409291500D0DB0D /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1050,6 +1172,88 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		953F4B561409C42100C627F9 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Tests/TVLPitchGrid/TVLPitchGrid-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Tests/TVLPitchGrid/TVLPitchGrid-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Development;
+		};
+		953F4B571409C42100C627F9 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Tests/TVLPitchGrid/TVLPitchGrid-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Tests/TVLPitchGrid/TVLPitchGrid-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Deployment;
+		};
+		953F4B581409C42100C627F9 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Tests/TVLPitchGrid/TVLPitchGrid-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Tests/TVLPitchGrid/TVLPitchGrid-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Default;
+		};
 		95CFA8581409291500D0DB0D /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1473,6 +1677,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		953F4B551409C42100C627F9 /* Build configuration list for PBXNativeTarget "TVLPitchGrid" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				953F4B561409C42100C627F9 /* Development */,
+				953F4B571409C42100C627F9 /* Deployment */,
+				953F4B581409C42100C627F9 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		95CFA8571409291500D0DB0D /* Build configuration list for PBXNativeTarget "TVLPitchNames" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

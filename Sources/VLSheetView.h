@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2008 Matthias Neeracher
+// Copyright © 2005-2011 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>
@@ -115,10 +115,13 @@ enum VLRecalc {
 - (VLSong *) song;
 - (NSImage *) musicElement:(VLMusicElement)elt;
 
-- (int) stepInSection:(int)section withPitch:(int)pitch visual:(int)visual;
 - (float) systemY:(int)system;
-- (float) noteYInSection:(int)section withPitch:(int)pitch visual:(int)visual accidental:(VLMusicElement*)accidental;
-- (float) noteYInMeasure:(int)measure withPitch:(int)pitch visual:(int)visual accidental:(VLMusicElement*)accidental;
+- (int) gridInSection:(int)section withPitch:(int)pitch visual:(uint16_t)visual;
+- (float) noteYInSection:(int)section withPitch:(int)pitch visual:(uint16_t *)visual;
+- (float) noteYInSection:(int)section withPitch:(int)pitch;
+- (VLMusicElement)accidentalForVisual:(uint16_t)visual;
+- (float) noteYInMeasure:(int)measure withPitch:(int)pitch visual:(uint16_t *)visual;
+- (float) noteYInMeasure:(int)measure withPitch:(int)pitch;
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at;
 
 - (void) scrollMeasureToVisible:(int)measure;
