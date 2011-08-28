@@ -141,7 +141,7 @@ void VLPlistVisitor::VisitNote(VLLyricsNote & n)
 			 nil]
 		  : [NSDictionary dictionary]];
     
-    int grid = VLPitchToGrid(n.fPitch, n.fVisual, 0);
+    int grid = n.fPitch==VLNote::kNoPitch ? 0 : VLPitchToGrid(n.fPitch, n.fVisual, 0);
 	NSDictionary * nd =
 		[NSDictionary dictionaryWithObjectsAndKeys:
 		 [NSNumber numberWithInt:n.fDuration.fNum], @"durNum",
@@ -156,9 +156,11 @@ void VLPlistVisitor::VisitNote(VLLyricsNote & n)
 
 void VLPlistVisitor::VisitChord(VLChord & c)
 {
-    int             pitchGrid = VLPitchToGrid(c.fPitch, c.fVisual, 0);
+    int             pitchGrid = 
+        c.fPitch==VLNote::kNoPitch ? 0 : VLPitchToGrid(c.fPitch, c.fVisual, 0);
     VLVisualFilter  pitchFilter(0);
-    int             rootGrid  = VLPitchToGrid(c.fRootPitch, c.fRootAccidental, 0);
+    int             rootGrid  = 
+        c.fRootPitch==VLNote::kNoPitch ? 0 : VLPitchToGrid(c.fRootPitch, c.fRootAccidental, 0);
     VLVisualFilter  rootFilter(0);
 	NSDictionary * cd = 
 		[NSDictionary dictionaryWithObjectsAndKeys:
