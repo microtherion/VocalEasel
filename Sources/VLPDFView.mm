@@ -14,6 +14,7 @@
 
 @implementation VLPDFView
 
+#if 0
 - (BOOL)tryOpenURL:(NSURL *)url
 {
 	if ([[url scheme] isEqual: @"textedit"]) {
@@ -33,6 +34,7 @@
 	} else
 		return [super tryOpenURL:url] != NULL;
 }
+#endif
 
 - (BOOL) canBecomeKeyView
 {
