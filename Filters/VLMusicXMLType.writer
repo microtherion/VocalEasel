@@ -101,7 +101,7 @@ end
 STEPS = ' BC D EF G A B C '
 
 def _pitch(name, pitch, accidental, prefix="")
-  pitch-= accidental
+  pitch-= accidental ? accidental : 0
   oct   = pitch/12 - 1
   stp   = (pitch%12)+2
   step  = STEPS[stp]
@@ -126,7 +126,7 @@ end
 TYPE = %w[whole half quarter eighth 16th 32nd]
 ACC  = %w[flat-flat flat natural sharp double-sharp]
 
-def _note(pitch, dur, visual, tied)
+def _accidental(visual)
   accidental = nil
   case visual & VL::Accidentals
   when VL::Want2Flat
@@ -140,6 +140,11 @@ def _note(pitch, dur, visual, tied)
   when VL::Want2Sharp
     accidental =  2
   end
+  accidental
+end
+
+def _note(pitch, dur, visual, tied)
+  accidental = _accidental(visual)
   note = REXML::Element.new('note')
   if pitch == VL::NoPitch
     note.add_element(REXML::Element.new('rest'))
@@ -235,9 +240,7 @@ DEGREE = [
   [VL::Dim13th+VL::Min13th+VL::Maj13th, VL::Maj13th]
 ];
 
-def _chord(pitch, visual, steps, root)
-  preferFlats = (visual & VL::WantSharp) == 0 &&
-    ((visual & VL::WantFlat) != 0 || $USE_FLATS)
+def _chord(pitch, visual, steps, root, rootVisual)
   #
   # Pick kind. sus takes precedence
   #
@@ -272,10 +275,10 @@ def _chord(pitch, visual, steps, root)
     end
   end
   harm = REXML::Element.new('harmony')
-  harm.add_element(_pitch('root', pitch, visual, 'root'))
+  harm.add_element(_pitch('root', pitch, _accidental(visual), 'root'))
   harm.add_element newTextElement('kind', kind)
   if root != VL::NoPitch
-    harm.add_element(_pitch('bass', root, visual, 'bass'))
+    harm.add_element(_pitch('bass', root, _accidental(rootVisual), 'bass'))
   end
   needSteps = steps & ~CHORD[kind]
   extraSteps= CHORD[kind] & ~steps
@@ -398,7 +401,7 @@ def _melody
             m.add_element(fw)
             tempAt = chordAt
           end
-          m.add_element(_chord(chord['pitch'], chord['visual'], chord['steps'], chord['root']))
+          m.add_element(_chord(chord['pitch'], chord['visual'], chord['steps'], chord['root'], chord['rootvisual']))
         end
         chordAt += (chord['durNum'] * $DIVISIONS * 4) / chord['durDenom']
         chordIx += 1

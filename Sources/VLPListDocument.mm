@@ -156,14 +156,19 @@ void VLPlistVisitor::VisitNote(VLLyricsNote & n)
 
 void VLPlistVisitor::VisitChord(VLChord & c)
 {
+    int             pitchGrid = VLPitchToGrid(c.fPitch, c.fVisual, 0);
+    VLVisualFilter  pitchFilter(0);
+    int             rootGrid  = VLPitchToGrid(c.fRootPitch, c.fRootAccidental, 0);
+    VLVisualFilter  rootFilter(0);
 	NSDictionary * cd = 
 		[NSDictionary dictionaryWithObjectsAndKeys:
 		 [NSNumber numberWithInt:c.fDuration.fNum], @"durNum",
 		 [NSNumber numberWithInt:c.fDuration.fDenom], @"durDenom",
 		 [NSNumber numberWithInt:c.fPitch], @"pitch",
-		 [NSNumber numberWithInt:c.fVisual], @"visual",
+		 [NSNumber numberWithInt:pitchFilter(pitchGrid, c.fVisual)], @"visual",
 		 [NSNumber numberWithInt:c.fSteps], @"steps",
 		 [NSNumber numberWithInt:c.fRootPitch], @"root",
+         [NSNumber numberWithInt:rootFilter(rootGrid, c.fRootAccidental)], @"rootvisual",
 		 nil];
 	[fChords addObject: cd];
 }
@@ -336,7 +341,9 @@ advanceAt:
 					   [[cdict objectForKey:@"durDenom"] intValue],
 					   true);
 		chord.fPitch			= [[cdict objectForKey:@"pitch"] intValue];	
+        chord.fVisual           = [[cdict objectForKey:@"visual"] intValue];
 		chord.fRootPitch		= [[cdict objectForKey:@"root"] intValue];	
+		chord.fRootAccidental	= [[cdict objectForKey:@"rootvisual"] intValue];	
 		chord.fSteps			= [[cdict objectForKey:@"steps"] intValue];	
 
 		song->AddChord(chord, measNo, at);

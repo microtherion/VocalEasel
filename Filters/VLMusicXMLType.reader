@@ -305,6 +305,7 @@ class MusicXMLListener
     end
   end
 
+  ACC  = [VL::Want2Flat, VL::WantFlat, 0, VL::WantSharp, VL::Want2Sharp]
   def tag_end(tag)
     #
     # Interesting text nodes have @kind set
@@ -331,8 +332,13 @@ class MusicXMLListener
         @prop['mode'] = @text == 'minor' ? -1 : 1
       when 'step' 
         @note['pitch'] += PITCH[@text]
-      when 'alter', 'root-alter' 
+      when 'alter'
+          @note['pitch'] += @text.to_i
+      when 'root-alter' 
         @note['pitch'] += @text.to_i
+        if @text.to_i != 0
+            @note['visual'] = ACC[@text.to_i+2]
+        end
       when 'octave' 
         @note['pitch'] += (@text.to_i+1)*12
       when 'duration' 
@@ -359,6 +365,9 @@ class MusicXMLListener
         @note['root'] = PITCH[@text]
       when 'bass-alter' 
         @note['root'] += @text.to_i
+          if @text.to_i != 0
+              @note['rootvisual'] = ACC[@text.to_i+2]
+          end
       when 'kind' 
         @note['steps'] = CHORD[@text]
       when 'degree-value' 
