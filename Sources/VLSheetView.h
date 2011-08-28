@@ -63,6 +63,12 @@ enum VLRecalc {
 	kFirstRecalc
 };
 
+enum VLCursorVisual {
+    kCursorExtend   = 1<<15,
+    kCursorFlagsMask= 0x8000,
+    kCursorNoPitch  = -128
+};
+
 @class VLEditable;
 
 @interface VLSheetView : NSView {
@@ -76,9 +82,8 @@ enum VLRecalc {
 	VLRegion			fCursorRegion;
 	int		  			fCursorMeasure;
 	VLFract 			fCursorAt;
-	int					fCursorPitch;
-	int					fCursorActualPitch;
-	VLMusicElement 		fCursorAccidental;
+    int                 fCursorVertPos;
+    uint16_t            fCursorVisual;
 	size_t				fCursorStanza;
 	int					fSelStart;
 	int					fSelEnd;
@@ -121,11 +126,11 @@ enum VLRecalc {
 
 - (float) systemY:(int)system;
 - (int) gridInSection:(int)section withPitch:(int)pitch visual:(uint16_t)visual;
+- (float) noteYInGrid:(int)vertPos;
 - (float) noteYInSection:(int)section withPitch:(int)pitch visual:(uint16_t *)visual;
 - (float) noteYInSection:(int)section withPitch:(int)pitch;
 - (VLMusicElement)accidentalForVisual:(uint16_t)visual;
-- (float) noteYInMeasure:(int)measure withPitch:(int)pitch visual:(uint16_t *)visual;
-- (float) noteYInMeasure:(int)measure withPitch:(int)pitch;
+- (float) noteYInMeasure:(int)measure withGrid:(int)vertPos;
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at;
 
 - (void) scrollMeasureToVisible:(int)measure;

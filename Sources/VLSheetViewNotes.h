@@ -14,8 +14,7 @@
 
 - (void) drawNotesForSystem:(int)system;
 - (void) addNoteAtCursor;
-- (void) startKeyboardCursor;
-- (void) drawNoteCursor:(int)pitch inMeasure:(size_t)measure at:(VLFract)at accidental:(VLMusicElement)accidental;
+- (void) drawNoteCursor:(int)vertPos inMeasure:(size_t)measure at:(VLFract)at visual:(uint16_t)visual;
 
 @end
 

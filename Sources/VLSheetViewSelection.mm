@@ -16,14 +16,15 @@
 #import "VLSheetViewLyrics.h"
 #import "VLSheetWindow.h"
 #import "VLDocument.h"
+#import "VLPitchGrid.h"
 
 @interface VLPlaybackEditable : VLEditable {
 	VLSheetView *	fView;
 	size_t 			fStanza;
 	size_t			fNoteMeasure;
 	VLFract			fNoteAt;
-	int				fNotePitch;
-    VLMusicElement  fNoteAccidental;
+	int				fNoteVert;
+    uint16_t        fNoteVisual;
 	size_t 			fChordMeasure;
 	VLFract 		fChordAt;
 }
@@ -50,29 +51,10 @@
 {
 	VLMIDIUserEvent * event = (VLMIDIUserEvent *)[ev pointerValue];
 	if (event->fPitch) {
-		fNotePitch 		= event->fPitch;
-        fNoteAccidental = kMusicNothing;
-        switch (event->fVisual & VLNote::kAccidentalsMask) {
-        case VLNote::kWantFlat:
-            fNoteAccidental = kMusicFlatCursor;
-            break;
-        case VLNote::kWantSharp:
-            fNoteAccidental = kMusicSharpCursor;
-            break;
-        case VLNote::kWant2Flat:
-            fNoteAccidental = kMusic2FlatCursor;
-            break;
-        case VLNote::kWant2Sharp:
-            fNoteAccidental = kMusic2SharpCursor;
-            break;
-        case VLNote::kWantNatural:
-            fNoteAccidental = kMusicNaturalCursor;
-            break;
-        default:
-            break;
-        }
 		fNoteMeasure	= event->fMeasure;
 		fNoteAt			= event->fAt;
+        fNoteVisual     = event->fVisual & VLNote::kAccidentalsMask;
+		fNoteVert 		= VLPitchToGrid(event->fPitch, fNoteVisual, [fView song]->Properties(fNoteMeasure).fKey);
 		fStanza			= event->fStanza;
 		[fView highlightTextInStanza:fStanza measure:fNoteMeasure at:fNoteAt one:YES]; 
 	} else {
@@ -85,8 +67,8 @@
 
 - (void) highlightCursor
 {
-	if (fNoteMeasure != 0x80000000 && fNotePitch != VLNote::kNoPitch)
-		[fView drawNoteCursor:fNotePitch inMeasure:fNoteMeasure at:fNoteAt accidental:fNoteAccidental];
+	if (fNoteMeasure != 0x80000000 && fNoteVert != kCursorNoPitch)
+        [fView drawNoteCursor:fNoteVert inMeasure:fNoteMeasure at:fNoteAt visual:fNoteVisual];
 	if (fChordMeasure != 0x80000000)
 		[fView highlightChordInMeasure:fChordMeasure at:fChordAt];
 }

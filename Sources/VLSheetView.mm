@@ -96,7 +96,8 @@ static float sFlatPos[] = {
 		fNeedsRecalc		= kFirstRecalc;
 		fClickMode			= ' ';
 		fDisplayScale		= 1.0f;
-		fCursorPitch		= VLNote::kNoPitch;
+        fCursorVertPos      = 0;
+        fCursorVisual       = 0;
 		fSelStart			= 0;
 		fSelEnd				= -1;
 		fNumTopLedgers 		= 0;
@@ -152,12 +153,17 @@ static float sFlatPos[] = {
     return VLPitchToGrid(pitch, visual, key);
 }
 
+- (float) noteYInGrid:(int)vertPos
+{
+    return (vertPos*0.5f - 1.0) * kLineH;
+}
+
 - (float) noteYInSection:(int)section withPitch:(int)pitch visual:(uint16_t *)visual
 {
 	int key     = [self song]->fProperties[section].fKey;
     int grid    = VLPitchToGrid(pitch, *visual, key);
 
-	return (grid*0.5f - 1.0) * kLineH;
+	return [self noteYInGrid:grid];
 }
 
 - (float) noteYInSection:(int)section withPitch:(int)pitch
@@ -166,7 +172,7 @@ static float sFlatPos[] = {
     uint16_t    visual  = 0;
     int         grid    = VLPitchToGrid(pitch, visual, key);
     
-	return (grid*0.5f - 1.0) * kLineH;
+	return [self noteYInGrid:grid];
 }
 
 - (VLMusicElement)accidentalForVisual:(uint16_t)visual
@@ -187,20 +193,10 @@ static float sFlatPos[] = {
     }
 }
 
-- (float) noteYInMeasure:(int)measure withPitch:(int)pitch visual:(uint16_t *)visual
+- (float) noteYInMeasure:(int)measure withGrid:(int)vertPos
 {
 	return [self systemY:fLayout->SystemForMeasure(measure)]
-		+ [self noteYInSection:[self song]->fMeasures[measure].fPropIdx
-				withPitch:pitch visual:visual];
-}
-
-- (float) noteYInMeasure:(int)measure withPitch:(int)pitch
-{
-    uint16_t dummyVis = 0;
-    
-	return [self systemY:fLayout->SystemForMeasure(measure)]
-    + [self noteYInSection:[self song]->fMeasures[measure].fPropIdx
-                 withPitch:pitch visual:&dummyVis];
+		+ [self noteYInGrid:vertPos];
 }
 
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at
@@ -674,109 +670,38 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 	[fFieldEditor setAction:nil];
 }
 
-const float kSemiFloor = -5.0f*kLineH;
-static int8_t sSemiToPitch[] = {
-	47,     // B
-	48, 50, // D
-	52, 53, // F
-	55,	57, // A
-	59, 60, // Middle C
-	62, 64, // E
-	65, 67, // G
-	69, 71, // B
-	72, 74, // D
-	76, 77, // F
-	79, 81, // A
-	83, 84, // C
-	86, 88, // E
-	89, 91, // G
-	93, 95, // B
-	96, 98  // D
-};
-
-static int8_t sFlatAcc[] = {
-	6,	// Cb
-   11,	
-	4,	// Db
-	9,
-	2,	// Eb
-	7,	// Fb
-   12,
-	5, 	// Gb
-   10,
-	3,	// Ab
-	8,	
-	1,	// Bb
-};
-
-static int8_t sSharpAcc[] = {
-	2,	// C# is the 2nd sharp
-	9,
-	4,	// D#
-   11,
-	6,	// E#
-	1,	// F#
-	8,
-	3,	// G#
-   10,
-	5,	// A#
-   12,
-	7,	// B#
-};
+const float kSemiFloor = -1.0f*kLineH;
 
 - (void) accidentalFromEvent:(NSEvent *)event
 {
-	fCursorAccidental	= (VLMusicElement)0;
-
-	//
-	// Extension
-	//
-	if (([event modifierFlags] & (NSShiftKeyMask|NSAlternateKeyMask|NSCommandKeyMask))==NSShiftKeyMask) {
-		fCursorAccidental = kMusicExtendCursor;
-		return;
-	}
-	int 					cursorSection	= 
-		[self song]->fMeasures[fCursorMeasure].fPropIdx;
-	const VLProperties &	prop 			= 
-		[self song]->fProperties[cursorSection];
-
     switch ([event modifierFlags] & (NSShiftKeyMask|NSAlternateKeyMask|NSCommandKeyMask)) {
+    case NSShiftKeyMask:
+        fCursorVisual       = kCursorExtend;
+        break;
     case NSShiftKeyMask|NSAlternateKeyMask:
-        fCursorAccidental	= kMusic2FlatCursor;    // Gbb
-        fCursorActualPitch  = fCursorPitch-2;
+        fCursorVisual       = VLNote::kWant2Flat;    // Gbb
         break;
     case NSAlternateKeyMask:
-        fCursorAccidental	= kMusicFlatCursor;     // Gb
-        fCursorActualPitch  = fCursorPitch-1;
+        fCursorVisual       = VLNote::kWantFlat;     // Gb
         break;
     case NSShiftKeyMask|NSCommandKeyMask:
-        fCursorAccidental   = kMusic2SharpCursor;   // G##
-        fCursorActualPitch  = fCursorPitch+2;
+        fCursorVisual       = VLNote::kWant2Sharp;   // G##
         break;				  
     case NSCommandKeyMask:
-        fCursorAccidental   = kMusicSharpCursor;    // G#
-        fCursorActualPitch  = fCursorPitch+1;
+        fCursorVisual       = VLNote::kWantSharp;    // G#
         break;
     case NSAlternateKeyMask|NSCommandKeyMask:
-        fCursorAccidental	= kMusicNaturalCursor;  // G
-        fCursorActualPitch	= fCursorPitch;
+        fCursorVisual       = VLNote::kWantNatural;  // G
         break;
     default:
-        switch (VLVisualInKey(fCursorPitch, prop.fKey)) {
-        case VLNote::kWantFlat:
-            fCursorActualPitch = fCursorPitch-1;
-        case VLNote::kWantSharp:
-            fCursorActualPitch = fCursorPitch+1;
-        default:
-            fCursorActualPitch = fCursorPitch;
-        }
+        fCursorVisual       = 0;
         break;
     }
 }
 
 - (VLRegion) findRegionForEvent:(NSEvent *) event
 {
-	fCursorPitch = VLNote::kNoPitch;
+	fCursorVertPos          = kCursorNoPitch;
 
 	NSPoint loc 			= [event locationInWindow];
 	loc 					= [self convertPoint:loc fromView:nil];
@@ -841,8 +766,7 @@ static int8_t sSharpAcc[] = {
 	}
 
 	loc.y		   	   -= kSystemBaseline+kSemiFloor;
-	int semi			= static_cast<int>(roundf(loc.y / (0.5f*kLineH)));
-	fCursorPitch		= sSemiToPitch[semi];
+	fCursorVertPos      = static_cast<int>(roundf(loc.y / (0.5f*kLineH)));
 
 	[self accidentalFromEvent:event];
 
@@ -854,16 +778,16 @@ static int8_t sSharpAcc[] = {
    	if ([event modifierFlags] & NSAlphaShiftKeyMask)
 		return; // Keyboard mode, ignore mouse
 
-	bool hadCursor = fCursorPitch != VLNote::kNoPitch;
+	bool hadCursor = fCursorRegion == kRegionNote;
 	[self findRegionForEvent:event];
-	bool hasCursor = fCursorPitch != VLNote::kNoPitch;
+	bool hasCursor = fCursorRegion == kRegionNote;
 
 	[self setNeedsDisplay:(hadCursor || hasCursor)];
 }
 
 - (void)flagsChanged:(NSEvent *)event
 {
-	if (fCursorPitch != VLNote::kNoPitch) {
+	if (fCursorRegion == kRegionNote) {
 		[self accidentalFromEvent:event];
 		[self setNeedsDisplay:YES];
 	}
@@ -877,7 +801,7 @@ static int8_t sSharpAcc[] = {
 
 - (void) mouseExited:(NSEvent *)event
 {
-	fCursorPitch = VLNote::kNoPitch;
+	fCursorRegion = kRegionNowhere;
 	[[self window] setAcceptsMouseMovedEvents:NO];
 	[self setNeedsDisplay:YES];
 }
@@ -919,14 +843,6 @@ static int8_t sSharpAcc[] = {
 	NSString * k = [event charactersIgnoringModifiers];
 	
 	switch ([k characterAtIndex:0]) {
-	case '\r':
-		[self startKeyboardCursor];
-		[self addNoteAtCursor];
-		break;
-	case ' ':
-		[self startKeyboardCursor];
-		VLSoundOut::Instance()->PlayNote(VLNote(1, fCursorPitch));
-		break;
 	case 'r':
 		if (fClickMode == 'r')
 			fClickMode = ' ';

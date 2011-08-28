@@ -21,58 +21,31 @@
 
 - (void) addNoteAtCursor
 {	
-	if (fCursorMeasure > -1 && fCursorActualPitch) {
-		VLNote	newNote(1, fClickMode==' ' ? fCursorActualPitch : VLNote::kNoPitch);
-		switch (fCursorAccidental) {
-		case kMusicFlatCursor:
-			newNote.fVisual |= VLNote::kWantFlat;
-			break;
-		case kMusicSharpCursor:
-			newNote.fVisual |= VLNote::kWantSharp;
-			break;
-        case kMusic2FlatCursor:
-            newNote.fVisual |= VLNote::kWant2Flat;
-            break;
-        case kMusic2SharpCursor:
-            newNote.fVisual |= VLNote::kWant2Sharp;
-            break;
-        case kMusicNaturalCursor:
-            newNote.fVisual |= VLNote::kWantNatural;
-            break;
-        default:
-            break;
-		}
+	if (fCursorMeasure > -1 && fCursorVertPos != kCursorNoPitch) {
 		[[self document] willChangeSong];
-		if (fCursorAccidental == kMusicExtendCursor) 
-			newNote = [self song]->ExtendNote(fCursorMeasure, fCursorAt);
-		else if (fClickMode == 'k')
+		if (fCursorVisual == kCursorExtend) {
+			VLNote oldNote = [self song]->ExtendNote(fCursorMeasure, fCursorAt);
+			VLSoundOut::Instance()->PlayNote(oldNote);
+		} else if (fClickMode == 'k') {
 			[self song]->DelNote(fCursorMeasure, fCursorAt);
-		else	
+		} else {
+            int pitch   = VLNote::kNoPitch;
+            if (fClickMode == ' ')
+                pitch = VLGridToPitch(fCursorVertPos, fCursorVisual, 
+                                      [self song]->Properties(fCursorMeasure).fKey);
+            VLNote	newNote(1, pitch, fCursorVisual & ~kCursorFlagsMask);
 			[self song]->AddNote(VLLyricsNote(newNote), fCursorMeasure, fCursorAt);
-		[[self document] didChangeSong];
-
-		if (fClickMode == ' ')
 			VLSoundOut::Instance()->PlayNote(newNote);
-		else
-			fClickMode	= ' ';
+        }
+		[[self document] didChangeSong];
 	}
 }
 
-- (void) startKeyboardCursor
-{
-	if (fCursorMeasure < 0) {
-		fCursorMeasure		= 0;
-		fCursorPitch		= VLNote::kMiddleC;
-		fCursorActualPitch	= fCursorPitch;
-		fCursorAt			= VLFraction(0);
-	}
-}
-
-- (void) drawLedgerLinesInSection:(int)section withPitch:(int)pitch visual:(uint16_t)visual at:(NSPoint)p
+- (void) drawLedgerLines:(int)vertPos at:(NSPoint)p
 {
 	p.x        += kLedgerX;
-    int step    = ([self gridInSection:section withPitch:pitch visual:visual]-2)/2;
-	
+    
+    int step = (vertPos-2) / 2;
 	for (int i=0; i-- > step; ) {
 		NSPoint p0	= p;
 		p0.y	   += i*kLineH;
@@ -89,36 +62,37 @@
 	}
 }
 
-- (void) drawNoteCursor:(int)pitch inMeasure:(size_t)measure at:(VLFract)at
-					  accidental:(VLMusicElement)accidental
-							mode:(char)mode
+- (void) drawLedgerLinesInSection:(int)section withPitch:(int)pitch visual:(uint16_t)visual at:(NSPoint)p
+{
+    [self drawLedgerLines:[self gridInSection:section withPitch:pitch visual:visual] at:p];
+}
+
+- (void) drawNoteCursor:(int)vertPos inMeasure:(size_t)measure at:(VLFract)at
+                 visual:(uint16_t)visual mode:(char)mode
 {
 	int 			cursorX;
 	int				cursorY;
-	int				cursorSect;
 	VLMusicElement	cursorElt;
+    VLMusicElement  accidental = mode ? [self accidentalForVisual:visual] : kMusicNothing;
 	
 	cursorX = [self noteXInMeasure:measure at:at];
-	if (accidental == kMusicExtendCursor) {
-		cursorY 	= [self noteYInMeasure:measure withPitch:pitch];
-		cursorElt	= accidental;
+	if (visual == kCursorExtend) {
+		cursorY 	= [self noteYInGrid:vertPos];
+		cursorElt	= kMusicExtendCursor;
 	} else {
-        uint16_t visual = 0;
 		switch (mode) {
 		default:
-            cursorY 	= [self noteYInMeasure:measure withPitch:pitch visual:&visual] - kNoteY;
-			cursorSect  = [self song]->fMeasures[measure].fPropIdx;
-			[self drawLedgerLinesInSection:cursorSect withPitch:pitch 
-				  visual:visual at:NSMakePoint(cursorX, 
-                  [self systemY:fLayout->SystemForMeasure(measure)])];
+            cursorY 	= [self noteYInMeasure:measure withGrid:vertPos] - kNoteY;
+            [self drawLedgerLines:vertPos at:NSMakePoint(cursorX, 
+                [self systemY:fLayout->SystemForMeasure(measure)])];
 			cursorElt 	= kMusicNoteCursor;
 			break;
 		case 'r':
-			cursorY 	= [self noteYInMeasure:measure withPitch:65];
+            cursorY 	= [self noteYInMeasure:measure withGrid:3];
 			cursorElt	= kMusicRestCursor;
 			break;
 		case 'k':
-			cursorY 	= [self noteYInMeasure:measure withPitch:pitch];
+            cursorY 	= [self noteYInGrid:vertPos];
 			cursorElt	= kMusicKillCursor;
 			break;
 		}
@@ -128,9 +102,11 @@
 	[[self musicElement:cursorElt] 
 		compositeToPoint:xy
 		operation: NSCompositeSourceOver];
-	if (mode && accidental && accidental != kMusicExtendCursor) {
-		xy.y	+= kNoteY;
-		switch (cursorElt= accidental) {
+    
+	if (accidental) {
+		xy.y               += kNoteY;
+        (int &)accidental  += kMusicFlatCursor-kMusicFlat;
+		switch (accidental) {
 		case kMusicFlatCursor:
 			xy.x	+= kFlatW;
 			xy.y	+= kFlatY;
@@ -152,22 +128,21 @@
 			xy.y	+= kNaturalY;
 			break;
 		}
-		[[self musicElement:cursorElt] 
+		[[self musicElement:accidental] 
 			compositeToPoint:xy
 			operation: NSCompositeSourceOver];
 	}
 }
 
-- (void) drawNoteCursor:(int)pitch inMeasure:(size_t)measure at:(VLFract)at
-             accidental:(VLMusicElement)accidental
+- (void) drawNoteCursor:(int)vertPos inMeasure:(size_t)measure at:(VLFract)at visual:(uint16_t)visual
 {
-	[self drawNoteCursor:pitch inMeasure:measure at:at accidental:accidental mode:0];
+    [self drawNoteCursor:vertPos inMeasure:measure at:at visual:visual mode:0];
 }
 
 - (void) drawNoteCursor
 {
-	[self drawNoteCursor:fCursorPitch inMeasure:fCursorMeasure at:fCursorAt
-		  accidental:fCursorAccidental mode:fClickMode];	
+	[self drawNoteCursor:fCursorVertPos inMeasure:fCursorMeasure at:fCursorAt
+                  visual:fCursorVisual mode:fClickMode];
 }
 
 - (void) drawNote:(int)visual at:(NSPoint)p 
@@ -390,7 +365,6 @@
 					  accidental:[self accidentalForVisual:filterVisuals(step, visual)]
 					  tied:tied];
 			} else {
-				VLMusicElement		accidental;
 				pos = NSMakePoint([self noteXInMeasure:measIdx at:at],
 								  kSystemY+[self noteYInSection:measure.fPropIdx withPitch:65]);
 				[self drawRest:note->fVisual & VLNote::kNoteHeadMask at: pos];
@@ -415,7 +389,7 @@
 	if (hasTriplets) {
 		[self drawTripletBracketFrom:tripletStartX to:tripletEndX atY:tripletY];
 	}
-	if (fCursorPitch != VLNote::kNoPitch && fLayout->SystemForMeasure(fCursorMeasure) == system)
+	if (fCursorRegion == kRegionNote && fLayout->SystemForMeasure(fCursorMeasure) == system)
 		[self drawNoteCursor];
 }
 
