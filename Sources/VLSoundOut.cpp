@@ -252,11 +252,14 @@ void VLAUSoundOut::PlayNote(const VLNote & note)
 
 void VLAUSoundOut::PlayChord(const VLChord & chord)
 {
+    //
+    // TODO: The voicings here are not very realistic
+    //
 	std::vector<int8_t>	notes;
 
 	for (int i = 0; i < 32; ++i)
 		if (chord.fSteps & (1 << i))
-			notes.push_back(chord.fPitch+i);
+			notes.push_back(chord.fPitch+i%12);
 	if (chord.fRootPitch != VLNote::kNoPitch)
 		notes.push_back(chord.fRootPitch);
 	Play(&notes[0], notes.size());
