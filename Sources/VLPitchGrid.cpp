@@ -53,6 +53,16 @@ static inline bool HasSharp(int semi, int key)
     return sSharps[key-1] & (1<<(semi+2));
 }
 
+uint16_t    VLVisualInKey(int8_t pitch, int key)
+{
+    if (key < 0 && HasFlat(pitch % 12, key))
+        return VLNote::kWantFlat;
+    else if (key > 0 && HasSharp(pitch % 12, key))
+        return VLNote::kWantSharp;
+    else
+        return 0;
+}
+
 static inline int8_t SemiToStep(int semi)
 {
     static const int8_t sSteps[] = 

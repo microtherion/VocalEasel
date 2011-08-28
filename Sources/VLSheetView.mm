@@ -30,6 +30,8 @@ static NSString * sElementNames[kMusicElements] = {
 	@"flat",
 	@"sharp",
 	@"natural",
+    @"doubleflat",
+    @"doublesharp",
 	@"whole-notehead",
 	@"half-notehead",
 	@"notehead",
@@ -46,6 +48,8 @@ static NSString * sElementNames[kMusicElements] = {
 	@"flatcursor",
 	@"sharpcursor",
 	@"naturalcursor",
+	@"doubleflatcursor",
+	@"doublesharpcursor",
 	@"restcursor",
 	@"killcursor",
 	@"extendcursor",
@@ -169,11 +173,13 @@ static float sFlatPos[] = {
 {
     switch (visual & VLNote::kAccidentalsMask) {
     case VLNote::kWantSharp:
-    case VLNote::kWant2Sharp: // TODO
         return kMusicSharp;
     case VLNote::kWantFlat:
-    case VLNote::kWant2Flat: // TODO
         return kMusicFlat;
+    case VLNote::kWant2Sharp: 
+        return kMusic2Sharp;
+    case VLNote::kWant2Flat: 
+        return kMusic2Flat;
     case VLNote::kWantNatural:
         return kMusicNatural;
     default:
@@ -725,7 +731,7 @@ static int8_t sSharpAcc[] = {
 	//
 	// Extension
 	//
-	if ([event modifierFlags] & NSShiftKeyMask) {
+	if (([event modifierFlags] & (NSShiftKeyMask|NSAlternateKeyMask|NSCommandKeyMask))==NSShiftKeyMask) {
 		fCursorAccidental = kMusicExtendCursor;
 		return;
 	}
@@ -734,66 +740,38 @@ static int8_t sSharpAcc[] = {
 	const VLProperties &	prop 			= 
 		[self song]->fProperties[cursorSection];
 
-	if (prop.fKey >= 0) {
-		if (prop.fKey >= sSharpAcc[fCursorPitch % 12]) { // Sharp in Key
-			switch ([event modifierFlags] & (NSAlternateKeyMask|NSCommandKeyMask)) {
-			case NSAlternateKeyMask:
-				fCursorAccidental	= kMusicFlatCursor; // G# -> Gb
-				fCursorActualPitch  = fCursorPitch-1;
-				break;
-			case NSCommandKeyMask:
-				fCursorAccidental   = kMusicSharpCursor;
-				// Fall through
-			default:
-				fCursorActualPitch  = fCursorPitch+1;
-				break;				  // G# -> G#
-			case NSAlternateKeyMask|NSCommandKeyMask:
-				fCursorAccidental	= kMusicNaturalCursor; // G# -> G
-				fCursorActualPitch	= fCursorPitch;
-				break;
-			}
-			return;
-		}
-	} else {
-		if (prop.fKey <= -sFlatAcc[fCursorPitch % 12]) { // Flat in Key
-			switch ([event modifierFlags] & (NSAlternateKeyMask|NSCommandKeyMask)) {
-			case NSAlternateKeyMask:
-				fCursorAccidental	= kMusicFlatCursor;
-				// Fall through
-			default:
-				fCursorActualPitch  = fCursorPitch-1;
-				break;				  // Gb -> Gb
-			case NSCommandKeyMask:
-				fCursorAccidental	= kMusicSharpCursor; // Gb -> G#
-				fCursorActualPitch  = fCursorPitch+1;
-				break;				  
-			case NSAlternateKeyMask|NSCommandKeyMask:
-				fCursorAccidental	= kMusicNaturalCursor; // Gb -> G
-				fCursorActualPitch	= fCursorPitch;
-				break;
-			}
-			return;
-		}
-	}
-	//
-	// Natural
-	//
-	switch ([event modifierFlags] & (NSAlternateKeyMask|NSCommandKeyMask)) {
-	case NSAlternateKeyMask:
-		fCursorAccidental	= kMusicFlatCursor; // G -> Gb
-		fCursorActualPitch	= fCursorPitch-1;
-		break;
-	case NSCommandKeyMask:
-		fCursorAccidental	= kMusicSharpCursor; // G -> G#
-		fCursorActualPitch	= fCursorPitch+1;
-		break;
+    switch ([event modifierFlags] & (NSShiftKeyMask|NSAlternateKeyMask|NSCommandKeyMask)) {
+    case NSShiftKeyMask|NSAlternateKeyMask:
+        fCursorAccidental	= kMusic2FlatCursor;    // Gbb
+        fCursorActualPitch  = fCursorPitch-2;
+        break;
+    case NSAlternateKeyMask:
+        fCursorAccidental	= kMusicFlatCursor;     // Gb
+        fCursorActualPitch  = fCursorPitch-1;
+        break;
+    case NSShiftKeyMask|NSCommandKeyMask:
+        fCursorAccidental   = kMusic2SharpCursor;   // G##
+        fCursorActualPitch  = fCursorPitch+2;
+        break;				  
+    case NSCommandKeyMask:
+        fCursorAccidental   = kMusicSharpCursor;    // G#
+        fCursorActualPitch  = fCursorPitch+1;
+        break;
     case NSAlternateKeyMask|NSCommandKeyMask:
-        fCursorAccidental	= kMusicNaturalCursor; 
-        // Fall through
-	default:
-		fCursorActualPitch	= fCursorPitch;
-		break;				  					 // G -> G
-	}
+        fCursorAccidental	= kMusicNaturalCursor;  // G
+        fCursorActualPitch	= fCursorPitch;
+        break;
+    default:
+        switch (VLVisualInKey(fCursorPitch, prop.fKey)) {
+        case VLNote::kWantFlat:
+            fCursorActualPitch = fCursorPitch-1;
+        case VLNote::kWantSharp:
+            fCursorActualPitch = fCursorPitch+1;
+        default:
+            fCursorActualPitch = fCursorPitch;
+        }
+        break;
+    }
 }
 
 - (VLRegion) findRegionForEvent:(NSEvent *) event

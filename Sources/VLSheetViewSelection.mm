@@ -51,8 +51,26 @@
 	VLMIDIUserEvent * event = (VLMIDIUserEvent *)[ev pointerValue];
 	if (event->fPitch) {
 		fNotePitch 		= event->fPitch;
-        fNoteAccidental = (event->fVisual & VLNote::kWantFlat) ? kMusicFlat 
-            : ((event->fVisual & VLNote::kWantSharp) ? kMusicSharp : kMusicNothing);
+        fNoteAccidental = kMusicNothing;
+        switch (event->fVisual & VLNote::kAccidentalsMask) {
+        case VLNote::kWantFlat:
+            fNoteAccidental = kMusicFlatCursor;
+            break;
+        case VLNote::kWantSharp:
+            fNoteAccidental = kMusicSharpCursor;
+            break;
+        case VLNote::kWant2Flat:
+            fNoteAccidental = kMusic2FlatCursor;
+            break;
+        case VLNote::kWant2Sharp:
+            fNoteAccidental = kMusic2SharpCursor;
+            break;
+        case VLNote::kWantNatural:
+            fNoteAccidental = kMusicNaturalCursor;
+            break;
+        default:
+            break;
+        }
 		fNoteMeasure	= event->fMeasure;
 		fNoteAt			= event->fAt;
 		fStanza			= event->fStanza;

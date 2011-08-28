@@ -11,6 +11,11 @@
 #include <inttypes.h>
 
 //
+// Inquire about accidentals
+//
+uint16_t    VLVisualInKey(int8_t pitch, int key);
+
+//
 // Grid position is defined from middle C
 //
 int     VLPitchToGrid(int8_t pitch, uint16_t & visual, int key);

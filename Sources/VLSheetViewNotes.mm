@@ -30,8 +30,16 @@
 		case kMusicSharpCursor:
 			newNote.fVisual |= VLNote::kWantSharp;
 			break;
+        case kMusic2FlatCursor:
+            newNote.fVisual |= VLNote::kWant2Flat;
+            break;
+        case kMusic2SharpCursor:
+            newNote.fVisual |= VLNote::kWant2Sharp;
+            break;
         case kMusicNaturalCursor:
             newNote.fVisual |= VLNote::kWantNatural;
+            break;
+        default:
             break;
 		}
 		[[self document] willChangeSong];
@@ -88,33 +96,21 @@
 	int 			cursorX;
 	int				cursorY;
 	int				cursorSect;
-	uint16_t 		cursorVisual = 0;
 	VLMusicElement	cursorElt;
 	
 	cursorX = [self noteXInMeasure:measure at:at];
 	if (accidental == kMusicExtendCursor) {
 		cursorY 	= [self noteYInMeasure:measure withPitch:pitch];
 		cursorElt	= accidental;
-	} else
+	} else {
+        uint16_t visual = 0;
 		switch (mode) {
 		default:
-			switch (accidental) {
-			case kMusicSharp:
-				cursorVisual = VLNote::kWantSharp;
-				break;
-			case kMusicFlat:
-				cursorVisual = VLNote::kWantFlat;
-				break;
-            default:
-                break;
-			}
-			cursorY 	= 
-				[self noteYInMeasure:measure withPitch:pitch 
-					  visual:&cursorVisual] - kNoteY;
+            cursorY 	= [self noteYInMeasure:measure withPitch:pitch visual:&visual] - kNoteY;
 			cursorSect  = [self song]->fMeasures[measure].fPropIdx;
 			[self drawLedgerLinesInSection:cursorSect withPitch:pitch 
-				  visual:cursorVisual at:NSMakePoint(cursorX, 
-					 [self systemY:fLayout->SystemForMeasure(measure)])];
+				  visual:visual at:NSMakePoint(cursorX, 
+                  [self systemY:fLayout->SystemForMeasure(measure)])];
 			cursorElt 	= kMusicNoteCursor;
 			break;
 		case 'r':
@@ -126,12 +122,13 @@
 			cursorElt	= kMusicKillCursor;
 			break;
 		}
+    }
 	
 	NSPoint	xy = NSMakePoint(cursorX-kNoteX, cursorY);
 	[[self musicElement:cursorElt] 
 		compositeToPoint:xy
 		operation: NSCompositeSourceOver];
-	if (accidental  && accidental != kMusicExtendCursor) {
+	if (mode && accidental && accidental != kMusicExtendCursor) {
 		xy.y	+= kNoteY;
 		switch (cursorElt= accidental) {
 		case kMusicFlatCursor:
@@ -142,6 +139,14 @@
 			xy.x	+= kSharpW;
 			xy.y	+= kSharpY;
 			break;
+        case kMusic2FlatCursor:
+            xy.x	+= k2FlatW;
+            xy.y	+= k2FlatY;
+            break;
+        case kMusic2SharpCursor:
+            xy.x	+= k2SharpW;
+            xy.y	+= k2SharpY;
+            break;
 		default:
 			xy.x	+= kNaturalW;
 			xy.y	+= kNaturalY;
@@ -156,8 +161,7 @@
 - (void) drawNoteCursor:(int)pitch inMeasure:(size_t)measure at:(VLFract)at
              accidental:(VLMusicElement)accidental
 {
-	[self drawNoteCursor:pitch inMeasure:measure at:at 
-		  accidental:accidental mode:' '];
+	[self drawNoteCursor:pitch inMeasure:measure at:at accidental:accidental mode:0];
 }
 
 - (void) drawNoteCursor
@@ -209,6 +213,14 @@
 			at.x	+= kFlatW;
 			at.y	+= kFlatY;
 			break;
+        case kMusic2Sharp:
+            at.x	+= k2SharpW;
+            at.y	+= k2SharpY;
+            break;
+        case kMusic2Flat:
+            at.x	+= k2FlatW;
+            at.y	+= k2FlatY;
+            break;
 		case kMusicNatural:
 			at.x	+= kNaturalW;
 			at.y	+= kNaturalY;

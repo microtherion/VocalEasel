@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2006-2007 Matthias Neeracher
+// Copyright © 2006-2011 Matthias Neeracher
 //
 
 const float kLineX		=  5.0;
@@ -28,9 +28,13 @@ const float kAccW		= 10.0f;
 const float kSharpY		=-15.0f;
 const float kFlatY		= -7.0f;
 const float kNaturalY	=-15.0f;
+const float k2SharpY	= -5.0f;
+const float k2FlatY		= -7.0f;
 const float kSharpW		=-11.0f;
 const float kFlatW		= -9.0f;
 const float kNaturalW	= -7.0f;
+const float k2SharpW	=-11.0f;
+const float k2FlatW		=-11.0f;
 const float kImgScale	= 0.04f;
 #define kChordY		   	((fNumTopLedgers+6)*kLineH)
 const float kChordW		= 40.0f;
