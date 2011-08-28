@@ -13,25 +13,32 @@
 
 #define	SHARP   "\xE2\x99\xAF"
 #define FLAT    "\xE2\x99\xAD"
+#define SCALE   "C D EF G A B"
 
 const char *	kVLSharpStr     =   SHARP;
 const char *    kVLFlatStr      =   FLAT;
 const char *    kVL2SharpStr    =   "\xF0\x9D\x84\xAA";
 const char *    kVL2FlatStr     =   "\xF0\x9D\x84\xAB";
 const char *    kVLNaturalStr   =   "\xE2\x99\xAE";
-
-static const char   kScale[]            = "C D EF G A B";
-static const char * kFancyAccidental[]  =
+const char *    kVLFancyNames[]  =
 {
-    kVL2SharpStr, kVLSharpStr, "", kVLFlatStr, kVL2FlatStr
+    SCALE, "R", kVLNaturalStr, kVL2SharpStr, kVLSharpStr, "", kVLFlatStr, kVL2FlatStr
 };
-const int8_t kAccidentalBase = 2;
-
-std::string	VLPitchName(int8_t pitch, uint16_t accidental)
+const char *    kVLLilypondNames[]  =
 {
+    "c d ef g a b", "r", "", "isis", "is", "", "es", "eses"
+};
+
+const int8_t kAccidentalBase = 5;
+
+std::string	VLPitchName(int8_t pitch, uint16_t accidental, int * octave, const char *names[])
+{
+    const char * kScale = names[0];
+    const char * kRest  = names[1];
 	if (pitch == VLNote::kNoPitch)
-		return "r";
+		return kRest;
     int8_t adjust;
+    int8_t semi;
     accidental  &= VLNote::kAccidentalsMask;
     switch (accidental) {
         case VLNote::kWant2Flat:
@@ -50,24 +57,28 @@ std::string	VLPitchName(int8_t pitch, uint16_t accidental)
             adjust  = 0;
             break;
     }
-    pitch       += adjust;
-    pitch       %= 12;
+    pitch      += adjust;
+    semi        = pitch % 12;
     //
     // Will either succeed immediately, or after one adjustment
     //
-    if (kScale[pitch] == ' ')
+    if (kScale[semi] == ' ')
         if (adjust < 0 || (accidental & VLNote::kPreferFlats) == VLNote::kPreferFlats) {
             ++adjust;
-            pitch = (pitch+1)%12;
+            ++pitch;
+            semi = (semi+1)%12;
         } else {
             --adjust;
-            pitch = (pitch+11)%12;           
+            --pitch;
+            semi = (semi+11)%12;           
         }
-    std::string name = std::string(1, kScale[pitch]);
+    std::string name = std::string(1, kScale[semi]);
+    if (octave)
+        *octave = (pitch / VLNote::kOctave)-5;
     if (adjust)
-        return name+kFancyAccidental[adjust+kAccidentalBase];
+        return name+names[adjust+kAccidentalBase];
     else if ((accidental & VLNote::kWantNatural) == VLNote::kWantNatural)
-        return name+kVLNaturalStr;
+        return name+names[2];
     else
         return name;
 }
@@ -103,8 +114,8 @@ int8_t VLParsePitch(std::string & str, size_t at, uint16_t * accidental)
     //
 	// Determine key
 	//
-	if (const char * key = strchr(kScale, std::toupper(str[at]))) {
-		pitch	= key-kScale+VLNote::kMiddleC;
+	if (const char * key = strchr(SCALE, std::toupper(str[at]))) {
+		pitch	= key-SCALE+VLNote::kMiddleC;
     } else if (str[at] == 'r' || str[at] == 's') {
         str.erase(at, 1); // Rest
         return VLNote::kNoPitch;
@@ -135,13 +146,14 @@ static const char * kStepNames[] = {
 
 void VLChordName(int8_t pitch, uint16_t accidental, uint32_t steps, 
                  int8_t rootPitch, uint16_t rootAccidental,
-                 std::string & baseName, std::string & extName, std::string & rootName)
+                 std::string & baseName, std::string & extName, std::string & rootName,
+                 const char * names[])
 {
-    baseName = VLPitchName(pitch, accidental);
+    baseName = VLPitchName(pitch, accidental, 0, names);
     if (rootPitch == VLNote::kNoPitch)
         rootName.clear();
     else
-        rootName = VLPitchName(rootPitch, rootAccidental);
+        rootName = VLPitchName(rootPitch, rootAccidental, 0, names);
 	//
 	// m / dim
 	//

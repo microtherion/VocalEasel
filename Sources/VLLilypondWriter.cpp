@@ -9,6 +9,7 @@
 //
 
 #include "VLLilypondWriter.h"
+#include "VLPitchName.h"
 
 void VLLilypondWriter::Visit(VLSong & song)
 {
@@ -182,23 +183,9 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 		fLyrics[stanza] += fL[stanza] + nuline;
 }
 
-static const char kScale[] = "c d ef g a b";
 static const char kValue[] = {
 	1, 2, 4, 8, 16, 32
 };
-
-static std::string	LilypondPitchName(int8_t pitch, bool useSharps, bool restIsSkip)
-{
-	if (pitch == VLNote::kNoPitch)
-		return restIsSkip ? "s" : "r";
-	pitch %= 12;
-	if (kScale[pitch] != ' ')
-		return kScale[pitch] + std::string();
-	else if (useSharps)
-		return kScale[pitch-1] + std::string("is");
-	else
-		return kScale[pitch+1] + std::string("es");
-}
 
 static std::string EscapeSyllable(std::string syll)
 {
@@ -256,13 +243,12 @@ static bool PreferSharps(bool globalSharps, int noteAccidentals)
 
 void VLLilypondWriter::VisitNote(VLLyricsNote & n)							   
 {
-	std::string nm = 
-		LilypondPitchName(n.fPitch, PreferSharps(fUseSharps, n.fVisual), false);
+    int octave;
+	std::string nm = VLPitchName(n.fPitch, n.fVisual, &octave, kVLLilypondNames);
 	if (n.fPitch != VLNote::kNoPitch) {
-		int ref = VLNote::kMiddleC-VLNote::kOctave;
-		for (int ticks = (n.fPitch-ref)/VLNote::kOctave; ticks>0; --ticks)
+		for (int ticks = octave+1; ticks>0; --ticks)
 			nm += '\'';
-		for (int commas = (ref-n.fPitch)/VLNote::kOctave; commas>0; --commas)
+		for (int commas = -1-octave; commas>0; --commas)
 			nm += ',';
 		fInPickup = false;
 	} else if (fInPickup) {
@@ -303,8 +289,9 @@ static const char * kLilypondStepNames[] = {
 
 void VLLilypondWriter::VisitChord(VLChord & c)									
 {
-	std::string name = 
-		LilypondPitchName(c.fPitch, PreferSharps(fUseSharps, c.fVisual), true);
+	std::string name = VLPitchName(c.fPitch, c.fVisual, 0, kVLLilypondNames);
+    if (name == "r")
+        name = "s";
 	char duration[16];
 	if (c.fDuration.fNum == 1 && !(c.fDuration.fDenom & (c.fDuration.fDenom-1))) // Power of two
 		sprintf(duration, "%d", c.fDuration.fDenom);
@@ -396,7 +383,7 @@ void VLLilypondWriter::VisitChord(VLChord & c)
 	// Root
 	//
 	if (c.fRootPitch != VLNote::kNoPitch)
-		name += "/+" + LilypondPitchName(c.fRootPitch, fUseSharps, false);
+		name += "/+" + VLPitchName(c.fRootPitch, c.fRootAccidental, 0, kVLLilypondNames);
 
  done:
 	if (fAccum.size())
