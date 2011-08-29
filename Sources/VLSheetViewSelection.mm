@@ -54,7 +54,10 @@
 		fNoteMeasure	= event->fMeasure;
 		fNoteAt			= event->fAt;
         fNoteVisual     = event->fVisual & VLNote::kAccidentalsMask;
-		fNoteVert 		= VLPitchToGrid(event->fPitch, fNoteVisual, [fView song]->Properties(fNoteMeasure).fKey);
+        if (event->fPitch == VLNote::kNoPitch)
+            fNoteVert   = kCursorNoPitch;
+        else
+            fNoteVert 	= VLPitchToGrid(event->fPitch, fNoteVisual, [fView song]->Properties(fNoteMeasure).fKey);
 		fStanza			= event->fStanza;
 		[fView highlightTextInStanza:fStanza measure:fNoteMeasure at:fNoteAt one:YES]; 
 	} else {
