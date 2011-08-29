@@ -265,6 +265,8 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 			// Prefer further triplets
 			//
 			if (prevTriplets) {
+                prevVisual = (prevVisual & ~VLNote::kAccidentalsMask) 
+                    | (p.fVisual & VLNote::kAccidentalsMask);
 				if (p.fDuration >= 2*prevTripDur) {
 					p.fDuration = 2*prevTripDur;
 					if (prevTriplets == 1) {
