@@ -946,6 +946,7 @@ const float kSemiFloor = -1.0f*kLineH;
 	   [[NSUserDefaults standardUserDefaults] arrayForKey:@"VLGrooves"]];	
 
 	[self updateMenus];
+    [self recalculateDimensions];
 }
 
 - (void)removeObservers:(id)target
