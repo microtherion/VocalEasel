@@ -1934,6 +1934,9 @@ void VLSong::PasteMeasures(size_t beginMeasure, const VLSong & measures, int mod
 
 void VLSong::DeleteMeasures(size_t beginMeasure, size_t endMeasure, int mode)
 {
+    if (beginMeasure == endMeasure)
+        return;
+    
 	if (mode == kOverwriteMelody) {
 		for (size_t m=beginMeasure; m<endMeasure; ++m) {
 			VLLyricsNote rest(Properties(m).fTime);
