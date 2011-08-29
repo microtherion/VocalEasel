@@ -598,35 +598,12 @@
 
 - (IBAction) playMusic:(id)sender
 {
-	const float kUpScale	= 1.41f;
-	const float kDownScale  = 1.0f/kUpScale;
-	bool 		nowPlaying 	= VLSoundOut::Instance()->Playing();
-	const float	tempoRate 	= [songTempo floatValue] / baseTempo;
 	switch (int tag = [sender tag]) {
-	case 0: // Play
-		VLSoundOut::Instance()->SetPlayRate(playRate = 1.0f);
-		if (!hasMusicSequence || !nowPlaying) 
-			[self play:sender];
-		else if (VLSoundOut::Instance()->AtEnd())
-			VLSoundOut::Instance()->SetTime(0);					
-		break;
 	case 1: 	// Fwd
+        VLSoundOut::Instance()->Fwd();
+        break;
 	case -1:	// Rew
-		if (tag * playRate < 0)
-			playRate = tag;
-		else if ([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)
-			playRate *= kDownScale;
-		else 
-			playRate *= kUpScale;
-		VLSoundOut::Instance()->SetPlayRate(playRate*tempoRate);
-		break;
-	case -2: 	// To Start
-		if (playRate < 0)
-			VLSoundOut::Instance()->SetPlayRate(playRate = -playRate);			
-		VLSoundOut::Instance()->SetTime(0);		
-		break;
-	case 2: 	// To End
-		VLSoundOut::Instance()->SetTime(0x7FFFFFFF);		
+		VLSoundOut::Instance()->Bck();
 		break;
 	}
 }

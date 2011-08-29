@@ -43,7 +43,8 @@ public:
 	virtual bool Playing() = 0;
 	virtual bool AtEnd() = 0;
 	virtual void SetPlayRate(float rate) = 0;
-	virtual void SetTime(MusicTimeStamp time) = 0;
+    virtual void Fwd() = 0;
+    virtual void Bck() = 0;
 
 	virtual ~VLSoundOut();
 };

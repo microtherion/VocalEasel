@@ -17,8 +17,9 @@
 
 #include <memory>
 #include <vector>
+#include <dispatch/dispatch.h>
 
-#define R(x) if (OSStatus r = (x)) fprintf(stderr, "%s -> %ld\n", #x, r);
+#define R(x) if (OSStatus r = (x)) fprintf(stderr, "%s -> %d\n", #x, r);
 
 class VLAUSoundOut : public VLSoundOut {
 public:
@@ -31,7 +32,8 @@ public:
 	virtual bool	Playing();
 	virtual bool	AtEnd();
 	virtual void 	SetPlayRate(float rate);
-	virtual void 	SetTime(MusicTimeStamp time);
+	virtual void 	Fwd();
+	virtual void 	Bck();
 	
 	virtual 	   ~VLAUSoundOut();
 protected:
@@ -40,6 +42,7 @@ protected:
 	void			InitSoundOutput(bool fileOutput);
 	virtual void 	SetupOutput(AUNode outputNode);
 	MusicTimeStamp	SequenceLength(MusicSequence music);
+    void            SkipTimeInterval();
 
 	AUGraph			fGraph;
 	MusicPlayer		fPlayer;
@@ -217,9 +220,41 @@ void VLAUSoundOut::SetPlayRate(float rate)
 	MusicPlayerSetPlayRateScalar(fPlayer, fabsf(rate));
 }
 
-void VLAUSoundOut::SetTime(MusicTimeStamp time)
+static MusicTimeStamp       sLastSkip   = 0.0;
+static dispatch_source_t    sResetTimer;
+
+void VLAUSoundOut::SkipTimeInterval()
 {
-	MusicPlayerSetTime(fPlayer, time);
+    MusicTimeStamp  time;
+    MusicPlayerGetTime(fPlayer, &time);
+    time     += sLastSkip;
+    sLastSkip   *= 1.1;
+    if (!sResetTimer) {
+        sResetTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, 
+                                             dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
+        dispatch_source_set_event_handler(sResetTimer, ^{
+            sLastSkip = 0.0;
+        });
+        dispatch_source_set_timer(sResetTimer, DISPATCH_TIME_FOREVER, INT64_MAX, 1000*NSEC_PER_USEC);
+        dispatch_resume(sResetTimer);
+    }
+    dispatch_source_set_timer(sResetTimer, dispatch_time(DISPATCH_TIME_NOW, 500*NSEC_PER_MSEC), 
+                              INT64_MAX, 10*NSEC_PER_MSEC);
+    MusicPlayerSetTime(fPlayer, time);
+}
+
+void VLAUSoundOut::Fwd()
+{
+    if (sLastSkip <= 0.0)
+        sLastSkip = 0.1;
+    SkipTimeInterval();
+}
+
+void VLAUSoundOut::Bck()
+{
+    if (sLastSkip >= 0.0) 
+        sLastSkip = -0.1;
+    SkipTimeInterval();
 }
 
 void VLAUSoundOut::Stop(bool pause)
