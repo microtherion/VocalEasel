@@ -5,17 +5,14 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright Â© 2005-2007 Matthias Neeracher
+// Copyright © 2005-2011 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>
+#import <Quartz/Quartz.h>
 
 @interface VLPDFWindow : NSWindowController <NSToolbarDelegate> {
-	IBOutlet id	pdfView;
-	IBOutlet id prevPageItem;
-	IBOutlet id nextPageItem;
-	IBOutlet id zoomInItem;
-	IBOutlet id zoomOutItem;
+	IBOutlet PDFView *	pdfView;
 }
 
 - (void)reloadPDF;

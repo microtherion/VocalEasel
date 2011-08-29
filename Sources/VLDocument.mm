@@ -579,10 +579,20 @@
 {	
 	if (VLSoundOut::Instance()->Playing()) {
 		[self stop:sender];
-		[sender setTitle:@"Play"];
+        if ([sender isKindOfClass:[NSMenuItem class]]) {
+            [sender setTitle:@"Play"];
+        } else {
+            [sender setLabel:@"Play"];
+            [sender setImage:[NSImage imageNamed:@"play.icns"]];
+        }
 	} else {
 		[self play:sender];
-		[sender setTitle:@"Stop"];
+        if ([sender isKindOfClass:[NSMenuItem class]]) {
+            [sender setTitle:@"Stop"];
+        } else {
+            [sender setLabel:@"Stop"];
+            [sender setImage:[NSImage imageNamed:@"stop.icns"]];
+        }
 	}
 }
 

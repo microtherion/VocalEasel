@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright Â© 2005-2008 Matthias Neeracher
+// Copyright © 2005-2011 Matthias Neeracher
 //
 
 #import "VLSheetWindow.h"
@@ -44,20 +44,6 @@
 
 @implementation VLSheetWindow
 
-static NSString* 	sInputToolbarIdentifier 		= @"Vocalese Sheet Window Toolbar Identifier";
-static NSString*	sOutputToolbarItemIdentifier 	= @"Output Toolbar Item Identifier";
-static NSString*	sLogToolbarItemIdentifier		= @"Log Toolbar Item Identifier";
-static NSString*	sPlayToolbarItemIdentifier		= @"Play Toolbar Item Identifier";
-static NSString*	sStopToolbarItemIdentifier		= @"Stop Toolbar Item Identifier";
-static NSString*	sFwdToolbarItemIdentifier		= @"Fwd Toolbar Item Identifier";
-static NSString*	sBckToolbarItemIdentifier		= @"Rew Toolbar Item Identifier";
-static NSString*	sToBegToolbarItemIdentifier		= @"Begin Toolbar Item Identifier";
-static NSString*	sToEndToolbarItemIdentifier		= @"End Toolbar Item Identifier";
-static NSString*	sZoomInToolbarItemIdentifier	= @"Zoom In Toolbar Item Identifier";
-static NSString*	sZoomOutToolbarItemIdentifier	= @"Zoom Out Toolbar Item Identifier";
-static NSString*	sProgressToolbarItemIdentifier	= @"Progress Toolbar Item Identifier";
-static NSString*	sDisplayToolbarItemIdentifier	= @"Display Toolbar Item Identifier";
-
 - (id)initWithWindow:(NSWindow *)window
 {
 	if (self = [super initWithWindow:window]) {
@@ -78,111 +64,16 @@ static NSString*	sDisplayToolbarItemIdentifier	= @"Display Toolbar Item Identifi
 
 - (void)windowDidLoad
 {
-    NSToolbar *toolbar = [[[NSToolbar alloc] initWithIdentifier: sInputToolbarIdentifier] autorelease];
-
-    [toolbar setAllowsUserCustomization: YES];
-    [toolbar setAutosavesConfiguration: YES];    
-    [toolbar setDelegate: self];
-    
-    [[self window] setToolbar: toolbar];
-}
-
-
-- (NSToolbarItem *) toolbar: (NSToolbar *)toolbar itemForItemIdentifier: (NSString *) itemIdent willBeInsertedIntoToolbar:(BOOL) willBeInserted {
-    NSToolbarItem *	toolbarItem = nil;
-    id				prototype   = nil;
-	
-    if ([itemIdent isEqual: sOutputToolbarItemIdentifier]) 
-		prototype = outputToolItem;
-    else if ([itemIdent isEqual: sLogToolbarItemIdentifier]) 
-		prototype = logToolItem;
-    else if ([itemIdent isEqual: sPlayToolbarItemIdentifier]) 
-		prototype = playToolItem;
-    else if ([itemIdent isEqual: sStopToolbarItemIdentifier]) 
-		prototype = stopToolItem;
-    else if ([itemIdent isEqual: sFwdToolbarItemIdentifier]) 
-		prototype = fwdToolItem;
-    else if ([itemIdent isEqual: sBckToolbarItemIdentifier]) 
-		prototype = bckToolItem;
-    else if ([itemIdent isEqual: sToBegToolbarItemIdentifier]) 
-		prototype = tobegToolItem;
-    else if ([itemIdent isEqual: sToEndToolbarItemIdentifier]) 
-		prototype = toendToolItem;
-    else if ([itemIdent isEqual: sZoomInToolbarItemIdentifier]) 
-		prototype = zoomInToolItem;
-    else if ([itemIdent isEqual: sZoomOutToolbarItemIdentifier]) 
-		prototype = zoomOutToolItem;
-	else if ([itemIdent isEqual: sDisplayToolbarItemIdentifier]) 
-		prototype = displayToolItem;
-	
-	if (prototype) {
-        toolbarItem = [[[NSToolbarItem alloc] initWithItemIdentifier: itemIdent] autorelease];
-	
-		[toolbarItem setLabel: [prototype title]];
-		[toolbarItem setPaletteLabel: [prototype alternateTitle]];
-		[toolbarItem setToolTip: [prototype toolTip]];
-		[toolbarItem setImage: [prototype image]];
-		[toolbarItem setTarget: [prototype target]];
-		[toolbarItem setAction: [prototype action]];
-		[toolbarItem setTag: [prototype tag]];
-	} else if ([itemIdent isEqual: sProgressToolbarItemIdentifier]) {
-        toolbarItem = [[[NSToolbarItem alloc] initWithItemIdentifier: itemIdent] autorelease];
-		
-		[toolbarItem setView: progressToolItem];
-    } else {
-		toolbarItem = nil;
-    }
-    return toolbarItem;
-}
-
-- (NSArray *) toolbarDefaultItemIdentifiers: (NSToolbar *) toolbar {
-    return [NSArray arrayWithObjects:	
-						sOutputToolbarItemIdentifier, 
-					NSToolbarSeparatorItemIdentifier,
-					sToBegToolbarItemIdentifier,
-					sBckToolbarItemIdentifier,
-					sPlayToolbarItemIdentifier,
-					sStopToolbarItemIdentifier,
-					sFwdToolbarItemIdentifier,
-					sToEndToolbarItemIdentifier,
-					NSToolbarSeparatorItemIdentifier,
-					sZoomInToolbarItemIdentifier, 
-					sZoomOutToolbarItemIdentifier, 
-					NSToolbarFlexibleSpaceItemIdentifier, 
-					sDisplayToolbarItemIdentifier,
-					sLogToolbarItemIdentifier, 
-					sProgressToolbarItemIdentifier,
-					nil];
-}
-
-- (NSArray *) toolbarAllowedItemIdentifiers: (NSToolbar *) toolbar {
-    return [NSArray arrayWithObjects: 	
-					sToBegToolbarItemIdentifier,
-					sBckToolbarItemIdentifier,
-					sPlayToolbarItemIdentifier,
-					sStopToolbarItemIdentifier,
-					sFwdToolbarItemIdentifier,
-					sToEndToolbarItemIdentifier,
-					sZoomInToolbarItemIdentifier, 
-					sZoomOutToolbarItemIdentifier, 
-					sOutputToolbarItemIdentifier, 
-					sLogToolbarItemIdentifier, 
-					sDisplayToolbarItemIdentifier,
-					sProgressToolbarItemIdentifier,
-					NSToolbarCustomizeToolbarItemIdentifier, 
-					NSToolbarFlexibleSpaceItemIdentifier, 
-					NSToolbarSpaceItemIdentifier, 
-					NSToolbarSeparatorItemIdentifier, nil];
 }
 
 - (void) startAnimation
 {
-	[progressToolItem startAnimation:self];
+	[progressIndicator startAnimation:self];
 }
 
 - (void) stopAnimation
 {
-	[progressToolItem stopAnimation:self];
+	[progressIndicator stopAnimation:self];
 }
 
 - (IBAction) zoomIn: (id) sender

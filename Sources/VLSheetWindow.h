@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright Â© 2005-2008 Matthias Neeracher
+// Copyright © 2005-2011 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>
@@ -24,23 +24,13 @@
 
 @end
 
+@class VLSheetView;
+
 @interface VLSheetWindow : NSWindowController <NSToolbarDelegate> {
-	VLEditable *	editTarget;
-
-	IBOutlet id 	outputToolItem;
-	IBOutlet id 	logToolItem;
-	IBOutlet id		playToolItem;
-	IBOutlet id		stopToolItem;
-	IBOutlet id		fwdToolItem;
-	IBOutlet id		bckToolItem;
-	IBOutlet id		tobegToolItem;
-	IBOutlet id		toendToolItem;
-	IBOutlet id		zoomInToolItem;
-	IBOutlet id		zoomOutToolItem;
-	IBOutlet id		progressToolItem;
-	IBOutlet id		displayToolItem;
-
-	IBOutlet id		sheetView;
+	IBOutlet VLSheetView *          sheetView;
+    IBOutlet NSProgressIndicator *  progressIndicator;
+    
+	VLEditable *            editTarget;
 
 	int					editNumTopLedgers;
 	int					editNumBotLedgers;
