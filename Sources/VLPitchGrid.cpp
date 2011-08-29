@@ -239,7 +239,7 @@ void VLVisualFilter::ResetWithKey(int key)
 
 uint16_t VLVisualFilter::operator()(int gridPos, uint16_t visual)
 {
-    gridPos = (gridPos+60) % 12;
+    gridPos = (gridPos+700) % 7;
     visual &= VLNote::kAccidentalsMask;
     if (visual == VLNote::kWantNatural)
         visual = 0;
