@@ -82,9 +82,8 @@ static inline int8_t StepToSemi(int step)
 
 uint16_t VLPitchAccidental(int8_t pitch, uint16_t visual, int key)
 {
-    int semi    = pitch % 12;
-    
-    if ((visual &= VLNote::kAccidentalsMask)) {
+    int         semi            = pitch % 12;
+    if (visual & VLNote::kAccidentalsMask) {
         //
         // The user expressed a preference, try to match it
         //
@@ -118,13 +117,13 @@ uint16_t VLPitchAccidental(int8_t pitch, uint16_t visual, int key)
     //
     // No visuals, or no match
     //
-    if (IsBasicNote(semi)) {
-        return VLNote::kWantNatural;
-    } else if (key <= 0) {
-        return VLNote::kWantFlat;
-    } else {
-        return VLNote::kWantSharp;
-    } 
+    visual &= ~VLNote::kAccidentalsMask;
+    if (IsBasicNote(semi)) 
+        return visual | VLNote::kWantNatural;
+    else if (key <= 0) 
+        return visual | VLNote::kWantFlat;
+    else 
+        return visual | VLNote::kWantSharp;
 }
 
 int VLPitchToGrid(int8_t pitch, uint16_t visual, int key)
@@ -239,16 +238,16 @@ void VLVisualFilter::ResetWithKey(int key)
 
 uint16_t VLVisualFilter::operator()(int gridPos, uint16_t visual)
 {
-    gridPos = (gridPos+700) % 7;
-    visual &= VLNote::kAccidentalsMask;
-    if (visual == VLNote::kWantNatural)
-        visual = 0;
-    if (visual != fState[gridPos]) {
-        fState[gridPos] = visual;
-        if (!visual) 
-            visual          = VLNote::kWantNatural;
+    uint16_t acc    = visual & VLNote::kAccidentalsMask;
+    gridPos         = (gridPos+700) % 7;
+    if (acc == VLNote::kWantNatural)
+        acc = 0;
+    if (acc != fState[gridPos]) {
+        fState[gridPos] = acc;
+        if (!acc) 
+            acc = VLNote::kWantNatural;
     } else {
-        visual = 0;
+        acc = 0;
     }
-    return visual;
+    return (visual & ~VLNote::kAccidentalsMask) | acc;
 }
