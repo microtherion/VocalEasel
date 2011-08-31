@@ -296,7 +296,7 @@
 		  operation: NSCompositeSourceOver];
 }
 
-- (void) drawTripletBracketFrom:(int)startX to:(int)endX atY:(int)y
+- (void) drawTuplet:(uint16_t)tuplet bracketFrom:(int)startX to:(int)endX atY:(int)y
 {
 	static NSDictionary * sTripletFont 	 = nil;
 	if (!sTripletFont)
@@ -308,13 +308,15 @@
 
 	NSBezierPath * bz = [NSBezierPath bezierPath];
 
-	[bz moveToPoint: NSMakePoint(startX, y-kTripletH)];
+	[bz moveToPoint: NSMakePoint(startX, y-kTupletH)];
 	[bz lineToPoint: NSMakePoint(startX, y)];
 	[bz lineToPoint: NSMakePoint(endX, y)];
-	[bz lineToPoint: NSMakePoint(endX, y-kTripletH)];
+	[bz lineToPoint: NSMakePoint(endX, y-kTupletH)];
 	[bz stroke];
 
-	[@"3" drawAtPoint: NSMakePoint((startX+endX)*0.5f, y+kTripletH)
+    NSString * tupletText = tuplet == VLNote::kTriplet ? @"3"
+        : [NSString stringWithFormat:@"%d:%d", VLNote::TupletNum(tuplet), VLNote::TupletDenom(tuplet)];
+	[tupletText drawAtPoint: NSMakePoint((startX+endX)*0.5f, y+kTupletH)
 	   withAttributes: sTripletFont];
 }
 
@@ -326,11 +328,6 @@
 	const VLSystemLayout & 	kLayout 	= (*fLayout)[system];
 	const CGFloat 			kSystemY 	= [self systemY:system];
 
-	float	tripletStartX;
-	float	tripletEndX;
-	CGFloat	tripletY;
-	bool	hasTriplets	= false;
-
 	for (int m = 0; m<kLayout.NumMeasures(); ++m) {
 		VLVisualFilter  filterVisuals(kProp.fKey);
 		int	measIdx = m+kFirstMeas;
@@ -340,6 +337,13 @@
 		VLNoteList 			melody;
 		measure.DecomposeNotes(kProp, melody);
 		VLFraction 			at(0);
+        float               tupletStartX;
+        float               tupletEndX;
+        CGFloat             tupletY;
+        int                 inTuplet	= 0;
+        uint16_t            tuplet;
+        VLFraction          tupletDur;
+        
 		for (VLNoteList::const_iterator note = melody.begin(); 
 			 note != melody.end(); 
 			 ++note
@@ -369,25 +373,38 @@
 								  kSystemY+[self noteYInSection:measure.fPropIdx withPitch:65]);
 				[self drawRest:note->fVisual & VLNote::kNoteHeadMask at: pos];
 			}
-			if (note->fVisual & VLNote::kTriplet) {
-				tripletEndX	= pos.x+kNoteW*0.5f;
-				if (hasTriplets) {
-					tripletY = std::max(tripletY, pos.y+kLineH);
-				} else {
-					tripletY 		= std::max(kSystemY+5.0f*kLineH, pos.y+kLineH);
-					tripletStartX	= pos.x-kNoteW*0.5f;
-					hasTriplets		= true;
+			if (uint16_t newTuplet = note->fVisual & VLNote::kTupletMask) {
+				tupletEndX	= pos.x+kNoteW*0.5f;
+				if (inTuplet && newTuplet == tuplet) {
+					tupletY = std::max(tupletY, pos.y+kLineH);
+ 				} else {
+                    if (inTuplet)
+                        [self drawTuplet:tuplet bracketFrom:tupletStartX to:tupletEndX atY:tupletY];                        
+					tupletY 		= std::max(kSystemY+5.0f*kLineH, pos.y+kLineH);
+					tupletStartX	= pos.x-kNoteW*0.5f;
+                    tuplet          = newTuplet;
+                    tupletDur       = 0;
 				}
-			} else if (hasTriplets) {
-				[self drawTripletBracketFrom:tripletStartX to:tripletEndX atY:tripletY];
-				hasTriplets	= false;
+                ++inTuplet;
+                tupletDur   += note->fDuration / VLNote::TupletDenom(tuplet);
+                if (tuplet == VLNote::kTriplet ? (tupletDur.fNum == 1 && !(tupletDur.fDenom & (tupletDur.fDenom-1)))
+                    : inTuplet == VLNote::TupletNum(tuplet)
+                ) {
+                    //
+                    // Tuplet adds up to power of two fraction
+                    //
+                    [self drawTuplet:tuplet bracketFrom:tupletStartX to:tupletEndX atY:tupletY];
+                    inTuplet = 0;
+                }
+			} else if (++inTuplet) {
+				[self drawTuplet:tuplet bracketFrom:tupletStartX to:tupletEndX atY:tupletY];
+				inTuplet    = 0;
 			}
 
 			at	   += note->fDuration;
 		}
-	}
-	if (hasTriplets) {
-		[self drawTripletBracketFrom:tripletStartX to:tripletEndX atY:tripletY];
+        if (inTuplet)
+            [self drawTuplet:tuplet bracketFrom:tupletStartX to:tupletEndX atY:tupletY];
 	}
 	if (fCursorRegion == kRegionNote && fLayout->SystemForMeasure(fCursorMeasure) == system)
 		[self drawNoteCursor];

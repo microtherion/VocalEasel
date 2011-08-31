@@ -314,7 +314,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 					p.AlignToGrid(inBeat, kQuarterDur); // Align all others
 			}
 		checkTriplets:
-			if (p.fVisual & VLNote::kTriplet) {
+			if ((p.fVisual & VLNote::kTupletMask) == VLNote::kTriplet) {
 				//
 				// Distinguish swing 8ths/16ths from triplets
 				//
@@ -335,7 +335,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 						//
 						// First swing note (4th triplet -> 8th)
 						//
-						p.fVisual = (p.fVisual+1) & ~VLNote::kTriplet;
+						p.fVisual = (p.fVisual+1) & ~VLNote::kTupletMask;
 					}
 				} else if ((p.fDuration == sw12 && ((at+p.fDuration) % grid4 == 0))
 				 || (swing16 && p.fDuration == sw24 && ((at+p.fDuration) % grid8 == 0))
@@ -344,7 +344,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 					// Second swing note (8th triplet -> 8th)
 					//
 					if (!prevTriplets)
-						p.fVisual &= ~VLNote::kTriplet;
+						p.fVisual &= ~VLNote::kTupletMask;
 				} else if ((p.fDuration > kMinDuration) && 
 				  ((at % p.fDuration != 0)
 				   || (p.fDuration != c.fDuration 
@@ -357,11 +357,11 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 					// Get rid of awkward triplets
 					//
 					p.fDuration *= VLFraction(3,4);
-					p.fVisual    = (p.fVisual+1) & ~VLNote::kTriplet;
+					p.fVisual    = (p.fVisual+1) & ~VLNote::kTupletMask;
 				}
 			}
 		haveDuration:
-			if (p.fVisual & VLNote::kTriplet) 
+			if ((p.fVisual & VLNote::kTupletMask) == VLNote::kTriplet) 
 				if ((prevTriplets = (prevTriplets+1)%3)) {
 					prevTripDur = p.fDuration;
 					prevVisual  = p.fVisual;
@@ -554,8 +554,7 @@ void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
     //
     // Sanity check on accidentals
     //
-    note.fVisual = (note.fVisual & ~VLNote::kAccidentalsMask)
-        | VLPitchAccidental(note.fPitch, note.fVisual, Properties(measure).fKey);
+    note.fVisual = VLPitchAccidental(note.fPitch, note.fVisual, Properties(measure).fKey);
 	//	
 	// Always keep an empty measure in reserve
 	//
@@ -2079,6 +2078,9 @@ std::string VLSong::PrimaryGroove() const
 
 	return bestGroove;
 }
+
+#pragma mark -
+#pragma mark class VLSongVisitor
 
 //////////////////////// VLSongVisitor ////////////////////////////////
 

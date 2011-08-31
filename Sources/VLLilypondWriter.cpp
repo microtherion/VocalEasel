@@ -261,9 +261,10 @@ void VLLilypondWriter::VisitNote(VLLyricsNote & n)
 		&& n.fPitch == fPrevNote.fPitch
 	) 
 		strcpy(duration, ".");
-	else if (n.fVisual & VLNote::kTriplet)
-		sprintf(duration, "%s\\times 2/3 { %s%d%s }", 
-				space, nm.c_str(), kValue[n.fVisual & VLNote::kNoteHeadMask], tie);
+	else if (n.fVisual & VLNote::kTupletMask)
+		sprintf(duration, "%s\\times %d/%d { %s%d%s }", 
+				space, VLNote::TupletDenom(n.fVisual), VLNote::TupletNum(n.fVisual), 
+                nm.c_str(), kValue[n.fVisual & VLNote::kNoteHeadMask], tie);
 	else 
 		sprintf(duration, "%s%s%d%s", 
 				space, nm.c_str(), kValue[n.fVisual & VLNote::kNoteHeadMask], tie); 

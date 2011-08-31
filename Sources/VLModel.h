@@ -132,20 +132,22 @@ struct VLNote {
         
 		kWantSharp      = 0x10,
         kWant2Sharp     = 0x20,
-        kPreferSharps   = 0x30, // kWantSharp   |   kWant2Sharp
+        kPreferSharps   = 0x30,     // kWantSharp   |   kWant2Sharp
 		kWantFlat       = 0x40,
         kWant2Flat      = 0x80,
-        kPreferFlats    = 0xC0, // kWantFlat    |   kWant2Flat
-        kWantNatural    = 0x50, // kWantSharp   |   kWantFlat
-        kNaturalOrSharp = 0x70, // kPreferSharps|   kWantFlat
-        kNaturalOrFlat  = 0xD0, // kPreferFlats |   kWantSharp
+        kPreferFlats    = 0xC0,     // kWantFlat    |   kWant2Flat
+        kWantNatural    = 0x50,     // kWantSharp   |   kWantFlat
+        kNaturalOrSharp = 0x70,     // kPreferSharps|   kWantFlat
+        kNaturalOrFlat  = 0xD0,     // kPreferFlats |   kWantSharp
         
 		kAccidentalsMask= 0x00F0,
         
-        kTriplet        = 0x300,
+        kTriplet        = 0x3200,
         
-		kTupletMask     = 0x0F00
+		kTupletMask     = 0xFF00
 	};
+    static int TupletNum(uint16_t visual) { return visual >> 12; }
+    static int TupletDenom(uint16_t visual) { return (visual >> 8) & 0x0F; }    
 	VLNote(VLFraction dur=0, int pitch=kNoPitch, uint16_t visual=0);
 	VLNote(std::string name);
 	std::string Name(uint16_t accidentals=0) const;

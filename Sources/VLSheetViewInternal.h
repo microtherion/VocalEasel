@@ -10,7 +10,7 @@
 
 const float kLineX		=  5.0;
 const float kLineH  	= 10.0;
-const float kTripletH	=  5.0;
+const float kTupletH	=  5.0;
 #define kSystemBaseline ((fNumBotLedgers+1)*kLineH+fNumStanzas*kLyricsH)
 #define kSystemAscent	((fNumTopLedgers+7)*kLineH+kChordH)
 #define kSystemH		(kSystemBaseline+kSystemAscent)

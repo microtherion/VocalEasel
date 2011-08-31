@@ -542,6 +542,8 @@ advanceAt:
 	[filterTask release];
 
 	if ([error length]) {
+        [contents writeToFile:@"/var/tmp/VocalEaselFilterInput" atomically:NO];
+        [error writeToFile:@"/var/tmp/VocalEaselFilterError" atomically:NO];
 		NSString * errStr = [[[NSString alloc] initWithData:error 
 			encoding:NSUTF8StringEncoding] autorelease];
 		[NSException raise:NSInvalidArgumentException 
