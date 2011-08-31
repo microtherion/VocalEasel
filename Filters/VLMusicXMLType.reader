@@ -221,7 +221,9 @@ class MusicXMLListener
          'root-step', 'root-alter', 'bass-step', 'bass-alter', 'kind',
          'degree-value', 'degree-alter', 'degree-type', 'accidental'
       @kind = tag
-    when 'tie' 
+    when 'notation'
+      @note['tied'] = 0
+    when 'tie', 'tied'
       @note['tied'] ||= 0
       case attrs['type']
       when 'start' 
@@ -348,6 +350,10 @@ class MusicXMLListener
         else
           @duration = @text.to_i
         end
+      when 'actual-notes'
+        @note['actualNotes'] = @text.to_i
+      when 'normal-notes'
+        @note['normalNotes'] = @text.to_i
       when 'accidental'
         case @text
         when 'sharp'

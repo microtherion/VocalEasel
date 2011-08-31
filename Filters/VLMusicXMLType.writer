@@ -51,49 +51,68 @@ def _part_list
   part_list = REXML::Element.new('part-list')
     melody = REXML::Element.new('score-part')
     melody.add_attribute('id', 'MELO')
-    melody.add_element newTextElement('part-name', 'Song')
+      partname = newTextElement('part-name', 'Song')
+      partname.add_attribute('print-object', 'no')
+    melody.add_element(partname)
   part_list.add_element(melody)
 
   return part_list
 end
 
+$LAST_DIVISIONS = nil
+$LAST_KEY       = nil
+$LAST_MODE      = nil
+$LAST_TIME_NUM  = nil
+$LAST_TIME_DENOM= nil
+$SEEN_CLEF      = false
+
 def _attributes(prop)
   $DIVISIONS = prop['divisions']
   attr = REXML::Element.new('attributes')
-  attr.add_element newTextElement('divisions', prop['divisions'])
+  if $LAST_DIVISIONS != prop['divisions']
+      attr.add_element newTextElement('divisions', $LAST_DIVISIONS = prop['divisions'])
+  end
+  if prop['key'] != $LAST_KEY || prop['mode'] != $LAST_MODE
     key = REXML::Element.new('key')
-    key.add_element newTextElement('fifths', prop['key'])
-    key.add_element newTextElement('mode', prop['mode'] > 0 ? "major" : "minor")
-  attr.add_element(key)
+    key.add_element newTextElement('fifths', $LAST_KEY = prop['key'])
+    key.add_element newTextElement('mode', ($LAST_MODE = prop['mode']) > 0 ? "major" : "minor")
+    attr.add_element(key)
+  end
+  if prop['timeNum'] != $LAST_TIME_NUM || prop['timeDenom'] != $LAST_TIME_DENOM
     time = REXML::Element.new('time')
-    time.add_element newTextElement('beats', prop['timeNum'])
-    time.add_element newTextElement('beat-type', prop['timeDenom'])
-  attr.add_element(time)
+    time.add_element newTextElement('beats', $LAST_TIME_NUM = prop['timeNum'])
+    time.add_element newTextElement('beat-type', $LAST_TIME_DENOM = prop['timeDenom'])
+    attr.add_element(time)
+  end
+  if !$SEEN_CLEF
+    $SEEN_CLEF = true
     clef = REXML::Element.new('clef')
     clef.add_element newTextElement('sign', 'G')
     clef.add_element newTextElement('line', 2)
-  attr.add_element(clef)
-  return attr
-end
-
-def _groove(groove)
-  dir = REXML::Element.new('direction')
-    dty = REXML::Element.new('direction-type')
-    dty.add_element newTextElement('words', groove)
-  dir.add_element(dty)
-
-  return dir
+    attr.add_element(clef)
+  end
+    return attr.has_elements? ? attr : nil
 end
 
 def _tempo(tempo)
   dir = REXML::Element.new('direction')
     dty = REXML::Element.new('direction-type')
-      metro = REXML::Element.new('metronome')
-      metro.add_element newTextElement('beat-unit', 'quarter')
-      metro.add_element newTextElement('per-minute', tempo)
+    metro = REXML::Element.new('metronome')
+    metro.add_element newTextElement('beat-unit', 'quarter')
+    metro.add_element newTextElement('per-minute', tempo)
     dty.add_element(metro)
   dir.add_element(dty)
   dir.add_element 'sound', {'tempo' => tempo}
+    
+  return dir
+end
+
+def _groove(groove)
+  dir = REXML::Element.new('direction')
+  dir.add_attribute('placement', 'above')
+    dty = REXML::Element.new('direction-type')
+    dty.add_element newTextElement('words', groove)
+  dir.add_element(dty)
 
   return dir
 end
@@ -106,14 +125,20 @@ def _pitch(name, pitch, accidental, prefix="")
   stp   = (pitch%12)+2
   step  = STEPS[stp]
   if step == 0x20
-    abort "Pitch #{pitch} not representable"
+    if $LAST_KEY > 0
+        step       =  STEPS[stp-1]
+        accidental =  1
+    else
+        step       =  STEPS[stp+1]
+        accidental = -1
+    end
   end
   if prefix.length > 0
     prefix += "-"
   end
   pitch= REXML::Element.new(name)
   pitch.add_element newTextElement(prefix+'step', step.chr)
-  if accidental != 0
+  if accidental && accidental != 0
     pitch.add_element newTextElement(prefix+'alter', accidental)
   end
   if prefix.length == 0
@@ -143,7 +168,7 @@ def _accidental(visual)
   accidental
 end
 
-def _note(pitch, dur, visual, tied)
+def _note(pitch, dur, visual, tuplet, tied)
   accidental = _accidental(visual)
   note = REXML::Element.new('note')
   if pitch == VL::NoPitch
@@ -152,19 +177,47 @@ def _note(pitch, dur, visual, tied)
     note.add_element(_pitch('pitch', pitch, accidental))
   end
   note.add_element newTextElement('duration', dur)
+  notations = nil
   if (tied & VL::TiedWithPrev) != 0
     note.add_element 'tie', {'type' => 'stop' }
+    unless notations
+      notations = REXML::Element.new('notations')
+    end
+    notations.add_element 'tied', {'type' => 'stop'}
   end
   if (tied & VL::TiedWithNext) != 0
     note.add_element 'tie', {'type' => 'start' }
+    unless notations
+      notations = REXML::Element.new('notations')
+    end
+    notations.add_element 'tied', {'type' => 'start'}
   end
   note.add_element newTextElement('voice', 1)
   note.add_element newTextElement('type', TYPE[visual & 7]) 
   if accidental
     note.add_element newTextElement('accidental', ACC[accidental+2])
   end
+  if tuplet
+    unless notations
+      notations = REXML::Element.new('notations')
+    end
+    notations.add_element 'tuplet', {'type' => (tuplet>0 ? 'start' : 'stop')}
+  end
+  if notations
+    note.add_element notations
+  end
 
   return note
+end
+
+def _timeMod(note)
+  timeMod = REXML::Element.new('time-modification')
+  timeMod.add_element newTextElement('actual-notes', note['actualNotes'])
+  timeMod.add_element newTextElement('normal-notes', note['normalNotes'])
+  if note['normalType']
+    timeMod.add_element newTextElement('normal-type', TYPE[note['normalType']])
+  end
+  return timeMod
 end
 
 CHORD = {
@@ -350,27 +403,18 @@ def _melody
         lastGroove = groove
         m.add_element(_groove(lastGroove))
       end
-      m.add_element(_attributes(INPUT['properties'][lastProp]))
+      if attr = _attributes(INPUT['properties'][lastProp])
+        m.add_element(attr)
+      end
     end
     if meas['new-page']
       m.add_element 'print', {'new-page' => 'yes'}
     elsif meas['new-system']
       m.add_element 'print', {'new-system' => 'yes'}
     end
-    if meas['coda']
-      m.add_element 'sound', {'coda' => 'A'}
-    end
-    if meas['begin-repeat']
-      barline = REXML::Element.new('barline')
-      barline.add_attribute('location', 'left')
-      barline.add_element newTextElement('bar-style', 
-                 (repeat[measNum-1] & 2) != 0 ? 'heavy-heavy' : 'heavy-light')
-      barline.add_element 'repeat', {'direction' => 'forward'}
-      m.add_element(barline)
-    end
+    coda = meas['coda']
+    eEnding = nil
     if ending = meas['begin-ending']
-      barline = REXML::Element.new('barline')
-      barline.add_attribute('location', 'left')
       volta = ending['volta']
       num   = nil
       (0..7).each do |i|
@@ -382,8 +426,36 @@ def _melody
           end
         end
       end
-      barline.add_element 'ending', {'type' => 'start', 'number' => num}
+      eEnding = REXML::Element.new('ending')
+      eEnding.add_attributes({'type' => 'start', 'number' => num})
+    end
+    eBarstyle = nil
+    eRepeat   = nil
+    if meas['begin-repeat']
+      eBarstyle = newTextElement('bar-style', 
+                 (repeat[measNum-1] & 2) != 0 ? 'heavy-heavy' : 'heavy-light')
+      eRepeat = REXML::Element.new('repeat')
+      eRepeat.add_attribute('direction', 'forward')
+    end
+    if eEnding || eBarstyle || eRepeat || coda
+      barline = REXML::Element.new('barline')
+      barline.add_attribute('location', 'left')
+      if eBarstyle
+        barline.add_element(eBarstyle)
+      end
+      if coda
+        barline.add_element 'coda'
+      end
+      if eEnding
+        barline.add_element(eEnding)
+      end
+      if eRepeat
+        barline.add_element(eRepeat)
+      end
       m.add_element(barline)
+    end
+    if coda
+      m.add_element 'sound', {'coda' => 'A'}
     end
     noteAt = 0
     chordAt= 0
@@ -412,7 +484,10 @@ def _melody
         m.add_element(bk)
         tempAt = noteAt        
       end
-      n   = _note(note['pitch'], dur, note['visual'], note['tied'] || 0)
+      n   = _note(note['pitch'], dur, note['visual'], note['tuplet'], note['tied'] || 0)
+      if note['actualNotes']
+        n.add_element _timeMod(note)
+      end
       stanza = 1
       note['lyrics'].each do |syll|
         if syll['text']
@@ -427,19 +502,18 @@ def _melody
       noteAt += dur
       m.add_element(n)
     end
+    eRepeat   = nil
+    eBarstyle = nil
     if r = meas['end-repeat']
-      barline = REXML::Element.new('barline')
-      barline.add_attribute('location', 'right')
-      barline.add_element newTextElement('bar-style', 
+      eBarstyle = newTextElement('bar-style', 
                  (repeat[measNum+1] & 1) != 0 ? 'heavy-heavy' : 'light-heavy')
-      barline.add_element 'repeat', {'direction' => 'backward', 'times' => r['times'].to_s}
-      m.add_element(barline)      
+      eRepeat = REXML::Element.new('repeat')
+      eRepeat.add_attributes({'direction' => 'backward', 'times' => r['times'].to_s})
     end
+    eEnding = nil
     if ending = meas['end-ending']
-      barline = REXML::Element.new('barline')
-      barline.add_attribute('location', 'right')
-      barline.add_element newTextElement('bar-style', 
-                 (repeat[measNum+1] & 1) != 0 ? 'heavy-heavy' : 'light-heavy')
+      eBarstyle ||= newTextElement('bar-style', 
+                                   (repeat[measNum+1] & 1) != 0 ? 'heavy-heavy' : 'light-heavy')
       volta = ending['volta']
       num   = nil
       (0..7).each do |i|
@@ -452,13 +526,34 @@ def _melody
         end
       end
       type = ending['last'] ? "discontinue" : "stop"
-      barline.add_element 'ending', {'type', type, 'number', num}
-      barline.add_element 'repeat', {'direction' => 'backward'}
-      m.add_element(barline)      
+      eEnding = REXML::Element.new('ending')
+      eEnding.add_attributes({'type', type, 'number', num})
+      if !ending['last'] && !eRepeat
+        eRepeat = REXML::Element.new('repeat')
+        eRepeat.add_attribute('direction', 'backward')
+      end
     end
-    if meas['tocoda']
+    if coda = meas['tocoda']
       m.add_element 'sound', {'tocoda' => 'A'}
     end
+    if coda || eEnding || eRepeat || eBarstyle
+      barline = REXML::Element.new('barline')
+      barline.add_attribute('location', 'right')
+      if eBarstyle
+        barline.add_element(eBarstyle)
+      end
+      if coda
+        barline.add_element 'coda'
+      end
+      if eEnding
+        barline.add_element(eEnding)
+      end
+      if eRepeat
+        barline.add_element(eRepeat)
+      end
+      m.add_element(barline)
+    end
+
     melody.add_element(m)
   end
 

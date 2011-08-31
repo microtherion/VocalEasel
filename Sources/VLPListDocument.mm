@@ -39,9 +39,14 @@ protected:
 	NSMutableArray *		fMeasures;
 	NSMutableArray *		fNotes;
 	NSMutableArray *		fChords;
+    NSMutableArray *        fNotesInTuplet;
 	bool					fPerfOrder;
 	const VLSong *			fSong;
     VLVisualFilter          fVisFilter;
+    int                     fInTuplet;
+    uint16_t                fTuplet;
+    uint16_t                fTupletNote;
+    VLFraction              fTupletDur;
 };
 
 NSArray * VLPlistVisitor::EncodeProperties(const std::vector<VLProperties> & properties)
@@ -83,8 +88,11 @@ void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 	fChords= [NSMutableArray arrayWithCapacity:1];
     
     fVisFilter.ResetWithKey(p.fKey);
+    fInTuplet      = 0;
 	VisitNotes(meas, p, true);
 	VisitChords(meas);
+    if (fInTuplet) 
+        [[fNotesInTuplet lastObject] setObject:[NSNumber numberWithInt:-1] forKey:@"tuplet"];
 
 	NSMutableDictionary * md = 
 		[NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -142,8 +150,8 @@ void VLPlistVisitor::VisitNote(VLLyricsNote & n)
 		  : [NSDictionary dictionary]];
     
     int grid = n.fPitch==VLNote::kNoPitch ? 0 : VLPitchToGrid(n.fPitch, n.fVisual, 0);
-	NSDictionary * nd =
-		[NSDictionary dictionaryWithObjectsAndKeys:
+	NSMutableDictionary * nd =
+		[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		 [NSNumber numberWithInt:n.fDuration.fNum], @"durNum",
 		 [NSNumber numberWithInt:n.fDuration.fDenom], @"durDenom",
 		 [NSNumber numberWithInt:n.fPitch], @"pitch",
@@ -151,6 +159,62 @@ void VLPlistVisitor::VisitNote(VLLyricsNote & n)
 		 [NSNumber numberWithInt:fVisFilter(grid, n.fVisual)], @"visual",
 		 ly, @"lyrics",
 		 nil];
+    if (uint16_t newTuplet = n.fVisual & VLNote::kTupletMask) {
+        if (!fInTuplet || newTuplet != fTuplet) {
+            if (fInTuplet) {
+                [[fNotesInTuplet lastObject] setObject:[NSNumber numberWithInt:-1] forKey:@"tuplet"];
+                fInTuplet = 0;
+            }
+            fNotesInTuplet  = [NSMutableArray array];
+            fTuplet         = newTuplet;
+            fTupletNote     = n.fVisual & VLNote::kNoteHeadMask;
+            fTupletDur      = 0;
+            [nd setObject:[NSNumber numberWithInt:1] forKey:@"tuplet"];
+        }
+        int tupletNum   = VLNote::TupletNum(fTuplet);
+        int tupletDenom = VLNote::TupletDenom(fTuplet);
+        [nd setObject:[NSNumber numberWithInt:tupletNum] forKey:@"actualNotes"];
+        [nd setObject:[NSNumber numberWithInt:tupletDenom] forKey:@"normalNotes"];
+        ++fInTuplet;
+        fTupletDur  += n.fDuration;
+        if (fTuplet == VLNote::kTriplet) {
+            uint16_t newNote = n.fVisual & VLNote::kNoteHeadMask;
+            if (newNote == fTupletNote) {
+                if (fInTuplet == 3)
+                    fInTuplet = 0;
+            } else if (fInTuplet == 2 && newNote == fTupletNote-1) {
+                //
+                // 8th, 4th triplet
+                //
+                [nd setObject:[NSNumber numberWithInt:fTupletNote] forKey:@"normalType"];
+                fInTuplet = 0;
+            } else if (fInTuplet == 3 && newNote == fTupletNote-1) {
+                //
+                // 8th 8th 4th
+                //
+                for (NSMutableDictionary * prevNote in fNotesInTuplet) {
+                    [prevNote setObject:[NSNumber numberWithInt:newNote] forKey:@"normalType"];
+                }
+                fInTuplet   = 2;
+                fTupletNote = newNote;
+            } else {
+                //
+                // 4th 4th 8th 
+                //
+                [nd setObject:[NSNumber numberWithInt:fTupletNote] forKey:@"normalType"];
+                if (fTupletDur.fNum == 1 && !(fTupletDur.fDenom&(fTupletDur.fDenom-1)))
+                    fInTuplet = 0;
+            }
+        } else if (fInTuplet == tupletNum) 
+            fInTuplet   = 0;
+        if (!fInTuplet)
+            [nd setObject:[NSNumber numberWithInt:-1] forKey:@"tuplet"];
+        else    
+             [fNotesInTuplet addObject:nd];        
+    } else if (fInTuplet) {
+        [[fNotesInTuplet lastObject] setObject:[NSNumber numberWithInt:-1] forKey:@"tuplet"];
+        fInTuplet = 0;
+    }
 	[fNotes addObject:nd];
 }
 
@@ -255,9 +319,13 @@ enum {
 					   [[ndict objectForKey:@"durDenom"] intValue],
 					   true);
 		note.fPitch	   = [[ndict objectForKey:@"pitch"] intValue];	
-		note.fVisual  |= [[ndict objectForKey:@"visual"] intValue]
+		note.fVisual   = [[ndict objectForKey:@"visual"] intValue]
 			& VLNote::kAccidentalsMask;
 		note.fTied	   = 0;
+        
+        if ([ndict objectForKey:@"actualNotes"])
+            note.fVisual |= VLNote::Tuplet([[ndict objectForKey:@"actualNotes"] intValue],
+                                           [[ndict objectForKey:@"normalNotes"] intValue]);
 		
 		if ([[ndict objectForKey:@"tied"] intValue] & VLNote::kTiedWithPrev) {
 			if (at != 0) {

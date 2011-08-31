@@ -147,7 +147,8 @@ struct VLNote {
 		kTupletMask     = 0xFF00
 	};
     static int TupletNum(uint16_t visual) { return visual >> 12; }
-    static int TupletDenom(uint16_t visual) { return (visual >> 8) & 0x0F; }    
+    static int TupletDenom(uint16_t visual) { return (visual >> 8) & 0x0F; }  
+    static uint16_t Tuplet(int num, int denom) { return (num << 12) | (denom << 8); }
 	VLNote(VLFraction dur=0, int pitch=kNoPitch, uint16_t visual=0);
 	VLNote(std::string name);
 	std::string Name(uint16_t accidentals=0) const;
