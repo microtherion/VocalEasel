@@ -80,6 +80,38 @@
 		959B77C20DE3139F004432E0 /* installLame.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 958139C20DE2FBE4003C00B4 /* installLame.scpt */; };
 		95A1C3860AF2ACE20076597D /* VLSheetWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */; };
 		95A55C540BD5E5770068A203 /* VLPDFDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A55C530BD5E5770068A203 /* VLPDFDocument.mm */; };
+		95A7C170141074AB00833DBE /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95CFA8481409291500D0DB0D /* SenTestingKit.framework */; };
+		95A7C171141074AB00833DBE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC6FFF14094107007EA050 /* Cocoa.framework */; };
+		95A7C177141074AB00833DBE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 95A7C175141074AB00833DBE /* InfoPlist.strings */; };
+		95A7C17B141074AB00833DBE /* TVLXML.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A7C17A141074AB00833DBE /* TVLXML.mm */; };
+		95A7C18214107D8F00833DBE /* VLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* VLDocument.mm */; };
+		95A7C18314107D9300833DBE /* VLXMLDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95F5F50E0ADCC433003980B2 /* VLXMLDocument.mm */; };
+		95A7C18414107D9B00833DBE /* VLPListDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9588363B0C6F9C7D004B4162 /* VLPListDocument.mm */; };
+		95A7C18514107DA900833DBE /* VLModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955E58E4095658AB0045FDA5 /* VLModel.cpp */; };
+		95A7C18614107DBC00833DBE /* VLSoundOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 952CBB9A095FD1CA00434E43 /* VLSoundOut.cpp */; };
+		95A7C18714107DCA00833DBE /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC700214099C64007EA050 /* AudioToolbox.framework */; };
+		95A7C18814107DDD00833DBE /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B4E0B0ED0BB00EB33A4 /* CADebugMacros.cpp */; };
+		95A7C18B14107EF000833DBE /* CADebugPrintf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95A7C18914107EF000833DBE /* CADebugPrintf.cpp */; };
+		95A7C18C14107EF900833DBE /* CADebugPrintf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95A7C18914107EF000833DBE /* CADebugPrintf.cpp */; };
+		95A7C18D14107F1600833DBE /* VLMIDIWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959A3A6C0DE8CB5B00EF207B /* VLMIDIWriter.cpp */; };
+		95A7C18E14107F1F00833DBE /* VLKeyValueUndo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 955CBA4D0B2366DD001CF4A1 /* VLKeyValueUndo.mm */; };
+		95A7C18F14107F3900833DBE /* VLPDFWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95FC66A50AF0A24C003D9C11 /* VLPDFWindow.mm */; };
+		95A7C19014107F3D00833DBE /* VLSheetWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */; };
+		95A7C19114107F4000833DBE /* VLLogWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95FC668E0AF0A08C003D9C11 /* VLLogWindow.mm */; };
+		95A7C19214107F5500833DBE /* VLPitchGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 953F4B3C1409B01200C627F9 /* VLPitchGrid.cpp */; };
+		95A7C19314107F5A00833DBE /* VLPitchName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95CFA83714091B7800D0DB0D /* VLPitchName.cpp */; };
+		95A7C19414107F6100833DBE /* VLPDFDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95A55C530BD5E5770068A203 /* VLPDFDocument.mm */; };
+		95A7C19514107F8000833DBE /* AUOutputBL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B220B0ECF9000EB33A4 /* AUOutputBL.cpp */; };
+		95A7C19614107F8600833DBE /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC700314099C64007EA050 /* AudioUnit.framework */; };
+		95A7C19714107F9A00833DBE /* CAAudioFileFormats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B240B0ECF9000EB33A4 /* CAAudioFileFormats.cpp */; };
+		95A7C19814107F9F00833DBE /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC700614099CF0007EA050 /* Quartz.framework */; };
+		95A7C19914107FB200833DBE /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95009B260B0ECF9000EB33A4 /* CAStreamBasicDescription.cpp */; };
+		95A7C19B1410817A00833DBE /* vl.rb in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95795CE40C88B25D00E4A21F /* vl.rb */; };
+		95A7C19C1410817A00833DBE /* VLMusicXMLType.reader in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95795CE50C88B25D00E4A21F /* VLMusicXMLType.reader */; };
+		95A7C19D1410817A00833DBE /* VLMusicXMLType.writer in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95EF92270C78E9390093E5F4 /* VLMusicXMLType.writer */; };
+		95A7C19E1410817A00833DBE /* plistReader.rb in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95EF92120C786B2C0093E5F4 /* plistReader.rb */; };
+		95A7C19F1410817A00833DBE /* plistWriter.rb in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95EF92130C786B2C0093E5F4 /* plistWriter.rb */; };
+		95A7C1A11410981100833DBE /* partwise.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 95A7C1A01410981100833DBE /* partwise.dtd */; };
 		95AC700014094108007EA050 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC6FFF14094107007EA050 /* Cocoa.framework */; };
 		95AC700114099A60007EA050 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC6FFF14094107007EA050 /* Cocoa.framework */; };
 		95AC700414099C64007EA050 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC700214099C64007EA050 /* AudioToolbox.framework */; };
@@ -124,6 +156,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		95A7C19A1410815800833DBE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Filters;
+			dstSubfolderSpec = 7;
+			files = (
+				95A7C19B1410817A00833DBE /* vl.rb in CopyFiles */,
+				95A7C19C1410817A00833DBE /* VLMusicXMLType.reader in CopyFiles */,
+				95A7C19D1410817A00833DBE /* VLMusicXMLType.writer in CopyFiles */,
+				95A7C19E1410817A00833DBE /* plistReader.rb in CopyFiles */,
+				95A7C19F1410817A00833DBE /* plistWriter.rb in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		95C461630B043DCA00649F92 /* Copy MMA Library */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
@@ -275,6 +321,15 @@
 		95A1C3850AF2ACE20076597D /* VLSheetWindow.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLSheetWindow.mm; path = Sources/VLSheetWindow.mm; sourceTree = "<group>"; };
 		95A55C520BD5E5760068A203 /* VLPDFDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLPDFDocument.h; path = Sources/VLPDFDocument.h; sourceTree = "<group>"; };
 		95A55C530BD5E5770068A203 /* VLPDFDocument.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPDFDocument.mm; path = Sources/VLPDFDocument.mm; sourceTree = "<group>"; };
+		95A7C16F141074AB00833DBE /* TVLXML.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TVLXML.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		95A7C174141074AB00833DBE /* TVLXML-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TVLXML-Info.plist"; path = "Tests/TVLXML/TVLXML-Info.plist"; sourceTree = SOURCE_ROOT; };
+		95A7C176141074AB00833DBE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		95A7C178141074AB00833DBE /* TVLXML.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TVLXML.h; path = Tests/TVLXML/TVLXML.h; sourceTree = SOURCE_ROOT; };
+		95A7C17A141074AB00833DBE /* TVLXML.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = TVLXML.mm; path = Tests/TVLXML/TVLXML.mm; sourceTree = SOURCE_ROOT; };
+		95A7C17C141074AB00833DBE /* TVLXML-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TVLXML-Prefix.pch"; path = "Tests/TVLXML/TVLXML-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		95A7C18914107EF000833DBE /* CADebugPrintf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CADebugPrintf.cpp; path = Sources/CoreAudioSDK/CADebugPrintf.cpp; sourceTree = "<group>"; };
+		95A7C18A14107EF000833DBE /* CADebugPrintf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CADebugPrintf.h; path = Sources/CoreAudioSDK/CADebugPrintf.h; sourceTree = "<group>"; };
+		95A7C1A01410981100833DBE /* partwise.dtd */ = {isa = PBXFileReference; explicitFileType = text.xml; fileEncoding = 4; name = partwise.dtd; path = Tests/TVLXML/partwise.dtd; sourceTree = SOURCE_ROOT; };
 		95AC6FFF14094107007EA050 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		95AC700214099C64007EA050 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		95AC700314099C64007EA050 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/AudioUnit.framework; sourceTree = DEVELOPER_DIR; };
@@ -372,6 +427,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		95A7C16B141074AB00833DBE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95A7C170141074AB00833DBE /* SenTestingKit.framework in Frameworks */,
+				95A7C171141074AB00833DBE /* Cocoa.framework in Frameworks */,
+				95A7C18714107DCA00833DBE /* AudioToolbox.framework in Frameworks */,
+				95A7C19614107F8600833DBE /* AudioUnit.framework in Frameworks */,
+				95A7C19814107F9F00833DBE /* Quartz.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		95CFA8431409291500D0DB0D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -401,6 +468,7 @@
 				95E04DA00AEB4837006F30A0 /* TVLLilypond */,
 				95CFA8471409291500D0DB0D /* TVLPitchNames.octest */,
 				953F4B431409C42100C627F9 /* TVLPitchGrid.octest */,
+				95A7C16F141074AB00833DBE /* TVLXML.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -548,6 +616,8 @@
 		9546A1090B08B47A0028503B /* CoreAudio SDK Sources */ = {
 			isa = PBXGroup;
 			children = (
+				95A7C18914107EF000833DBE /* CADebugPrintf.cpp */,
+				95A7C18A14107EF000833DBE /* CADebugPrintf.h */,
 				95009B620B0ED18700EB33A4 /* CAConditionalMacros.h */,
 				95009B630B0ED18700EB33A4 /* CAMath.h */,
 				95009B4E0B0ED0BB00EB33A4 /* CADebugMacros.cpp */,
@@ -565,6 +635,7 @@
 		955E59560957C0C50045FDA5 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				95A7C172141074AB00833DBE /* TVLXML */,
 				953F4B4A1409C42100C627F9 /* TVLPitchGrid */,
 				95CFA84C1409291500D0DB0D /* TVLPitchNames */,
 				95E04DA60AEB486E006F30A0 /* TVLLilypond.mm */,
@@ -575,6 +646,27 @@
 				95CFA85D1409355D00D0DB0D /* TVLStringAccidentals.mm */,
 			);
 			name = Tests;
+			sourceTree = "<group>";
+		};
+		95A7C172141074AB00833DBE /* TVLXML */ = {
+			isa = PBXGroup;
+			children = (
+				95A7C1A01410981100833DBE /* partwise.dtd */,
+				95A7C178141074AB00833DBE /* TVLXML.h */,
+				95A7C17A141074AB00833DBE /* TVLXML.mm */,
+				95A7C173141074AB00833DBE /* Supporting Files */,
+			);
+			path = TVLXML;
+			sourceTree = "<group>";
+		};
+		95A7C173141074AB00833DBE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				95A7C174141074AB00833DBE /* TVLXML-Info.plist */,
+				95A7C175141074AB00833DBE /* InfoPlist.strings */,
+				95A7C17C141074AB00833DBE /* TVLXML-Prefix.pch */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		95C461D40B04403600649F92 /* Tools */ = {
@@ -828,6 +920,25 @@
 			productReference = 959408A0096922CA007CCCF8 /* TVLEdit */;
 			productType = "com.apple.product-type.tool";
 		};
+		95A7C16E141074AB00833DBE /* TVLXML */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 95A7C180141074AB00833DBE /* Build configuration list for PBXNativeTarget "TVLXML" */;
+			buildPhases = (
+				95A7C16A141074AB00833DBE /* Sources */,
+				95A7C16B141074AB00833DBE /* Frameworks */,
+				95A7C16C141074AB00833DBE /* Resources */,
+				95A7C19A1410815800833DBE /* CopyFiles */,
+				95A7C16D141074AB00833DBE /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TVLXML;
+			productName = TVLXML;
+			productReference = 95A7C16F141074AB00833DBE /* TVLXML.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 		95CFA8461409291500D0DB0D /* TVLPitchNames */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 95CFA8571409291500D0DB0D /* Build configuration list for PBXNativeTarget "TVLPitchNames" */;
@@ -892,6 +1003,7 @@
 				95E04D9F0AEB4837006F30A0 /* TVLLilypond */,
 				95CFA8461409291500D0DB0D /* TVLPitchNames */,
 				953F4B421409C42100C627F9 /* TVLPitchGrid */,
+				95A7C16E141074AB00833DBE /* TVLXML */,
 			);
 		};
 /* End PBXProject section */
@@ -939,6 +1051,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		95A7C16C141074AB00833DBE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95A7C177141074AB00833DBE /* InfoPlist.strings in Resources */,
+				95A7C1A11410981100833DBE /* partwise.dtd in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		95CFA8441409291500D0DB0D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -952,6 +1073,19 @@
 
 /* Begin PBXShellScriptBuildPhase section */
 		953F4B411409C42100C627F9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		95A7C16D141074AB00833DBE /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1036,6 +1170,7 @@
 				95CFA83814091B7800D0DB0D /* VLPitchName.cpp in Sources */,
 				953F4B3D1409B01200C627F9 /* VLPitchGrid.cpp in Sources */,
 				953F4B60140AFA4B00C627F9 /* VLToolbarButton.mm in Sources */,
+				95A7C18B14107EF000833DBE /* CADebugPrintf.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1077,6 +1212,32 @@
 			files = (
 				959408AD096922EA007CCCF8 /* TVLEdit.cpp in Sources */,
 				959408AE096922F7007CCCF8 /* VLModel.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95A7C16A141074AB00833DBE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95A7C17B141074AB00833DBE /* TVLXML.mm in Sources */,
+				95A7C18214107D8F00833DBE /* VLDocument.mm in Sources */,
+				95A7C18314107D9300833DBE /* VLXMLDocument.mm in Sources */,
+				95A7C18414107D9B00833DBE /* VLPListDocument.mm in Sources */,
+				95A7C18514107DA900833DBE /* VLModel.cpp in Sources */,
+				95A7C18614107DBC00833DBE /* VLSoundOut.cpp in Sources */,
+				95A7C18814107DDD00833DBE /* CADebugMacros.cpp in Sources */,
+				95A7C18C14107EF900833DBE /* CADebugPrintf.cpp in Sources */,
+				95A7C18D14107F1600833DBE /* VLMIDIWriter.cpp in Sources */,
+				95A7C18E14107F1F00833DBE /* VLKeyValueUndo.mm in Sources */,
+				95A7C18F14107F3900833DBE /* VLPDFWindow.mm in Sources */,
+				95A7C19014107F3D00833DBE /* VLSheetWindow.mm in Sources */,
+				95A7C19114107F4000833DBE /* VLLogWindow.mm in Sources */,
+				95A7C19214107F5500833DBE /* VLPitchGrid.cpp in Sources */,
+				95A7C19314107F5A00833DBE /* VLPitchName.cpp in Sources */,
+				95A7C19414107F6100833DBE /* VLPDFDocument.mm in Sources */,
+				95A7C19514107F8000833DBE /* AUOutputBL.cpp in Sources */,
+				95A7C19714107F9A00833DBE /* CAAudioFileFormats.cpp in Sources */,
+				95A7C19914107FB200833DBE /* CAStreamBasicDescription.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1178,6 +1339,15 @@
 			path = Tests/TVLPitchGrid;
 			sourceTree = SOURCE_ROOT;
 		};
+		95A7C175141074AB00833DBE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				95A7C176141074AB00833DBE /* en */,
+			);
+			name = InfoPlist.strings;
+			path = Tests/TVLXML;
+			sourceTree = SOURCE_ROOT;
+		};
 		95CFA84F1409291500D0DB0D /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1268,6 +1438,91 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.7;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Default;
+		};
+		95A7C17D141074AB00833DBE /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Tests/TVLXML/TVLXML-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "PROJECT_DIR=\"\\\"$(PROJECT_DIR)\\\"\"";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Tests/TVLXML/TVLXML-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Development;
+		};
+		95A7C17E141074AB00833DBE /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Tests/TVLXML/TVLXML-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "PROJECT_DIR=\"\\\"$(PROJECT_DIR)\\\"\"";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Tests/TVLXML/TVLXML-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Deployment;
+		};
+		95A7C17F141074AB00833DBE /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Tests/TVLXML/TVLXML-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "PROJECT_DIR=\"\\\"$(PROJECT_DIR)\\\"\"";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Tests/TVLXML/TVLXML-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Default;
@@ -1701,6 +1956,16 @@
 				953F4B561409C42100C627F9 /* Development */,
 				953F4B571409C42100C627F9 /* Deployment */,
 				953F4B581409C42100C627F9 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		95A7C180141074AB00833DBE /* Build configuration list for PBXNativeTarget "TVLXML" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95A7C17D141074AB00833DBE /* Development */,
+				95A7C17E141074AB00833DBE /* Deployment */,
+				95A7C17F141074AB00833DBE /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

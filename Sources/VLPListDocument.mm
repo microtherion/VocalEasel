@@ -582,7 +582,7 @@ advanceAt:
 
 - (NSData *)runFilter:(NSString *)filterName withContents:(NSData *)contents
 {
-	NSString * filterPath = [[NSBundle mainBundle] pathForResource:filterName
+	NSString * filterPath = [[NSBundle bundleForClass:[VLDocument class]] pathForResource:filterName
 												   ofType:nil
 												   inDirectory:@"Filters"];
 	NSPipe * filterInput  = [NSPipe pipe];
