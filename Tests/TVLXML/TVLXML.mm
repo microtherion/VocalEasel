@@ -27,7 +27,7 @@
     
     NSURL *         dtdURL      = [[NSBundle bundleForClass:[TVLXML class]] URLForResource:@"partwise" withExtension:@"dtd"];
     NSXMLDTD    *   dtd         = [[NSXMLDTD alloc] initWithContentsOfURL:dtdURL options:0 error:&err];
-    [dtd setName:@"partwise.dtd"];
+    [dtd setName:@"score-partwise"];
     
     STAssertNotNil(dtd, @"DTD: %@\n", [err localizedDescription]);
     
@@ -55,7 +55,7 @@
         STAssertNotNil(xml, @"Parsing `%@': %@", testName, [err localizedDescription]);
         
         [xml setDTD:dtd];
-        STAssertTrue([xml validateAndReturnError:&err], @"Validating `$@': %@", testName, [err localizedDescription]);
+        STAssertTrue([xml validateAndReturnError:&err], @"Validating `%@': %@", testName, [err localizedDescription]);
     }
 }
 
