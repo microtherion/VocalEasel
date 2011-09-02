@@ -168,7 +168,7 @@ def _accidental(visual)
   accidental
 end
 
-def _note(pitch, dur, visual, tuplet, tied)
+def _note(pitch, dur, visual, tuplet, timeMod, tied)
   accidental = _accidental(visual)
   note = REXML::Element.new('note')
   if pitch == VL::NoPitch
@@ -202,6 +202,9 @@ def _note(pitch, dur, visual, tuplet, tied)
       notations = REXML::Element.new('notations')
     end
     notations.add_element 'tuplet', {'type' => (tuplet>0 ? 'start' : 'stop')}
+  end
+  if timeMod
+    note.add_element timeMod
   end
   if notations
     note.add_element notations
@@ -484,10 +487,11 @@ def _melody
         m.add_element(bk)
         tempAt = noteAt        
       end
-      n   = _note(note['pitch'], dur, note['visual'], note['tuplet'], note['tied'] || 0)
+      timeMod = nil
       if note['actualNotes']
-        n.add_element _timeMod(note)
+        timeMod = _timeMod(note)
       end
+      n   = _note(note['pitch'], dur, note['visual'], note['tuplet'], timeMod, note['tied'] || 0)
       stanza = 1
       note['lyrics'].each do |syll|
         if syll['text']
