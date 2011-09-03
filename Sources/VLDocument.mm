@@ -98,7 +98,7 @@
 		sheetWin			= nil;
 		pdfWin				= nil;	
 		logWin				= nil;
-		tmpPath				= nil;
+		tmpURL				= nil;
 		vcsWrapper			= nil;
 		repeatVolta			= 2;
 		brandNew			= true;
@@ -154,9 +154,9 @@
 	[undo release];
 	[observers release];
 		
-	if (tmpPath) {
-		[[NSFileManager defaultManager] removeFileAtPath:tmpPath handler:nil];
-		[tmpPath release];
+	if (tmpURL) {
+		[[NSFileManager defaultManager] removeItemAtURL:tmpURL error:nil];
+		[tmpURL release];
 	}
 
 	[super dealloc];
@@ -363,34 +363,33 @@
 	repeatVolta = volta;
 }
 
-- (NSString *) tmpPath
+- (NSURL *) tmpURL
 {
-	if (!tmpPath) {
-		tmpPath = [[NSString alloc] initWithFormat:@"/var/tmp/VocalEasel.%08x",
-									self];
-		[[NSFileManager defaultManager] createDirectoryAtPath:tmpPath attributes:nil];
+	if (!tmpURL) {
+        NSString * tmpPath = [NSString stringWithFormat:@"/var/tmp/VocalEasel.%08x", self];
+		tmpURL = [[NSURL alloc] initFileURLWithPath:tmpPath];
+		[[NSFileManager defaultManager] createDirectoryAtURL:tmpURL withIntermediateDirectories:NO attributes:nil error:nil];
 	}
-	return tmpPath;
+	return tmpURL;
 }
 
-- (NSString *) workPath
+- (NSURL *) workURL
 {
-	if ([self fileURL]) // Prefer our wrapper directory
-		return [[self fileURL] path];
+	if (NSURL * url = [self fileURL]) // Prefer our wrapper directory
+		return url;
 	else
-		return [self tmpPath];
+		return [self tmpURL];
 }
 
 - (NSString *) baseName
 {
-	return [[[self workPath] lastPathComponent] stringByDeletingPathExtension];
+	return [[[self workURL] lastPathComponent] stringByDeletingPathExtension];
 }
 
 - (NSURL *) fileURLWithExtension:(NSString*)extension
 {
-	return [NSURL fileURLWithPath:
-			  [[[self workPath] stringByAppendingPathComponent:[self baseName]]
-				  stringByAppendingPathExtension:extension]];
+    return [[[self workURL] URLByAppendingPathComponent:[self baseName]]
+            URLByAppendingPathExtension:extension];
 }
 
 - (BOOL)saveToURL:(NSURL *)absoluteURL ofType:(NSString *)typeName forSaveOperation:(NSSaveOperationType)saveOperation error:(NSError **)outError
@@ -478,12 +477,11 @@
 
 - (void) changedFileWrapper
 {
-	if (NSURL * url = [self fileURL]) 
-		if (NSDate * modDate = 
-			[[[NSFileManager defaultManager] fileAttributesAtPath:[url path] 
-											traverseLink:YES]
-				objectForKey:NSFileModificationDate])
-			[self setFileModificationDate:modDate];
+	if (NSURL * url = [self workURL]) {
+        NSDate * modDate;
+        if ([url getResourceValue:&modDate forKey:NSURLAttributeModificationDateKey error:nil])
+			[self setFileModificationDate:modDate];            
+    }
 }
 
 - (void) createTmpFileWithExtension:(NSString*)ext ofType:(NSString*)type
@@ -502,7 +500,7 @@
 - (NSTask *) taskWithLaunchPath:(NSString *)launch arguments:(NSArray *)args;
 {
 	NSTask *	task	= [[NSTask alloc] init];
-	NSString *	path 	= [self workPath];
+	NSString *	path 	= [[self workURL] path];
 	NSPipe *	pipe	= [NSPipe pipe];
 	
 	[task setCurrentDirectoryPath: path];
@@ -528,11 +526,8 @@
 		MusicSequence	music;
 		NewMusicSequence(&music);
 
-		FSRef			fsRef;
-		CFURLGetFSRef((CFURLRef)[self fileURLWithExtension:@"mid"], &fsRef);
-
-		MusicSequenceLoadSMFWithFlags(music, &fsRef, 
-									  kMusicSequenceLoadSMF_ChannelsToTracks);
+        MusicSequenceFileLoad(music, (CFURLRef)[self fileURLWithExtension:@"mid"], 
+                              0, kMusicSequenceLoadSMF_ChannelsToTracks);
 
 		size_t countIn = 0;
 		if (playElements & kVLPlayCountIn) 
@@ -598,7 +593,7 @@
 
 - (IBAction) playMusic:(id)sender
 {
-	switch (int tag = [sender tag]) {
+	switch ([sender tag]) {
 	case 1: 	// Fwd
         VLSoundOut::Instance()->Fwd();
         break;

@@ -36,9 +36,9 @@
 		VLDocument *doc	   = [self document];
 		NSURL * 	pdfURL = [doc fileURLWithExtension:@"pdf"];
 		if (!pdfURL) {
-			NSString *		path		= [doc workPath];
+            NSURL *         workURL     = [doc workURL];
 			NSFileWrapper * wrapper		= 
-				[[[NSFileWrapper alloc] initWithPath:path] autorelease];
+				[[[NSFileWrapper alloc] initWithURL:workURL options:0 error:nil] autorelease];
 			//
 			// Find newest pdf file
 			//
@@ -57,9 +57,7 @@
 				}
 			}
 			if (pdfPath) 
-				pdfURL	= 
-					[NSURL fileURLWithPath:
-							   [path stringByAppendingPathComponent:pdfPath]];
+				pdfURL	= [workURL URLByAppendingPathComponent:pdfPath];
 		}
 		if (pdfURL) {
 			PDFDocument *	pdfDoc 	= 

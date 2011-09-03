@@ -106,8 +106,8 @@ void VLSoundOut::PlayFile(CFDataRef file)
 	MusicSequence	music;
 	
 	NewMusicSequence(&music);
-	MusicSequenceLoadSMFDataWithFlags(music, file,
-									  kMusicSequenceLoadSMF_ChannelsToTracks);
+	MusicSequenceFileLoadData(music, file, 0,
+                              kMusicSequenceLoadSMF_ChannelsToTracks);
 	PlaySequence(music);
 }
 
@@ -136,7 +136,7 @@ VLAUSoundOut::~VLAUSoundOut()
 void VLAUSoundOut::InitSoundOutput(bool fileOutput)
 {
 	AUNode synthNode, limiterNode, outNode;
-   	ComponentDescription cd;
+   	AudioComponentDescription cd;
 
 	cd.componentManufacturer = kAudioUnitManufacturer_Apple;
 	cd.componentFlags = 0;
@@ -147,12 +147,12 @@ void VLAUSoundOut::InitSoundOutput(bool fileOutput)
 	cd.componentType = kAudioUnitType_MusicDevice;
 	cd.componentSubType = kAudioUnitSubType_DLSSynth;
 
-	AUGraphNewNode(fGraph, &cd, 0, NULL, &synthNode);
+	AUGraphAddNode(fGraph, &cd, &synthNode);
 
 	cd.componentType = kAudioUnitType_Effect;
 	cd.componentSubType = kAudioUnitSubType_PeakLimiter;  
 
-	AUGraphNewNode (fGraph, &cd, 0, NULL, &limiterNode);
+	AUGraphAddNode (fGraph, &cd, &limiterNode);
 
 	cd.componentType = kAudioUnitType_Output;
 	if (fileOutput)
@@ -160,7 +160,7 @@ void VLAUSoundOut::InitSoundOutput(bool fileOutput)
 	else
 		cd.componentSubType = kAudioUnitSubType_DefaultOutput;  
 
-	AUGraphNewNode(fGraph, &cd, 0, NULL, &outNode);
+	AUGraphAddNode(fGraph, &cd, &outNode);
 
 	R(AUGraphOpen(fGraph));
 	AUGraphConnectNodeInput(fGraph, synthNode, 0, limiterNode, 0);
@@ -169,7 +169,7 @@ void VLAUSoundOut::InitSoundOutput(bool fileOutput)
 	if (fileOutput) {
 		UInt32 		value = 1;
 		AudioUnit	synth;
-		R(AUGraphGetNodeInfo(fGraph, synthNode, 0, 0, 0, &synth));
+		R(AUGraphNodeInfo(fGraph, synthNode, NULL, &synth));
 		R(AudioUnitSetProperty(synth,
 							   kAudioUnitProperty_OfflineRender,
 							   kAudioUnitScope_Global, 0,
@@ -349,7 +349,7 @@ VLAUFileSoundOut::~VLAUFileSoundOut()
 
 void VLAUFileSoundOut::SetupOutput(AUNode outputNode)
 {
-	R(AUGraphGetNodeInfo(fGraph, outputNode, 0, 0, 0, &fOutput));
+	R(AUGraphNodeInfo(fGraph, outputNode, NULL, &fOutput));
 	Float64 sampleRate = 22050.0;
 	R(AudioUnitSetProperty(fOutput,
 						   kAudioUnitProperty_SampleRate,
@@ -405,17 +405,11 @@ void VLAUFileSoundOut::PlaySequence(MusicSequence music)
 		R(AudioFormatGetProperty(kAudioFormatProperty_FormatInfo, 0, NULL,
 								 &size, &outputFormat));
 	}
-	
-	CFURLRef		dir			= 
-		CFURLCreateCopyDeletingLastPathComponent(NULL, fFile);
-	FSRef parentDir;
-	CFURLGetFSRef(dir, &parentDir);
-	CFRelease(dir);
+	CFRelease(name);
 
 	ExtAudioFileRef outfile;
-	R(ExtAudioFileCreateNew(&parentDir, name, 
-							fileType, &outputFormat, NULL, &outfile));
-	CFRelease(name);
+    R(ExtAudioFileCreateWithURL(fFile, fileType, &outputFormat, NULL, 
+                                kAudioFileFlags_EraseFile, &outfile));
 
 	CAStreamBasicDescription clientFormat;
 	size = sizeof(clientFormat);

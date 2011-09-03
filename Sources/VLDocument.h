@@ -54,7 +54,7 @@ enum {
     float               chordPadding;
     float               lyricPadding;
 	int					playElements;
-	NSString *			tmpPath;
+	NSURL *             tmpURL;
 	NSFileWrapper *		vcsWrapper;
 	NSMutableArray* 	observers;
 	NSMutableDictionary*validTmpFiles;
@@ -95,9 +95,9 @@ enum {
 - (IBAction) playMusic:(id)sender;
 - (IBAction) adjustTempo:(id)sender;
 - (IBAction) togglePlayElements:(id)sender;
-
-- (NSString *) tmpPath;
-- (NSString *) workPath;
+    
+- (NSURL *)    tmpURL;
+- (NSURL *)    workURL;
 - (NSString *) baseName;
 - (NSURL *)    fileURLWithExtension:(NSString*)extension;
 - (void)	   createTmpFileWithExtension:(NSString*)ext ofType:(NSString*)type;

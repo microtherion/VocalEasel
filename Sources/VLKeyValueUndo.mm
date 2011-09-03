@@ -6,11 +6,11 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2007 Matthias Neeracher
+// Copyright © 2007-2011 Matthias Neeracher
 //
 
 #import "VLKeyValueUndo.h"
-
+#import "VLDocument.h"
 
 @implementation VLKeyValueUndo
 

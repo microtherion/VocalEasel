@@ -133,12 +133,12 @@
         //
         // Look for running copies of Lilypond first
         //
-        NSArray * runningApps = [[NSWorkspace sharedWorkspace] launchedApplications];
-        for (NSDictionary * app in runningApps)
-            if ([[app objectForKey:@"NSApplicationBundleIdentifier"] isEqual:@"org.lilypond.lilypond"]
-             || [[app objectForKey:@"NSApplicationName"] isEqual:@"LilyPond"]
+        NSArray * runningApps = [[NSWorkspace sharedWorkspace] runningApplications];
+        for (NSRunningApplication * app in runningApps)
+            if ([[app bundleIdentifier] isEqual:@"org.lilypond.lilypond"]
+             || [[app localizedName] isEqual:@"LilyPond"]
         )
-            if ((appPath = [[app objectForKey:@"NSApplicationPath"] stringByAppendingPathComponent:@"Contents/Resources/bin/lilypond"]))
+            if ((appPath = [[[app bundleURL] path] stringByAppendingPathComponent:@"Contents/Resources/bin/lilypond"]))
                 break;
         if (!appPath) 
             appPath = 	
