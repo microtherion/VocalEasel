@@ -56,11 +56,11 @@
         NSOperationQueue *     oq   = [NSOperationQueue mainQueue];
         soundStartObserver          = [nc addObserverForName:(NSString*)kVLSoundStartedNotification 
                                                       object:nil queue:oq usingBlock:^(NSNotification *note) {
-            [[[self window] contentView] setNeedsDisplay:YES];
+            [[[self window] toolbar] validateVisibleItems];
         }];
         soundStopObserver           = [nc addObserverForName:(NSString*)kVLSoundStoppedNotification 
                                                       object:nil queue:oq usingBlock:^(NSNotification *note) {
-            [[[self window] contentView] setNeedsDisplay:YES];
+            [[[self window] toolbar] validateVisibleItems];
         }];
 	}
 	return self;
