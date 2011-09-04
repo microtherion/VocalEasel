@@ -42,5 +42,6 @@
 - (void) startAnimation;
 - (void) stopAnimation;
 - (void) willPlaySequence:(MusicSequence)music;
+- (IBAction) togglePlayElements:(id)sender;
 
 @end

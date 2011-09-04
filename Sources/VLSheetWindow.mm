@@ -96,4 +96,18 @@
 	[sheetView willPlaySequence:music];
 }
 
+- (IBAction) togglePlayElements:(id)sender
+{
+	[[self document] setPlayElements:[[self document] playElements] ^ [sender tag]];
+}
+
+- (BOOL) validateMenuItem:(NSMenuItem *)menuItem
+{
+	if ([menuItem action] == @selector(togglePlayElements:))
+		if (int tag = [menuItem tag])
+			[menuItem setState:([[self document] playElements] & tag) != 0];
+    
+	return YES;
+}
+
 @end

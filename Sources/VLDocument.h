@@ -53,7 +53,7 @@ enum {
     float               staffPadding;
     float               chordPadding;
     float               lyricPadding;
-	int					playElements;
+    int                 playElements;
 	NSURL *             tmpURL;
 	NSFileWrapper *		vcsWrapper;
 	NSMutableArray* 	observers;
@@ -70,6 +70,8 @@ enum {
 	float				playRate;
 	float				baseTempo;
 }
+
+@property (nonatomic) int playElements;
 
 - (VLSong *)	song;
 - (NSNumber *)	songKey;
@@ -94,7 +96,6 @@ enum {
 - (IBAction) playStop:(id)sender;
 - (IBAction) playMusic:(id)sender;
 - (IBAction) adjustTempo:(id)sender;
-- (IBAction) togglePlayElements:(id)sender;
     
 - (NSURL *)    tmpURL;
 - (NSURL *)    workURL;

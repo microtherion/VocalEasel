@@ -68,6 +68,8 @@
 
 @implementation VLDocument
 
+@synthesize playElements;
+
 + (BOOL)autosavesInPlace
 {
     return YES;
@@ -84,6 +86,7 @@
 		songComposer		= @"";
 		songArranger		= @"";
 		songGroove			= @"Swing";
+		playElements		= kVLPlayAccompaniment|kVLPlayMelody|kVLPlayCountIn;
 		songTempo			= [[NSNumber alloc] initWithInt:120];
 		baseTempo			= 120.0f;
 		chordSize			= 6.0f;
@@ -94,7 +97,6 @@
         staffPadding        = 3.0f;
         chordPadding        = 1.5f;
         lyricPadding        = 1.0f;
-		playElements		= kVLPlayAccompaniment|kVLPlayMelody|kVLPlayCountIn;
 		sheetWin			= nil;
 		pdfWin				= nil;	
 		logWin				= nil;
@@ -331,26 +333,17 @@
 	[validTmpFiles removeObjectForKey:@"pdf"]; 
 }
 
+- (void)setPlayElements:(int)elements
+{
+    playElements    = elements;
+    [validTmpFiles removeObjectForKey:@"mma"]; 
+    [validTmpFiles removeObjectForKey:@"mid"]; 
+    hasMusicSequence = false;
+}
+
 - (int) repeatVolta
 {	
 	return repeatVolta;
-}
-
-- (IBAction) togglePlayElements:(id)sender
-{
-	playElements ^= [sender tag];
-	[validTmpFiles removeObjectForKey:@"mma"]; 
-	[validTmpFiles removeObjectForKey:@"mid"]; 
-	hasMusicSequence = false;
-}
-
-- (BOOL) validateMenuItem:(NSMenuItem *)menuItem
-{
-	if ([menuItem action] == @selector(togglePlayElements:))
-		if (int tag = [menuItem tag])
-			[menuItem setState:(playElements & tag) != 0];
-
-	return YES;
 }
 
 - (bool) brandNew
