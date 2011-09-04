@@ -37,7 +37,8 @@ public:
 	virtual void 	SetPlayRate(float rate);
 	virtual void 	Fwd();
 	virtual void 	Bck();
-	
+	virtual void    SetMelodyState(MelodyState state);
+    
 	virtual 	   ~VLAUSoundOut();
     void            PollMusic();
 protected:
@@ -67,6 +68,7 @@ public:
 protected:
 	virtual void 	SetupOutput(AUNode outputNode);
 	virtual void   	PlaySequence(MusicSequence music);
+    virtual void    SetMelodyState(MelodyState state) {}
 private:
 	AudioUnit		fOutput;
 	CFURLRef		fFile;
@@ -111,8 +113,7 @@ void VLSoundOut::PlayFile(CFDataRef file)
 	MusicSequence	music;
 	
 	NewMusicSequence(&music);
-	MusicSequenceFileLoadData(music, file, 0,
-                              kMusicSequenceLoadSMF_ChannelsToTracks);
+	MusicSequenceFileLoadData(music, file, 0, 0);
 	PlaySequence(music);
 }
 
@@ -222,6 +223,21 @@ void VLAUSoundOut::PlaySequence(MusicSequence music)
     dispatch_source_set_timer(fMusicPoll, DISPATCH_TIME_NOW, 500*NSEC_PER_MSEC, 200*NSEC_PER_MSEC);
 }
 
+void VLAUSoundOut::SetMelodyState(VLSoundOut::MelodyState state)
+{
+    if (fMusic) {
+        UInt32      numTracks;
+        MusicTrack  curTrack;
+        MusicSequenceGetTrackCount(fMusic, &numTracks);
+        MusicSequenceGetIndTrack(fMusic, numTracks-2, &curTrack);
+            
+        Boolean mute = state==kMelodyMute;
+        Boolean solo = state==kMelodySolo;
+        
+        MusicTrackSetProperty(curTrack, kSequenceTrackProperty_MuteStatus, &mute, sizeof(mute));
+        MusicTrackSetProperty(curTrack, kSequenceTrackProperty_SoloStatus, &solo, sizeof(solo));
+    }
+}
 void VLAUSoundOut::SetPlayRate(float rate)
 {
 	if ((rate < 0) != fForward) {

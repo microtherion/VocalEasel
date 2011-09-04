@@ -24,7 +24,7 @@
 			@"!(SELF matches[c] '.*(Intro|End)\\\\d*$')"]
 			retain];
 	fView		= view;
-	fSheetWin	= (VLSheetWindow *)[view window];
+	fSheetWin	= [[view window] windowController];
 
 	[NSApp beginSheet: [self window]
 		   modalForWindow: [view window]

@@ -49,12 +49,7 @@
 				// Can't handle these yet
 				break;
 			}
-		if (!(playElements & kVLPlayAccompaniment))
-			mmaFile += "AllTracks Off\nSolo On\n";
-		if (playElements & kVLPlayMelody) 
-			mmaFile += "Solo Voice AltoSax\nSolo Volume fff\n";
-		else 
-			mmaFile += "Solo Off\n";
+        mmaFile += "Solo Voice AltoSax\nSolo Volume fff\n";
 	}
 	mmaFile += '\n'+writer.Measures();	
 

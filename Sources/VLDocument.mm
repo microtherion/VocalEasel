@@ -292,10 +292,17 @@
 
 - (void)setPlayElements:(int)elements
 {
+    [self willChangeValueForKey:@"playElements"];
     playElements    = elements;
-    [validTmpFiles removeObjectForKey:@"mma"]; 
-    [validTmpFiles removeObjectForKey:@"mid"]; 
-    hasMusicSequence = false;
+    if (!(playElements & (kVLPlayMelody|kVLPlayAccompaniment)))
+        playElements |= kVLPlayAccompaniment;
+    if ((playElements & (kVLPlayMelody|kVLPlayGroovePreview)) != kVLPlayMelody)
+        VLSoundOut::Instance()->SetMelodyState(VLSoundOut::kMelodyMute);
+    else if (!(playElements & (kVLPlayAccompaniment|kVLPlayGroovePreview)))
+        VLSoundOut::Instance()->SetMelodyState(VLSoundOut::kMelodySolo);
+    else
+        VLSoundOut::Instance()->SetMelodyState(VLSoundOut::kMelodyRegular);
+    [self didChangeValueForKey:@"playElements"];
 }
 
 - (int) repeatVolta
@@ -476,7 +483,7 @@
 		NewMusicSequence(&music);
 
         MusicSequenceFileLoad(music, (CFURLRef)[self fileURLWithExtension:@"mid"], 
-                              0, kMusicSequenceLoadSMF_ChannelsToTracks);
+                              0, 0);
 
 		size_t countIn = 0;
 		if (playElements & kVLPlayCountIn) 
@@ -494,7 +501,8 @@
 		baseTempo			= songTempo;
 		VLSoundOut::Instance()->SetPlayRate(playRate);
 		VLSoundOut::Instance()->PlaySequence(music);
-	}
+ 	}
+    [self setPlayElements:[self playElements]];
 }
 
 - (void) playWithGroove:(NSString *)groove inSections:(NSRange)sections

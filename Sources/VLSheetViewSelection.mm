@@ -30,7 +30,7 @@
 }
 
 - (VLPlaybackEditable *)initWithView:(VLSheetView *)view;
-- (void) userEvent:(NSValue *)event;
+- (void) userEvent:(const VLMIDIUserEvent *)event;
 - (void) highlightCursor;
 
 @end
@@ -47,9 +47,8 @@
 	return self;
 }
 
-- (void) userEvent:(NSValue *)ev
+- (void) userEvent:(const VLMIDIUserEvent *) event
 {
-	VLMIDIUserEvent * event = (VLMIDIUserEvent *)[ev pointerValue];
 	if (event->fPitch) {
 		fNoteMeasure	= event->fMeasure;
 		fNoteAt			= event->fAt;
@@ -103,9 +102,9 @@ VLSequenceCallback(
 				   MusicTimeStamp inEventTime, const MusicEventUserData *inEventData, 
 				   MusicTimeStamp inStartSliceBeat, MusicTimeStamp inEndSliceBeat)
 {
-	[(id)inClientData performSelectorOnMainThread:@selector(userEvent:)
-		 withObject:[NSValue valueWithPointer:inEventData]
-		 waitUntilDone:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [(id)inClientData userEvent:(const VLMIDIUserEvent *)inEventData];
+    });
 }
 
 @implementation VLSheetView (Selection)

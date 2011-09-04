@@ -48,6 +48,12 @@ public:
 	virtual void SetPlayRate(float rate) = 0;
     virtual void Fwd() = 0;
     virtual void Bck() = 0;
+    enum MelodyState {
+        kMelodyMute,
+        kMelodyRegular,
+        kMelodySolo
+    };
+    virtual void SetMelodyState(MelodyState state) = 0;
 
 	virtual ~VLSoundOut();
 };
