@@ -1756,8 +1756,8 @@ VLSong::iterator::iterator(const VLSong & song, bool end)
 		bool 	repeat;
 		fMeasure	= 0;
 		if (fSong.fCoda > 0 
-		 && !fSong.DoesEndRepeat(fMeasure)
-		 && !fSong.DoesEndEnding(fMeasure, &repeat)
+		 && !fSong.DoesEndRepeat(fSong.fCoda)
+		 && !fSong.DoesEndEnding(fSong.fCoda, &repeat)
 		)
 			fStatus.push_back(Repeat(fMeasure, 2));
 		AdjustStatus();
@@ -1791,12 +1791,17 @@ void VLSong::iterator::AdjustStatus()
 	} else if (!repeat) {
 		fStatus.pop_back();
 	}
-	if (fSong.fCoda > 0 && fMeasure==fSong.fGoToCoda)
-		if (fStatus.size() && fStatus.back().fVolta == fStatus.back().fTimes-1) {
-			fMeasure = fSong.fCoda;
+	if (fSong.fCoda > 0 && fMeasure==fSong.fGoToCoda) {
+        for (size_t repeat = 0; repeat < fStatus.size(); ++repeat)
+            if (fStatus[repeat].fVolta != fStatus[repeat].fTimes-1)
+                goto notAtCoda;
+        fStatus.clear();
+        fMeasure = fSong.fCoda;
 			
-			return;
-		}
+        return;
+    notAtCoda:
+        ;
+    }
 	if (fMeasure == fSong.CountMeasures()-fSong.EmptyEnding() 
 		|| (fSong.fCoda > 0 && fMeasure == fSong.fCoda)
 	)
