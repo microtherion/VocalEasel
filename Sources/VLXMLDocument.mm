@@ -37,7 +37,8 @@
 		[wrap addRegularFileWithContents:pd preferredFilename:@"PrintInfo"];
 		if (!sPropertyKeys)
 			sPropertyKeys = [[NSArray alloc] initWithObjects:
-				@"staffSize", @"chordSize", @"lyricSize", nil];
+                             @"staffSize", @"chordSize", @"lyricSize", 
+                             @"topPadding", @"titlePadding", @"staffPadding", @"chordPadding", @"lyricPadding", nil];
 		NSData * prop = [NSPropertyListSerialization dataFromPropertyList:
 						   [self dictionaryWithValuesForKeys:sPropertyKeys]
 						   format:NSPropertyListXMLFormat_v1_0 
