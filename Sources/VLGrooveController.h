@@ -11,7 +11,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class VLSheetView;
-@class VLDocument;
+@class VLSheetWindow;
 
 @interface VLGrooveController : NSWindowController {
 	NSDictionary * 			fGrooves;
@@ -24,7 +24,7 @@
 	NSArray *				fSubStyleList;
 	NSPredicate *			fSubStyleFilter;
 	VLSheetView *			fView;
-	VLDocument *			fDocument;
+	VLSheetWindow *			fSheetWin;
 }
 
 - (id) initWithSheetView:(VLSheetView *)view;

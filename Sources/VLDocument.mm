@@ -68,7 +68,7 @@
 
 @implementation VLDocument
 
-@synthesize playElements;
+@synthesize songTempo, playElements;
 
 + (BOOL)autosavesInPlace
 {
@@ -87,7 +87,7 @@
 		songArranger		= @"";
 		songGroove			= @"Swing";
 		playElements		= kVLPlayAccompaniment|kVLPlayMelody|kVLPlayCountIn;
-		songTempo			= [[NSNumber alloc] initWithInt:120];
+		songTempo			= 120.0f;
 		baseTempo			= 120.0f;
 		chordSize			= 6.0f;
 		lyricSize			= 0.0f;
@@ -142,7 +142,7 @@
 
 - (void) dealloc
 {
-	VLSoundOut::Instance()->Stop();
+	VLSoundOut::Instance()->Stop(false);
 
 	delete song;
 
@@ -237,13 +237,12 @@
 	[self didChangeSong];
 }
 
-- (void) setSongTempo:(int)tempo
+- (void) setSongTempo:(float)tempo
 {
-	if (tempo == [songTempo intValue])
+	if (tempo == songTempo)
 		return;
 	
-	[songTempo autorelease];
-	songTempo = [[NSNumber numberWithInt:tempo] retain];
+	songTempo = tempo;
 	if (VLSoundOut::Instance()->Playing()) 
 		VLSoundOut::Instance()->SetPlayRate(playRate*tempo/baseTempo);
 }
@@ -466,7 +465,7 @@
 	return task;
 }
 
-- (IBAction) play:(id)sender
+- (void) playSong
 {
 	if (hasMusicSequence) {
 		VLSoundOut::Instance()->PlaySequence(NULL);
@@ -492,7 +491,7 @@
 	
 		hasMusicSequence 	= true;
 		[sheetWin willPlaySequence:music];
-		baseTempo			= [songTempo floatValue];
+		baseTempo			= songTempo;
 		VLSoundOut::Instance()->SetPlayRate(playRate);
 		VLSoundOut::Instance()->PlaySequence(music);
 	}
@@ -507,55 +506,12 @@
 	songGroove	   	 = groove;
 	previewRange	 = sections;
 	playElements	|= kVLPlayGroovePreview;
-	[self play:groove];
+	[self playSong];
 	playElements	&= ~kVLPlayGroovePreview;
 	songGroove		 = savedGroove;
 	[validTmpFiles removeObjectForKey:@"mma"]; 
 	[validTmpFiles removeObjectForKey:@"mid"]; 
 	hasMusicSequence = false;
-}
-
-- (IBAction) stop:(id)sender
-{
-	VLSoundOut::Instance()->Stop();
-}
-
-- (IBAction) playStop:(id)sender
-{	
-	if (VLSoundOut::Instance()->Playing()) {
-		[self stop:sender];
-        if ([sender isKindOfClass:[NSMenuItem class]]) {
-            [sender setTitle:@"Play"];
-        } else {
-            [sender setLabel:@"Play"];
-            [sender setImage:[NSImage imageNamed:@"play.icns"]];
-        }
-	} else {
-		[self play:sender];
-        if ([sender isKindOfClass:[NSMenuItem class]]) {
-            [sender setTitle:@"Stop"];
-        } else {
-            [sender setLabel:@"Stop"];
-            [sender setImage:[NSImage imageNamed:@"stop.icns"]];
-        }
-	}
-}
-
-- (IBAction) playMusic:(id)sender
-{
-	switch ([sender tag]) {
-	case 1: 	// Fwd
-        VLSoundOut::Instance()->Fwd();
-        break;
-	case -1:	// Rew
-		VLSoundOut::Instance()->Bck();
-		break;
-	}
-}
-
-- (IBAction) adjustTempo:(id)sender
-{
-	[self setSongTempo:[songTempo intValue]+[sender tag]];
 }
 
 - (NSPrintOperation *)printOperationWithSettings:(NSDictionary *)printSettings 

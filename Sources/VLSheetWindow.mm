@@ -12,6 +12,7 @@
 #import "VLDocument.h"
 #import "VLPDFWindow.h"
 #import "VLLogWindow.h"
+#import "VLSoundOut.h"
 
 @implementation VLEditable
 
@@ -51,8 +52,25 @@
 {
 	if (self = [super initWithWindow:window]) {
 		editTarget			= nil;
+        NSNotificationCenter * nc   = [NSNotificationCenter defaultCenter];
+        NSOperationQueue *     oq   = [NSOperationQueue mainQueue];
+        soundStartObserver          = [nc addObserverForName:(NSString*)kVLSoundStartedNotification 
+                                                      object:nil queue:oq usingBlock:^(NSNotification *note) {
+            [[[self window] contentView] setNeedsDisplay:YES];
+        }];
+        soundStopObserver           = [nc addObserverForName:(NSString*)kVLSoundStoppedNotification 
+                                                      object:nil queue:oq usingBlock:^(NSNotification *note) {
+            [[[self window] contentView] setNeedsDisplay:YES];
+        }];
 	}
 	return self;
+}
+
+- (void) dealloc
+{
+    NSNotificationCenter * nc   = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:soundStartObserver];
+    [nc removeObserver:soundStopObserver];
 }
 
 - (VLEditable *)editTarget
@@ -100,11 +118,25 @@
 	[[self document] setPlayElements:[[self document] playElements] ^ [sender tag]];
 }
 
-- (BOOL) validateMenuItem:(NSMenuItem *)menuItem
+- (BOOL) validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
 {
-	if ([menuItem action] == @selector(togglePlayElements:))
-		if (int tag = [menuItem tag])
+	if ([item action] == @selector(togglePlayElements:)) {
+        NSMenuItem * menuItem = (NSMenuItem *)item;
+		if (int tag = [item tag])
 			[menuItem setState:([[self document] playElements] & tag) != 0];
+    } else if ([item action] == @selector(playStop:)) {
+        NSMenuItem *    menuItem = [(NSObject *)item isKindOfClass:[NSMenuItem class]] ? (NSMenuItem *)item : nil;
+        NSToolbarItem * toolItem = menuItem ? nil : (NSToolbarItem *)item;
+        if (VLSoundOut::Instance()->Playing()) {
+            [menuItem setTitle:@"Stop"];
+            [toolItem setLabel:@"Stop"];
+            [toolItem setImage:[NSImage imageNamed:@"stop.icns"]];
+        } else {
+            [menuItem setTitle:@"Play"];
+            [toolItem setLabel:@"Play"];
+            [toolItem setImage:[NSImage imageNamed:@"play.icns"]];
+        }
+    }
     
 	return YES;
 }
@@ -126,5 +158,36 @@
     [pdfWin showWindow:self];
 	[pdfWin reloadPDF];
 }
+
+- (IBAction) stop:(id)sender
+{
+    VLSoundOut::Instance()->Stop();
+}
+
+- (IBAction) playStop:(id)sender
+{	
+	if (VLSoundOut::Instance()->Playing()) 
+        [self stop:sender];
+    else
+        [[self document] playSong];
+}
+
+- (IBAction) playMusic:(id)sender
+{
+	switch ([sender tag]) {
+    case 1: 	// Fwd
+        VLSoundOut::Instance()->Fwd();
+        break;
+    case -1:	// Rew
+        VLSoundOut::Instance()->Bck();
+        break;
+	}
+}
+
+- (IBAction) adjustTempo:(id)sender
+{
+	[[self document] setSongTempo:[[self document] songTempo]+[sender tag]];
+}
+
 
 @end

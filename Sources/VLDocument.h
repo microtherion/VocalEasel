@@ -41,7 +41,7 @@ enum {
 	NSString *			songComposer;
 	NSString *			songArranger;
 	NSString *			songGroove;
-	NSNumber *			songTempo;
+	float               songTempo;
 	float				chordSize;
 	float				lyricSize;
 	float				staffSize;
@@ -65,6 +65,7 @@ enum {
 	float				baseTempo;
 }
 
+@property (nonatomic) float songTempo;
 @property (nonatomic) int playElements;
 
 - (VLSong *)	song;
@@ -83,12 +84,8 @@ enum {
 
 - (void) setRepeatVolta:(int)repeatVolta;
 
-- (IBAction) play:(id)sender;
-- (IBAction) stop:(id)sender;
-- (IBAction) playStop:(id)sender;
-- (IBAction) playMusic:(id)sender;
-- (IBAction) adjustTempo:(id)sender;
-    
+- (void) playSong;
+
 - (NSURL *)    tmpURL;
 - (NSURL *)    workURL;
 - (NSString *) baseName;

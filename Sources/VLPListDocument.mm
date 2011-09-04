@@ -243,7 +243,7 @@ void VLPlistVisitor::VisitChord(VLChord & c)
 {
 	NSMutableDictionary *	plist = 
 		[NSMutableDictionary dictionaryWithObjectsAndKeys:
-		 songTitle, @"title", songTempo, @"tempo",
+		 songTitle, @"title", [NSNumber numberWithLong:lround(songTempo)], @"tempo",
 		 [NSString stringWithUTF8String:song->PrimaryGroove().c_str()], @"groove", 
 		 songComposer, @"composer", songLyricist, @"lyricist",
 		 [NSDate date], @"saved",

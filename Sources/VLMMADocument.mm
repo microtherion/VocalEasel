@@ -26,7 +26,7 @@
 		+ (const char *)[[bndl objectForInfoDictionaryKey:@"CFBundleVersion"]
 							UTF8String]
 		+ "\n\n";
-	sprintf(buf, "Tempo %d\n", [songTempo intValue]);
+	sprintf(buf, "Tempo %ld\n", lround(songTempo));
 	mmaFile	+= buf;
 	if (playElements & kVLPlayGroovePreview) {
 		//

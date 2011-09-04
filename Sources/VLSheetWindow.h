@@ -33,6 +33,8 @@
     IBOutlet NSProgressIndicator *  progressIndicator;
     IBOutlet VLLogWindow *          logWin;
 	IBOutlet VLPDFWindow *          pdfWin;
+    id                              soundStartObserver;
+    id                              soundStopObserver;
 
     
 	VLEditable *            editTarget;
@@ -46,6 +48,10 @@
 
 - (IBAction) togglePlayElements:(id)sender;
 - (IBAction) showOutput:(id)sender;
+- (IBAction) stop:(id)sender;
+- (IBAction) playStop:(id)sender;
+- (IBAction) playMusic:(id)sender;
+- (IBAction) adjustTempo:(id)sender;
 
 - (VLEditable *) editTarget;
 - (void) setEditTarget:(VLEditable *)editable;

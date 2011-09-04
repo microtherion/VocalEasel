@@ -120,6 +120,7 @@ enum VLCursorVisual {
 - (IBAction) editDisplayOptions:(id)sender;
 - (IBAction) transposeOctave:(id)sender;
 
+
 - (VLDocument *) document;
 - (VLSong *) song;
 - (NSImage *) musicElement:(VLMusicElement)elt;

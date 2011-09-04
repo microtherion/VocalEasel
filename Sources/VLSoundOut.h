@@ -5,12 +5,15 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright Â© 2005-2008 Matthias Neeracher
+// Copyright © 2005-2011 Matthias Neeracher
 //
 
 #include "VLModel.h"
 #import <CoreFoundation/CoreFoundation.h>
 #include <AudioToolbox/AudioToolbox.h>
+
+extern CFStringRef  kVLSoundStartedNotification;
+extern CFStringRef  kVLSoundStoppedNotification;
 
 class VLSoundEvent {
 protected:

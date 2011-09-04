@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright Â© 2005-2007 Matthias Neeracher
+// Copyright © 2005-2011 Matthias Neeracher
 //
 
 #include "VLSoundOut.h"
@@ -20,6 +20,9 @@
 #include <dispatch/dispatch.h>
 
 #define R(x) if (OSStatus r = (x)) fprintf(stderr, "%s -> %d\n", #x, r);
+
+CFStringRef  kVLSoundStartedNotification    =   CFSTR("VLSoundStarted");
+CFStringRef  kVLSoundStoppedNotification    =   CFSTR("VLSoundStopped");
 
 class VLAUSoundOut : public VLSoundOut {
 public:
@@ -36,23 +39,25 @@ public:
 	virtual void 	Bck();
 	
 	virtual 	   ~VLAUSoundOut();
+    void            PollMusic();
 protected:
 	VLAUSoundOut(bool fileOutput);
 
 	void			InitSoundOutput(bool fileOutput);
 	virtual void 	SetupOutput(AUNode outputNode);
-	MusicTimeStamp	SequenceLength(MusicSequence music);
+	MusicTimeStamp  SequenceLength(MusicSequence music);
     void            SkipTimeInterval();
 
-	AUGraph			fGraph;
-	MusicPlayer		fPlayer;
+	AUGraph             fGraph;
+	MusicPlayer         fPlayer;
 private:
-	MusicSequence	fMusic;
-	MusicTimeStamp	fMusicLength;
-	bool			fRunning;
-	bool			fForward;
+	MusicSequence       fMusic;
+	MusicTimeStamp      fMusicLength;
+	bool                fRunning;
+	bool                fForward;
+    dispatch_source_t   fMusicPoll;
 
-	void 			Play(const int8_t * note, size_t numNotes = 1);
+	void                Play(const int8_t * note, size_t numNotes = 1);
 };
 
 class VLAUFileSoundOut : public VLAUSoundOut {
@@ -119,6 +124,12 @@ VLAUSoundOut::VLAUSoundOut()
 	: fMusic(0), fRunning(false), fForward(true)
 {
 	InitSoundOutput(false);
+    fMusicPoll = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    dispatch_source_set_event_handler(fMusicPoll, ^{
+        this->PollMusic();
+    });
+    dispatch_source_set_timer(fMusicPoll, DISPATCH_TIME_FOREVER, INT64_MAX, 1000*NSEC_PER_USEC);
+    dispatch_resume(fMusicPoll);
 }
 
 VLAUSoundOut::VLAUSoundOut(bool)
@@ -128,8 +139,9 @@ VLAUSoundOut::VLAUSoundOut(bool)
 
 VLAUSoundOut::~VLAUSoundOut()
 {
-	DisposeMusicPlayer(fPlayer);
 	Stop(false);
+    dispatch_release(fMusicPoll);
+	DisposeMusicPlayer(fPlayer);
 	DisposeAUGraph(fGraph);
 }
 
@@ -205,6 +217,9 @@ void VLAUSoundOut::PlaySequence(MusicSequence music)
 	R(MusicPlayerStart(fPlayer));
 
 	fRunning	= true;
+    CFNotificationCenterPostNotification(CFNotificationCenterGetLocalCenter(), kVLSoundStartedNotification, 
+                                         NULL, NULL, false);
+    dispatch_source_set_timer(fMusicPoll, DISPATCH_TIME_NOW, 500*NSEC_PER_MSEC, 200*NSEC_PER_MSEC);
 }
 
 void VLAUSoundOut::SetPlayRate(float rate)
@@ -266,6 +281,9 @@ void VLAUSoundOut::Stop(bool pause)
 		DisposeMusicSequence(fMusic);
 		fMusic = 0;
 	}
+    CFNotificationCenterPostNotification(CFNotificationCenterGetLocalCenter(), kVLSoundStoppedNotification, 
+                                         NULL, NULL, false);
+    dispatch_source_set_timer(fMusicPoll, DISPATCH_TIME_FOREVER, INT64_MAX, 200*NSEC_PER_MSEC);
 }
 
 bool VLAUSoundOut::Playing()
@@ -278,6 +296,14 @@ bool VLAUSoundOut::AtEnd()
 	MusicTimeStamp time;
 
 	return !MusicPlayerGetTime(fPlayer, &time) && time >= fMusicLength;
+}
+
+void VLAUSoundOut::PollMusic()
+{
+    if (fRunning && AtEnd()) {
+        MusicPlayerSetTime(fPlayer, 0); 
+        Stop(true);
+    }
 }
 
 void VLAUSoundOut::PlayNote(const VLNote & note)

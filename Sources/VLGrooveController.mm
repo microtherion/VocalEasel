@@ -5,12 +5,12 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2007 Matthias Neeracher
+// Copyright © 2007-2011 Matthias Neeracher
 //
 
 #import "VLGrooveController.h"
 #import "VLSheetView.h"
-#import "VLDocument.h"
+#import "VLSheetWindow.h"
 
 @implementation VLGrooveController
 
@@ -24,7 +24,7 @@
 			@"!(SELF matches[c] '.*(Intro|End)\\\\d*$')"]
 			retain];
 	fView		= view;
-	fDocument	= [view document];
+	fSheetWin	= (VLSheetWindow *)[view window];
 
 	[NSApp beginSheet: [self window]
 		   modalForWindow: [view window]
@@ -46,7 +46,7 @@
 	if ([sender state])
 		[fView playWithGroove:[[fBrowser selectedCellInColumn:1] stringValue]];
 	else
-		[fDocument stop:sender];
+		[fSheetWin stop:self];
 }
 
 - (IBAction)endSheet:(id)sender
@@ -56,7 +56,7 @@
 
 - (void)didEndSheet:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo
 {
-	[fDocument stop:self];
+	[fSheetWin stop:self];
 	if (returnCode == NSAlertFirstButtonReturn)
 		[fView setGroove:[[fBrowser selectedCellInColumn:1] stringValue]];
 		
@@ -119,7 +119,7 @@
 			    [fSubStyles objectForKey:@".DESC"],
 			    [fSubStyles objectForKey:
 				    [[fBrowser selectedCellInColumn:1] stringValue]]]];
-		[fDocument stop:self];
+		[fSheetWin stop:self];
 		[self togglePlay:fPlayButton];
 	} else
 		[fDescription setStringValue:[fSubStyles objectForKey:@".DESC"]];
