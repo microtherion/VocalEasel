@@ -14,6 +14,11 @@
 
 @implementation VLPDFWindow
 
+- (id)init
+{
+    return self = [super initWithWindowNibName:@"VLPDFWindow"];
+}
+
 - (NSString *)windowTitleForDocumentDisplayName:(NSString *)displayName
 {
 	return [displayName stringByAppendingString: @" - Output"];
@@ -33,7 +38,7 @@
 - (void)reloadPDF
 {
 	if (pdfView) {
-		VLDocument *doc	   = [self document];
+		VLDocument *doc	   = [sheetWin document];
 		NSURL * 	pdfURL = [doc fileURLWithExtension:@"pdf"];
 		if (!pdfURL) {
             NSURL *         workURL     = [doc workURL];

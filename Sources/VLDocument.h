@@ -13,8 +13,6 @@
 #import "VLKeyValueUndo.h"
 
 @class VLSheetWindow;
-@class VLPDFWindow;
-@class VLLogWindow;
 
 #define VLBIABType      @"VLBIABType"
 #define VLNativeType    @"org.aereperennius.vocaleasel-song"
@@ -61,8 +59,6 @@ enum {
 	bool				brandNew;
 	bool				hasMusicSequence;
 	VLSheetWindow *		sheetWin;
-	VLLogWindow *		logWin;
-	VLPDFWindow *		pdfWin;
 	VLKeyValueUndo*		undo;
 	NSRange				previewRange;
 	float				playRate;
@@ -87,8 +83,6 @@ enum {
 
 - (void) setRepeatVolta:(int)repeatVolta;
 
-- (IBAction) showOutput:(id)sender;
-- (IBAction) showLog:(id)sender;
 - (IBAction) play:(id)sender;
 - (IBAction) stop:(id)sender;
 - (IBAction) playStop:(id)sender;
@@ -105,7 +99,6 @@ enum {
 - (void)	   willChangeSong;
 - (void)	   didChangeSong;
 - (void)	   addObserver:(id)observer;
-- (VLLogWindow *)logWin;
 
 @end
 

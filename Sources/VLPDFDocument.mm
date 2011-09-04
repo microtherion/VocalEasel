@@ -9,6 +9,7 @@
 //
 
 #import "VLPDFDocument.h"
+#import "VLSheetWindow.h"
 
 @implementation VLDocument (PDF)
 
@@ -55,13 +56,8 @@
 - (void)pdfDone:(NSNotification *)notification {
 	[[NSNotificationCenter defaultCenter] removeObserver: self 
 		name:NSTaskDidTerminateNotification object:[notification object]];
-    int status = [[notification object] terminationStatus];
-    if (!status) {
-		;
-	} else {
-		[[self logWin] showWindow: self];		
-		NSBeep();
-	}
+    if ([[notification object] terminationStatus])
+        [sheetWin showLogAndBeep];
 }
 
 @end

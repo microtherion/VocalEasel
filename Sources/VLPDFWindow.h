@@ -12,7 +12,8 @@
 #import <Quartz/Quartz.h>
 
 @interface VLPDFWindow : NSWindowController <NSToolbarDelegate> {
-	IBOutlet PDFView *	pdfView;
+    IBOutlet NSWindowController *   sheetWin;
+	IBOutlet PDFView *              pdfView;
 }
 
 - (void)reloadPDF;

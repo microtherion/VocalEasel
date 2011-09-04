@@ -12,9 +12,9 @@
 
 @implementation VLLogWindow
 
-- (id)initWithWindow:(NSWindow *)window
+- (id)init
 {
-	self	= [super initWithWindow:window];
+    self    = [super initWithWindowNibName:@"VLLogWindow"];
 	logText	= [[NSMutableString alloc] initWithCapacity:1000];
 	
 	return self;

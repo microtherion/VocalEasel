@@ -10,7 +10,8 @@
 
 #import "VLSheetWindow.h"
 #import "VLDocument.h"
-
+#import "VLPDFWindow.h"
+#import "VLLogWindow.h"
 
 @implementation VLEditable
 
@@ -44,6 +45,8 @@
 
 @implementation VLSheetWindow
 
+@synthesize logWin;
+
 - (id)initWithWindow:(NSWindow *)window
 {
 	if (self = [super initWithWindow:window]) {
@@ -60,10 +63,6 @@
 - (void)setEditTarget:(VLEditable *)editable
 {
 	editTarget = editable;
-}
-
-- (void)windowDidLoad
-{
 }
 
 - (void) startAnimation
@@ -108,6 +107,24 @@
 			[menuItem setState:([[self document] playElements] & tag) != 0];
     
 	return YES;
+}
+
+- (IBAction) showLog:(id)sender
+{
+	[logWin showWindow:sender];
+}
+
+- (void) showLogAndBeep
+{
+    [logWin showWindow:self];
+    NSBeep();
+}
+
+- (IBAction) showOutput:(id)sender
+{
+	[[self document] createTmpFileWithExtension:@"pdf" ofType:VLPDFType];
+    [pdfWin showWindow:self];
+	[pdfWin reloadPDF];
 }
 
 @end

@@ -25,10 +25,15 @@
 @end
 
 @class VLSheetView;
+@class VLLogWindow;
+@class VLPDFWindow;
 
 @interface VLSheetWindow : NSWindowController <NSToolbarDelegate> {
 	IBOutlet VLSheetView *          sheetView;
     IBOutlet NSProgressIndicator *  progressIndicator;
+    IBOutlet VLLogWindow *          logWin;
+	IBOutlet VLPDFWindow *          pdfWin;
+
     
 	VLEditable *            editTarget;
 
@@ -37,11 +42,16 @@
 	int					editNumStanzas;
 }
 
+@property (nonatomic,readonly) VLLogWindow * logWin;
+
+- (IBAction) togglePlayElements:(id)sender;
+- (IBAction) showOutput:(id)sender;
+
 - (VLEditable *) editTarget;
 - (void) setEditTarget:(VLEditable *)editable;
 - (void) startAnimation;
 - (void) stopAnimation;
 - (void) willPlaySequence:(MusicSequence)music;
-- (IBAction) togglePlayElements:(id)sender;
+- (void) showLogAndBeep;
 
 @end

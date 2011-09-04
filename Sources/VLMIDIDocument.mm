@@ -10,6 +10,7 @@
 
 #import "VLMIDIDocument.h"
 #import "VLMIDIWriter.h"
+#import "VLSheetWindow.h"
 
 @implementation VLDocument (MIDI)
 
@@ -53,13 +54,8 @@
 - (void)mmaDone:(NSNotification *)notification {
 	[[NSNotificationCenter defaultCenter] removeObserver: self 
 		name:NSTaskDidTerminateNotification object:[notification object]];
-    int status = [[notification object] terminationStatus];
-    if (!status) {
-		;
-	} else {
-		[logWin showWindow: self];		
-		NSBeep();
-	}
+    if ([[notification object] terminationStatus])
+        [sheetWin showLogAndBeep];
 }
 
 @end

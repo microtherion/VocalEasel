@@ -98,8 +98,6 @@
         chordPadding        = 1.5f;
         lyricPadding        = 1.0f;
 		sheetWin			= nil;
-		pdfWin				= nil;	
-		logWin				= nil;
 		tmpURL				= nil;
 		vcsWrapper			= nil;
 		repeatVolta			= 2;
@@ -144,6 +142,8 @@
 
 - (void) dealloc
 {
+	VLSoundOut::Instance()->Stop();
+
 	delete song;
 
 	[lilypondTemplate release];
@@ -163,53 +163,12 @@
 	[super dealloc];
 }
 
-- (void)removeWindowController:(NSWindowController *)win
-{
-	if (win == logWin)
-		logWin = nil;	
-	else if (win == pdfWin)
-		pdfWin = nil;
-	else if (win == sheetWin)
-		sheetWin = nil;
-
-	[super removeWindowController:win];
-}
-
-- (VLLogWindow *)logWin
-{
-	if (!logWin) {
-		logWin = [[VLLogWindow alloc] initWithWindowNibName: @"VLLogWindow"];
-		[self addWindowController: logWin];
-		[logWin release];
-	}
-	return logWin;
-}
-
-- (VLPDFWindow *)pdfWin
-{
-	if (!pdfWin) {
-		pdfWin = [[VLPDFWindow alloc] initWithWindowNibName: @"VLPDFWindow"];
-		[self addWindowController: pdfWin];
-		[pdfWin release];
-	}
-	return pdfWin;
-}
-
 - (void)makeWindowControllers
 {
 	sheetWin = [[VLSheetWindow alloc] initWithWindowNibName: @"VLDocument"];
 	[self addWindowController: sheetWin];
 	[sheetWin setShouldCloseDocument:YES];
 	[sheetWin release];
-}
-
-- (void)showWindows
-{
-	[sheetWin showWindow: self];
-	if ([pdfWin isWindowLoaded])
-		[pdfWin showWindow: self];
-	if ([logWin isWindowLoaded])
-		[logWin showWindow: self];
 }
 
 - (VLSong *) song
@@ -500,9 +459,8 @@
 	[task setStandardError: pipe];
 	[task setArguments: args];
 	[task setLaunchPath: launch]; 
-	[[self logWin] window]; // Load but don't show
 	
-	[NSThread detachNewThreadSelector:@selector(logFromFileHandle:) toTarget:logWin 
+	[NSThread detachNewThreadSelector:@selector(logFromFileHandle:) toTarget:[sheetWin logWin]
 		withObject:[pipe fileHandleForReading]];
 		
 	return task;
@@ -600,13 +558,6 @@
 	[self setSongTempo:[songTempo intValue]+[sender tag]];
 }
 
-- (IBAction) showOutput:(id)sender
-{
-	[self createTmpFileWithExtension:@"pdf" ofType:VLPDFType];
-	[[self pdfWin] showWindow:sender];
-	[pdfWin reloadPDF];
-}
-
 - (NSPrintOperation *)printOperationWithSettings:(NSDictionary *)printSettings 
 										   error:(NSError **)outError 
 {
@@ -623,11 +574,6 @@
     [[[printOperation printInfo] dictionary] addEntriesFromDictionary:printSettings];
     
     return printOperation;    
-}
-
-- (IBAction) showLog:(id)sender
-{
-	[[self logWin] showWindow:sender];
 }
 
 - (void) willChangeSong
