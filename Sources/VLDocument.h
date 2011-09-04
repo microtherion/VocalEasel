@@ -15,7 +15,6 @@
 @class VLSheetWindow;
 @class VLPDFWindow;
 @class VLLogWindow;
-@class PDFDocument;
 
 #define VLBIABType      @"VLBIABType"
 #define VLNativeType    @"org.aereperennius.vocaleasel-song"
@@ -65,7 +64,6 @@ enum {
 	VLLogWindow *		logWin;
 	VLPDFWindow *		pdfWin;
 	VLKeyValueUndo*		undo;
-	PDFDocument *		printDoc;
 	NSRange				previewRange;
 	float				playRate;
 	float				baseTempo;

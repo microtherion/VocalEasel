@@ -119,7 +119,6 @@
 					@"", @"songGroove",
 					@"", @"songTempo",
 					nil]];
-		printDoc			= nil;
     }
     return self;
 }
@@ -612,8 +611,8 @@
 										   error:(NSError **)outError 
 {
 	[self createTmpFileWithExtension:@"pdf" ofType:VLPDFType];
-	[printDoc autorelease];
-	printDoc = [[PDFDocument alloc] initWithURL:[self fileURLWithExtension:@"pdf"]];
+	PDFDocument * printDoc = [[PDFDocument alloc] initWithURL:[self fileURLWithExtension:@"pdf"]];
+    [printDoc autorelease];
 
     NSPrintOperation *printOperation = [printDoc getPrintOperationForPrintInfo:[self printInfo] autoRotate:NO];
 
