@@ -83,36 +83,34 @@ static inline int8_t StepToSemi(int step)
 uint16_t VLPitchAccidental(int8_t pitch, uint16_t visual, int key)
 {
     int         semi            = pitch % 12;
-    if (visual & VLNote::kAccidentalsMask) {
-        //
-        // The user expressed a preference, try to match it
-        //
-        switch (visual) {
-        case VLNote::kWantNatural:
-            if (IsBasicNote(semi))
-                return visual;
-            break;
-        case VLNote::kWant2Flat:
-            if (IsBasicNote(semi+2)) 
-                return visual;
-            else
-                return VLNote::kWantFlat;
-        case VLNote::kWantFlat:
-            if (IsBasicNote(semi+1)) 
-                return visual;
-            break;
-        case VLNote::kWant2Sharp:
-            if (IsBasicNote(semi-2)) 
-                return visual;
-            else
-                return VLNote::kWantSharp;
-        case VLNote::kWantSharp:
-            if (IsBasicNote(semi-1)) 
-                return visual;
-            break;
-        default:
-            break;
-        }
+    //
+    // The user expressed a preference, try to match it
+    //
+    switch (visual & VLNote::kAccidentalsMask) {
+    case VLNote::kWantNatural:
+        if (IsBasicNote(semi))
+            return visual;
+        break;
+    case VLNote::kWant2Flat:
+        if (IsBasicNote(semi+2)) 
+            return visual;
+        else
+            return VLNote::kWantFlat;
+    case VLNote::kWantFlat:
+        if (IsBasicNote(semi+1)) 
+            return visual;
+        break;
+    case VLNote::kWant2Sharp:
+        if (IsBasicNote(semi-2)) 
+            return visual;
+        else
+            return VLNote::kWantSharp;
+    case VLNote::kWantSharp:
+        if (IsBasicNote(semi-1)) 
+            return visual;
+        break;
+    default:
+        break;
     }
     //
     // No visuals, or no match
