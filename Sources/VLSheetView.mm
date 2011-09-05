@@ -146,6 +146,16 @@ static float sFlatPos[] = {
 	return kSystemBaseline+b.origin.y+b.size.height-(system+1)*kSystemH;
 }
 
+- (int) systemForPoint:(NSPoint *)loc
+{
+	NSRect  b       = [self bounds];
+    CGFloat top     = b.origin.y+b.size.height;
+    int     system  = (top-loc->y) / kSystemH;
+    loc->y         -= top-(system+1)*kSystemH;
+    
+    return system;
+}
+
 - (int) gridInSection:(int)section withPitch:(int)pitch visual:(uint16_t)visual
 {
 	int key     = [self song]->fProperties[section].fKey;
@@ -705,20 +715,14 @@ const float kSemiFloor = -1.0f*kLineH;
 
 	NSPoint loc 			= [event locationInWindow];
 	loc 					= [self convertPoint:loc fromView:nil];
-	const int kNumSystems	= std::max(2, fLayout->NumSystems());
+    int system              = [self systemForPoint:&loc];
 
-	if (loc.y < 0.0f || loc.y >= kNumSystems*kSystemH)
+	if (system < 0 || system > fLayout->NumSystems())
 		return fCursorRegion = kRegionNowhere;
 
-	const VLSong * 			song  		= [self song];
-	int 					system 		= 
-		kNumSystems - static_cast<int>(loc.y / kSystemH) - 1;
-	if (system >= fLayout->NumSystems())
-		return fCursorRegion = kRegionNowhere;
-		
+	const VLSong * 			song  		= [self song];		
 	const VLSystemLayout &	kLayout		= (*fLayout)[system];
 	const float				kMeasureW	= kLayout.MeasureWidth();
-	loc.y      = fmodf(loc.y, kSystemH);
 
 	loc.x -= kLayout.ClefKeyWidth();
 
