@@ -206,11 +206,11 @@ void VLVisualFilter::ResetWithKey(int key)
     case -6:
         fState[0]   = VLNote::kWantFlat;
     case -5:
-        fState[5]   = VLNote::kWantFlat;
+        fState[4]   = VLNote::kWantFlat;
     case -4:
         fState[1]   = VLNote::kWantFlat;
     case -3:
-        fState[4]   = VLNote::kWantFlat;
+        fState[5]   = VLNote::kWantFlat;
     case -2:
         fState[2]   = VLNote::kWantFlat;
     case -1:
