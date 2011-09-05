@@ -262,7 +262,7 @@ static float sFlatPos[] = {
 
 	delete fLayout;
 	fLayout 	= new VLLayout(*[self song], sz.width / fDisplayScale);
-	sz.height	= std::max(2, fLayout->NumSystems())*kSystemH*fDisplayScale;
+	sz.height	= std::max(2.0f, fLayout->NumSystems()+0.25f)*kSystemH*fDisplayScale;
 
 	NSSize boundsSz	= {sz.width / fDisplayScale, sz.height / fDisplayScale};
 
@@ -947,6 +947,7 @@ const float kSemiFloor = -1.0f*kLineH;
 
 	[self updateMenus];
     [self recalculateDimensions];
+    fNeedsRecalc = kFirstRecalc;
 }
 
 - (void)removeObservers:(id)target
