@@ -13,6 +13,8 @@
 #import "VLPDFWindow.h"
 #import "VLLogWindow.h"
 #import "VLSoundOut.h"
+#import "VLSheetView.h"
+#import "VLSheetViewSelection.h"
 
 @implementation VLEditable
 
@@ -189,5 +191,40 @@
 	[[self document] setSongTempo:[[self document] songTempo]+[sender tag]];
 }
 
+- (IBAction)editDisplayOptions:(id)sender
+{
+	NSUndoManager * undoMgr = [[self document] undoManager];	
+	[undoMgr setGroupsByEvent:NO];
+	[undoMgr beginUndoGrouping];
+        
+	[NSApp beginSheet:displaySheet modalForWindow:[self window]
+        modalDelegate:self 
+       didEndSelector:@selector(didEndDisplaySheet:returnCode:contextInfo:)
+          contextInfo:nil];
+}
+
+- (void)didEndDisplaySheet:(NSWindow *)sheet returnCode:(int)returnCode 
+               contextInfo:(void *)ctx
+{
+	NSUndoManager * undoMgr = [[self document] undoManager];
+	[undoMgr setActionName:@"Display Options"];
+	[undoMgr endUndoGrouping];
+	[undoMgr setGroupsByEvent:YES];
+    
+	switch (returnCode) {
+        case NSAlertFirstButtonReturn:
+            [sheetView needsRecalculation];
+            break;
+        default:
+            [undoMgr undo];
+            break;
+	}	
+	[sheet orderOut:self];
+}
+
+- (NSUndoManager *)windowWillReturnUndoManager:(NSWindow *)window
+{
+    return [[self document] undoManager];
+}
 
 @end

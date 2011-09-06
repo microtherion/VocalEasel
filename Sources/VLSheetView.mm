@@ -25,6 +25,11 @@
 
 @implementation VLSheetView
 
+@synthesize 
+    numTopLedgers   = fNumTopLedgers,
+    numBotLedgers   = fNumBotLedgers,
+    numStanzas      = fNumStanzas;
+
 static NSString * sElementNames[kMusicElements] = {
 	@"g-clef",
 	@"flat",
@@ -105,8 +110,23 @@ static float sFlatPos[] = {
 		fNumStanzas    		= 2;
 		fLastMeasures		= 0;
 		fHighlightOne		= false;
+        fUndo               = [[VLKeyValueUndo alloc] 
+            initWithOwner:self 
+            keysAndNames:[NSDictionary dictionaryWithObjectsAndKeys:
+                @"", @"numTopLedgers",
+                @"", @"numBotLedgers",
+                @"", @"numStanzas",
+                nil]];
 	}
     return self;
+}
+
+- (void)dealloc
+{
+    [self removeObservers:[self document]];
+    delete [] fMusic;
+    [fUndo release];
+    [super dealloc];
 }
 
 - (BOOL)acceptsFirstResponder
@@ -290,6 +310,12 @@ static float sFlatPos[] = {
 
 	fLastMeasures	= [self song]->CountMeasures();
 	fNeedsRecalc	= kNoRecalc;	
+}
+
+- (void)needsRecalculation
+{
+    fNeedsRecalc    = kRecalc;
+    [self setNeedsDisplay:YES];
 }
 
 const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
@@ -934,7 +960,6 @@ const float kSemiFloor = -1.0f*kLineH;
 {
 	VLDocument * doc = [self document];
 
-	[doc addObserver:self];
 	[doc addObserver:self forKeyPath:@"song" options:0 context:nil];
 	[doc addObserver:self forKeyPath:@"songKey" options:0 context:nil];	
 	[doc addObserver:self forKeyPath:@"songTime" options:0 context:nil];	
@@ -1002,50 +1027,6 @@ const float kSemiFloor = -1.0f*kLineH;
 - (void)playWithGroove:(NSString *)groove
 {
 	[[self document] playWithGroove:groove inSections:[self sectionsInSelection]];
-}
-
-- (IBAction)editDisplayOptions:(id)sender
-{
-	NSUndoManager * undoMgr = [[self document] undoManager];	
-	[undoMgr setGroupsByEvent:NO];
-	[undoMgr beginUndoGrouping];
-
-	VLSheetWindow * wc = [[self window] windowController];
-	[wc setValue:[NSNumber numberWithInt:fNumTopLedgers] 
-		forKey:@"editNumTopLedgers"];
-	[wc setValue:[NSNumber numberWithInt:fNumBotLedgers] 
-		forKey:@"editNumBotLedgers"];
-	[wc setValue:[NSNumber numberWithInt:fNumStanzas] 
-		forKey:@"editNumStanzas"];
-
-	[NSApp beginSheet:fDisplaySheet modalForWindow:[self window]
-		   modalDelegate:self 
-		   didEndSelector:@selector(didEndDisplaySheet:returnCode:contextInfo:)
-		   contextInfo:nil];
-}
-
-- (void)didEndDisplaySheet:(NSWindow *)sheet returnCode:(int)returnCode 
-			  contextInfo:(void *)ctx
-{
-	NSUndoManager * undoMgr = [[self document] undoManager];
-	[undoMgr setActionName:@"Display Options"];
-	[undoMgr endUndoGrouping];
-	[undoMgr setGroupsByEvent:YES];
-
-	switch (returnCode) {
-	case NSAlertFirstButtonReturn: {
-		VLSheetWindow * wc = [[self window] windowController];
-		fNumTopLedgers = [[wc valueForKey:@"editNumTopLedgers"] intValue];
-		fNumBotLedgers = [[wc valueForKey:@"editNumBotLedgers"] intValue];
-		fNumStanzas    = [[wc valueForKey:@"editNumStanzas"] intValue];
-		fNeedsRecalc   = kRecalc;
-		[self setNeedsDisplay:YES];
-	    } break;
-	default:
-		[undoMgr undo];
-		break;
-	}	
-	[sheet orderOut:self];
 }
 
 @end

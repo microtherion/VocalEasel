@@ -53,13 +53,13 @@ enum {
     int                 playElements;
 	NSURL *             tmpURL;
 	NSFileWrapper *		vcsWrapper;
-	NSMutableArray* 	observers;
 	NSMutableDictionary*validTmpFiles;
 	int					repeatVolta;
 	bool				brandNew;
 	bool				hasMusicSequence;
 	VLSheetWindow *		sheetWin;
 	VLKeyValueUndo*		undo;
+	VLKeyValueUndo*		staffMetrics;
 	NSRange				previewRange;
 	float				playRate;
 	float				baseTempo;
@@ -95,7 +95,6 @@ enum {
 - (void)	   changedFileWrapper;
 - (void)	   willChangeSong;
 - (void)	   didChangeSong;
-- (void)	   addObserver:(id)observer;
 
 @end
 

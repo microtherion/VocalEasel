@@ -28,11 +28,12 @@
 @class VLLogWindow;
 @class VLPDFWindow;
 
-@interface VLSheetWindow : NSWindowController <NSToolbarDelegate> {
+@interface VLSheetWindow : NSWindowController <NSToolbarDelegate,NSWindowDelegate> {
 	IBOutlet VLSheetView *          sheetView;
     IBOutlet NSProgressIndicator *  progressIndicator;
     IBOutlet VLLogWindow *          logWin;
 	IBOutlet VLPDFWindow *          pdfWin;
+    IBOutlet NSWindow *             displaySheet;
     id                              soundStartObserver;
     id                              soundStopObserver;
 
@@ -52,6 +53,8 @@
 - (IBAction) playStop:(id)sender;
 - (IBAction) playMusic:(id)sender;
 - (IBAction) adjustTempo:(id)sender;
+- (IBAction) zoomIn: (id) sender;
+- (IBAction) zoomOut: (id) sender;
 
 - (VLEditable *) editTarget;
 - (void) setEditTarget:(VLEditable *)editable;

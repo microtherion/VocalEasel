@@ -14,12 +14,12 @@
 
 @implementation VLKeyValueUndo
 
-- (id)initWithOwner:(id)o keysAndNames:(NSDictionary *)kn
+- (id)initWithOwner:(id)o keysAndNames:(NSDictionary *)kn update:(VLKeyValueUpdateHook)hook
 {
 	owner			= o;
 	keysAndNames	= [kn retain];
+    updateHook      = Block_copy(hook);
 
-	[owner addObserver:self];
 	for (NSEnumerator * e = [keysAndNames keyEnumerator];
 		 NSString * key = [e nextObject];
 	)
@@ -30,17 +30,19 @@
 	return self;
 }
 
-- (void)removeObservers:(id)target
+- (id)initWithOwner:(id)o keysAndNames:(NSDictionary *)kn
 {
-	for (NSEnumerator * e = [keysAndNames keyEnumerator];
-		 NSString * key = [e nextObject];
-	)
-		[target removeObserver:self forKeyPath:key];
+    return [self initWithOwner:o keysAndNames:kn update:nil];
 }
 
 - (void) dealloc
 {
+	for (NSEnumerator * e = [keysAndNames keyEnumerator];
+		 NSString * key = [e nextObject];
+    )
+		[owner removeObserver:self forKeyPath:key];
 	[keysAndNames release];
+    [updateHook release];
 	[super dealloc];
 }
 
@@ -55,6 +57,8 @@
 		[undo registerUndoWithTarget:owner selector:@selector(setValuesForKeysWithDictionary:) 
 			object: [NSDictionary dictionaryWithObjectsAndKeys: oldVal, keyPath, nil]];
 		[undo setActionName: name];
+        if (updateHook)
+            updateHook(keyPath);
 	}
 }
 

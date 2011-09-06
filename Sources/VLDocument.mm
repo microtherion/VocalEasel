@@ -104,7 +104,6 @@
 		brandNew			= true;
 		hasMusicSequence	= false;
 		playRate			= 1.0;
-		observers			= [[NSMutableArray alloc] init];
 		validTmpFiles		= [[NSMutableDictionary alloc] initWithCapacity:10];
 		[self setHasUndoManager:YES];
 		undo				=
@@ -117,6 +116,22 @@
 					@"", @"songGroove",
 					@"", @"songTempo",
 					nil]];
+        staffMetrics        =
+            [[VLKeyValueUndo alloc] initWithOwner:self
+                keysAndNames:[NSDictionary dictionaryWithObjectsAndKeys:
+                    @"", @"chordSize",
+                    @"", @"lyricSize",
+                    @"", @"staffSize",
+                    @"", @"topPadding",
+                    @"", @"titlePadding",
+                    @"", @"staffPadding",
+                    @"", @"chordPadding",
+                    @"", @"lyricPadding",
+                    nil]
+                update:^(NSString *keyPath) {
+                    [validTmpFiles removeObjectForKey:@"ly"]; 
+                    [validTmpFiles removeObjectForKey:@"pdf"]; 
+                }];
     }
     return self;
 }
@@ -128,15 +143,8 @@
 	[super updateChangeCount:changeType];
 }
 
-- (void) addObserver:(id)observer
-{
-	[observers addObject:observer];
-}
-
 - (void) close
 {
-	[observers makeObjectsPerformSelector:@selector(removeObservers:) withObject:self];
-	[observers removeAllObjects];
 	[super close];
 }
 
@@ -152,8 +160,8 @@
 	[songComposer release];
 	[songArranger release];
 	[vcsWrapper release];
+    [staffMetrics release];
 	[undo release];
-	[observers release];
 		
 	if (tmpURL) {
 		[[NSFileManager defaultManager] removeItemAtURL:tmpURL error:nil];
@@ -264,30 +272,6 @@
 	while (sections.length-- > 0)
 		song->ChangeOctave(sections.location++, up);
 	[self didChangeSong];
-}
-
-- (void) setChordSize:(float)size
-{
-	[[[self undoManager] prepareWithInvocationTarget:self] setChordSize:chordSize];
-	chordSize = size;
-	[validTmpFiles removeObjectForKey:@"ly"]; 
-	[validTmpFiles removeObjectForKey:@"pdf"]; 
-}
-
-- (void) setLyricSize:(float)size
-{
-	[[[self undoManager] prepareWithInvocationTarget:self] setLyricSize:lyricSize];
-	lyricSize = size;
-	[validTmpFiles removeObjectForKey:@"ly"]; 
-	[validTmpFiles removeObjectForKey:@"pdf"]; 
-}
-
-- (void) setStaffSize:(float)size
-{
-	[[[self undoManager] prepareWithInvocationTarget:self] setStaffSize:staffSize];
-	staffSize = size;
-	[validTmpFiles removeObjectForKey:@"ly"]; 
-	[validTmpFiles removeObjectForKey:@"pdf"]; 
 }
 
 - (void)setPlayElements:(int)elements

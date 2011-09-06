@@ -13,6 +13,7 @@
 
 #import "VLModel.h"
 #import "VLLayout.h"
+#import "VLKeyValueUndo.h"
 
 @class VLDocument;
 
@@ -98,11 +99,11 @@ enum VLCursorVisual {
 	size_t				fHighlightStanza;
 	bool				fHighlightNow;
 	bool				fHighlightOne;
+    VLKeyValueUndo *    fUndo;
 
 	IBOutlet id			fFieldEditor;
 	IBOutlet id			fRepeatSheet;
 	IBOutlet id			fEndingSheet;
-	IBOutlet id			fDisplaySheet;
 	IBOutlet id			fRepeatMsg;
 	IBOutlet id			fEndingMsg;
 	IBOutlet id			fGrooveMenu;
@@ -111,15 +112,19 @@ enum VLCursorVisual {
 	IBOutlet id			fDivisionMenu;
 }
 
+@property (nonatomic) int   numTopLedgers;
+@property (nonatomic) int   numBotLedgers;
+@property (nonatomic) int   numStanzas;
+
 - (IBAction) setKey:(id)sender;
 - (IBAction) setTime:(id)sender;
 - (IBAction) setDivisions:(id)sender;
 - (IBAction) hideFieldEditor:(id)sender;
 - (IBAction) endSheetWithButton:(id)sender;
 - (IBAction) selectGroove:(id)sender;
-- (IBAction) editDisplayOptions:(id)sender;
 - (IBAction) transposeOctave:(id)sender;
-
+- (IBAction) zoomIn: (id) sender;
+- (IBAction) zoomOut: (id) sender;
 
 - (VLDocument *) document;
 - (VLSong *) song;
@@ -133,6 +138,7 @@ enum VLCursorVisual {
 - (VLMusicElement)accidentalForVisual:(uint16_t)visual;
 - (float) noteYInMeasure:(int)measure withGrid:(int)vertPos;
 - (float) noteXInMeasure:(int)measure at:(VLFraction)at;
+- (void)  needsRecalculation;
 
 - (void) scrollMeasureToVisible:(int)measure;
 
@@ -151,6 +157,7 @@ enum VLCursorVisual {
 - (void) playWithGroove:(NSString *)groove;
 
 - (NSColor *)textBackgroundColorForSystem:(int)system;
+- (void)removeObservers:(id)target;
 
 @end
 
