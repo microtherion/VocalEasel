@@ -885,8 +885,8 @@ const float kSemiFloor = -1.0f*kLineH;
 			fClickMode = ' ';
 		else
 			fClickMode = 'k';
-		break;
 		[self setNeedsDisplay:YES];
+        break;
 	}
 }
 

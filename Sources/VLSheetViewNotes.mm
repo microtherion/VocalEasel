@@ -77,7 +77,7 @@
 	
 	cursorX = [self noteXInMeasure:measure at:at];
 	if (visual == kCursorExtend) {
-		cursorY 	= [self noteYInGrid:vertPos];
+		cursorY 	= [self noteYInMeasure:measure withGrid:vertPos];
 		cursorElt	= kMusicExtendCursor;
 	} else {
 		switch (mode) {
@@ -92,7 +92,7 @@
 			cursorElt	= kMusicRestCursor;
 			break;
 		case 'k':
-            cursorY 	= [self noteYInGrid:vertPos];
+            cursorY 	= [self noteYInMeasure:measure withGrid:vertPos] - kNoteY;
 			cursorElt	= kMusicKillCursor;
 			break;
 		}
