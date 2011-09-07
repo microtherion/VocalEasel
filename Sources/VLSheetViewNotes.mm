@@ -384,6 +384,7 @@
 					tupletStartX	= pos.x-kNoteW*0.5f;
                     tuplet          = newTuplet;
                     tupletDur       = 0;
+                    inTuplet        = 0;
 				}
                 ++inTuplet;
                 tupletDur   += note->fDuration / VLNote::TupletDenom(tuplet);
@@ -396,7 +397,7 @@
                     [self drawTuplet:tuplet bracketFrom:tupletStartX to:tupletEndX atY:tupletY];
                     inTuplet = 0;
                 }
-			} else if (++inTuplet) {
+			} else if (inTuplet) {
 				[self drawTuplet:tuplet bracketFrom:tupletStartX to:tupletEndX atY:tupletY];
 				inTuplet    = 0;
 			}
