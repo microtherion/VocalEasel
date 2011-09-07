@@ -37,6 +37,7 @@
 			[self song]->AddNote(VLLyricsNote(newNote), fCursorMeasure, fCursorAt);
 			VLSoundOut::Instance()->PlayNote(newNote);
         }
+        fClickMode = ' ';
 		[[self document] didChangeSong];
 	}
 }
