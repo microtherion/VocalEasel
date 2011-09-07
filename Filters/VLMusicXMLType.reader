@@ -366,9 +366,9 @@ class MusicXMLListener
           @note['visual'] = VL::Want2Flat
         end
       when 'root-step' 
-        @note['pitch'] = PITCH[@text]
+        @note['pitch'] = PITCH[@text]+60
       when 'bass-step' 
-        @note['root'] = PITCH[@text]
+        @note['root'] = PITCH[@text]+48
       when 'bass-alter' 
         @note['root'] += @text.to_i
           if @text.to_i != 0

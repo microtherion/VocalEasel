@@ -272,6 +272,7 @@ int8_t      VLParseChord(std::string & str, uint16_t * accidental, uint32_t * st
         if (*rootPitch < 0)
             return kPitchError;
         str.erase(root, 1);
+        *rootPitch -= VLNote::kOctave;
     } else {
         *rootPitch      = VLNote::kNoPitch;
         *rootAccidental = 0;
