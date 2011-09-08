@@ -1913,6 +1913,10 @@ void VLSong::PasteMeasures(size_t beginMeasure, const VLSong & measures, int mod
 			}	
 			fRepeats.push_back(repeat);
 		}
+        if (fGoToCoda >= (int)beginMeasure)
+            fGoToCoda += numMeas;
+        if (fCoda >= (int)beginMeasure)
+            fCoda += numMeas;
 	} else {
 		if (CountMeasures() < nextMeasure) {
 			VLMeasure 	rest;
@@ -1992,6 +1996,17 @@ void VLSong::DeleteMeasures(size_t beginMeasure, size_t endMeasure, int mode)
 			++r;
 		}
 	}
+    if (fGoToCoda >= (int)beginMeasure)
+        if (fGoToCoda < endMeasure)
+            fGoToCoda = -1;
+        else
+            fGoToCoda -= delta;
+    if (fCoda >= (int)beginMeasure)
+        if (fCoda < endMeasure)
+            fCoda = -1;
+        else
+            fCoda -= delta;
+            
 	//
 	// Keep an empty measure at the end
 	//
