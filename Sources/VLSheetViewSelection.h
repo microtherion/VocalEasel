@@ -5,14 +5,14 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2006-2007 Matthias Neeracher
+// Copyright © 2006-2011 Matthias Neeracher
 //
 
 #import "VLMIDIWriter.h"
 
 @interface VLSheetView (Selection)
 
-- (void)editSelection;
+- (void)editSelection:(BOOL)extend;
 - (void)adjustSelection:(NSEvent *)event;
 - (NSRange)sectionsInSelection;
 

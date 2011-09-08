@@ -850,7 +850,7 @@ const float kSemiFloor = -1.0f*kLineH;
 		[self editLyrics];
 		break;
 	case kRegionMeasure:
-		[self editSelection];
+        [self editSelection:([event modifierFlags] & NSShiftKeyMask) != 0];
 		break;
 	default:
 		break;

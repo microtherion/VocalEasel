@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright Â© 2006-2007 Matthias Neeracher
+// Copyright © 2006-2011 Matthias Neeracher
 //
 
 #import "VLSheetView.h"
@@ -109,9 +109,16 @@ VLSequenceCallback(
 
 @implementation VLSheetView (Selection)
 
-- (void)editSelection
+- (void)editSelection:(BOOL)extend
 {
-	fSelStart	= fSelEnd	= fSelAnchor = fCursorMeasure;
+    if (extend && fSelStart > -1) {
+        if (fCursorMeasure > fSelEnd)
+            fSelEnd = fCursorMeasure;
+        else if (fCursorMeasure < fSelStart)
+            fSelStart = fCursorMeasure;
+    } else {
+        fSelStart	= fSelEnd	= fSelAnchor = fCursorMeasure;
+    }
 	[self updateMenus];
 	[self setNeedsDisplay:YES];	
 }
