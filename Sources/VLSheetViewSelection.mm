@@ -256,6 +256,7 @@ VLSequenceCallback(
 		if (![sender tag]) // Delete on paste, but not on overwrite 
 			[self song]->DeleteMeasures(fSelStart, fSelEnd);
 		[self song]->PasteMeasures(fSelStart, sPasteboard, [sender tag]);
+        [self setNumStanzas: std::max<int>([self song]->CountStanzas(), fNumStanzas)];
 		[[self document] didChangeSong];
 		[self setNeedsDisplay:YES];
 	}
