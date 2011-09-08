@@ -1849,13 +1849,13 @@ VLSong VLSong::CopyMeasures(size_t beginMeasure, size_t endMeasure)
 			subSong.fMeasures[i].fPropIdx	-= firstProp;
 
 	for (size_t r=0; r<fRepeats.size(); ++r) {
-		VLRepeat & rp	= fRepeats[r];
+		VLRepeat rp	= fRepeats[r];
 		if (rp.fEndings[0].fBegin >= beginMeasure 
          && rp.fEndings[0].fEnd   <= endMeasure
 		) {
 			for (size_t e=0; e<rp.fEndings.size(); ++e) {
 				rp.fEndings[e].fBegin	-= beginMeasure;
-				rp.fEndings[e].fEnd		-= endMeasure;
+				rp.fEndings[e].fEnd		-= beginMeasure;
 			}
 			subSong.fRepeats.push_back(rp);
 		}
@@ -1993,7 +1993,7 @@ void VLSong::DeleteMeasures(size_t beginMeasure, size_t endMeasure, int mode)
 		}
 	}
 	//
-	// Keep an empty meausure at the end
+	// Keep an empty measure at the end
 	//
 	if (!EmptyEnding())
 		AddMeasure();
