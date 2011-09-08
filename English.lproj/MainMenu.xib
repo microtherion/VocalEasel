@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">11B26</string>
+		<string key="IBDocument.SystemVersion">11C48</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1617</string>
-		<string key="IBDocument.AppKitVersion">1138</string>
-		<string key="IBDocument.HIToolboxVersion">566.00</string>
+		<string key="IBDocument.AppKitVersion">1138.18</string>
+		<string key="IBDocument.HIToolboxVersion">567.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string key="NS.object.0">1617</string>
@@ -416,6 +416,15 @@
 									<reference key="NSOnImage" ref="881694922"/>
 									<reference key="NSMixedImage" ref="142438761"/>
 									<int key="NSTag">3</int>
+								</object>
+								<object class="NSMenuItem" id="942206905">
+									<reference key="NSMenu" ref="383789391"/>
+									<string key="NSTitle">Insert Measure</string>
+									<string key="NSKeyEquiv">i</string>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="881694922"/>
+									<reference key="NSMixedImage" ref="142438761"/>
 								</object>
 								<object class="NSMenuItem" id="229031589">
 									<reference key="NSMenu" ref="383789391"/>
@@ -2173,6 +2182,14 @@
 					</object>
 					<int key="connectionID">100332</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">insertMeasure:</string>
+						<reference key="source" ref="442015262"/>
+						<reference key="destination" ref="942206905"/>
+					</object>
+					<int key="connectionID">100334</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -2491,6 +2508,7 @@
 							<reference ref="284751940"/>
 							<reference ref="900673898"/>
 							<reference ref="597100205"/>
+							<reference ref="942206905"/>
 						</array>
 						<reference key="parent" ref="980938855"/>
 					</object>
@@ -3132,6 +3150,11 @@
 						<reference key="object" ref="759934289"/>
 						<reference key="parent" ref="629346318"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">100333</int>
+						<reference key="object" ref="942206905"/>
+						<reference key="parent" ref="383789391"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -3197,6 +3220,7 @@
 				<string key="100328.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100329.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100330.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="100333.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="103.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="106.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="111.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3293,7 +3317,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">100332</int>
+			<int key="maxID">100334</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3501,58 +3525,39 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">VLDocument</string>
 					<string key="superclassName">NSDocument</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="adjustTempo:">id</string>
-						<string key="dump:">id</string>
-						<string key="play:">id</string>
-						<string key="playMusic:">id</string>
-						<string key="playStop:">id</string>
-						<string key="showLog:">id</string>
-						<string key="showOutput:">id</string>
-						<string key="stop:">id</string>
-						<string key="togglePlayElements:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="adjustTempo:">
-							<string key="name">adjustTempo:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="dump:">
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">dump:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">dump:</string>
+						<object class="IBActionInfo" key="NS.object.0">
 							<string key="name">dump:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="play:">
-							<string key="name">play:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="playMusic:">
-							<string key="name">playMusic:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="playStop:">
-							<string key="name">playStop:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showLog:">
-							<string key="name">showLog:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showOutput:">
-							<string key="name">showOutput:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="stop:">
-							<string key="name">stop:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="togglePlayElements:">
-							<string key="name">togglePlayElements:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/VLDocument.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">VLLogWindow</string>
+					<string key="superclassName">NSWindowController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">log</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">log</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">log</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/VLLogWindow.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -3575,19 +3580,41 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">VLPDFWindow</string>
+					<string key="superclassName">NSWindowController</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="pdfView">PDFView</string>
+						<string key="sheetWin">NSWindowController</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="pdfView">
+							<string key="name">pdfView</string>
+							<string key="candidateClassName">PDFView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="sheetWin">
+							<string key="name">sheetWin</string>
+							<string key="candidateClassName">NSWindowController</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/VLPDFWindow.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">VLSheetView</string>
 					<string key="superclassName">NSView</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="copy:">id</string>
 						<string key="cut:">id</string>
 						<string key="delete:">id</string>
-						<string key="editDisplayOptions:">id</string>
 						<string key="editRepeat:">id</string>
 						<string key="editRepeatEnding:">id</string>
 						<string key="endSheetWithButton:">id</string>
 						<string key="hideFieldEditor:">id</string>
 						<string key="insertBreak:">id</string>
 						<string key="insertJumpToCoda:">id</string>
+						<string key="insertMeasure:">id</string>
 						<string key="insertStartCoda:">id</string>
 						<string key="paste:">id</string>
 						<string key="selectGroove:">id</string>
@@ -3595,6 +3622,8 @@
 						<string key="setKey:">id</string>
 						<string key="setTime:">id</string>
 						<string key="transposeOctave:">id</string>
+						<string key="zoomIn:">id</string>
+						<string key="zoomOut:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="copy:">
@@ -3607,10 +3636,6 @@
 						</object>
 						<object class="IBActionInfo" key="delete:">
 							<string key="name">delete:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="editDisplayOptions:">
-							<string key="name">editDisplayOptions:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="editRepeat:">
@@ -3635,6 +3660,10 @@
 						</object>
 						<object class="IBActionInfo" key="insertJumpToCoda:">
 							<string key="name">insertJumpToCoda:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="insertMeasure:">
+							<string key="name">insertMeasure:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="insertStartCoda:">
@@ -3665,9 +3694,16 @@
 							<string key="name">transposeOctave:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="zoomIn:">
+							<string key="name">zoomIn:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="zoomOut:">
+							<string key="name">zoomOut:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="fDisplaySheet">id</string>
 						<string key="fDivisionMenu">id</string>
 						<string key="fEndingMsg">id</string>
 						<string key="fEndingSheet">id</string>
@@ -3679,10 +3715,6 @@
 						<string key="fTimeMenu">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="fDisplaySheet">
-							<string key="name">fDisplaySheet</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="fDivisionMenu">
 							<string key="name">fDivisionMenu</string>
 							<string key="candidateClassName">id</string>
@@ -3723,6 +3755,87 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/VLSheetView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">VLSheetWindow</string>
+					<string key="superclassName">NSWindowController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="adjustTempo:">id</string>
+						<string key="playMusic:">id</string>
+						<string key="playStop:">id</string>
+						<string key="showOutput:">id</string>
+						<string key="stop:">id</string>
+						<string key="togglePlayElements:">id</string>
+						<string key="zoomIn:">id</string>
+						<string key="zoomOut:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="adjustTempo:">
+							<string key="name">adjustTempo:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="playMusic:">
+							<string key="name">playMusic:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="playStop:">
+							<string key="name">playStop:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showOutput:">
+							<string key="name">showOutput:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="stop:">
+							<string key="name">stop:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="togglePlayElements:">
+							<string key="name">togglePlayElements:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="zoomIn:">
+							<string key="name">zoomIn:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="zoomOut:">
+							<string key="name">zoomOut:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="displaySheet">NSWindow</string>
+						<string key="logWin">VLLogWindow</string>
+						<string key="pdfWin">VLPDFWindow</string>
+						<string key="progressIndicator">NSProgressIndicator</string>
+						<string key="sheetView">VLSheetView</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="displaySheet">
+							<string key="name">displaySheet</string>
+							<string key="candidateClassName">NSWindow</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="logWin">
+							<string key="name">logWin</string>
+							<string key="candidateClassName">VLLogWindow</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="pdfWin">
+							<string key="name">pdfWin</string>
+							<string key="candidateClassName">VLPDFWindow</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="progressIndicator">
+							<string key="name">progressIndicator</string>
+							<string key="candidateClassName">NSProgressIndicator</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="sheetView">
+							<string key="name">sheetView</string>
+							<string key="candidateClassName">VLSheetView</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/VLSheetWindow.h</string>
 					</object>
 				</object>
 			</array>

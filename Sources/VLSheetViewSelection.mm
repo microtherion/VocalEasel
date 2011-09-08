@@ -225,6 +225,8 @@ VLSequenceCallback(
 			&& [self song]->CanBeEnding(fSelStart, fSelEnd);
 	else if (action == @selector(paste:))
 		return fSelStart <= fSelEnd;
+    else if (action == @selector(insertMeasure:))
+        return fSelStart == fSelEnd;
 	else
 		return YES;
 }
@@ -267,6 +269,14 @@ VLSequenceCallback(
 	[self song]->DeleteMeasures(fSelStart, fSelEnd, [sender tag]);
 	[[self document] didChangeSong];
 	[self setNeedsDisplay:YES];
+}
+
+- (IBAction)insertMeasure:(id)sender
+{
+	[[self document] willChangeSong];
+	[self song]->InsertMeasure(fSelStart);
+	[[self document] didChangeSong];
+	[self setNeedsDisplay:YES];    
 }
 
 - (IBAction)editRepeat:(id)sender

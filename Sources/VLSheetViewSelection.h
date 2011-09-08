@@ -21,6 +21,7 @@
 - (IBAction)copy:(id)sender;
 - (IBAction)paste:(id)sender;
 - (IBAction)delete:(id)sender;
+- (IBAction)insertMeasure:(id)sender;
 
 - (IBAction)editRepeat:(id)sender;
 - (IBAction)editRepeatEnding:(id)sender;

@@ -418,6 +418,46 @@ void VLSong::AddMeasure()
 	fMeasures.push_back(meas);
 }
 
+void VLSong::InsertMeasure(size_t beginMeasure)
+{
+    if (beginMeasure == fMeasures.size()) {
+        AddMeasure();
+    } else {
+        VLSong          insertion(false);
+        VLFraction		dur  = Properties(beginMeasure).fTime;
+        dur.Normalize();
+        VLChord 		rchord(dur);
+        VLLyricsNote 	note(dur);
+        
+        VLLyricsNote    nextNote = fMeasures[beginMeasure].fMelody.front();
+        if (nextNote.fTied & VLNote::kTiedWithPrev) {
+            note.fPitch = nextNote.fPitch;
+            note.fVisual= nextNote.fVisual & VLNote::kAccidentalsMask;
+            note.fTied  = VLNote::kTiedWithPrev|VLNote::kTiedWithNext;
+        }
+        
+        VLMeasure meas;        
+        meas.fPropIdx = fMeasures[beginMeasure].fPropIdx;
+        meas.fChords.push_back(rchord);
+        meas.fMelody.push_back(note);
+        fMeasures.insert(fMeasures.begin()+beginMeasure, meas);
+        
+		for (size_t r=0; r<fRepeats.size(); ++r) {
+			VLRepeat & repeat = fRepeats[r];
+			for (size_t e=0; e<repeat.fEndings.size(); ++e) {
+				if (repeat.fEndings[e].fBegin >= beginMeasure)
+					++repeat.fEndings[e].fBegin;
+				if (repeat.fEndings[e].fEnd >= beginMeasure)
+					++repeat.fEndings[e].fEnd;
+			}
+		}
+        if (fGoToCoda >= (int)beginMeasure)
+            ++fGoToCoda;
+        if (fCoda >= (int)beginMeasure)
+            ++fCoda;
+    }
+}
+
 void VLSong::SetProperties(size_t measure, int propIdx)
 {
 	VLFraction		dur  = fProperties[propIdx].fTime;
