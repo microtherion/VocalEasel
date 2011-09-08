@@ -111,7 +111,7 @@ VLSequenceCallback(
 
 - (void)editSelection:(BOOL)extend
 {
-    if (extend && fSelStart > -1) {
+    if (extend && fSelEnd > -1) {
         if (fCursorMeasure > fSelEnd)
             fSelEnd = fCursorMeasure;
         else if (fCursorMeasure < fSelStart)

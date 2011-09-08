@@ -838,21 +838,24 @@ const float kSemiFloor = -1.0f*kLineH;
 
 - (void) mouseDown:(NSEvent *)event
 {
-	fSelEnd		= -1;
 	switch ([self findRegionForEvent:event]) {
 	case kRegionNote:
+        fSelEnd		= -1;
 		[self addNoteAtCursor];
 		break;
 	case kRegionChord:
+        fSelEnd		= -1;
 		[self editChord];
 		break;
 	case kRegionLyrics:
+        fSelEnd		= -1;
 		[self editLyrics];
 		break;
 	case kRegionMeasure:
         [self editSelection:([event modifierFlags] & NSShiftKeyMask) != 0];
 		break;
 	default:
+        fSelEnd		= -1;
 		break;
 	}
 }
