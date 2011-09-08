@@ -111,47 +111,39 @@ VLSequenceCallback(
 
 - (void)editSelection
 {
-	fSelStart	= fSelEnd	= fCursorMeasure;
+	fSelStart	= fSelEnd	= fSelAnchor = fCursorMeasure;
 	[self updateMenus];
 	[self setNeedsDisplay:YES];	
 }
 
 - (void)adjustSelection:(NSEvent *)event
 {
-	int prevMeasure = fCursorMeasure;
 	switch ([self findRegionForEvent:event]) {
 	case kRegionNote:
 	case kRegionChord:
 	case kRegionLyrics:
-		if (fCursorAt.fNum)
-			++fCursorMeasure;
+        if (fCursorAt.fNum > 0 && fCursorMeasure >= fSelAnchor)
+            ++fCursorMeasure;
 		//
 		// Fall through
 		//
 	case kRegionMeasure:
 		fCursorMeasure = 
 			std::max(0, std::min<int>(fCursorMeasure, [self song]->CountMeasures()));
-		if (fCursorMeasure > fSelEnd) {
+ 		if (fCursorMeasure >= fSelAnchor) {
+            fSelStart   = fSelAnchor;
 			fSelEnd		= fCursorMeasure;
 			[self updateMenus];
 			[self setNeedsDisplay:YES];
-		} else if (fCursorMeasure < fSelStart) {
+		} else {
 			fSelStart	= fCursorMeasure;
-			[self updateMenus];
-			[self setNeedsDisplay:YES];
-		} else if (prevMeasure == fSelEnd && fCursorMeasure<prevMeasure) {
-			fSelEnd		= fCursorMeasure;
-			[self updateMenus];
-			[self setNeedsDisplay:YES];
-		} else if (prevMeasure == fSelStart && fCursorMeasure>prevMeasure) {
-			fSelStart	= fCursorMeasure;
+            fSelEnd     = fSelAnchor;
 			[self updateMenus];
 			[self setNeedsDisplay:YES];
 		}
 		break;
-	default:
-		fCursorMeasure	= prevMeasure;
-		break;
+    default:
+        break;
 	}
 	fCursorRegion = kRegionMeasure;
 }

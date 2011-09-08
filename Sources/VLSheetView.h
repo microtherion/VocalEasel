@@ -88,6 +88,7 @@ enum VLCursorVisual {
 	size_t				fCursorStanza;
 	int					fSelStart;
 	int					fSelEnd;
+    int                 fSelAnchor;
 	int 				fNumTopLedgers;
 	int					fNumBotLedgers;
 	int					fNumStanzas;
