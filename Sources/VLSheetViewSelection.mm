@@ -58,7 +58,9 @@
         else
             fNoteVert 	= VLPitchToGrid(event->fPitch, fNoteVisual, [fView song]->Properties(fNoteMeasure).fKey);
 		fStanza			= event->fStanza;
-		[fView highlightTextInStanza:fStanza measure:fNoteMeasure at:fNoteAt one:YES]; 
+        VLFraction endAt= fNoteAt+VLFraction(1,128);
+		[fView highlightTextInStanza:fStanza startMeasure:fNoteMeasure at:fNoteAt
+                          endMeasure:fNoteMeasure at:endAt]; 
 	} else {
 		fChordMeasure	= event->fMeasure;
 		fChordAt		= event->fAt;

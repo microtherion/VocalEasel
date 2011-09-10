@@ -109,7 +109,6 @@ static float sFlatPos[] = {
 		fNumBotLedgers 		= 2;
 		fNumStanzas    		= 2;
 		fLastMeasures		= 0;
-		fHighlightOne		= false;
         fUndo               = [[VLKeyValueUndo alloc] 
             initWithOwner:self 
             keysAndNames:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -922,7 +921,6 @@ const float kSemiFloor = -1.0f*kLineH;
 	default:
 		[editable autorelease];
 		fHighlightStanza = 0xFFFFFFFF;
-		fHighlightOne	 = false;
 		editable = nil;
 	}
 	[self setEditTarget:editable];

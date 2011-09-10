@@ -95,11 +95,12 @@ enum VLCursorVisual {
 	size_t				fVolta;
 	size_t				fVoltaOK;
 	VLLayout *			fLayout;
-	int					fHighlightMeasure;
-	VLFract				fHighlightAt;
+	int					fHighlightStartMeasure;
+	VLFract				fHighlightStartAt;
+	int					fHighlightEndMeasure;
+	VLFract				fHighlightEndAt;
 	size_t				fHighlightStanza;
 	bool				fHighlightNow;
-	bool				fHighlightOne;
     VLKeyValueUndo *    fUndo;
 
 	IBOutlet id			fFieldEditor;

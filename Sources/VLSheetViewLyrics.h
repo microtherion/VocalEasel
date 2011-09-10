@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright Â© 2006-2007 Matthias Neeracher
+// Copyright © 2006-2011 Matthias Neeracher
 //
 
 #import "VLSheetWindow.h"
@@ -39,7 +39,8 @@
 - (void) editLyrics;
 - (void) drawLyricsForSystem:(int)system stanza:(size_t)stanza;
 - (void) highlightLyricsInStanza:(size_t)stanza measure:(int)measure at:(VLFraction)at;
-- (void) highlightTextInStanza:(size_t)stanza measure:(int)measure at:(VLFraction)at one:(BOOL)one;
+- (void) highlightTextInStanza:(size_t)stanza startMeasure:(int)startMeasure at:(VLFraction)startAt 
+                    endMeasure:(int)endMeasure at:(VLFraction)endAt;
 
 @end
 

@@ -18,6 +18,14 @@
 
 @implementation VLLyricsEditable
 
+- (void)highlightWord
+{
+    size_t      endMeas = fMeasure;
+    VLFraction  endAt   = fAt;
+    fSong->NextWord(fStanza, endMeas, endAt);
+    [fView highlightTextInStanza:fStanza startMeasure:fMeasure at:fAt endMeasure:endMeas at:endAt];
+}
+
 - (VLLyricsEditable *)initWithView:(VLSheetView *)view
 							 song:(VLSong *)song 
 							stanza:(int)stanza
@@ -36,9 +44,7 @@
 	VLFraction At = fAt;
 	fSong->FindWord(fStanza, fMeasure, At);
 	fAt = At;
-	[fView highlightTextInStanza:fStanza measure:fMeasure at:fAt one:NO];
-
-	[fView setNeedsDisplay: YES];
+	[self highlightWord];
 	
 	return self;
 }
@@ -79,7 +85,7 @@
 	}
 	fNextMeas = fMeasure;
 	fNextAt	  = fAt;
-	[fView highlightTextInStanza:fStanza measure:fMeasure at:fAt one:NO];
+	[self highlightWord];
 	[fView scrollMeasureToVisible:fMeasure];
 }
 
@@ -94,7 +100,7 @@
 	fAt = at;
 	fNextMeas = fMeasure;
 	fNextAt	  = fAt;
-	[fView highlightTextInStanza:fStanza measure:fMeasure at:fAt one:NO];
+	[self highlightWord];
 	[fView scrollMeasureToVisible:fMeasure];
 }
 
@@ -188,19 +194,21 @@ float VLCocoaFontHandler::Width(const char * utf8Text)
 			} else {
 				if (!fHighlightNow) {
 					fHighlightNow = stanza == fHighlightStanza
-						&& measIdx == fHighlightMeasure
-						&& at == fHighlightAt;
+						&& measIdx == fHighlightStartMeasure
+						&& at == fHighlightStartAt;
 					if (fHighlightNow && !sHighlightColor) 
 						sHighlightColor = 
 							[[self textBackgroundColorForSystem:system]
 								shadowWithLevel:0.2];
-				}
+				} else {
+                    fHighlightNow = fHighlightNow && stanza == fHighlightStanza
+                    && (measIdx < fHighlightEndMeasure
+                        ||(measIdx == fHighlightEndMeasure && at < fHighlightEndAt));
+                }
 
 				text.AddSyllable(note->fLyrics[stanza-1], 
 								 [self noteXInMeasure:measIdx at:at],	
 								 fHighlightNow);
-				fHighlightNow = fHighlightNow && !fHighlightOne &&
-					note->fLyrics[stanza-1].fKind & VLSyllable::kHasNext;
 			}
 			at += note->fDuration;
 		}
@@ -233,13 +241,15 @@ float VLCocoaFontHandler::Width(const char * utf8Text)
 	NSRectFillUsingOperation(r, NSCompositePlusDarker);	
 }
 
-- (void) highlightTextInStanza:(size_t)stanza measure:(int)measure at:(VLFraction)at one:(BOOL)one
+- (void) highlightTextInStanza:(size_t)stanza startMeasure:(int)startMeasure at:(VLFraction)startAt
+                    endMeasure:(int)endMeasure at:(VLFraction)endAt
 {
-	fHighlightStanza = stanza;
-	fHighlightMeasure= measure;
-	fHighlightAt	 = at;
-	fHighlightNow	 = false;
-	fHighlightOne	 = one;
+	fHighlightStanza        = stanza;
+	fHighlightStartMeasure  = startMeasure;
+	fHighlightStartAt       = startAt;
+    fHighlightEndMeasure    = endMeasure;
+    fHighlightEndAt         = endAt;
+	fHighlightNow           = false;
 }
 
 @end
