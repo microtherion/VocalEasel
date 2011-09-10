@@ -629,10 +629,12 @@ void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
                     }
 				}
                 //
-                // Deliberately leave fLyrics alone
+                // Deliberately leave fLyrics alone unless set in incoming note
                 //
                 i->fPitch       = note.fPitch;
                 i->fVisual      = note.fVisual;
+                if (note.fLyrics.size())
+                    i->fLyrics  = note.fLyrics;
 			} else {
 				//
 				// Overlap, split current
