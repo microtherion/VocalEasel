@@ -364,10 +364,14 @@ enum {
 		//
 		for (size_t i = 0; i<note.fLyrics.size(); ++i)
 			if (note.fLyrics[i].fText.size()) {
-				if (!(prevKind[i] & VLSyllable::kHasNext))
-					note.fLyrics[i].fKind &= ~VLSyllable::kHasPrev;
+				if (prevKind[i] & VLSyllable::kHasNext)
+					note.fLyrics[i].fKind |= VLSyllable::kHasPrev;
+                else
+                    note.fLyrics[i].fKind &= ~VLSyllable::kHasPrev;
 				prevKind[i] = note.fLyrics[i].fKind;
-			}		
+			} else {
+                prevKind[i] = 0;
+            }
 
 		tiedStart	= at;
 		tiedNote	= note;
