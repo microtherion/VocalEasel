@@ -845,6 +845,7 @@ const float kSemiFloor = -1.0f*kLineH;
     BOOL extend = ([event modifierFlags] & NSShiftKeyMask) != 0;
 	switch ([self findRegionForEvent:event]) {
 	case kRegionNote:
+        [self setEditTarget:nil];
         fSelEnd		= -1;
         [self addNoteAtCursor];
 		break;
@@ -861,9 +862,11 @@ const float kSemiFloor = -1.0f*kLineH;
         }
 		break;
 	case kRegionMeasure:
+        [self setEditTarget:nil];
         [self editSelection:extend];
 		break;
 	default:
+        [self setEditTarget:nil];
         fSelEnd		= -1;
 		break;
 	}
@@ -929,6 +932,9 @@ const float kSemiFloor = -1.0f*kLineH;
 	case NSBacktabTextMovement:
 		[editable moveToPrev];
 		break;
+    case NSReturnTextMovement:
+        [self setEditTarget:nil];
+        // Fall through
 	default:
 		fHighlightStanza = 0xFFFFFFFF;
         editable         = nil;
