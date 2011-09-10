@@ -613,15 +613,26 @@ void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
 				//
 				if (i->fTied) {
 					//
-					// Break ties
+					// Break backward ties, but not forward
 					//
-					if (i->fTied & VLNote::kTiedWithPrev) 
+					if (i->fTied & VLNote::kTiedWithPrev) {
+                        i->fTied &= ~VLNote::kTiedWithPrev;
 						LastTie(fMeasures[measure-1]) &= ~VLNote::kTiedWithNext;
-					if (i->fTied & VLNote::kTiedWithNext) 
-						FirstTie(fMeasures[measure+1]) &= ~VLNote::kTiedWithPrev;
+                    }
+                    if (i->fTied & VLNote::kTiedWithNext) {
+                        VLNoteList::iterator j = i;
+                        for (size_t tiedMeas = measure+1; j->fTied & VLNote::kTiedWithNext;++tiedMeas) {
+                            j = fMeasures[tiedMeas].fMelody.begin();
+                            j->fPitch = note.fPitch;
+                            j->fVisual= note.fVisual;
+                        }
+                    }
 				}
-				note.fDuration 	= i->fDuration;
-				*i				= note;
+                //
+                // Deliberately leave fLyrics alone
+                //
+                i->fPitch       = note.fPitch;
+                i->fVisual      = note.fVisual;
 			} else {
 				//
 				// Overlap, split current
