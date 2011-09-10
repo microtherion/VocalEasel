@@ -100,7 +100,6 @@ enum VLCursorVisual {
 	int					fHighlightEndMeasure;
 	VLFract				fHighlightEndAt;
 	size_t				fHighlightStanza;
-	bool				fHighlightNow;
     VLKeyValueUndo *    fUndo;
 
 	IBOutlet id			fFieldEditor;
@@ -153,6 +152,7 @@ enum VLCursorVisual {
 
 - (VLEditable *) editTarget;
 - (void) setEditTarget:(VLEditable *)editable;
+- (void) updateEditTarget;
 - (VLRegion) findRegionForEvent:(NSEvent *) event;
 
 - (void) setGroove:(NSString *)groove;

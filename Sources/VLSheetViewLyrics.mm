@@ -22,8 +22,11 @@
 {
     size_t      endMeas = fMeasure;
     VLFraction  endAt   = fAt;
-    fSong->NextWord(fStanza, endMeas, endAt);
+    if (!fSong->NextWord(fStanza, endMeas, endAt))
+        endMeas = 1000;
     [fView highlightTextInStanza:fStanza startMeasure:fMeasure at:fAt endMeasure:endMeas at:endAt];
+    std::string word = fSong->GetWord(fStanza, fMeasure, fAt);
+	fText = [[NSString alloc] initWithUTF8String:word.c_str()];
 }
 
 - (VLLyricsEditable *)initWithView:(VLSheetView *)view
@@ -38,6 +41,8 @@
 	fStanza		= stanza;
 	fMeasure	= measure;
 	fAt 		= at;
+    fAnchorMeas = measure;
+    fAnchorAt   = at;
 	fNextMeas	= fMeasure;
 	fNextAt		= fAt;
 	
@@ -49,10 +54,14 @@
 	return self;
 }
 
+- (void)dealloc
+{
+    [fText release];
+}
+
 - (NSString *) stringValue
 {
-	std::string word = fSong->GetWord(fStanza, fMeasure, fAt);
-	return [NSString stringWithUTF8String:word.c_str()];
+    return fText;
 }
 
 - (void) setStringValue:(NSString *)val
@@ -109,6 +118,51 @@
 	std::string word = fSong->GetWord(fStanza, fMeasure, fAt);
 	if (!word.size())
 		[fView highlightLyricsInStanza:fStanza measure:fMeasure at:fAt];
+}
+
+- (BOOL)canExtendSelection:(VLRegion)region
+{
+    return region == kRegionLyrics;
+}
+
+- (void)extendSelection:(size_t)measure at:(VLFract)At
+{
+    VLFraction at = At;
+    if (!fSong->FindWord(fStanza, measure, at))
+        return;
+    if (measure < fAnchorMeas || (measure==fAnchorMeas && at < fAnchorAt)) {
+        //
+        // Backward from anchor
+        //
+        fMeasure    = measure;
+        fAt         = at;
+        measure     = fAnchorMeas;
+        at          = fAnchorAt;
+    } else {
+        //
+        // Forward from anchor
+        //
+        fMeasure    = fAnchorMeas;
+        at          = fAnchorAt;
+        fSong->FindWord(fStanza, fMeasure, at);
+        fAt         = at;
+        at          = At;
+    }
+    if (!fSong->NextWord(fStanza, measure, at))
+        measure = 1000;
+    [fView highlightTextInStanza:fStanza startMeasure:fMeasure at:fAt endMeasure:measure at:at];
+    std::string text;
+    size_t      textMeas = fMeasure;
+    VLFraction  textAt   = fAt;
+    while (textMeas < measure || (textMeas == measure && textAt < at)) {
+        if (text.size())
+            text += ' ';
+        text += fSong->GetWord(fStanza, textMeas, textAt);
+        fSong->NextWord(fStanza, textMeas, textAt);
+    }
+    [fText release];
+	fText = [[NSString alloc] initWithUTF8String:text.c_str()];
+    [fView updateEditTarget];
 }
 
 @end
@@ -192,23 +246,17 @@ float VLCocoaFontHandler::Width(const char * utf8Text)
 			) {
 				;
 			} else {
-				if (!fHighlightNow) {
-					fHighlightNow = stanza == fHighlightStanza
-						&& measIdx == fHighlightStartMeasure
-						&& at == fHighlightStartAt;
-					if (fHighlightNow && !sHighlightColor) 
-						sHighlightColor = 
-							[[self textBackgroundColorForSystem:system]
-								shadowWithLevel:0.2];
-				} else {
-                    fHighlightNow = fHighlightNow && stanza == fHighlightStanza
-                    && (measIdx < fHighlightEndMeasure
-                        ||(measIdx == fHighlightEndMeasure && at < fHighlightEndAt));
-                }
+                bool highlight = stanza == fHighlightStanza
+                 && (measIdx > fHighlightStartMeasure 
+                  || (measIdx == fHighlightStartMeasure && at >= fHighlightStartAt))
+                 && (measIdx < fHighlightEndMeasure
+                  || (measIdx == fHighlightEndMeasure && at < fHighlightEndAt));
+                if (highlight && !sHighlightColor) 
+                    sHighlightColor = [[self textBackgroundColorForSystem:system] shadowWithLevel:0.2];
 
 				text.AddSyllable(note->fLyrics[stanza-1], 
 								 [self noteXInMeasure:measIdx at:at],	
-								 fHighlightNow);
+								 highlight);
 			}
 			at += note->fDuration;
 		}
@@ -249,7 +297,7 @@ float VLCocoaFontHandler::Width(const char * utf8Text)
 	fHighlightStartAt       = startAt;
     fHighlightEndMeasure    = endMeasure;
     fHighlightEndAt         = endAt;
-	fHighlightNow           = false;
+    [self setNeedsDisplay:YES];
 }
 
 @end

@@ -10,6 +10,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <AudioToolbox/AudioToolbox.h>
+#import "VLSheetView.h"
 
 @interface VLEditable : NSObject 
 {
@@ -21,6 +22,8 @@
 - (void) moveToNext;
 - (void) moveToPrev;
 - (void) highlightCursor;
+- (BOOL) canExtendSelection:(VLRegion)region;
+- (void) extendSelection:(size_t)measure at:(VLFract)at;
 
 @end
 

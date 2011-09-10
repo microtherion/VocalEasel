@@ -148,6 +148,11 @@ static float sFlatPos[] = {
 	[[[self window] windowController] setEditTarget:editable];
 }
 
+- (void) updateEditTarget
+{
+    [fFieldEditor takeStringValueFrom:[self editTarget]];
+}
+
 - (VLSong *) song
 {
 	return [[self document] song];
@@ -837,21 +842,26 @@ const float kSemiFloor = -1.0f*kLineH;
 
 - (void) mouseDown:(NSEvent *)event
 {
+    BOOL extend = ([event modifierFlags] & NSShiftKeyMask) != 0;
 	switch ([self findRegionForEvent:event]) {
 	case kRegionNote:
         fSelEnd		= -1;
-		[self addNoteAtCursor];
+        [self addNoteAtCursor];
 		break;
 	case kRegionChord:
         fSelEnd		= -1;
 		[self editChord];
 		break;
 	case kRegionLyrics:
-        fSelEnd		= -1;
-		[self editLyrics];
+        if (extend && [[self editTarget] canExtendSelection:kRegionLyrics]) {
+            [[self editTarget] extendSelection:fCursorMeasure at:fCursorAt];
+        } else {
+            fSelEnd		= -1;
+            [self editLyrics];
+        }
 		break;
 	case kRegionMeasure:
-        [self editSelection:([event modifierFlags] & NSShiftKeyMask) != 0];
+        [self editSelection:extend];
 		break;
 	default:
         fSelEnd		= -1;
@@ -861,13 +871,14 @@ const float kSemiFloor = -1.0f*kLineH;
 
 - (void) mouseDragged:(NSEvent *)event
 {
-	bool inMeasureSelection = fCursorRegion == kRegionMeasure;
-
-	if (!inMeasureSelection)
-		[super mouseDragged:event];
+    VLRegion prevRegion = fCursorRegion;
+    
+    [super mouseDragged:event];
 	[self autoscroll:event];
-	if (inMeasureSelection)
+	if (prevRegion == kRegionMeasure)
 		[self adjustSelection:event];
+    else if ([[self editTarget] canExtendSelection:[self findRegionForEvent:event]])
+        [[self editTarget] extendSelection:fCursorMeasure at:fCursorAt];
 }
 
 - (void) keyDown:(NSEvent *)event
@@ -919,11 +930,9 @@ const float kSemiFloor = -1.0f*kLineH;
 		[editable moveToPrev];
 		break;
 	default:
-		[editable autorelease];
 		fHighlightStanza = 0xFFFFFFFF;
-		editable = nil;
+        editable         = nil;
 	}
-	[self setEditTarget:editable];
 	if (editable) 
 		[fFieldEditor selectText:self];
 	else 

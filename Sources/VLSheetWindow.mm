@@ -44,6 +44,15 @@
 {
 }
 
+- (BOOL)canExtendSelection:(VLRegion)region
+{
+    return NO;
+}
+
+- (void)extendSelection:(size_t)measure at:(VLFract)at
+{
+}
+
 @end
 
 @implementation VLSheetWindow
@@ -82,6 +91,7 @@
 
 - (void)setEditTarget:(VLEditable *)editable
 {
+    [editTarget autorelease];
 	editTarget = editable;
 }
 

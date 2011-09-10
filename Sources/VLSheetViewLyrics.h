@@ -16,8 +16,11 @@
 	size_t 			fStanza;
 	size_t 			fMeasure;
 	VLFract 		fAt;
+    size_t          fAnchorMeas;
+    VLFract         fAnchorAt;
 	size_t			fNextMeas;
 	VLFract			fNextAt;
+    NSString *      fText;
 }
 
 - (VLLyricsEditable *)initWithView:(VLSheetView *)view
