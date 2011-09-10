@@ -24,6 +24,7 @@
 - (void) highlightCursor;
 - (BOOL) canExtendSelection:(VLRegion)region;
 - (void) extendSelection:(size_t)measure at:(VLFract)at;
+- (BOOL) hidden;
 
 @end
 

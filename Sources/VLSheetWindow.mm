@@ -53,6 +53,11 @@
 {
 }
 
+- (BOOL)hidden
+{
+    return NO;
+}
+
 @end
 
 @implementation VLSheetWindow

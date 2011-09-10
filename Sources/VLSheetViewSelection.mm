@@ -32,6 +32,7 @@
 - (VLPlaybackEditable *)initWithView:(VLSheetView *)view;
 - (void) userEvent:(const VLMIDIUserEvent *)event;
 - (void) highlightCursor;
+- (BOOL) hidden;
 
 @end
 
@@ -75,6 +76,11 @@
         [fView drawNoteCursor:fNoteVert inMeasure:fNoteMeasure at:fNoteAt visual:fNoteVisual];
 	if (fChordMeasure != 0x80000000)
 		[fView highlightChordInMeasure:fChordMeasure at:fChordAt];
+}
+
+- (BOOL) hidden
+{
+    return YES;
 }
 
 @end
