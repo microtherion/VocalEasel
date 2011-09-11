@@ -36,7 +36,8 @@
 
 - (void)updateMenus;
 
-- (void) willPlaySequence:(MusicSequence)music;
+- (void (^)()) willPlaySequence:(MusicSequence)music;
+- (void) playWasPaused;
 
 @end
 

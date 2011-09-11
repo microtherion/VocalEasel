@@ -11,6 +11,50 @@
 #include "VLMIDIWriter.h"
 #include <AudioToolbox/AudioToolbox.h>
 
+VLMIDIUtilities::VLMIDIUtilities(MusicSequence music)
+    : fMusic(music)
+{
+}
+
+MusicTimeStamp VLMIDIUtilities::Length()
+{	
+	UInt32 ntracks;
+	MusicSequenceGetTrackCount(fMusic, &ntracks);
+	MusicTimeStamp sequenceLength = 0;
+	for (UInt32 i = 0; i < ntracks; ++i) {
+		MusicTrack track;
+		MusicTimeStamp trackLength;
+		UInt32 propsize = sizeof(MusicTimeStamp);
+		MusicSequenceGetIndTrack(fMusic, i, &track);
+		MusicTrackGetProperty(track, kSequenceTrackProperty_TrackLength,
+							  &trackLength, &propsize);
+		sequenceLength = std::max(sequenceLength, trackLength);
+	}
+	return sequenceLength;
+}
+
+MusicTimeStamp VLMIDIUtilities::Find(VLLocation at)
+{
+	UInt32 ntracks;
+	MusicSequenceGetTrackCount(fMusic, &ntracks);
+    MusicTrack track;
+    MusicSequenceGetIndTrack(fMusic, ntracks-1, &track);
+    MusicEventIterator iter;
+    NewMusicEventIterator(track, &iter);
+    Boolean hasEvent;
+    while (!MusicEventIteratorHasCurrentEvent(iter, &hasEvent) && hasEvent) {
+        MusicTimeStamp          ts;
+        MusicEventType          ty;
+        const VLMIDIUserEvent * data;
+        UInt32                  sz;
+        MusicEventIteratorGetEventInfo(iter, &ts, &ty, (const void **)&data, &sz);
+        if (ty == kMusicEventType_User && data->fAt >= at)
+            return ts;
+        MusicEventIteratorNextEvent(iter);
+    }
+    return Length();
+}
+
 struct VLMetaEvent : MIDIMetaEvent {
 	char fPadding[32];
 	

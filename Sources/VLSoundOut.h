@@ -42,9 +42,12 @@ public:
 	virtual void PlayChord(const VLChord & chord) = 0; 
 	void		 PlayFile(CFDataRef file);
 	virtual void PlaySequence(MusicSequence music) = 0;
+    virtual void SetStart(MusicTimeStamp start) = 0;
+    virtual void SetEnd(MusicTimeStamp end) = 0;
 	virtual void Stop(bool pause=true) = 0;
 	virtual bool Playing() = 0;
 	virtual bool AtEnd() = 0;
+    virtual bool AtBeginning() = 0;
 	virtual void SetPlayRate(float rate) = 0;
     virtual void Fwd() = 0;
     virtual void Bck() = 0;

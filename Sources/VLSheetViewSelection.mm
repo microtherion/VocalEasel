@@ -17,6 +17,8 @@
 #import "VLSheetWindow.h"
 #import "VLDocument.h"
 #import "VLPitchGrid.h"
+#import "VLSoundOut.h"
+#import "VLMIDIWriter.h"
 
 #pragma mark VLMeasureEditable
 
@@ -124,6 +126,11 @@
 	fChord.fMeasure	= 0x80000000;
 
 	return self;
+}
+
+- (void)dealloc
+{
+    [fView setNeedsDisplay:YES];
 }
 
 - (void) userEvent:(const VLMIDIUserEvent *) event
@@ -583,12 +590,28 @@ inline int TimeTag(const VLProperties & prop)
 	[self updateGrooveMenu];
 }
 
-- (void) willPlaySequence:(MusicSequence)music
+- (void (^)()) willPlaySequence:(MusicSequence)music
 {
+    uint32_t    selStart    = fSelStart;
+    uint32_t    selEnd      = fSelEnd;
+    
 	VLEditable * e = 
 		[[VLPlaybackEditable alloc] initWithView:self];
 	[self setEditTarget:e];
 	MusicSequenceSetUserCallback(music, VLSequenceCallback, e);
+    
+    return [Block_copy(^{
+        if (selEnd != kNoMeasure) {
+            VLMIDIUtilities locator(music);
+            VLLocation start = {selStart, VLFraction(0)};
+            VLLocation end   = {selEnd, VLFraction(0)};
+            VLSoundOut::Instance()->SetStart(locator.Find(start));
+            if (selEnd > selStart) {
+                VLSoundOut::Instance()->SetEnd(locator.Find(end));
+                [self selectMeasure:selStart to:selEnd];
+            }
+        }
+    }) autorelease];
 }
 
 @end

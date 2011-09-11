@@ -64,7 +64,7 @@
 - (void) setEditTarget:(VLEditable *)editable;
 - (void) startAnimation;
 - (void) stopAnimation;
-- (void) willPlaySequence:(MusicSequence)music;
+- (void (^)()) willPlaySequence:(MusicSequence)music;
 - (void) showLogAndBeep;
 
 @end

@@ -13,6 +13,9 @@
 #include <string>
 #include <inttypes.h>
 
+#ifndef __VLMODEL__
+#define __VLMODEL__
+
 #pragma mark -
 #pragma mark class VLFraction
 
@@ -496,6 +499,8 @@ protected:
 					bool decomposed);
 	void VisitChords(VLMeasure & measure);
 };
+
+#endif
 
 // Local Variables:
 // mode:C++

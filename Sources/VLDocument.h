@@ -11,6 +11,7 @@
 #import "VLModel.h"
 #import <Cocoa/Cocoa.h>
 #import "VLKeyValueUndo.h"
+#import <AudioToolbox/AudioToolbox.h>
 
 @class VLSheetWindow;
 
@@ -56,7 +57,7 @@ enum {
 	NSMutableDictionary*validTmpFiles;
 	int					repeatVolta;
 	bool				brandNew;
-	bool				hasMusicSequence;
+	MusicSequence       musicSequence;
 	VLSheetWindow *		sheetWin;
 	VLKeyValueUndo*		undo;
 	VLKeyValueUndo*		staffMetrics;

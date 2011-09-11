@@ -20,6 +20,16 @@ struct VLMIDIUserEvent {
 	VLLocation  fAt;
 };
 
+class VLMIDIUtilities {
+public:
+    VLMIDIUtilities(MusicSequence music);
+    
+    MusicTimeStamp  Length();
+    MusicTimeStamp  Find(VLLocation at);
+public:
+    MusicSequence   fMusic;
+};
+
 class VLMIDIWriter: public VLSongVisitor {
 public:
 	VLMIDIWriter(MusicSequence music, size_t countIn) 

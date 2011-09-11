@@ -102,7 +102,7 @@
 		vcsWrapper			= nil;
 		repeatVolta			= 2;
 		brandNew			= true;
-		hasMusicSequence	= false;
+		musicSequence       = nil;
 		playRate			= 1.0;
 		validTmpFiles		= [[NSMutableDictionary alloc] initWithCapacity:10];
 		[self setHasUndoManager:YES];
@@ -138,7 +138,7 @@
 
 - (void)updateChangeCount:(NSDocumentChangeType)changeType
 {
-	hasMusicSequence = false;
+	musicSequence   = nil;
 	[validTmpFiles removeAllObjects];
 	[super updateChangeCount:changeType];
 }
@@ -458,15 +458,16 @@
 
 - (void) playSong
 {
-	if (hasMusicSequence) {
+	if (musicSequence) {
+		void (^finalizer)() = [sheetWin willPlaySequence:musicSequence];
 		VLSoundOut::Instance()->PlaySequence(NULL);
+        finalizer();
 	} else {
 		[self createTmpFileWithExtension:@"mid" ofType:VLMIDIType];
 
-		MusicSequence	music;
-		NewMusicSequence(&music);
+		NewMusicSequence(&musicSequence);
 
-        MusicSequenceFileLoad(music, (CFURLRef)[self fileURLWithExtension:@"mid"], 
+        MusicSequenceFileLoad(musicSequence, (CFURLRef)[self fileURLWithExtension:@"mid"], 
                               0, 0);
 
 		size_t countIn = 0;
@@ -477,14 +478,14 @@
 			case 0x608:
 				countIn = 2;
 			}
-		VLMIDIWriter annotate(music, countIn);
+		VLMIDIWriter annotate(musicSequence, countIn);
 		annotate.Visit(*song);
 	
-		hasMusicSequence 	= true;
-		[sheetWin willPlaySequence:music];
 		baseTempo			= songTempo;
-		VLSoundOut::Instance()->SetPlayRate(playRate);
-		VLSoundOut::Instance()->PlaySequence(music);
+		void (^finalizer)() = [sheetWin willPlaySequence:musicSequence];
+ 		VLSoundOut::Instance()->SetPlayRate(playRate);
+		VLSoundOut::Instance()->PlaySequence(musicSequence);
+        finalizer();
  	}
     [self setPlayElements:[self playElements]];
 }
@@ -494,7 +495,7 @@
 	NSString * savedGroove	= songGroove;
 	[validTmpFiles removeObjectForKey:@"mma"]; 
 	[validTmpFiles removeObjectForKey:@"mid"]; 
-	hasMusicSequence = false;
+	musicSequence    = nil;
 	songGroove	   	 = groove;
 	previewRange	 = sections;
 	playElements	|= kVLPlayGroovePreview;
@@ -503,7 +504,7 @@
 	songGroove		 = savedGroove;
 	[validTmpFiles removeObjectForKey:@"mma"]; 
 	[validTmpFiles removeObjectForKey:@"mid"]; 
-	hasMusicSequence = false;
+	musicSequence    = nil;
 }
 
 - (NSPrintOperation *)printOperationWithSettings:(NSDictionary *)printSettings 

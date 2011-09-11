@@ -9,6 +9,7 @@
 //
 
 #include "VLSoundOut.h"
+#include "VLMIDIWriter.h"
 
 #include <AudioUnit/AudioUnit.h>
 
@@ -31,9 +32,12 @@ public:
 	virtual void 	PlayNote(const VLNote & note);
 	virtual void 	PlayChord(const VLChord & chord); 
 	virtual void   	PlaySequence(MusicSequence music);
+    virtual void    SetStart(MusicTimeStamp start);
+    virtual void    SetEnd(MusicTimeStamp end);
 	virtual void	Stop(bool pause);
 	virtual bool	Playing();
 	virtual bool	AtEnd();
+	virtual bool	AtBeginning();
 	virtual void 	SetPlayRate(float rate);
 	virtual void 	Fwd();
 	virtual void 	Bck();
@@ -47,16 +51,16 @@ protected:
 
 	void			InitSoundOutput(bool fileOutput);
 	virtual void 	SetupOutput(AUNode outputNode);
-	MusicTimeStamp  SequenceLength(MusicSequence music);
     void            SkipTimeInterval();
 
 	AUGraph             fGraph;
 	MusicPlayer         fPlayer;
 private:
 	MusicSequence       fMusic;
-	MusicTimeStamp      fMusicLength;
+	MusicTimeStamp      fMusicEnd;
 	bool                fRunning;
 	bool                fForward;
+    bool                fWasAtEnd;
     float               fPlayRate;
     dispatch_source_t   fMusicPoll;
 
@@ -157,7 +161,7 @@ VLSoundOut::~VLSoundOut()
 }
 
 VLAUSoundOut::VLAUSoundOut()
-	: fMusic(0), fRunning(false), fForward(true)
+	: fMusic(0), fRunning(false), fForward(true), fWasAtEnd(true)
 {
 	InitSoundOutput(false);
     fMusicPoll = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
@@ -245,8 +249,9 @@ void VLAUSoundOut::PlaySequence(MusicSequence music)
 		Stop(false);
 	
 		fMusic			= music;
-		fMusicLength	= SequenceLength(music);
+		fMusicEnd       = VLMIDIUtilities(music).Length();
         fPlayRate       = 1.0;
+        fWasAtEnd       = true;
 
 		R(MusicSequenceSetAUGraph(fMusic, fGraph));
 		R(MusicPlayerSetSequence(fPlayer, fMusic));
@@ -256,7 +261,19 @@ void VLAUSoundOut::PlaySequence(MusicSequence music)
 	fRunning	= true;
     CFNotificationCenterPostNotification(CFNotificationCenterGetLocalCenter(), kVLSoundStartedNotification, 
                                          NULL, NULL, false);
-    dispatch_source_set_timer(fMusicPoll, DISPATCH_TIME_NOW, 500*NSEC_PER_MSEC, 200*NSEC_PER_MSEC);
+    dispatch_source_set_timer(fMusicPoll, DISPATCH_TIME_NOW, 10*NSEC_PER_MSEC, 200*NSEC_PER_MSEC);
+}
+
+void VLAUSoundOut::SetStart(MusicTimeStamp start)
+{
+    if (fWasAtEnd)
+        MusicPlayerSetTime(fPlayer, start);
+}
+
+void VLAUSoundOut::SetEnd(MusicTimeStamp end)
+{
+    if (fWasAtEnd)
+        fMusicEnd = end;
 }
 
 void VLAUSoundOut::SetMelodyState(VLSoundOut::MelodyState state)
@@ -282,7 +299,7 @@ void VLAUSoundOut::SetPlayRate(float rate)
 		MusicTimeStamp rightNow;
 		MusicPlayerGetTime(fPlayer, &rightNow);
 		MusicSequenceReverse(fMusic);
-		MusicPlayerSetTime(fPlayer, fMusicLength - rightNow);
+		MusicPlayerSetTime(fPlayer, fMusicEnd - rightNow);
 	}
     fPlayRate   = fabsf(rate);
 	MusicPlayerSetPlayRateScalar(fPlayer, fPlayRate);
@@ -343,8 +360,12 @@ void VLAUSoundOut::Slow(float rate)
 
 void VLAUSoundOut::Stop(bool pause)
 {
+    if (!fRunning)
+        return;
+    
 	MusicPlayerStop(fPlayer);
 	fRunning	= false;
+    fWasAtEnd   = false;
 	if (!pause && fMusic) {
 		MusicPlayerSetSequence(fPlayer, NULL);
 		DisposeMusicSequence(fMusic);
@@ -364,7 +385,14 @@ bool VLAUSoundOut::AtEnd()
 {
 	MusicTimeStamp time;
 
-	return !MusicPlayerGetTime(fPlayer, &time) && time >= fMusicLength;
+	return !MusicPlayerGetTime(fPlayer, &time) && time >= fMusicEnd;
+}
+
+bool VLAUSoundOut::AtBeginning()
+{
+	MusicTimeStamp time;
+    
+	return MusicPlayerGetTime(fPlayer, &time) || !time;
 }
 
 void VLAUSoundOut::PollMusic()
@@ -372,6 +400,7 @@ void VLAUSoundOut::PollMusic()
     if (fRunning && AtEnd()) {
         MusicPlayerSetTime(fPlayer, 0); 
         Stop(true);
+        fWasAtEnd   = true;
     }
 }
 
@@ -412,23 +441,6 @@ void VLAUSoundOut::Play(const int8_t * note, size_t numNotes)
 	PlaySequence(music);
 }
 
-MusicTimeStamp VLAUSoundOut::SequenceLength(MusicSequence music)
-{	
-	UInt32 ntracks;
-	MusicSequenceGetTrackCount(music, &ntracks);
-	MusicTimeStamp sequenceLength = 0;
-	for (UInt32 i = 0; i < ntracks; ++i) {
-		MusicTrack track;
-		MusicTimeStamp trackLength;
-		UInt32 propsize = sizeof(MusicTimeStamp);
-		MusicSequenceGetIndTrack(music, i, &track);
-		MusicTrackGetProperty(track, kSequenceTrackProperty_TrackLength,
-							  &trackLength, &propsize);
-		sequenceLength = std::max(sequenceLength, trackLength);
-	}
-	return sequenceLength;
-}
-
 VLAUFileSoundOut::VLAUFileSoundOut(CFURLRef file, OSType dataFormat)
 	: VLAUSoundOut(true), fFile(file), fDataFormat(dataFormat)
 {
@@ -459,7 +471,7 @@ void VLAUFileSoundOut::PlaySequence(MusicSequence music)
 
 	UInt32 			size;
 	UInt32			numFrames	= 512;
-	MusicTimeStamp	musicLen	= SequenceLength(music)+8;
+	MusicTimeStamp	musicLen	= VLMIDIUtilities(music).Length()+8;
 	CFStringRef		name		= 
 		CFURLCopyLastPathComponent(fFile);
 	CAAudioFileFormats * formats = CAAudioFileFormats::Instance();

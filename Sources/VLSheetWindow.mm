@@ -77,6 +77,8 @@
         soundStopObserver           = [nc addObserverForName:(NSString*)kVLSoundStoppedNotification 
                                                       object:nil queue:oq usingBlock:^(NSNotification *note) {
             [[[self window] toolbar] validateVisibleItems];
+            if (VLSoundOut::Instance()->AtBeginning())
+                [self setEditTarget:nil]; // Kill note cursor if we ran to end
         }];
 	}
 	return self;
@@ -96,8 +98,10 @@
 
 - (void)setEditTarget:(VLEditable *)editable
 {
-    [editTarget autorelease];
-	editTarget = editable;
+    if (editTarget != editable) {
+        [editTarget release];
+        editTarget = editable;
+    }
 }
 
 - (void) startAnimation
@@ -125,9 +129,9 @@
 	[sheetView mouseMoved:event];
 }
 
-- (void) willPlaySequence:(MusicSequence)music
+- (void (^)()) willPlaySequence:(MusicSequence)music
 {
-	[sheetView willPlaySequence:music];
+	return [sheetView willPlaySequence:music];
 }
 
 - (IBAction) togglePlayElements:(id)sender
@@ -183,7 +187,7 @@
 
 - (IBAction) playStop:(id)sender
 {	
-	if (VLSoundOut::Instance()->Playing()) 
+	if (VLSoundOut::Instance()->Playing())
         [self stop:sender];
     else
         [[self document] playSong];
