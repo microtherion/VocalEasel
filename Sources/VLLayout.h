@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2007 Matthias Neeracher
+// Copyright © 2007-2011 Matthias Neeracher
 //
 
 #include "VLModel.h"
@@ -38,9 +38,9 @@ public:
 
 	int	FirstMeasure(int system) const;
 	int	SystemForMeasure(int measure) const;
-	int	NumSystems() const	{ return size(); }
+	int	NumSystems() const	{ return static_cast<int>(size()); }
 	float MeasurePosition(int measure) const;
-	float NotePosition(int measure, VLFraction at) const;
+	float NotePosition(VLLocation at) const;
 };
 
 class VLFontHandler {

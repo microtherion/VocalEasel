@@ -14,7 +14,7 @@
 
 - (void) drawNotesForSystem:(int)system;
 - (void) addNoteAtCursor;
-- (void) drawNoteCursor:(int)vertPos inMeasure:(size_t)measure at:(VLFract)at visual:(uint16_t)visual;
+- (void) drawNoteCursor:(int)vertPos at:(VLLocation)at visual:(uint16_t)visual;
 
 @end
 

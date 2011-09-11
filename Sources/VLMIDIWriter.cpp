@@ -35,40 +35,40 @@ void VLMIDIWriter::Visit(VLSong & song)
 
 void VLMIDIWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 {
+    const VLLocation kStartOfMeasure = {m, VLFraction(0)};
 	if (fVolta.size() <= m)
 		fVolta.push_back(0);
 	fTime		= p.fTime;
-	fMeasure	= m;
 	fStanza		= ++fVolta[m];
 
 	if (!fChordTime) 
 		fChordTime = fNoteTime = fCountIn*fTime.fNum;
 	
-	fAt			= 0;
+	fAt			= kStartOfMeasure;
 	VisitChords(meas);
 
-	fAt			= 0;
+	fAt			= kStartOfMeasure;
 	VisitNotes(meas, p, false);
 }
 
 void VLMIDIWriter::VisitNote(VLLyricsNote & n)
 {
 	if (!(n.fTied & VLNote::kTiedWithPrev)) {
-		VLMIDIUserEvent	event = {12, n.fPitch, fStanza, fMeasure, n.fVisual, fAt};
+		VLMIDIUserEvent	event = {12, n.fPitch, fStanza, n.fVisual, fAt};
 		MusicTrackNewUserEvent(fTrack, fNoteTime, 
 			 reinterpret_cast<const MusicEventUserData *>(&event));
 	}
-	fAt			+= n.fDuration;
+	fAt.fAt     = fAt.fAt+n.fDuration;
 	fNoteTime	+= n.fDuration * (float)fTime.fDenom;	
 }
 
 void VLMIDIWriter::VisitChord(VLChord & c)
 {
 	if (c.fPitch != VLNote::kNoPitch) {
-		VLMIDIUserEvent	event = {12, 0, fStanza, fMeasure, 0, fAt};
+		VLMIDIUserEvent	event = {12, 0, fStanza, 0, fAt};
 		MusicTrackNewUserEvent(fTrack, fChordTime, 
 			 reinterpret_cast<const MusicEventUserData *>(&event));
 	}
-	fAt			+= c.fDuration;
+	fAt.fAt     = fAt.fAt+c.fDuration;
 	fChordTime	+= c.fDuration * (float)fTime.fDenom;
 }

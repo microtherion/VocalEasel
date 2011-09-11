@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2007 Matthias Neeracher
+// Copyright © 2007-2011 Matthias Neeracher
 //
 
 #include "VLLayout.h"
@@ -77,17 +77,17 @@ float VLLayout::MeasurePosition(int measure) const
 	return 0.0f;
 }
 
-float VLLayout::NotePosition(int measure, VLFraction at) const
+float VLLayout::NotePosition(VLLocation at) const
 {
 	for (int sys=0; sys<size(); ++sys) {
 		const VLSystemLayout & layout = (*this)[sys];
-		if (measure < layout.NumMeasures()) {
-			int div = at.fNum*4*layout.Divisions() / at.fDenom;
+		if (at.fMeasure < layout.NumMeasures()) {
+			int div = at.fAt.fNum*4*layout.Divisions() / at.fAt.fDenom;
 			
-			return layout.MeasurePosition(measure) 
+			return layout.MeasurePosition(at.fMeasure) 
 				+ (div + div/layout.DivPerGroup() + 1)*kNoteW;
 		}
-		measure -= layout.NumMeasures();
+		at.fMeasure -= layout.NumMeasures();
 	}
 	return 0.0f;
 }

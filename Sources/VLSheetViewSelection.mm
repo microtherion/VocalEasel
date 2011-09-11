@@ -21,12 +21,10 @@
 @interface VLPlaybackEditable : VLEditable {
 	VLSheetView *	fView;
 	size_t 			fStanza;
-	size_t			fNoteMeasure;
-	VLFract			fNoteAt;
+    VLLocation      fNote;
 	int				fNoteVert;
     uint16_t        fNoteVisual;
-	size_t 			fChordMeasure;
-	VLFract 		fChordAt;
+	VLLocation      fChord;
 }
 
 - (VLPlaybackEditable *)initWithView:(VLSheetView *)view;
@@ -42,8 +40,8 @@
 {
 	fView 			= view;
 	fStanza			= 1;
-	fNoteMeasure	= 0x80000000;
-	fChordMeasure	= 0x80000000;
+	fNote.fMeasure	= 0x80000000;
+	fChord.fMeasure	= 0x80000000;
 
 	return self;
 }
@@ -51,31 +49,29 @@
 - (void) userEvent:(const VLMIDIUserEvent *) event
 {
 	if (event->fPitch) {
-		fNoteMeasure	= event->fMeasure;
-		fNoteAt			= event->fAt;
+		fNote           = event->fAt;
         fNoteVisual     = event->fVisual & VLNote::kAccidentalsMask;
         if (event->fPitch == VLNote::kNoPitch)
             fNoteVert   = kCursorNoPitch;
         else
-            fNoteVert 	= VLPitchToGrid(event->fPitch, fNoteVisual, [fView song]->Properties(fNoteMeasure).fKey);
+            fNoteVert 	= VLPitchToGrid(event->fPitch, fNoteVisual, [fView song]->Properties(fNote.fMeasure).fKey);
 		fStanza			= event->fStanza;
-        VLFraction endAt= fNoteAt+VLFraction(1,128);
-		[fView highlightTextInStanza:fStanza startMeasure:fNoteMeasure at:fNoteAt
-                          endMeasure:fNoteMeasure at:endAt]; 
+        VLLocation end  = fNote;
+        end.fAt         = end.fAt+VLFraction(1,128);
+		[fView highlightTextInStanza:fStanza start:fNote end:end]; 
 	} else {
-		fChordMeasure	= event->fMeasure;
-		fChordAt		= event->fAt;
+		fChord          = event->fAt;
 	}
-	[fView scrollMeasureToVisible:event->fMeasure+1];
+	[fView scrollMeasureToVisible:event->fAt.fMeasure+1];
 	[fView setNeedsDisplay:YES];
 }
 
 - (void) highlightCursor
 {
-	if (fNoteMeasure != 0x80000000 && fNoteVert != kCursorNoPitch)
-        [fView drawNoteCursor:fNoteVert inMeasure:fNoteMeasure at:fNoteAt visual:fNoteVisual];
-	if (fChordMeasure != 0x80000000)
-		[fView highlightChordInMeasure:fChordMeasure at:fChordAt];
+	if (fNote.fMeasure != 0x80000000 && fNoteVert != kCursorNoPitch)
+        [fView drawNoteCursor:fNoteVert at:fNote visual:fNoteVisual];
+	if (fChord.fMeasure != 0x80000000)
+		[fView highlightChord:fChord];
 }
 
 - (BOOL) hidden
@@ -120,12 +116,12 @@ VLSequenceCallback(
 - (void)editSelection:(BOOL)extend
 {
     if (extend && fSelEnd > -1) {
-        if (fCursorMeasure > fSelEnd)
-            fSelEnd = fCursorMeasure;
-        else if (fCursorMeasure < fSelStart)
-            fSelStart = fCursorMeasure;
+        if (fCursorLocation.fMeasure > fSelEnd)
+            fSelEnd = fCursorLocation.fMeasure;
+        else if (fCursorLocation.fMeasure < fSelStart)
+            fSelStart = fCursorLocation.fMeasure;
     } else {
-        fSelStart	= fSelEnd	= fSelAnchor = fCursorMeasure;
+        fSelStart	= fSelEnd	= fSelAnchor = fCursorLocation.fMeasure;
     }
 	[self updateMenus];
 	[self setNeedsDisplay:YES];	
@@ -137,21 +133,21 @@ VLSequenceCallback(
 	case kRegionNote:
 	case kRegionChord:
 	case kRegionLyrics:
-        if (fCursorAt.fNum > 0 && fCursorMeasure >= fSelAnchor)
-            ++fCursorMeasure;
+        if (fCursorLocation.fAt.fNum > 0 && fCursorLocation.fMeasure >= fSelAnchor)
+            ++fCursorLocation.fMeasure;
 		//
 		// Fall through
 		//
 	case kRegionMeasure:
-		fCursorMeasure = 
-			std::max(0, std::min<int>(fCursorMeasure, [self song]->CountMeasures()));
- 		if (fCursorMeasure >= fSelAnchor) {
+		fCursorLocation.fMeasure = 
+			std::max(0, std::min<int>(fCursorLocation.fMeasure, [self song]->CountMeasures()));
+ 		if (fCursorLocation.fMeasure >= fSelAnchor) {
             fSelStart   = fSelAnchor;
-			fSelEnd		= fCursorMeasure;
+			fSelEnd		= fCursorLocation.fMeasure;
 			[self updateMenus];
 			[self setNeedsDisplay:YES];
 		} else {
-			fSelStart	= fCursorMeasure;
+			fSelStart	= fCursorLocation.fMeasure;
             fSelEnd     = fSelAnchor;
 			[self updateMenus];
 			[self setNeedsDisplay:YES];

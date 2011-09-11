@@ -81,8 +81,7 @@ enum VLCursorVisual {
 	NSPoint				fLastNoteCenter;
 	NSTrackingRectTag	fCursorTracking;
 	VLRegion			fCursorRegion;
-	int		  			fCursorMeasure;
-	VLFract 			fCursorAt;
+	VLLocation          fCursorLocation;
     int                 fCursorVertPos;
     uint16_t            fCursorVisual;
 	size_t				fCursorStanza;
@@ -95,10 +94,8 @@ enum VLCursorVisual {
 	size_t				fVolta;
 	size_t				fVoltaOK;
 	VLLayout *			fLayout;
-	int					fHighlightStartMeasure;
-	VLFract				fHighlightStartAt;
-	int					fHighlightEndMeasure;
-	VLFract				fHighlightEndAt;
+	VLLocation			fHighlightStart;
+	VLLocation			fHighlightEnd;
 	size_t				fHighlightStanza;
     VLKeyValueUndo *    fUndo;
 
@@ -138,7 +135,7 @@ enum VLCursorVisual {
 - (float) noteYInSection:(int)section withPitch:(int)pitch;
 - (VLMusicElement)accidentalForVisual:(uint16_t)visual;
 - (float) noteYInMeasure:(int)measure withGrid:(int)vertPos;
-- (float) noteXInMeasure:(int)measure at:(VLFraction)at;
+- (float) noteXAt:(VLLocation)at;
 - (void)  needsRecalculation;
 
 - (void) scrollMeasureToVisible:(int)measure;

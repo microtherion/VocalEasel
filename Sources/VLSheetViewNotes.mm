@@ -21,20 +21,20 @@
 
 - (void) addNoteAtCursor
 {	
-	if (fCursorMeasure > -1 && fCursorVertPos != kCursorNoPitch) {
+	if (fCursorLocation.fMeasure > -1 && fCursorVertPos != kCursorNoPitch) {
 		[[self document] willChangeSong];
 		if (fCursorVisual == kCursorExtend) {
-			VLNote oldNote = [self song]->ExtendNote(fCursorMeasure, fCursorAt);
+			VLNote oldNote = [self song]->ExtendNote(fCursorLocation);
 			VLSoundOut::Instance()->PlayNote(oldNote);
 		} else if (fClickMode == 'k') {
-			[self song]->DelNote(fCursorMeasure, fCursorAt);
+			[self song]->DelNote(fCursorLocation);
 		} else {
             int pitch   = VLNote::kNoPitch;
             if (fClickMode == ' ')
                 pitch = VLGridToPitch(fCursorVertPos, fCursorVisual, 
-                                      [self song]->Properties(fCursorMeasure).fKey);
+                                      [self song]->Properties(fCursorLocation.fMeasure).fKey);
             VLNote	newNote(1, pitch, fCursorVisual & ~kCursorFlagsMask);
-			[self song]->AddNote(VLLyricsNote(newNote), fCursorMeasure, fCursorAt);
+			[self song]->AddNote(VLLyricsNote(newNote), fCursorLocation);
 			VLSoundOut::Instance()->PlayNote(newNote);
         }
         fClickMode = ' ';
@@ -68,7 +68,7 @@
     [self drawLedgerLines:[self gridInSection:section withPitch:pitch visual:visual] at:p];
 }
 
-- (void) drawNoteCursor:(int)vertPos inMeasure:(size_t)measure at:(VLFract)at
+- (void) drawNoteCursor:(int)vertPos at:(VLLocation)at
                  visual:(uint16_t)visual mode:(char)mode
 {
 	int 			cursorX;
@@ -76,24 +76,24 @@
 	VLMusicElement	cursorElt;
     VLMusicElement  accidental = mode ? [self accidentalForVisual:visual] : kMusicNothing;
 	
-	cursorX = [self noteXInMeasure:measure at:at];
+	cursorX = [self noteXAt:at];
 	if (visual == kCursorExtend) {
-		cursorY 	= [self noteYInMeasure:measure withGrid:vertPos];
+		cursorY 	= [self noteYInMeasure:at.fMeasure withGrid:vertPos];
 		cursorElt	= kMusicExtendCursor;
 	} else {
 		switch (mode) {
 		default:
-            cursorY 	= [self noteYInMeasure:measure withGrid:vertPos] - kNoteY;
+            cursorY 	= [self noteYInMeasure:at.fMeasure withGrid:vertPos] - kNoteY;
             [self drawLedgerLines:vertPos at:NSMakePoint(cursorX, 
-                [self systemY:fLayout->SystemForMeasure(measure)])];
+                [self systemY:fLayout->SystemForMeasure(at.fMeasure)])];
 			cursorElt 	= kMusicNoteCursor;
 			break;
 		case 'r':
-            cursorY 	= [self noteYInMeasure:measure withGrid:3];
+            cursorY 	= [self noteYInMeasure:at.fMeasure withGrid:3];
 			cursorElt	= kMusicRestCursor;
 			break;
 		case 'k':
-            cursorY 	= [self noteYInMeasure:measure withGrid:vertPos] - kNoteY;
+            cursorY 	= [self noteYInMeasure:at.fMeasure withGrid:vertPos] - kNoteY;
 			cursorElt	= kMusicKillCursor;
 			break;
 		}
@@ -135,15 +135,14 @@
 	}
 }
 
-- (void) drawNoteCursor:(int)vertPos inMeasure:(size_t)measure at:(VLFract)at visual:(uint16_t)visual
+- (void) drawNoteCursor:(int)vertPos at:(VLLocation)at visual:(uint16_t)visual
 {
-    [self drawNoteCursor:vertPos inMeasure:measure at:at visual:visual mode:0];
+    [self drawNoteCursor:vertPos at:at visual:visual mode:0];
 }
 
 - (void) drawNoteCursor
 {
-	[self drawNoteCursor:fCursorVertPos inMeasure:fCursorMeasure at:fCursorAt
-                  visual:fCursorVisual mode:fClickMode];
+	[self drawNoteCursor:fCursorVertPos at:fCursorLocation visual:fCursorVisual mode:fClickMode];
 }
 
 - (void) drawNote:(int)visual at:(NSPoint)p 
@@ -337,7 +336,7 @@
 		const VLMeasure	&	measure = song->fMeasures[measIdx];
 		VLNoteList 			melody;
 		measure.DecomposeNotes(kProp, melody);
-		VLFraction 			at(0);
+		VLLocation 			at  = {measIdx, VLFraction(0)};
         float               tupletStartX;
         float               tupletEndX;
         CGFloat             tupletY;
@@ -356,11 +355,11 @@
 			if (pitch != VLNote::kNoPitch) {
 				[self drawLedgerLinesInSection:measure.fPropIdx withPitch:pitch 
 					  visual:note->fVisual
-					  at:NSMakePoint([self noteXInMeasure:measIdx at:at], 
+					  at:NSMakePoint([self noteXAt:at], 
 									 kSystemY)];
                 uint16_t    visual  = VLPitchAccidental(note->fPitch, note->fVisual, kProp.fKey);
 				pos                 = 
-                    NSMakePoint([self noteXInMeasure:measIdx at:at],
+                    NSMakePoint([self noteXAt:at],
                                 kSystemY+[self noteYInSection:measure.fPropIdx
                                                     withPitch:pitch visual:&visual]);
 				int			step    = [self gridInSection:measure.fPropIdx
@@ -370,7 +369,7 @@
 					  accidental:[self accidentalForVisual:filterVisuals(step, visual)]
 					  tied:tied];
 			} else {
-				pos = NSMakePoint([self noteXInMeasure:measIdx at:at],
+				pos = NSMakePoint([self noteXAt:at],
 								  kSystemY+[self noteYInSection:measure.fPropIdx withPitch:65]);
 				[self drawRest:note->fVisual & VLNote::kNoteHeadMask at: pos];
 			}
@@ -403,12 +402,12 @@
 				inTuplet    = 0;
 			}
 
-			at	   += note->fDuration;
+			at.fAt  = at.fAt+note->fDuration;
 		}
         if (inTuplet)
             [self drawTuplet:tuplet bracketFrom:tupletStartX to:tupletEndX atY:tupletY];
 	}
-	if (fCursorRegion == kRegionNote && fLayout->SystemForMeasure(fCursorMeasure) == system)
+	if (fCursorRegion == kRegionNote && fLayout->SystemForMeasure(fCursorLocation.fMeasure) == system)
 		[self drawNoteCursor];
 }
 

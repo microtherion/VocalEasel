@@ -233,9 +233,9 @@ static float sFlatPos[] = {
 		+ [self noteYInGrid:vertPos];
 }
 
-- (float) noteXInMeasure:(int)measure at:(VLFraction)at
+- (float) noteXAt:(VLLocation)at
 {
-	return fLayout->NotePosition(measure, at);
+	return fLayout->NotePosition(at);
 }
 
 - (void) scrollMeasureToVisible:(int)measure
@@ -764,9 +764,9 @@ const float kSemiFloor = -1.0f*kLineH;
 		if (measure < 0 || measure > kLayout.NumMeasures())
 			return fCursorRegion = kRegionNowhere;
 
-		fCursorMeasure	= measure+fLayout->FirstMeasure(system);
+		fCursorLocation.fMeasure	= measure+fLayout->FirstMeasure(system);
 			
-		if (fCursorMeasure > [self song]->fMeasures.size())
+		if (fCursorLocation.fMeasure > [self song]->fMeasures.size())
 			return fCursorRegion = kRegionNowhere;
 		else
 			return fCursorRegion = kRegionMeasure;
@@ -780,18 +780,18 @@ const float kSemiFloor = -1.0f*kLineH;
 	loc.x		   -= group*(kLayout.DivPerGroup()+1)*kNoteW;
 	int div			= static_cast<int>(roundf(loc.x / kNoteW))-1;
 	div				= std::min(std::max(div, 0), kLayout.DivPerGroup()-1);
-	fCursorMeasure	= measure+fLayout->FirstMeasure(system);
-	if (fCursorMeasure > [self song]->fMeasures.size())
+	fCursorLocation.fMeasure	= measure+fLayout->FirstMeasure(system);
+	if (fCursorLocation.fMeasure > [self song]->fMeasures.size())
 		return fCursorRegion = kRegionNowhere;
 		
-	fCursorAt 		= VLFraction(div+group*kLayout.DivPerGroup(), 4*song->Properties(fCursorMeasure).fDivisions);
+	fCursorLocation.fAt 		= VLFraction(div+group*kLayout.DivPerGroup(), 4*song->Properties(fCursorLocation.fMeasure).fDivisions);
 
 	if (loc.y >= kSystemBaseline+kChordY) {
 		//
 		// Chord, round to quarters
 		//
-		int scale = fCursorAt.fDenom / 4;
-		fCursorAt = VLFraction(fCursorAt.fNum / scale, 4);
+		int scale = fCursorLocation.fAt.fDenom / 4;
+		fCursorLocation.fAt = VLFraction(fCursorLocation.fAt.fNum / scale, 4);
 		return fCursorRegion = kRegionChord;
 	} else if (loc.y < kSystemBaseline+kLyricsY) {
 		fCursorStanza = static_cast<size_t>((kSystemBaseline+kLyricsY-loc.y) / kLyricsH)
@@ -855,7 +855,7 @@ const float kSemiFloor = -1.0f*kLineH;
 		break;
 	case kRegionLyrics:
         if (extend && [[self editTarget] canExtendSelection:kRegionLyrics]) {
-            [[self editTarget] extendSelection:fCursorMeasure at:fCursorAt];
+            [[self editTarget] extendSelection:fCursorLocation];
         } else {
             fSelEnd		= -1;
             [self editLyrics];
@@ -881,7 +881,7 @@ const float kSemiFloor = -1.0f*kLineH;
 	if (prevRegion == kRegionMeasure)
 		[self adjustSelection:event];
     else if ([[self editTarget] canExtendSelection:[self findRegionForEvent:event]])
-        [[self editTarget] extendSelection:fCursorMeasure at:fCursorAt];
+        [[self editTarget] extendSelection:fCursorLocation];
 }
 
 - (void) keyDown:(NSEvent *)event

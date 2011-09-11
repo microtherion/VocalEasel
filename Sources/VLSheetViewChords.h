@@ -13,14 +13,12 @@
 @interface VLChordEditable : VLEditable {
 	VLSheetView *	fView;
 	VLSong *		fSong;
-	int				fMeasure;
-	VLFract			fAt;
+	VLLocation		fSelection;
 }
 
 - (VLChordEditable *)initWithView:(VLSheetView *)view
 							 song:(VLSong *)song 
-						  measure:(int)measure
-							   at:(VLFract)at;
+							   at:(VLLocation)at;
 - (NSString *) stringValue;
 - (void) setStringValue:(NSString*)val;
 - (BOOL) validValue:(NSString*)val;
@@ -34,7 +32,7 @@
 
 - (void) editChord;
 - (void) drawChordsForSystem:(int)system;
-- (void) highlightChordInMeasure:(int)measure at:(VLFraction)at;
+- (void) highlightChord:(VLLocation)at;
 
 @end
 

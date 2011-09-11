@@ -16,9 +16,8 @@ struct VLMIDIUserEvent {
 	uint32_t	fLength;
 	int8_t		fPitch;		// 0 -> Chord
 	uint8_t		fStanza;
-	int16_t		fMeasure;
-    uint32_t    fVisual;
-	VLFract		fAt;
+    uint16_t    fVisual;
+	VLLocation  fAt;
 };
 
 class VLMIDIWriter: public VLSongVisitor {
@@ -34,11 +33,10 @@ private:
 	MusicSequence			fMusic;
 	size_t					fCountIn;
 	MusicTrack				fTrack;
-	size_t					fMeasure;
 	size_t					fStanza;
 	MusicTimeStamp			fChordTime;
 	MusicTimeStamp			fNoteTime;
-	VLFraction				fAt;
+	VLLocation				fAt;
 	VLFraction				fTime;
 	std::vector<uint8_t>	fVolta;
 };

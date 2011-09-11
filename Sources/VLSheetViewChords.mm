@@ -61,14 +61,12 @@ std::string NormalizeName(NSString* rawName)
 
 - (VLChordEditable *)initWithView:(VLSheetView *)view
 							 song:(VLSong *)song 
-						  measure:(int)measure
-							   at:(VLFract)at;
+							   at:(VLLocation)at;
 {
-	self 	= [super init];
-	fView	= view;
-	fSong	= song;
-	fMeasure= measure;
-	fAt		= at;
+	self        = [super init];
+	fView       = view;
+	fSong       = song;
+    fSelection  = at;
 	
 	[fView setNeedsDisplay: YES];
 	
@@ -77,23 +75,23 @@ std::string NormalizeName(NSString* rawName)
 
 - (NSString *) stringValue
 {
-	if (fMeasure >= fSong->CountMeasures())
+	if (fSelection.fMeasure >= fSong->CountMeasures())
 		return @"";
 
-	const VLMeasure		measure = fSong->fMeasures[fMeasure];
+	const VLMeasure		measure = fSong->fMeasures[fSelection.fMeasure];
 	const VLChordList &	chords	= measure.fChords;
 	VLFraction at(0);
 	for (VLChordList::const_iterator chord = chords.begin();
-		 chord != chords.end() && at <= fAt;
+		 chord != chords.end() && at <= fSelection.fAt;
 		 ++chord
 	) {
-		if (at == fAt && chord->fPitch != VLNote::kNoPitch) {
+		if (at == fSelection.fAt && chord->fPitch != VLNote::kNoPitch) {
 			//
 			// Found it!
 			//
 			VLSoundOut::Instance()->PlayChord(*chord);
 
-			const VLProperties & 	prop	= fSong->Properties(fMeasure);
+			const VLProperties & 	prop	= fSong->Properties(fSelection.fMeasure);
 			std::string name, ext, root;
 			chord->Name(name, ext, root, prop.fKey > 0);
 			
@@ -114,14 +112,14 @@ std::string NormalizeName(NSString* rawName)
 	std::string	chordName	= NormalizeName(val);
 	if (!chordName.size()) {
 		[[fView document] willChangeSong];
-		fSong->DelChord(fMeasure, fAt);
+		fSong->DelChord(fSelection);
 		[[fView document] didChangeSong];
 	} else {
 		VLChord 	chord(chordName);
 		VLSoundOut::Instance()->PlayChord(chord);
 		
 		[[fView document] willChangeSong];
-		fSong->AddChord(chord, fMeasure, fAt);
+		fSong->AddChord(chord, fSelection);
 		[[fView document] didChangeSong];
 	}
 }
@@ -144,29 +142,29 @@ std::string NormalizeName(NSString* rawName)
 {	
 	const VLProperties & prop = fSong->fProperties.front();
 
-	fAt = fAt+VLFraction(1,4);
-	if (fAt >= prop.fTime) {
-		fAt 		= VLFraction(0,4);
-		fMeasure 	= (fMeasure+1) % fSong->CountMeasures();
-		[fView scrollMeasureToVisible:fMeasure];
+	fSelection.fAt = fSelection.fAt+VLFraction(1,4);
+	if (fSelection.fAt >= prop.fTime) {
+		fSelection.fAt 		= VLFraction(0,4);
+		fSelection.fMeasure = (fSelection.fMeasure+1) % fSong->CountMeasures();
+		[fView scrollMeasureToVisible:fSelection.fMeasure];
 	}
 }
 
 - (void) moveToPrev
 {
-	if (fAt < VLFraction(1,4)) {
-		const VLProperties & prop = fSong->fProperties.front();
-		fAt 		= prop.fTime - VLFraction(1,4);
-		fMeasure  	= 
-			(fMeasure+fSong->CountMeasures()-1) % fSong->CountMeasures();
-		[fView scrollMeasureToVisible:fMeasure];
+	if (fSelection.fAt < VLFraction(1,4)) {
+		const VLProperties & prop   = fSong->fProperties.front();
+		fSelection.fAt              = prop.fTime - VLFraction(1,4);
+		fSelection.fMeasure         = 
+			(fSelection.fMeasure+fSong->CountMeasures()-1) % fSong->CountMeasures();
+		[fView scrollMeasureToVisible:fSelection.fMeasure];
 	} else
-		fAt = fAt-VLFraction(1,4);
+		fSelection.fAt = fSelection.fAt-VLFraction(1,4);
 }
 
 - (void) highlightCursor
 {
-	[fView highlightChordInMeasure:fMeasure at:fAt];
+	[fView highlightChord:fSelection];
 }
 
 @end
@@ -231,16 +229,16 @@ std::string NormalizeName(NSString* rawName)
 			break;
 		const VLMeasure		measure = song->fMeasures[measIdx];
 		const VLChordList &	chords	= measure.fChords;
-		VLFraction at(0);
+		VLLocation at   = {measIdx, VLFraction(0)};
 		for (VLChordList::const_iterator chord = chords.begin();
 			 chord != chords.end();
 			 ++chord
 		) {
 			NSAttributedString * chordName 	= [self stringWithChord:*chord];
 			NSPoint				 chordLoc  	=
-				NSMakePoint([self noteXInMeasure:measIdx at:at], kSystemY+kChordY);
+				NSMakePoint([self noteXAt:at], kSystemY+kChordY);
 			[chordName drawAtPoint:chordLoc];
-			at += chord->fDuration;
+			at.fAt = at.fAt+chord->fDuration;
 		}
 	}
 }
@@ -251,18 +249,17 @@ std::string NormalizeName(NSString* rawName)
 		[[VLChordEditable alloc]
 			initWithView:self
 			song:[self song]
-			measure:fCursorMeasure
-			at:fCursorAt];
+			at:fCursorLocation];
 	[self setEditTarget:e];
 	[fFieldEditor selectText:self];
 }
 
-- (void) highlightChordInMeasure:(int)measure at:(VLFraction)at
+- (void) highlightChord:(VLLocation)at
 {
 	const VLProperties & 	prop = [self song]->fProperties.front();
-	const float 	   	kSystemY = [self systemY:fLayout->SystemForMeasure(measure)];
+	const float 	   	kSystemY = [self systemY:fLayout->SystemForMeasure(at.fMeasure)];
 	NSRect 				r 	   	 =
-		NSMakeRect([self noteXInMeasure:measure at:at]-kNoteW*0.5f,
+		NSMakeRect([self noteXAt:at]-kNoteW*0.5f,
 				   kSystemY+kChordY, prop.fDivisions*kNoteW, kChordH);
 	[[NSColor colorWithCalibratedWhite:0.8f alpha:1.0f] setFill];
 	NSRectFillUsingOperation(r, NSCompositePlusDarker);

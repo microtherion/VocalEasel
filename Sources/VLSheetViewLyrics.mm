@@ -20,35 +20,28 @@
 
 - (void)highlightWord
 {
-    size_t      endMeas = fMeasure;
-    VLFraction  endAt   = fAt;
-    if (!fSong->NextWord(fStanza, endMeas, endAt))
-        endMeas = 1000;
-    [fView highlightTextInStanza:fStanza startMeasure:fMeasure at:fAt endMeasure:endMeas at:endAt];
-    std::string word = fSong->GetWord(fStanza, fMeasure, fAt);
+    VLLocation end = fSelection;
+    if (!fSong->NextWord(fStanza, end))
+        end.fMeasure = 1000;
+    [fView highlightTextInStanza:fStanza start:fSelection end:end];
+    std::string word = fSong->GetWord(fStanza, fSelection);
 	fText = [[NSString alloc] initWithUTF8String:word.c_str()];
 }
 
 - (VLLyricsEditable *)initWithView:(VLSheetView *)view
 							 song:(VLSong *)song 
 							stanza:(int)stanza
-						  measure:(int)measure
-							   at:(VLFract)at
+							   at:(VLLocation)at
 {
 	self 		= [super init];
 	fView		= view;
 	fSong		= song;
 	fStanza		= stanza;
-	fMeasure	= measure;
-	fAt 		= at;
-    fAnchorMeas = measure;
-    fAnchorAt   = at;
-	fNextMeas	= fMeasure;
-	fNextAt		= fAt;
+	fSelection 	= at;
+    fAnchor     = at;
+ 	fNext		= at;
 	
-	VLFraction At = fAt;
-	fSong->FindWord(fStanza, fMeasure, At);
-	fAt = At;
+	fSong->FindWord(fStanza, fSelection);
 	[self highlightWord];
 	
 	return self;
@@ -67,7 +60,7 @@
 - (void) setStringValue:(NSString *)val
 {
 	[[fView document] willChangeSong];
-	fSong->SetWord(fStanza, fMeasure, fAt, val ? [val UTF8String] : "", &fNextMeas, &fNextAt);
+	fSong->SetWord(fStanza, fSelection, val ? [val UTF8String] : "", &fNext);
 	[[fView document] didChangeSong];
 }
 
@@ -78,46 +71,38 @@
 
 - (void) moveToNext
 {
-	if (fNextMeas != fMeasure || fNextAt != fAt) {
-		fMeasure = fNextMeas;
-		VLFraction at = fNextAt;
-		fSong->FindWord(fStanza, fMeasure, at);
-		fAt	 = at;
+	if (fNext != fSelection) {
+        fSelection  = fNext;
+		fSong->FindWord(fStanza, fSelection);
 	} else {
-		VLFraction at = fAt;
-		if (!fSong->NextWord(fStanza, fMeasure, at)) {
-			fMeasure	= 0;
-			at			= 0;
-			fSong->FindWord(fStanza, fMeasure, at);
+		if (!fSong->NextWord(fStanza, fSelection)) {
+			fSelection.fMeasure	= 0;
+			fSelection.fAt		= VLFraction(0);
+			fSong->FindWord(fStanza, fSelection);
 		}
-		fAt = at;
 	}
-	fNextMeas = fMeasure;
-	fNextAt	  = fAt;
+	fNext   = fSelection;
 	[self highlightWord];
-	[fView scrollMeasureToVisible:fMeasure];
+	[fView scrollMeasureToVisible:fSelection.fMeasure];
 }
 
 - (void) moveToPrev
 {
-	VLFraction at = fAt;
-	if (!fSong->PrevWord(fStanza, fMeasure, at)) {
-		fMeasure = fSong->CountMeasures()-1;
-		at		 = fSong->Properties(fMeasure).fTime;
-		fSong->PrevWord(fStanza, fMeasure, at);
+	if (!fSong->PrevWord(fStanza, fSelection)) {
+		fSelection.fMeasure = fSong->CountMeasures()-1;
+		fSelection.fAt		= fSong->Properties(fSelection.fMeasure).fTime;
+		fSong->PrevWord(fStanza, fSelection);
 	}
-	fAt = at;
-	fNextMeas = fMeasure;
-	fNextAt	  = fAt;
+    fNext   = fSelection;
 	[self highlightWord];
-	[fView scrollMeasureToVisible:fMeasure];
+	[fView scrollMeasureToVisible:fSelection.fMeasure];
 }
 
 - (void) highlightCursor
 {
-	std::string word = fSong->GetWord(fStanza, fMeasure, fAt);
+	std::string word = fSong->GetWord(fStanza, fSelection);
 	if (!word.size())
-		[fView highlightLyricsInStanza:fStanza measure:fMeasure at:fAt];
+		[fView highlightLyricsInStanza:fStanza at:fSelection];
 }
 
 - (BOOL)canExtendSelection:(VLRegion)region
@@ -125,40 +110,33 @@
     return region == kRegionLyrics;
 }
 
-- (void)extendSelection:(size_t)measure at:(VLFract)At
+- (void)extendSelection:(VLLocation)at
 {
-    VLFraction at = At;
-    if (!fSong->FindWord(fStanza, measure, at))
+    if (!fSong->FindWord(fStanza, at))
         return;
-    if (measure < fAnchorMeas || (measure==fAnchorMeas && at < fAnchorAt)) {
+    if (at < fAnchor) {
         //
         // Backward from anchor
         //
-        fMeasure    = measure;
-        fAt         = at;
-        measure     = fAnchorMeas;
-        at          = fAnchorAt;
+        fSelection  = at;
+        at          = fAnchor;
     } else {
         //
         // Forward from anchor
         //
-        fMeasure    = fAnchorMeas;
-        at          = fAnchorAt;
-        fSong->FindWord(fStanza, fMeasure, at);
-        fAt         = at;
-        at          = At;
+        fSelection  = fAnchor;
+        fSong->FindWord(fStanza, fSelection);
     }
-    if (!fSong->NextWord(fStanza, measure, at))
-        measure = 1000;
-    [fView highlightTextInStanza:fStanza startMeasure:fMeasure at:fAt endMeasure:measure at:at];
+    if (!fSong->NextWord(fStanza, at))
+        at.fMeasure = 1000;
+    [fView highlightTextInStanza:fStanza start:fSelection end:at];
     std::string text;
-    size_t      textMeas = fMeasure;
-    VLFraction  textAt   = fAt;
-    while (textMeas < measure || (textMeas == measure && textAt < at)) {
+    VLLocation  textAt   = fSelection;
+    while (textAt < at) {
         if (text.size())
             text += ' ';
-        text += fSong->GetWord(fStanza, textMeas, textAt);
-        fSong->NextWord(fStanza, textMeas, textAt);
+        text += fSong->GetWord(fStanza, textAt);
+        fSong->NextWord(fStanza, textAt);
     }
     [fText release];
 	fText = [[NSString alloc] initWithUTF8String:text.c_str()];
@@ -236,7 +214,7 @@ float VLCocoaFontHandler::Width(const char * utf8Text)
 			break;
 		const VLMeasure		measure = song->fMeasures[measIdx];
 		const VLNoteList &	notes	= measure.fMelody;
-		VLFraction at(0);
+		VLLocation          at      = {measIdx, VLFraction(0)};
 		for (VLNoteList::const_iterator note = notes.begin();
 			 note != notes.end();
 			 ++note
@@ -247,18 +225,15 @@ float VLCocoaFontHandler::Width(const char * utf8Text)
 				;
 			} else {
                 bool highlight = stanza == fHighlightStanza
-                 && (measIdx > fHighlightStartMeasure 
-                  || (measIdx == fHighlightStartMeasure && at >= fHighlightStartAt))
-                 && (measIdx < fHighlightEndMeasure
-                  || (measIdx == fHighlightEndMeasure && at < fHighlightEndAt));
+                  && at >= fHighlightStart && at < fHighlightEnd;
                 if (highlight && !sHighlightColor) 
                     sHighlightColor = [[self textBackgroundColorForSystem:system] shadowWithLevel:0.2];
 
 				text.AddSyllable(note->fLyrics[stanza-1], 
-								 [self noteXInMeasure:measIdx at:at],	
+								 [self noteXAt:at],	
 								 highlight);
 			}
-			at += note->fDuration;
+			at.fAt = at.fAt+note->fDuration;
 		}
 	}
 
@@ -273,30 +248,26 @@ float VLCocoaFontHandler::Width(const char * utf8Text)
 			initWithView:self
 			song:[self song]
 			stanza:fCursorStanza
-			measure:fCursorMeasure
-			at:fCursorAt];
+			at:fCursorLocation];
 	[self setEditTarget:e];
 	[fFieldEditor selectText:self];
 }
 
-- (void) highlightLyricsInStanza:(size_t)stanza measure:(int)measure at:(VLFraction)at
+- (void) highlightLyricsInStanza:(size_t)stanza at:(VLLocation)at
 {
-	const float 	   	kSystemY = [self systemY:fLayout->SystemForMeasure(measure)];
+	const float 	   	kSystemY = [self systemY:fLayout->SystemForMeasure(at.fMeasure)];
 	NSRect 				r 	   	 =
-		NSMakeRect([self noteXInMeasure:measure at:at]-kNoteW*0.5f,
+		NSMakeRect([self noteXAt:at]-kNoteW*0.5f,
 				   kSystemY+kLyricsY-stanza*kLyricsH, kNoteW, kLyricsH);
 	[[NSColor colorWithCalibratedWhite:0.8f alpha:1.0f] setFill];
 	NSRectFillUsingOperation(r, NSCompositePlusDarker);	
 }
 
-- (void) highlightTextInStanza:(size_t)stanza startMeasure:(int)startMeasure at:(VLFraction)startAt
-                    endMeasure:(int)endMeasure at:(VLFraction)endAt
+- (void) highlightTextInStanza:(size_t)stanza start:(VLLocation)start end:(VLLocation)end
 {
-	fHighlightStanza        = stanza;
-	fHighlightStartMeasure  = startMeasure;
-	fHighlightStartAt       = startAt;
-    fHighlightEndMeasure    = endMeasure;
-    fHighlightEndAt         = endAt;
+	fHighlightStanza    = stanza;
+	fHighlightStart     = start;
+    fHighlightEnd       = end;
     [self setNeedsDisplay:YES];
 }
 

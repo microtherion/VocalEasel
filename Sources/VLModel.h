@@ -65,34 +65,81 @@ inline VLFraction operator%(VLFraction one, VLFraction other)
 	return one %= other;
 }
 
-inline bool operator==(VLFraction one, VLFraction other)
+inline bool operator!(VLFract fract)
+{
+    return !fract.fNum;
+}
+
+inline bool operator==(VLFract one, VLFract other)
 {
 	return one.fNum*other.fDenom == other.fNum*one.fDenom;
 }
 
-inline bool operator!=(VLFraction one, VLFraction other)
+inline bool operator!=(VLFract one, VLFract other)
 {
 	return one.fNum*other.fDenom != other.fNum*one.fDenom;
 }
 
-inline bool operator<(VLFraction one, VLFraction other)
+inline bool operator<(VLFract one, VLFract other)
 {
 	return one.fNum*other.fDenom < other.fNum*one.fDenom;
 }
 
-inline bool operator>(VLFraction one, VLFraction other)
+inline bool operator>(VLFract one, VLFract other)
 {
 	return one.fNum*other.fDenom > other.fNum*one.fDenom;
 }
 
-inline bool operator<=(VLFraction one, VLFraction other)
+inline bool operator<=(VLFract one, VLFract other)
 {
 	return one.fNum*other.fDenom <= other.fNum*one.fDenom;
 }
 
-inline bool operator>=(VLFraction one, VLFraction other)
+inline bool operator>=(VLFract one, VLFract other)
 {
 	return one.fNum*other.fDenom >= other.fNum*one.fDenom;
+}
+
+#pragma mark -
+#pragma mark struct VLLocation
+
+struct VLLocation {
+    uint32_t    fMeasure;
+    VLFract     fAt;
+};
+
+inline bool operator==(const VLLocation & one, const VLLocation & other)
+{
+    return one.fMeasure == other.fMeasure && one.fAt == other.fAt;
+}
+
+inline bool operator!=(const VLLocation & one, const VLLocation & other)
+{
+    return one.fMeasure != other.fMeasure || one.fAt != other.fAt;
+}
+
+inline bool operator<(const VLLocation & one, const VLLocation & other)
+{
+    return one.fMeasure < other.fMeasure 
+       || (one.fMeasure == other.fMeasure && one.fAt < other.fAt);
+}
+
+inline bool operator<=(const VLLocation & one, const VLLocation & other)
+{
+    return one.fMeasure < other.fMeasure 
+    || (one.fMeasure == other.fMeasure && one.fAt <= other.fAt);
+}
+
+inline bool operator>(const VLLocation & one, const VLLocation & other)
+{
+    return one.fMeasure > other.fMeasure 
+    || (one.fMeasure == other.fMeasure && one.fAt > other.fAt);
+}
+
+inline bool operator>=(const VLLocation & one, const VLLocation & other)
+{
+    return one.fMeasure > other.fMeasure 
+    || (one.fMeasure == other.fMeasure && one.fAt >= other.fAt);
 }
 
 #pragma mark -
@@ -324,8 +371,8 @@ public:
 	VLPropertyList	fProperties;
 	VLMeasureList	fMeasures;
 	VLRepeatList	fRepeats;
-	int8_t			fGoToCoda;
-	int8_t			fCoda;
+	int16_t			fGoToCoda;
+	int16_t			fCoda;
 
 	//
 	// Iterate over measures in performance order
@@ -367,11 +414,11 @@ public:
 	iterator 	begin() { return iterator(*this, false); }
 	iterator 	end() 	{ return iterator(*this, true);  }
 
-	void AddChord(VLChord chord, size_t measure, VLFraction at);
-	void AddNote(VLLyricsNote note, size_t measure, VLFraction at);
-	void DelChord(size_t measure, VLFraction at);
-	void DelNote(size_t measure, VLFraction at);
-	VLNote ExtendNote(size_t measure, VLFraction at);
+	void AddChord(VLChord chord, VLLocation at);
+	void AddNote(VLLyricsNote note, VLLocation at);
+	void DelChord(VLLocation at);
+	void DelNote(VLLocation at);
+	VLNote ExtendNote(VLLocation at);
 	void AddRepeat(size_t beginMeasure, size_t endMeasure, int times);
 	void DelRepeat(size_t beginMeasure, size_t endMeasure);
 	void AddEnding(size_t beginMeasure, size_t endMeasure, size_t volta);
@@ -391,12 +438,12 @@ public:
 	void ChangeDivisions(int section, int newDivisions);
 	void ChangeTime(int section, VLFraction newTime);
 
-	bool FindWord(size_t stanza, size_t & measure, VLFraction & at);
-	bool PrevWord(size_t stanza, size_t & measure, VLFraction & at);
-	bool NextWord(size_t stanza, size_t & measure, VLFraction & at);
-	std::string GetWord(size_t stanza, size_t measure, VLFraction at);
-	void SetWord(size_t stanza, size_t measure, VLFraction at, std::string word,
-				 size_t * nextMeas=0, VLFract * nextAt=0);
+	bool FindWord(size_t stanza, VLLocation & at);
+	bool PrevWord(size_t stanza, VLLocation & at);
+	bool NextWord(size_t stanza, VLLocation & at);
+	std::string GetWord(size_t stanza, VLLocation at);
+	void SetWord(size_t stanza, VLLocation at, std::string word,
+				 VLLocation * nextAt=0);
 
 	enum {
 		kInsert,

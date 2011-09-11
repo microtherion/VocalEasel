@@ -23,7 +23,7 @@
 - (void) moveToPrev;
 - (void) highlightCursor;
 - (BOOL) canExtendSelection:(VLRegion)region;
-- (void) extendSelection:(size_t)measure at:(VLFract)at;
+- (void) extendSelection:(VLLocation)at;
 - (BOOL) hidden;
 
 @end

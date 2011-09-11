@@ -14,20 +14,16 @@
 	VLSheetView *	fView;
 	VLSong * 		fSong;
 	size_t 			fStanza;
-	size_t 			fMeasure;
-	VLFract 		fAt;
-    size_t          fAnchorMeas;
-    VLFract         fAnchorAt;
-	size_t			fNextMeas;
-	VLFract			fNextAt;
+	VLLocation 		fSelection;
+    VLLocation      fAnchor;
+	VLLocation		fNext;
     NSString *      fText;
 }
 
 - (VLLyricsEditable *)initWithView:(VLSheetView *)view
 							 song:(VLSong *)song 
 							stanza:(int)stanza
-						  measure:(int)measure
-							   at:(VLFract)at;
+							   at:(VLLocation)at;
 - (NSString *) stringValue;
 - (void) setStringValue:(NSString*)val;
 - (BOOL) validValue:(NSString*)val;
@@ -41,9 +37,8 @@
 
 - (void) editLyrics;
 - (void) drawLyricsForSystem:(int)system stanza:(size_t)stanza;
-- (void) highlightLyricsInStanza:(size_t)stanza measure:(int)measure at:(VLFraction)at;
-- (void) highlightTextInStanza:(size_t)stanza startMeasure:(int)startMeasure at:(VLFraction)startAt 
-                    endMeasure:(int)endMeasure at:(VLFraction)endAt;
+- (void) highlightLyricsInStanza:(size_t)stanza at:(VLLocation)at;
+- (void) highlightTextInStanza:(size_t)stanza start:(VLLocation)start end:(VLLocation)end;
 
 @end
 

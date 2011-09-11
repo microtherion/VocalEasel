@@ -49,7 +49,7 @@
     return NO;
 }
 
-- (void)extendSelection:(size_t)measure at:(VLFract)at
+- (void)extendSelection:(VLLocation)at
 {
 }
 
@@ -132,14 +132,14 @@
 
 - (IBAction) togglePlayElements:(id)sender
 {
-	[[self document] setPlayElements:[[self document] playElements] ^ [sender tag]];
+	[[self document] setPlayElements:[[self document] playElements] ^ (int)[sender tag]];
 }
 
 - (BOOL) validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
 {
 	if ([item action] == @selector(togglePlayElements:)) {
         NSMenuItem * menuItem = (NSMenuItem *)item;
-		if (int tag = [item tag])
+		if (NSInteger tag = [item tag])
 			[menuItem setState:([[self document] playElements] & tag) != 0];
     } else if ([item action] == @selector(playStop:)) {
         NSMenuItem *    menuItem = [(NSObject *)item isKindOfClass:[NSMenuItem class]] ? (NSMenuItem *)item : nil;

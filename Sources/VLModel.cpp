@@ -109,7 +109,7 @@ std::string VLNote::Name(uint16_t accidental) const
 
 void VLNote::MakeRepresentable()
 {
-	if (fDuration > 1)
+	if (fDuration > VLFraction(1))
 		fDuration = 1;
 	fVisual	= kWhole | (fVisual & kAccidentalsMask);
 	VLFraction part(1,1);
@@ -251,7 +251,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 			// Don't paint ourselves into a corner by leaving a non-representable
 			// remainder.
 			//
-			if (p.fDuration != c.fDuration && (c.fDuration-p.fDuration) % kMinDuration != 0) {
+			if (p.fDuration != c.fDuration && (c.fDuration-p.fDuration) % kMinDuration != VLFraction(0)) {
 				r          += kMinDuration;
 				p.fDuration = c.fDuration-r;
 				continue;
@@ -296,7 +296,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 			if (at.fDenom == 3 || at.fDenom > 4) { 
 				//
 				// Break up notes not starting on quarter beat
-				//  - Never cross middle of measure
+				//  - Never cross middle of at.fMeasure
 				//
 				VLFraction middle;
 				if (prop.fTime.fNum & 1) // Treat 5/4 as 3+2, not 2+3
@@ -324,8 +324,8 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 				VLFraction sw24(1,24);
 				VLFraction grid4(1, 4);
 				VLFraction grid8(1, 8);
-				if ((p.fDuration == sw6 && (at % grid4 == 0)) 
-				 || (swing16 && p.fDuration == sw12 && (at % grid8 == 0))
+				if ((p.fDuration == sw6 && !(at % grid4)) 
+				 || (swing16 && p.fDuration == sw12 && !(at % grid8))
 				) {
 					if (p.fDuration == c.fDuration && n2!=e
 					 && n->fDuration == p.fDuration && n2->fDuration >= p.fDuration
@@ -337,8 +337,8 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 						//
 						p.fVisual = (p.fVisual+1) & ~VLNote::kTupletMask;
 					}
-				} else if ((p.fDuration == sw12 && ((at+p.fDuration) % grid4 == 0))
-				 || (swing16 && p.fDuration == sw24 && ((at+p.fDuration) % grid8 == 0))
+				} else if ((p.fDuration == sw12 && !((at+p.fDuration) % grid4))
+				 || (swing16 && p.fDuration == sw24 && !((at+p.fDuration) % grid8))
 				) {
 					//
 					// Second swing note (8th triplet -> 8th)
@@ -346,7 +346,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 					if (!prevTriplets)
 						p.fVisual &= ~VLNote::kTupletMask;
 				} else if ((p.fDuration > kMinDuration) && 
-				  ((at % p.fDuration != 0)
+				  ((at % p.fDuration != VLFraction(0))
 				   || (p.fDuration != c.fDuration 
 				    && 2*p.fDuration != c.fDuration)
 				   || (n!=e && n->fDuration != c.fDuration
@@ -379,7 +379,7 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 			p.fDuration  = c.fDuration;
 			p.fTied |= VLNote::kTiedWithPrev;
 			p.fLyrics.clear();
-		} while (c.fDuration > 0);
+		} while (c.fDuration > VLFraction(0));
 		i = n;
 	}
 }
@@ -499,21 +499,21 @@ void VLSong::clear()
 //
 // Deal with chords - a bit simpler
 //
-void VLSong::AddChord(VLChord chord, size_t measure, VLFraction at)
+void VLSong::AddChord(VLChord chord, VLLocation at)
 {
 	//	
 	// Always keep an empty measure in reserve
 	//
-	while (measure+1 >= fMeasures.size())
+	while (at.fMeasure+1 >= fMeasures.size())
 		AddMeasure();
 
-	VLChordList::iterator i = fMeasures[measure].fChords.begin();
+	VLChordList::iterator i = fMeasures[at.fMeasure].fChords.begin();
 	VLFraction			  t(0);
 
 	for (;;) {
 		VLFraction tEnd = t+i->fDuration;
-		if (tEnd > at) {
-			if (t == at) {
+		if (tEnd > at.fAt) {
+			if (t == at.fAt) {
 				//
 				// Exact match, replace current
 				//
@@ -523,9 +523,9 @@ void VLSong::AddChord(VLChord chord, size_t measure, VLFraction at)
 				//
 				// Overlap, split current
 				//
-				chord.fDuration = tEnd-at;
-				i->fDuration	= at-t;
-				fMeasures[measure].fChords.insert(++i, chord);
+				chord.fDuration = tEnd-at.fAt;
+				i->fDuration	= at.fAt-t;
+				fMeasures[at.fMeasure].fChords.insert(++i, chord);
 			}
 			break; // Exit here
 		}
@@ -534,24 +534,24 @@ void VLSong::AddChord(VLChord chord, size_t measure, VLFraction at)
 	}
 }
 
-void VLSong::DelChord(size_t measure, VLFraction at)
+void VLSong::DelChord(VLLocation at)
 {
-	VLChordList::iterator i = fMeasures[measure].fChords.begin();
+	VLChordList::iterator i = fMeasures[at.fMeasure].fChords.begin();
 	VLFraction			  t(0);
 
 	for (;;) {
-		if (t == at) {
+		if (t == at.fAt) {
 			// 
 			// Found it. Extend previous or make rest
 			//
-			if (i != fMeasures[measure].fChords.begin()) {
+			if (i != fMeasures[at.fMeasure].fChords.begin()) {
 				//
 				// Extend previous
 				//
 				VLChordList::iterator j = i;
 				--j;
 				j->fDuration += i->fDuration;
-				fMeasures[measure].fChords.erase(i);
+				fMeasures[at.fMeasure].fChords.erase(i);
 			} else {
 				//
 				// Turn into rest
@@ -561,7 +561,7 @@ void VLSong::DelChord(size_t measure, VLFraction at)
 			break;
 		}
 		VLFraction tEnd = t+i->fDuration;
-		if (tEnd > at) 
+		if (tEnd > at.fAt) 
 			break; // Past the point, quit
 		t = tEnd;
 		++i;
@@ -569,17 +569,17 @@ void VLSong::DelChord(size_t measure, VLFraction at)
 	//
 	// Trim excess empty measures
 	//
-	if (measure == fMeasures.size()-2 && fMeasures[measure].IsEmpty())
+	if (at.fMeasure == fMeasures.size()-2 && fMeasures[at.fMeasure].IsEmpty())
 		fMeasures.pop_back();
 }
 
-uint8_t & FirstTie(VLMeasure & measure)
+static uint8_t & FirstTie(VLMeasure & measure)
 {
 	VLNoteList::iterator i = measure.fMelody.begin();
 	return i->fTied;
 }
 
-uint8_t & LastTie(VLMeasure & measure)
+static uint8_t & LastTie(VLMeasure & measure)
 {
 	VLNoteList::iterator i = measure.fMelody.end();
 	--i;
@@ -589,25 +589,25 @@ uint8_t & LastTie(VLMeasure & measure)
 //
 // Dealing with notes is similar, but we also have to handle ties
 //
-void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
+void VLSong::AddNote(VLLyricsNote note, VLLocation at)
 {
     //
     // Sanity check on accidentals
     //
-    note.fVisual = VLPitchAccidental(note.fPitch, note.fVisual, Properties(measure).fKey);
+    note.fVisual = VLPitchAccidental(note.fPitch, note.fVisual, Properties(at.fMeasure).fKey);
 	//	
 	// Always keep an empty measure in reserve
 	//
-	while (measure+1 >= fMeasures.size())
+	while (at.fMeasure+1 >= fMeasures.size())
 		AddMeasure();
 
-	VLNoteList::iterator	i = fMeasures[measure].fMelody.begin();
+	VLNoteList::iterator	i = fMeasures[at.fMeasure].fMelody.begin();
 	VLFraction			  	t(0);
 
 	for (;;) {
 		VLFraction tEnd = t+i->fDuration;
-		if (tEnd > at) {
-			if (t == at) {
+		if (tEnd > at.fAt) {
+			if (t == at.fAt) {
 				//
 				// Exact match, replace current
 				//
@@ -617,11 +617,11 @@ void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
 					//
 					if (i->fTied & VLNote::kTiedWithPrev) {
                         i->fTied &= ~VLNote::kTiedWithPrev;
-						LastTie(fMeasures[measure-1]) &= ~VLNote::kTiedWithNext;
+						LastTie(fMeasures[at.fMeasure-1]) &= ~VLNote::kTiedWithNext;
                     }
                     if (i->fTied & VLNote::kTiedWithNext) {
                         VLNoteList::iterator j = i;
-                        for (size_t tiedMeas = measure+1; j->fTied & VLNote::kTiedWithNext;++tiedMeas) {
+                        for (size_t tiedMeas = at.fMeasure+1; j->fTied & VLNote::kTiedWithNext;++tiedMeas) {
                             j = fMeasures[tiedMeas].fMelody.begin();
                             j->fPitch = note.fPitch;
                             j->fVisual= note.fVisual;
@@ -639,28 +639,28 @@ void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
 				//
 				// Overlap, split current
 				//
-				note.fDuration 	= tEnd-at;
-				i->fDuration	= at-t;
-				i = fMeasures[measure].fMelody.insert(++i, note);
+				note.fDuration 	= tEnd-at.fAt;
+				i->fDuration	= at.fAt-t;
+				i = fMeasures[at.fMeasure].fMelody.insert(++i, note);
 			}
 			if (i->fPitch == VLNote::kNoPitch) {
 				//
 				// Merge with adjacent rests
 				//
-				if (i != fMeasures[measure].fMelody.begin()) {
+				if (i != fMeasures[at.fMeasure].fMelody.begin()) {
 					VLNoteList::iterator j = i;
 					--j;
 					if (j->fPitch == VLNote::kNoPitch) {
 						j->fDuration += i->fDuration;
-						fMeasures[measure].fMelody.erase(i);
+						fMeasures[at.fMeasure].fMelody.erase(i);
 						i = j;
 					}
 				}
 				VLNoteList::iterator j = i;
 				++j;
-				if (j != fMeasures[measure].fMelody.end() && j->fPitch == VLNote::kNoPitch) {
+				if (j != fMeasures[at.fMeasure].fMelody.end() && j->fPitch == VLNote::kNoPitch) {
 					i->fDuration += j->fDuration;
-					fMeasures[measure].fMelody.erase(j);
+					fMeasures[at.fMeasure].fMelody.erase(j);
 				}
 			}
 			break; // Exit here
@@ -670,8 +670,8 @@ void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
 	}
 	i->fTied = 0;
 	if (note.fTied & VLNote::kTiedWithPrev) // kTiedWithNext is NEVER user set
-		if (measure && i == fMeasures[measure].fMelody.begin()) {
-			VLNoteList::iterator	j = fMeasures[measure-1].fMelody.end();
+		if (at.fMeasure && i == fMeasures[at.fMeasure].fMelody.begin()) {
+			VLNoteList::iterator	j = fMeasures[at.fMeasure-1].fMelody.end();
 			--j;
 			if (j->fPitch == i->fPitch) {
 				j->fTied |= VLNote::kTiedWithNext;
@@ -680,40 +680,40 @@ void VLSong::AddNote(VLLyricsNote note, size_t measure, VLFraction at)
 		}	
 }
 
-void VLSong::DelNote(size_t measure, VLFraction at)
+void VLSong::DelNote(VLLocation at)
 {
-	VLNoteList::iterator i = fMeasures[measure].fMelody.begin();
+	VLNoteList::iterator i = fMeasures[at.fMeasure].fMelody.begin();
 	VLFraction			  t(0);
 
 	for (;;) {
-		if (t == at) {
+		if (t == at.fAt) {
 			// 
 			// Found it. Break ties.
 			//
 			if (i->fTied & VLNote::kTiedWithNext)
-				FirstTie(fMeasures[measure+1]) &= ~VLNote::kTiedWithPrev;
+				FirstTie(fMeasures[at.fMeasure+1]) &= ~VLNote::kTiedWithPrev;
 			if (i->fTied & VLNote::kTiedWithPrev)
-				LastTie(fMeasures[measure-1]) &= ~VLNote::kTiedWithNext;
+				LastTie(fMeasures[at.fMeasure-1]) &= ~VLNote::kTiedWithNext;
 			//
 			// Extend previous or make rest
 			//
-			if (i != fMeasures[measure].fMelody.begin()) {
+			if (i != fMeasures[at.fMeasure].fMelody.begin()) {
 				//
 				// Extend previous
 				//
 				VLNoteList::iterator j = i;
 				--j;
 				j->fDuration += i->fDuration;
-				fMeasures[measure].fMelody.erase(i);
+				fMeasures[at.fMeasure].fMelody.erase(i);
 			} else {
 				//
 				// Merge with next if it's a rest, otherwise, just turn into rest
 				//
 				VLNoteList::iterator j = i;
 				++j;
-				if (j != fMeasures[measure].fMelody.end() && j->fPitch == VLNote::kNoPitch) {	
+				if (j != fMeasures[at.fMeasure].fMelody.end() && j->fPitch == VLNote::kNoPitch) {	
 					i->fDuration += j->fDuration;
-					fMeasures[measure].fMelody.erase(j);
+					fMeasures[at.fMeasure].fMelody.erase(j);
 				}
 				i->fPitch	= VLNote::kNoPitch;
 				i->fTied	= 0;				
@@ -721,7 +721,7 @@ void VLSong::DelNote(size_t measure, VLFraction at)
 			break;
 		}
 		VLFraction tEnd = t+i->fDuration;
-		if (tEnd > at) 
+		if (tEnd > at.fAt) 
 			break; // Past the point, quit
 		t = tEnd;
 		++i;
@@ -729,19 +729,19 @@ void VLSong::DelNote(size_t measure, VLFraction at)
 	//
 	// Trim excess empty measures
 	//
-	if (measure == fMeasures.size()-2 && fMeasures[measure].IsEmpty())
+	if (at.fMeasure == fMeasures.size()-2 && fMeasures[at.fMeasure].IsEmpty())
 		fMeasures.pop_back();
 }
 
-VLNote VLSong::ExtendNote(size_t measure, VLFraction at)
+VLNote VLSong::ExtendNote(VLLocation at)
 {
-	VLNoteList::iterator i 	= fMeasures[measure].fMelody.begin();
-	VLNoteList::iterator end= fMeasures[measure].fMelody.end();
+	VLNoteList::iterator i 	= fMeasures[at.fMeasure].fMelody.begin();
+	VLNoteList::iterator end= fMeasures[at.fMeasure].fMelody.end();
 	
     if (i==end)
         return VLNote(); // Empty song, do nothing
     
-	for (VLFraction t(0); i != end && t+i->fDuration <= at; ++i) 
+	for (VLFraction t(0); i != end && t+i->fDuration <= at.fAt; ++i) 
 		t += i->fDuration;
 
 	if (i == end)
@@ -752,17 +752,17 @@ VLNote VLSong::ExtendNote(size_t measure, VLFraction at)
 	for (;;) {
 		VLNoteList::iterator j=i;
 		++j;
-		if (j != fMeasures[measure].fMelody.end()) {
+		if (j != fMeasures[at.fMeasure].fMelody.end()) {
 			//
 			// Extend across next note/rest
 			//
 			i->fDuration += j->fDuration;
-			fMeasures[measure].fMelody.erase(j);				
-		} else if (++measure < fMeasures.size()) { 
+			fMeasures[at.fMeasure].fMelody.erase(j);				
+		} else if (++at.fMeasure < fMeasures.size()) { 
 			//
 			// Extend into next measure
 			//
-			VLNoteList::iterator k = fMeasures[measure].fMelody.begin();
+			VLNoteList::iterator k = fMeasures[at.fMeasure].fMelody.begin();
 			if (k->fTied & VLNote::kTiedWithPrev) {
 				//
 				// Already extended, extend further
@@ -783,10 +783,10 @@ VLNote VLSong::ExtendNote(size_t measure, VLFraction at)
 					if (!wasTied) 
 						break;
 					i = k;
-					k = fMeasures[++measure].fMelody.begin();
+					k = fMeasures[++at.fMeasure].fMelody.begin();
 				}
 			}
-			if (measure+1 == fMeasures.size())
+			if (at.fMeasure+1 == fMeasures.size())
 				AddMeasure();
 		}
 		break;
@@ -1220,23 +1220,23 @@ size_t VLSong::CountBotLedgers() const
 		return 0;
 }
 
-bool VLSong::FindWord(size_t stanza, size_t & measure, VLFraction & at)
+bool VLSong::FindWord(size_t stanza, VLLocation & at)
 {
-	at += VLFraction(1,64);
-	return PrevWord(stanza, measure, at);
+	at.fAt = at.fAt+VLFraction(1,64);
+	return PrevWord(stanza, at);
 }
 
-bool VLSong::PrevWord(size_t stanza, size_t & measure, VLFraction & at)
+bool VLSong::PrevWord(size_t stanza, VLLocation & at)
 {
 	do {
-		VLMeasure & 			meas	= fMeasures[measure];
-		VLNoteList::iterator 	note 	= fMeasures[measure].fMelody.begin();
-		VLNoteList::iterator 	end  	= fMeasures[measure].fMelody.end();
+		VLMeasure & 			meas	= fMeasures[at.fMeasure];
+		VLNoteList::iterator 	note 	= fMeasures[at.fMeasure].fMelody.begin();
+		VLNoteList::iterator 	end  	= fMeasures[at.fMeasure].fMelody.end();
 		bool					hasWord	= false;
 		VLFraction				word(0);
 		VLFraction				now(0);
 
-		while (note != meas.fMelody.end() && now < at) {
+		while (note != meas.fMelody.end() && now < at.fAt) {
 			if (!(note->fTied & VLNote::kTiedWithPrev)
              && note->fPitch != VLNote::kNoPitch
 			)
@@ -1250,37 +1250,37 @@ bool VLSong::PrevWord(size_t stanza, size_t & measure, VLFraction & at)
 			++note;
 		}
 		if (hasWord) {
-			at	= word;
+			at.fAt	= word;
 			
 			return true;
 		} else {
-			at 	= fProperties[meas.fPropIdx].fTime;
+			at.fAt 	= fProperties[meas.fPropIdx].fTime;
 		}
-	} while (measure-- > 0);
+	} while (at.fMeasure-- > 0);
 	
-	measure = 0;
+	at.fMeasure = 0;
 
 	return false;
 }
 
-bool VLSong::NextWord(size_t stanza, size_t & measure, VLFraction & at)
+bool VLSong::NextWord(size_t stanza, VLLocation & at)
 {  
 	bool firstMeasure = true;
 	do {
-		VLMeasure & 			meas	= fMeasures[measure];
-		VLNoteList::iterator 	note 	= fMeasures[measure].fMelody.begin();
-		VLNoteList::iterator 	end  	= fMeasures[measure].fMelody.end();
+		VLMeasure & 			meas	= fMeasures[at.fMeasure];
+		VLNoteList::iterator 	note 	= fMeasures[at.fMeasure].fMelody.begin();
+		VLNoteList::iterator 	end  	= fMeasures[at.fMeasure].fMelody.end();
 		VLFraction				now(0);
 
 		while (note != meas.fMelody.end()) {
 			if (!(note->fTied & VLNote::kTiedWithPrev)
              && note->fPitch != VLNote::kNoPitch 
-			 && (!firstMeasure || now>at)
+			 && (!firstMeasure || now>at.fAt)
             )
 				if (note->fLyrics.size() < stanza 
 			     || !(note->fLyrics[stanza-1].fKind & VLSyllable::kHasPrev)
 				) {
-					at	= now;
+					at.fAt	= now;
 					
 					return true;
 				}
@@ -1288,23 +1288,23 @@ bool VLSong::NextWord(size_t stanza, size_t & measure, VLFraction & at)
 			++note;
 		}
 		firstMeasure = false;
-	} while (++measure < fMeasures.size());
+	} while (++at.fMeasure < fMeasures.size());
 
 	return false;
 }
 
-std::string VLSong::GetWord(size_t stanza, size_t measure, VLFraction at)
+std::string VLSong::GetWord(size_t stanza, VLLocation at)
 {
 	std::string word;
 
-	while (measure < fMeasures.size()) {
-		VLMeasure & 			meas	= fMeasures[measure];
+	while (at.fMeasure < fMeasures.size()) {
+		VLMeasure & 			meas	= fMeasures[at.fMeasure];
 		VLNoteList::iterator 	note 	= meas.fMelody.begin();
 		VLNoteList::iterator 	end  	= meas.fMelody.end();
 		VLFraction				now(0);
 
 		while (note != end) {
-			if (now >= at && note->fPitch != VLNote::kNoPitch
+			if (now >= at.fAt && note->fPitch != VLNote::kNoPitch
 				&& !(note->fTied & VLNote::kTiedWithPrev)
 			) {
 				if (word.size()) 
@@ -1319,19 +1319,19 @@ std::string VLSong::GetWord(size_t stanza, size_t measure, VLFraction at)
 			now += note->fDuration;
 			++note;
 		}	
-		at = 0;
-		++measure;
+		at.fAt = VLFraction(0);
+		++at.fMeasure;
 	} 
 	
 	return word;
 }
 
-void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string word, size_t * nextMeas, VLFract * nextAt)
+void VLSong::SetWord(size_t stanza, VLLocation at, std::string word, VLLocation * nextAt)
 {
 	//	
 	// Always keep an empty measure in reserve
 	//
-	while (measure+1 >= fMeasures.size())
+	while (at.fMeasure+1 >= fMeasures.size())
 		AddMeasure();
 
 	uint8_t	kind = 0;
@@ -1342,9 +1342,9 @@ void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string w
 	} 		state	= kFindFirst;
 
 	do {
-		VLMeasure & 			meas	= fMeasures[measure];
-		VLNoteList::iterator 	note 	= fMeasures[measure].fMelody.begin();
-		VLNoteList::iterator 	end  	= fMeasures[measure].fMelody.end();
+		VLMeasure & 			meas	= fMeasures[at.fMeasure];
+		VLNoteList::iterator 	note 	= fMeasures[at.fMeasure].fMelody.begin();
+		VLNoteList::iterator 	end  	= fMeasures[at.fMeasure].fMelody.end();
 		VLFraction				now(0);
 
 		while (note != meas.fMelody.end()) {
@@ -1353,7 +1353,7 @@ void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string w
 			)
 				switch (state) {
 				case kFindFirst:
-					if (now < at)
+					if (now < at.fAt)
 						break; // Not yet there, skip this note
 					state = kOverwrite;
 					// Fall through
@@ -1402,13 +1402,10 @@ void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string w
 						kind &= ~VLSyllable::kHasPrev;
 					break; }
 				case kCleanup:
-					if (nextMeas) {
-						*nextMeas = measure;
-						nextMeas  = 0;
-					}
 					if (nextAt) {
-						*nextAt	  = now;
-						nextAt	  = 0;
+						nextAt->fMeasure    = at.fMeasure;
+						nextAt->fAt         = now;
+						nextAt  = 0;
 					}
 					//
 					// Delete all subsequent syllables with kHasPrev set
@@ -1424,12 +1421,12 @@ void VLSong::SetWord(size_t stanza, size_t measure, VLFraction at, std::string w
 			now += note->fDuration;
 			++note;
 		}	
-		at = 0;
-	} while (++measure < fMeasures.size());	
-	if (nextMeas)
-		*nextMeas = 0;
-	if (nextAt)
-		*nextAt	  = VLFraction(0);
+		at.fAt = VLFraction(0);
+	} while (++at.fMeasure < fMeasures.size());	
+	if (nextAt) {
+		nextAt->fMeasure    = 0;
+		nextAt->fAt         = VLFraction(0);
+    }
 }
 
 void VLSong::AddRepeat(size_t beginMeasure, size_t endMeasure, int times)
@@ -1937,7 +1934,7 @@ void VLSong::PasteMeasures(size_t beginMeasure, const VLSong & measures, int mod
 			if (endProp > beginProp && fProperties[propAt] == endProp[-1])
 				--endProp;
 		}
-		int postOffset = endProp - beginProp;
+		ptrdiff_t postOffset = endProp - beginProp;
 		
 		fProperties.insert(fProperties.begin()+propAt, beginProp, endProp);
 		fMeasures.insert(fMeasures.begin()+beginMeasure, 

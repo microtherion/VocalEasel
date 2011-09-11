@@ -96,7 +96,7 @@ void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 
 	NSMutableDictionary * md = 
 		[NSMutableDictionary dictionaryWithObjectsAndKeys:
-		 [NSNumber numberWithInt:m], @"measure",
+		 [NSNumber numberWithUnsignedInt:m], @"measure",
 		 [NSNumber numberWithInt:meas.fPropIdx], @"properties",
 		 fNotes, @"melody", fChords, @"chords",
 		 nil];
@@ -112,7 +112,7 @@ void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 		[md setObject:
 		       [NSDictionary dictionaryWithObjectsAndKeys:
 				[NSNumber numberWithBool:!last], @"last",
-				[NSNumber numberWithInt:volta], @"volta",
+				[NSNumber numberWithUnsignedInt:volta], @"volta",
 				nil]
 			forKey: @"begin-ending"];
 	if (fSong->DoesEndRepeat(m+1, &times)) 
@@ -124,7 +124,7 @@ void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 		[md setObject:
 		       [NSDictionary dictionaryWithObjectsAndKeys:
 				[NSNumber numberWithBool:!last], @"last",
-				[NSNumber numberWithInt:volta], @"volta",
+				[NSNumber numberWithUnsignedInt:volta], @"volta",
 				nil]
 			forKey: @"end-ending"];
 	if (fSong->fGoToCoda == m+1)
@@ -305,9 +305,9 @@ enum {
 
 - (void)readMelody:(NSArray *)melody inMeasure:(size_t)measNo onsets:(int *)onsets lyrics:(uint8_t *)prevKind
 {
-	VLFraction		at(0);
-	int				lastOnset = 0;
-	VLFraction		tiedStart(0);
+	VLLocation		at          = {measNo, VLFraction(0)};
+	int				lastOnset   = 0;
+	VLLocation		tiedStart   = {measNo, VLFraction(0)};
 	VLLyricsNote	tiedNote;
 
 	for (NSEnumerator * ne 	  = [melody objectEnumerator];
@@ -328,13 +328,13 @@ enum {
                                            [[ndict objectForKey:@"normalNotes"] intValue]);
 		
 		if ([[ndict objectForKey:@"tied"] intValue] & VLNote::kTiedWithPrev) {
-			if (at != 0) {
+			if (at.fAt != VLFraction(0)) {
 				//
 				// Extend preceding note
 				//
 				tiedNote.fDuration	+= note.fDuration;
-				song->DelNote(measNo, tiedStart);
-				song->AddNote(tiedNote, measNo, tiedStart);
+				song->DelNote(tiedStart);
+				song->AddNote(tiedNote, tiedStart);
 				
 				goto advanceAt;
 			} else {
@@ -376,10 +376,10 @@ enum {
 		tiedStart	= at;
 		tiedNote	= note;
 		
-		song->AddNote(note, measNo, at);
+		song->AddNote(note, at);
 
 		if (!(note.fTied & VLNote::kTiedWithPrev)) {
-			VLFraction 	inQuarter	= at % VLFraction(1,4);
+			VLFraction 	inQuarter	= at.fAt % VLFraction(1,4);
 			int 		onset 		= inQuarter.fNum * 48 / inQuarter.fDenom;
 			++onsets[onset];
 			switch (onset) {
@@ -398,13 +398,13 @@ enum {
 			}
 		}
 advanceAt:
-		at += note.fDuration;		
+		at.fAt = at.fAt + note.fDuration;		
 	}
 }
 
 - (void)readChords:(NSArray *)chords inMeasure:(size_t)measNo
 {
-	VLFraction	at(0);
+	VLLocation	at  = {measNo, VLFraction(0)};
 
 	for (NSEnumerator * ce 	  = [chords objectEnumerator];
 		 NSDictionary * cdict = [ce nextObject];
@@ -420,9 +420,9 @@ advanceAt:
 		chord.fRootAccidental	= [[cdict objectForKey:@"rootvisual"] intValue];	
 		chord.fSteps			= [[cdict objectForKey:@"steps"] intValue];	
 
-		song->AddChord(chord, measNo, at);
+		song->AddChord(chord, at);
 		
-		at += chord.fDuration;
+		at.fAt = at.fAt + chord.fDuration;
 	}
 }
 
