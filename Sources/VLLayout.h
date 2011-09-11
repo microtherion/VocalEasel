@@ -8,7 +8,7 @@
 // Copyright © 2007 Matthias Neeracher
 //
 
-#include <VLModel.h>
+#include "VLModel.h"
 #include <vector>
 
 class VLSystemLayout {
