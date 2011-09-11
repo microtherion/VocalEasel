@@ -288,18 +288,24 @@ void VLAUSoundOut::SetPlayRate(float rate)
 	MusicPlayerSetPlayRateScalar(fPlayer, fPlayRate);
 }
 
-static MusicTimeStamp   sLastSkip   = 0.0;
+const MusicTimeStamp    kInitialSkip= 0.15;
+const MusicTimeStamp    kMaxSkip    = 1.0;
+const MusicTimeStamp    kSkipFactor = 0.5;
+static MusicTimeStamp   sSkipSign   = 0;
+static int              sSkipSteps  = 0;
 static VLResetTimer *   sSkipResetTimer;
 
 void VLAUSoundOut::SkipTimeInterval()
 {
     MusicTimeStamp  time;
     MusicPlayerGetTime(fPlayer, &time);
-    time     += sLastSkip;
-    sLastSkip   *= 1.1;
+    ++sSkipSteps;
+    MusicTimeStamp  delta   = kInitialSkip+(kMaxSkip-kInitialSkip)
+        *sSkipSign*(1.0-exp(-sSkipSteps*kSkipFactor));
+    time     += delta;
     if (!sSkipResetTimer) 
         sSkipResetTimer = new VLResetTimer(500*NSEC_PER_MSEC, ^{
-            sLastSkip = 0.0;
+            sSkipSteps  = 0;
         });
     sSkipResetTimer->Prime();
     MusicPlayerSetTime(fPlayer, time);
@@ -307,15 +313,19 @@ void VLAUSoundOut::SkipTimeInterval()
 
 void VLAUSoundOut::Fwd()
 {
-    if (sLastSkip <= 0.0)
-        sLastSkip = 0.1;
+    if (sSkipSign <= 0.0) {
+        sSkipSign   = 1.0;
+        sSkipSteps  = 0;
+    }
     SkipTimeInterval();
 }
 
 void VLAUSoundOut::Bck()
 {
-    if (sLastSkip >= 0.0) 
-        sLastSkip = -0.1;
+    if (sSkipSign >= 0.0) {
+        sSkipSign  = -1.0;
+        sSkipSteps = 0;
+    }
     SkipTimeInterval();
 }
 
