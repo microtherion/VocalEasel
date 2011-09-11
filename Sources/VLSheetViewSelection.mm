@@ -201,8 +201,9 @@ VLSequenceCallback(
 
 - (void)selectMeasure:(uint32_t)startMeas to:(uint32_t)endMeas
 {
-    fSelStart   = startMeas;
-    fSelEnd     = endMeas;
+    fSelStart       = startMeas;
+    fSelEnd         = endMeas;
+    fCursorRegion   = kRegionMeasure;
 
 	[self updateMenus];
 	[self setNeedsDisplay:YES];	
