@@ -70,6 +70,8 @@ enum VLCursorVisual {
     kCursorNoPitch  = -128
 };
 
+const uint32_t kNoMeasure = (uint32_t)-1;
+
 @class VLEditable;
 
 @interface VLSheetView : NSView {
@@ -85,9 +87,8 @@ enum VLCursorVisual {
     int                 fCursorVertPos;
     uint16_t            fCursorVisual;
 	size_t				fCursorStanza;
-	int					fSelStart;
-	int					fSelEnd;
-    int                 fSelAnchor;
+	uint32_t			fSelStart;
+	uint32_t			fSelEnd;
 	int 				fNumTopLedgers;
 	int					fNumBotLedgers;
 	int					fNumStanzas;

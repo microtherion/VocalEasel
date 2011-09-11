@@ -104,7 +104,7 @@ static float sFlatPos[] = {
         fCursorVertPos      = 0;
         fCursorVisual       = 0;
 		fSelStart			= 0;
-		fSelEnd				= -1;
+		fSelEnd				= kNoMeasure;
 		fNumTopLedgers 		= 0;
 		fNumBotLedgers 		= 2;
 		fNumStanzas    		= 2;
@@ -581,8 +581,10 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 
 - (void)highlightSelectionForSystem:(int)system
 {
-	int startMeas = std::max(fSelStart-fLayout->FirstMeasure(system), 0);
-	int endMeas	  = std::min(fSelEnd-fLayout->FirstMeasure(system), (*fLayout)[system].NumMeasures());
+	uint32_t startMeas  = 
+        std::max<uint32_t>(fSelStart-fLayout->FirstMeasure(system), 0);
+	uint32_t endMeas    = 
+        std::min<uint32_t>(fSelEnd-fLayout->FirstMeasure(system), (*fLayout)[system].NumMeasures());
 	const float kRawSystemY = [self systemY:system]-kSystemBaseline;
 	const VLSystemLayout & kLayout = (*fLayout)[system];
 
@@ -625,7 +627,7 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 		// When highlighting, draw highlight FIRST and then draw our stuff
 		// on top.
 		//
-		if (fSelStart <= fSelEnd 
+		if (fSelEnd != kNoMeasure && fSelStart <= fSelEnd 
 			&& fLayout->FirstMeasure(system+1) > fSelStart-(fSelStart==fSelEnd) 
 			&& fLayout->FirstMeasure(system) < fSelEnd+(fSelStart==fSelEnd)
 		)
@@ -667,7 +669,7 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 						  otherButton:@"Change Key"
 						  informativeTextWithFormat:
 							  @"Do you want to transpose the %@ into the new key?",
-						  (fSelEnd > -1 && song->fProperties.size() > 1)
+						  (fSelEnd != kNoMeasure && song->fProperties.size() > 1)
 						  ? (plural ? @"sections" : @"section") : @"song"
 				  ]
 					beginSheetModalForWindow:[self window]
@@ -842,45 +844,36 @@ const float kSemiFloor = -1.0f*kLineH;
 
 - (void) mouseDown:(NSEvent *)event
 {
-    BOOL extend = ([event modifierFlags] & NSShiftKeyMask) != 0;
-	switch ([self findRegionForEvent:event]) {
-	case kRegionNote:
-        [self setEditTarget:nil];
-        fSelEnd		= -1;
-        [self addNoteAtCursor];
-		break;
-	case kRegionChord:
-        fSelEnd		= -1;
-		[self editChord];
-		break;
-	case kRegionLyrics:
-        if (extend && [[self editTarget] canExtendSelection:kRegionLyrics]) {
-            [[self editTarget] extendSelection:fCursorLocation];
-        } else {
-            fSelEnd		= -1;
+    BOOL        extend = ([event modifierFlags] & NSShiftKeyMask) != 0;
+    VLRegion    region = [self findRegionForEvent:event];
+    if (extend && [[self editTarget] canExtendSelection:region])
+        [[self editTarget] extendSelection:fCursorLocation];
+    else 
+        switch (region) {
+        case kRegionNote:
+            [self setEditTarget:nil];
+            [self addNoteAtCursor];
+            break;
+        case kRegionChord:
+            [self editChord];
+            break;
+        case kRegionLyrics:
             [self editLyrics];
+            break;
+        case kRegionMeasure:
+            [self editSelection];
+            break;
+        default:
+            [self setEditTarget:nil];
+            break;
         }
-		break;
-	case kRegionMeasure:
-        [self setEditTarget:nil];
-        [self editSelection:extend];
-		break;
-	default:
-        [self setEditTarget:nil];
-        fSelEnd		= -1;
-		break;
-	}
 }
 
 - (void) mouseDragged:(NSEvent *)event
 {
-    VLRegion prevRegion = fCursorRegion;
-    
     [super mouseDragged:event];
 	[self autoscroll:event];
-	if (prevRegion == kRegionMeasure)
-		[self adjustSelection:event];
-    else if ([[self editTarget] canExtendSelection:[self findRegionForEvent:event]])
+	if ([[self editTarget] canExtendSelection:[self findRegionForEvent:event]])
         [[self editTarget] extendSelection:fCursorLocation];
 }
 

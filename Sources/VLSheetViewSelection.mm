@@ -18,6 +18,86 @@
 #import "VLDocument.h"
 #import "VLPitchGrid.h"
 
+#pragma mark VLMeasureEditable
+
+@interface VLMeasureEditable : VLEditable {
+    VLSheetView *   fView;
+    uint32_t        fAnchor;
+    VLRegion        fRegion;
+}
+
+- (VLMeasureEditable *)initWithView:(VLSheetView *)view anchor:(uint32_t)anchor;
+- (BOOL)canExtendSelection:(VLRegion)region;
+- (void)extendSelection:(VLLocation)at;
+- (BOOL)hidden;
+
+@end
+
+@implementation VLMeasureEditable
+
+- (VLMeasureEditable *)initWithView:(VLSheetView *)view anchor:(uint32_t)anchor
+{
+    fView   = view;
+    fAnchor = anchor;
+    [fView selectMeasure:fAnchor to:fAnchor];
+    
+    return self;
+}
+
+- (void)dealloc
+{
+    [fView selectMeasure:0 to:kNoMeasure];
+    [super dealloc];
+}
+
+- (BOOL)canExtendSelection:(VLRegion)region
+{
+    switch ((fRegion = region)) {
+    case kRegionNote:
+    case kRegionChord:
+    case kRegionLyrics:
+    case kRegionMeasure:
+        return YES;
+    default:
+        return NO;
+    }
+}
+
+- (void)extendSelection:(VLLocation)at
+{
+    uint32_t meas = at.fMeasure;
+	switch (fRegion) {
+    case kRegionNote:
+    case kRegionChord:
+    case kRegionLyrics:
+        if (at.fAt > VLFraction(0) && meas >= fAnchor)
+            ++meas;
+        //
+        // Fall through
+        //
+    case kRegionMeasure:
+        meas = std::max<uint32_t>(0, std::min<uint32_t>(meas, [fView song]->CountMeasures()));
+        if (meas >= fAnchor) {
+            [fView selectMeasure:fAnchor to:meas];
+        } else {
+            [fView selectMeasure:meas to:fAnchor];
+        }
+        break;
+    default:
+        break;
+	}
+}
+
+- (BOOL)hidden
+{
+    return YES;
+}
+
+@end
+
+#pragma mark -
+#pragma mark VLPlaybackEditable
+
 @interface VLPlaybackEditable : VLEditable {
 	VLSheetView *	fView;
 	size_t 			fStanza;
@@ -113,50 +193,19 @@ VLSequenceCallback(
 
 @implementation VLSheetView (Selection)
 
-- (void)editSelection:(BOOL)extend
+- (void)editSelection
 {
-    if (extend && fSelEnd > -1) {
-        if (fCursorLocation.fMeasure > fSelEnd)
-            fSelEnd = fCursorLocation.fMeasure;
-        else if (fCursorLocation.fMeasure < fSelStart)
-            fSelStart = fCursorLocation.fMeasure;
-    } else {
-        fSelStart	= fSelEnd	= fSelAnchor = fCursorLocation.fMeasure;
-    }
-	[self updateMenus];
-	[self setNeedsDisplay:YES];	
+    [self setEditTarget:[[VLMeasureEditable alloc] 
+                         initWithView:self anchor:fCursorLocation.fMeasure]];
 }
 
-- (void)adjustSelection:(NSEvent *)event
+- (void)selectMeasure:(uint32_t)startMeas to:(uint32_t)endMeas
 {
-	switch ([self findRegionForEvent:event]) {
-	case kRegionNote:
-	case kRegionChord:
-	case kRegionLyrics:
-        if (fCursorLocation.fAt.fNum > 0 && fCursorLocation.fMeasure >= fSelAnchor)
-            ++fCursorLocation.fMeasure;
-		//
-		// Fall through
-		//
-	case kRegionMeasure:
-		fCursorLocation.fMeasure = 
-			std::max(0, std::min<int>(fCursorLocation.fMeasure, [self song]->CountMeasures()));
- 		if (fCursorLocation.fMeasure >= fSelAnchor) {
-            fSelStart   = fSelAnchor;
-			fSelEnd		= fCursorLocation.fMeasure;
-			[self updateMenus];
-			[self setNeedsDisplay:YES];
-		} else {
-			fSelStart	= fCursorLocation.fMeasure;
-            fSelEnd     = fSelAnchor;
-			[self updateMenus];
-			[self setNeedsDisplay:YES];
-		}
-		break;
-    default:
-        break;
-	}
-	fCursorRegion = kRegionMeasure;
+    fSelStart   = startMeas;
+    fSelEnd     = endMeas;
+
+	[self updateMenus];
+	[self setNeedsDisplay:YES];	
 }
 
 - (NSRange)sectionsInSelection
@@ -166,7 +215,7 @@ VLSequenceCallback(
 	int lastSection;
 	VLSong * song = [self song];
 
-	if (fSelEnd > -1) {
+	if (fSelEnd != kNoMeasure) {
 		firstSection = song->fMeasures[fSelStart].fPropIdx;
 		lastSection  = fSelEnd==fSelStart ? firstSection : song->fMeasures[fSelEnd-1].fPropIdx;
 	} else {

@@ -12,8 +12,8 @@
 
 @interface VLSheetView (Selection)
 
-- (void)editSelection:(BOOL)extend;
-- (void)adjustSelection:(NSEvent *)event;
+- (void)editSelection;
+- (void)selectMeasure:(uint32_t)startMeas to:(uint32_t)endMeas;
 - (NSRange)sectionsInSelection;
 
 - (BOOL)validateUserInterfaceItem:(id)item;

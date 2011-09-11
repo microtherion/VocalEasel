@@ -21,7 +21,7 @@
 
 - (void) addNoteAtCursor
 {	
-	if (fCursorLocation.fMeasure > -1 && fCursorVertPos != kCursorNoPitch) {
+	if (fCursorLocation.fMeasure != kNoMeasure && fCursorVertPos != kCursorNoPitch) {
 		[[self document] willChangeSong];
 		if (fCursorVisual == kCursorExtend) {
 			VLNote oldNote = [self song]->ExtendNote(fCursorLocation);
