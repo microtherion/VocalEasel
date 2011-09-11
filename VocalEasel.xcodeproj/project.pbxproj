@@ -118,6 +118,7 @@
 		95AC700514099C64007EA050 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC700314099C64007EA050 /* AudioUnit.framework */; };
 		95AC700714099CF0007EA050 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC700614099CF0007EA050 /* Quartz.framework */; };
 		95AC70091409A291007EA050 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AC70081409A291007EA050 /* Carbon.framework */; };
+		95B2C10F141D154B00C96B56 /* slow.icns in Resources */ = {isa = PBXBuildFile; fileRef = 95B2C10E141D154B00C96B56 /* slow.icns */; };
 		95B3E1A70960E58B000E9C0D /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 95B3E1980960E58B000E9C0D /* Music */; };
 		95B66658096BCA1F00FE18C9 /* VLSheetViewNotes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95B66657096BCA1F00FE18C9 /* VLSheetViewNotes.mm */; };
 		95BDA15909540BF1009F9D65 /* VLSheetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95BDA15809540BF1009F9D65 /* VLSheetView.mm */; };
@@ -335,6 +336,7 @@
 		95AC700314099C64007EA050 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/AudioUnit.framework; sourceTree = DEVELOPER_DIR; };
 		95AC700614099CF0007EA050 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Quartz.framework; sourceTree = DEVELOPER_DIR; };
 		95AC70081409A291007EA050 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Carbon.framework; sourceTree = DEVELOPER_DIR; };
+		95B2C10E141D154B00C96B56 /* slow.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = slow.icns; path = Resources/slow.icns; sourceTree = "<group>"; };
 		95B3E1980960E58B000E9C0D /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Music; path = Resources/Music; sourceTree = "<group>"; };
 		95B66653096BC6A100FE18C9 /* VLSheetViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VLSheetViewInternal.h; path = Sources/VLSheetViewInternal.h; sourceTree = "<group>"; };
 		95B66656096BCA1F00FE18C9 /* VLSheetViewNotes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLSheetViewNotes.h; path = Sources/VLSheetViewNotes.h; sourceTree = "<group>"; };
@@ -574,6 +576,7 @@
 		953F4B70140B041800C627F9 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				95B2C10E141D154B00C96B56 /* slow.icns */,
 				953F4B6C140B040000C627F9 /* next.icns */,
 				953F4B6D140B040000C627F9 /* prev.icns */,
 				953F4B6A140AFF2A00C627F9 /* display.icns */,
@@ -1039,6 +1042,7 @@
 				953F4B6B140AFF2A00C627F9 /* display.icns in Resources */,
 				953F4B6E140B040100C627F9 /* next.icns in Resources */,
 				953F4B6F140B040100C627F9 /* prev.icns in Resources */,
+				95B2C10F141D154B00C96B56 /* slow.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

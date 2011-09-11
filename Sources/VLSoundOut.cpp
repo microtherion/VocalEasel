@@ -37,6 +37,7 @@ public:
 	virtual void 	SetPlayRate(float rate);
 	virtual void 	Fwd();
 	virtual void 	Bck();
+    virtual void    Slow(float rate);
 	virtual void    SetMelodyState(MelodyState state);
     
 	virtual 	   ~VLAUSoundOut();
@@ -56,6 +57,7 @@ private:
 	MusicTimeStamp      fMusicLength;
 	bool                fRunning;
 	bool                fForward;
+    float               fPlayRate;
     dispatch_source_t   fMusicPoll;
 
 	void                Play(const int8_t * note, size_t numNotes = 1);
@@ -74,6 +76,39 @@ private:
 	CFURLRef		fFile;
 	OSType			fDataFormat;
 };
+
+class VLResetTimer {
+public:
+    VLResetTimer(int64_t interval, void (^block)());
+    ~VLResetTimer();
+    
+    void    Prime();
+private:
+    dispatch_source_t   fTimer;
+    int64_t             fInterval;
+    void              (^fBlock)();
+};
+
+VLResetTimer::VLResetTimer(int64_t interval, void (^block)())
+    : fInterval(interval), fBlock(Block_copy(block))
+{
+    fTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, 
+                dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
+    dispatch_source_set_event_handler(fTimer, fBlock);
+    dispatch_source_set_timer(fTimer, DISPATCH_TIME_FOREVER, INT64_MAX, 1000*NSEC_PER_USEC);
+    dispatch_resume(fTimer);
+}
+
+VLResetTimer::~VLResetTimer()
+{
+    Block_release(fBlock);
+}
+
+void VLResetTimer::Prime()
+{
+    dispatch_source_set_timer(fTimer, dispatch_time(DISPATCH_TIME_NOW, fInterval), 
+                              INT64_MAX, 10*NSEC_PER_MSEC);
+}
 
 VLSoundEvent::~VLSoundEvent()
 {
@@ -211,6 +246,7 @@ void VLAUSoundOut::PlaySequence(MusicSequence music)
 	
 		fMusic			= music;
 		fMusicLength	= SequenceLength(music);
+        fPlayRate       = 1.0;
 
 		R(MusicSequenceSetAUGraph(fMusic, fGraph));
 		R(MusicPlayerSetSequence(fPlayer, fMusic));
@@ -248,11 +284,12 @@ void VLAUSoundOut::SetPlayRate(float rate)
 		MusicSequenceReverse(fMusic);
 		MusicPlayerSetTime(fPlayer, fMusicLength - rightNow);
 	}
-	MusicPlayerSetPlayRateScalar(fPlayer, fabsf(rate));
+    fPlayRate   = fabsf(rate);
+	MusicPlayerSetPlayRateScalar(fPlayer, fPlayRate);
 }
 
-static MusicTimeStamp       sLastSkip   = 0.0;
-static dispatch_source_t    sResetTimer;
+static MusicTimeStamp   sLastSkip   = 0.0;
+static VLResetTimer *   sSkipResetTimer;
 
 void VLAUSoundOut::SkipTimeInterval()
 {
@@ -260,17 +297,11 @@ void VLAUSoundOut::SkipTimeInterval()
     MusicPlayerGetTime(fPlayer, &time);
     time     += sLastSkip;
     sLastSkip   *= 1.1;
-    if (!sResetTimer) {
-        sResetTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, 
-                                             dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
-        dispatch_source_set_event_handler(sResetTimer, ^{
+    if (!sSkipResetTimer) 
+        sSkipResetTimer = new VLResetTimer(500*NSEC_PER_MSEC, ^{
             sLastSkip = 0.0;
         });
-        dispatch_source_set_timer(sResetTimer, DISPATCH_TIME_FOREVER, INT64_MAX, 1000*NSEC_PER_USEC);
-        dispatch_resume(sResetTimer);
-    }
-    dispatch_source_set_timer(sResetTimer, dispatch_time(DISPATCH_TIME_NOW, 500*NSEC_PER_MSEC), 
-                              INT64_MAX, 10*NSEC_PER_MSEC);
+    sSkipResetTimer->Prime();
     MusicPlayerSetTime(fPlayer, time);
 }
 
@@ -286,6 +317,18 @@ void VLAUSoundOut::Bck()
     if (sLastSkip >= 0.0) 
         sLastSkip = -0.1;
     SkipTimeInterval();
+}
+
+static VLResetTimer *   sSlowResetTimer;
+
+void VLAUSoundOut::Slow(float rate)
+{
+    if (!sSlowResetTimer) 
+        sSlowResetTimer = new VLResetTimer(500*NSEC_PER_MSEC, ^{
+            MusicPlayerSetPlayRateScalar(fPlayer, fPlayRate);
+        });
+    sSlowResetTimer->Prime();
+    MusicPlayerSetPlayRateScalar(fPlayer, fPlayRate*rate);
 }
 
 void VLAUSoundOut::Stop(bool pause)

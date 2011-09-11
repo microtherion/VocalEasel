@@ -195,6 +195,16 @@
     case 1: 	// Fwd
         VLSoundOut::Instance()->Fwd();
         break;
+    case 0: {
+        float   slowDown = 0.5f;
+        int     modifiers= 
+            [NSEvent modifierFlags] & (NSShiftKeyMask|NSAlternateKeyMask|NSCommandKeyMask|NSControlKeyMask);
+        while (modifiers) {
+            slowDown    *= 0.75f;
+            modifiers   &= modifiers-1;
+        }
+        VLSoundOut::Instance()->Slow(slowDown); }
+        break;
     case -1:	// Rew
         VLSoundOut::Instance()->Bck();
         break;
