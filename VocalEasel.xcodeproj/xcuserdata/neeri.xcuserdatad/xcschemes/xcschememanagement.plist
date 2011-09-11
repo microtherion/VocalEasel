@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>VocalEasel.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>8D15AC270486D014006FF6A4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>952CBB97095FD19D00434E43</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>953F4B421409C42100C627F9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>955E595B0957C0FC0045FDA5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9594089F096922CA007CCCF8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>95A7C16E141074AB00833DBE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>95CFA8461409291500D0DB0D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>95E04D9F0AEB4837006F30A0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
