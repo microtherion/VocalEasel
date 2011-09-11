@@ -211,6 +211,8 @@ VLSequenceCallback(
     fSelStart       = startMeas;
     fSelEnd         = endMeas;
     fCursorRegion   = kRegionMeasure;
+    
+    VLSoundOut::Instance()->ResetSelection();
 
 	[self updateMenus];
 	[self setNeedsDisplay:YES];	

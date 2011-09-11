@@ -38,6 +38,7 @@ public:
 	virtual bool	Playing();
 	virtual bool	AtEnd();
 	virtual bool	AtBeginning();
+    virtual void    ResetSelection();
 	virtual void 	SetPlayRate(float rate);
 	virtual void 	Fwd();
 	virtual void 	Bck();
@@ -393,6 +394,11 @@ bool VLAUSoundOut::AtBeginning()
 	MusicTimeStamp time;
     
 	return MusicPlayerGetTime(fPlayer, &time) || !time;
+}
+
+void VLAUSoundOut::ResetSelection()
+{
+    fWasAtEnd = true;
 }
 
 void VLAUSoundOut::PollMusic()
