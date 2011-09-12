@@ -113,6 +113,7 @@
 - (void) userEvent:(const VLMIDIUserEvent *)event;
 - (void) highlightCursor;
 - (BOOL) hidden;
+- (void) deleteAtEndOfPlayback;
 
 @end
 
@@ -164,6 +165,11 @@
 - (BOOL) hidden
 {
     return YES;
+}
+
+- (void) deleteAtEndOfPlayback
+{
+    [fView setEditTarget:nil];
 }
 
 @end

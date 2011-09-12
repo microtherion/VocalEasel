@@ -25,6 +25,7 @@
 - (BOOL) canExtendSelection:(VLRegion)region;
 - (void) extendSelection:(VLLocation)at;
 - (BOOL) hidden;
+- (void) deleteAtEndOfPlayback;
 
 @end
 

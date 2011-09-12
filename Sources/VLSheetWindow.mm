@@ -58,6 +58,10 @@
     return NO;
 }
 
+- (void) deleteAtEndOfPlayback
+{
+}
+
 @end
 
 @implementation VLSheetWindow
@@ -78,7 +82,7 @@
                                                       object:nil queue:oq usingBlock:^(NSNotification *note) {
             [[[self window] toolbar] validateVisibleItems];
             if (VLSoundOut::Instance()->AtBeginning())
-                [self setEditTarget:nil]; // Kill note cursor if we ran to end
+                [editTarget deleteAtEndOfPlayback]; // Kill note cursor if we ran to end
         }];
 	}
 	return self;
