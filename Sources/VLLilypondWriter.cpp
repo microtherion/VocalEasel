@@ -50,8 +50,10 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 		measNo[0] = 0;
 
 	fUseSharps	= p.fKey > 0;
-	if (fInPickup && !m && meas.NoChords())
+    fInPickup   = fInPickup && !m && meas.NoChords();
+	if (fInPickup)
 		++fPrevBreak;
+    fInPickup   = fInPickup && meas.CanSkipRests();
 
 	//
 	// Generate chords
@@ -251,7 +253,7 @@ void VLLilypondWriter::VisitNote(VLLyricsNote & n)
 		for (int commas = -1-octave; commas>0; --commas)
 			nm += ',';
 		fInPickup = false;
-	} else if (fInPickup) {
+	} else if (fInPickup && n.fDuration.IsPowerOfTwo()) {
 		nm = "s";
 	}
 	const char * space = fAccum.size() ? " " : "";

@@ -341,6 +341,7 @@ struct VLMeasure {
 
 	bool IsEmpty() const;
 	bool NoChords() const;
+    bool CanSkipRests() const;
 
 	void DecomposeNotes(const VLProperties & prop, VLNoteList & decomposed) const;
 };

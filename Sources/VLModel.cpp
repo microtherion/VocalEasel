@@ -222,6 +222,22 @@ bool VLMeasure::NoChords() const
 		&& fChords.front().fPitch == VLNote::kNoPitch;
 }
 
+bool VLMeasure::CanSkipRests() const
+{
+    VLFraction  restDur(0);
+    VLFraction  totalDur(0);
+    bool        initialRest = true;
+    
+    for (VLNoteList::const_iterator n = fMelody.begin(); n != fMelody.end(); ++n) {
+        if (n->fPitch != VLNote::kNoPitch)
+            initialRest = false;
+        totalDur += n->fDuration;
+        if (initialRest)
+            restDur += n->fDuration;
+    }
+    return 2*restDur >= totalDur;
+}
+
 void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decomposed) const
 {
 	decomposed.clear();
