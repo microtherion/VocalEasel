@@ -294,7 +294,7 @@ void VLLilypondWriter::VisitChord(VLChord & c)
     if (name == "r")
         name = "s";
 	char duration[16];
-	if (c.fDuration.fNum == 1 && !(c.fDuration.fDenom & (c.fDuration.fDenom-1))) // Power of two
+	if (c.fDuration.IsPowerOfTwo()) 
 		sprintf(duration, "%d", c.fDuration.fDenom);
 	else
 		sprintf(duration, "1*%d/%d", c.fDuration.fNum, c.fDuration.fDenom);

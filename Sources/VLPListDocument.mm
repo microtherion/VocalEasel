@@ -202,7 +202,7 @@ void VLPlistVisitor::VisitNote(VLLyricsNote & n)
                 // 4th 4th 8th 
                 //
                 [nd setObject:[NSNumber numberWithInt:fTupletNote] forKey:@"normalType"];
-                if (fTupletDur.fNum == 1 && !(fTupletDur.fDenom&(fTupletDur.fDenom-1)))
+                if (fTupletDur.IsPowerOfTwo())
                     fInTuplet = 0;
             }
         } else if (fInTuplet == tupletNum) 

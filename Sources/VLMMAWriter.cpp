@@ -117,7 +117,7 @@ void VLMMAWriter::VisitNote(VLLyricsNote & n)
 	char buf[4];
 	std::string dur;
 	if (n.fDuration.fNum == 1) 
-		if (!(n.fDuration.fDenom & (n.fDuration.fDenom-1))) {
+		if (n.fDuration.IsPowerOfTwo()) {
 			sprintf(buf, "%d", n.fDuration.fDenom);
 			dur = buf;
 		} else if (n.fDuration.fDenom == 3) {

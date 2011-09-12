@@ -388,8 +388,8 @@
 				}
                 ++inTuplet;
                 tupletDur   += note->fDuration / VLNote::TupletDenom(tuplet);
-                if (tuplet == VLNote::kTriplet ? (tupletDur.fNum == 1 && !(tupletDur.fDenom & (tupletDur.fDenom-1)))
-                    : inTuplet == VLNote::TupletNum(tuplet)
+                if (tuplet == VLNote::kTriplet 
+                    ? tupletDur.IsPowerOfTwo() : inTuplet == VLNote::TupletNum(tuplet)
                 ) {
                     //
                     // Tuplet adds up to power of two fraction

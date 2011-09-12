@@ -36,6 +36,8 @@ struct VLFraction : VLFract {
 	VLFraction & operator%=(VLFraction other);
 
 	VLFraction & Normalize();
+    
+    bool         IsPowerOfTwo() const;
 };
 
 inline float operator*(VLFraction f, float sc)

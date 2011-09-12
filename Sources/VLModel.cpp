@@ -78,6 +78,15 @@ VLFraction & VLFraction::operator%=(VLFraction other)
 	return *this *= other;
 }
 
+bool VLFraction::IsPowerOfTwo() const
+{
+    //
+    // !(x & (x-1)) is true if x had only a single bit set and thus
+    // is a power of two. We're not really interested in the case >1
+    //
+    return fNum == 1 && !(fDenom & (fDenom-1));
+}
+
 #pragma mark -
 #pragma mark class VLNote
 
@@ -114,10 +123,7 @@ void VLNote::MakeRepresentable()
 	fVisual	= kWhole | (fVisual & kAccidentalsMask);
 	VLFraction part(1,1);
 	VLFraction triplet(2,3);
-	//
-	// Power of 2 denominators are not triplets
-	//
-	bool 	   nonTriplet(!(fDuration.fDenom & (fDuration.fDenom-1)));
+	bool 	   nonTriplet   = fDuration.IsPowerOfTwo();
 	while (part.fDenom < 64) {
 		if (fDuration >= part) {
 			fDuration = part;
