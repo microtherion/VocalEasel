@@ -367,6 +367,12 @@ void VLMeasure::DecomposeNotes(const VLProperties & prop, VLNoteList & decompose
 					//
 					if (!prevTriplets)
 						p.fVisual &= ~VLNote::kTupletMask;
+                } else if (swing16 && p.fDuration == sw24 && !((at+sw12) % grid4)) {
+                    //
+                    // Swing 8th *16th* 16th (16th triplet -> 16th)
+                    //
+                    if (!prevTriplets)
+						p.fVisual &= ~VLNote::kTupletMask;                        
 				} else if ((p.fDuration > kMinDuration) && 
 				  ((at % p.fDuration != VLFraction(0))
 				   || (p.fDuration != c.fDuration 
