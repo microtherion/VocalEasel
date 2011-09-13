@@ -41,7 +41,9 @@
 {
     fView   = view;
     fAnchor = anchor;
-    [fView selectMeasure:fAnchor to:fAnchor];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [fView selectMeasure:fAnchor to:fAnchor];
+    });
     
     return self;
 }
