@@ -921,9 +921,11 @@ const float kSemiFloor = -1.0f*kLineH;
 	switch ([[[note userInfo] objectForKey:@"NSTextMovement"] intValue]) {
 	case NSTabTextMovement:
 		[editable moveToNext];
+        [self updateEditTarget];
 		break;
 	case NSBacktabTextMovement:
 		[editable moveToPrev];
+        [self updateEditTarget];
 		break;
     case NSReturnTextMovement:
         [self setEditTarget:nil];
