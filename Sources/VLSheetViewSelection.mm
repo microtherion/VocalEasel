@@ -29,6 +29,7 @@
 }
 
 - (VLMeasureEditable *)initWithView:(VLSheetView *)view anchor:(uint32_t)anchor;
+- (VLMeasureEditable *)initWithView:(VLSheetView *)view anchor:(uint32_t)anchor to:(uint32_t)end;
 - (BOOL)canExtendSelection:(VLRegion)region;
 - (void)extendSelection:(VLLocation)at;
 - (BOOL)hidden;
@@ -37,15 +38,20 @@
 
 @implementation VLMeasureEditable
 
-- (VLMeasureEditable *)initWithView:(VLSheetView *)view anchor:(uint32_t)anchor
+- (VLMeasureEditable *)initWithView:(VLSheetView *)view anchor:(uint32_t)anchor to:(uint32_t)end
 {
     fView   = view;
     fAnchor = anchor;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [fView selectMeasure:fAnchor to:fAnchor];
+        [fView selectMeasure:fAnchor to:end];
     });
     
     return self;
+}
+
+- (VLMeasureEditable *)initWithView:(VLSheetView *)view anchor:(uint32_t)anchor
+{
+    return [self initWithView:view anchor:anchor to:anchor];
 }
 
 - (void)dealloc
@@ -332,6 +338,12 @@ VLSequenceCallback(
 		[[self document] didChangeSong];
 		[self setNeedsDisplay:YES];
 	}
+}
+
+- (IBAction)selectAll:(id)sender
+{
+    [self setEditTarget:[[VLMeasureEditable alloc] 
+                         initWithView:self anchor:0 to:[self song]->fMeasures.size()]];
 }
 
 - (IBAction)delete:(id)sender
