@@ -35,7 +35,8 @@
                                       [self song]->Properties(fCursorLocation.fMeasure).fKey);
             VLNote	newNote(1, pitch, fCursorVisual & ~kCursorFlagsMask);
 			[self song]->AddNote(VLLyricsNote(newNote), fCursorLocation);
-			VLSoundOut::Instance()->PlayNote(newNote);
+            if (pitch != VLNote::kNoPitch)
+                VLSoundOut::Instance()->PlayNote(newNote);
         }
         fClickMode = ' ';
 		[[self document] didChangeSong];
