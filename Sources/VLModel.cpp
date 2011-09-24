@@ -2038,7 +2038,7 @@ void VLSong::DeleteMeasures(size_t beginMeasure, size_t endMeasure, int mode)
 
 	if (beginMeasure && fMeasures[beginMeasure-1].fPropIdx == firstProp)
 		++firstProp;
-	if (endMeasure < CountMeasures() && fMeasures[endMeasure].fPropIdx == lastProp)
+	if (endMeasure < CountMeasures() && fMeasures[endMeasure].fPropIdx == lastProp-1)
 		--lastProp;
 	if (lastProp - firstProp == fProperties.size())	
 		++firstProp;
