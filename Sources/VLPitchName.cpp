@@ -24,6 +24,10 @@ const char *    kVLFancyNames[]  =
 {
     SCALE, "R", kVLNaturalStr, kVL2SharpStr, kVLSharpStr, "", kVLFlatStr, kVL2FlatStr
 };
+const char *    kVLFancyChordNames[]  =
+{
+    SCALE, "R", "", kVL2SharpStr, kVLSharpStr, "", kVLFlatStr, kVL2FlatStr
+};
 const char *    kVLLilypondNames[]  =
 {
     "c d ef g a b", "r", "", "isis", "is", "", "es", "eses"

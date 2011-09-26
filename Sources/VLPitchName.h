@@ -19,6 +19,7 @@ extern const char * kVL2SharpStr;
 extern const char * kVL2FlatStr;
 extern const char * kVLNaturalStr;
 extern const char * kVLFancyNames[];
+extern const char * kVLFancyChordNames[];
 extern const char * kVLLilypondNames[];
 //
 // UTF-8 representation of pitch
@@ -38,7 +39,7 @@ int8_t      VLParsePitch(std::string & str, size_t at, uint16_t * accidental);
 void VLChordName(int8_t pitch, uint16_t accidental, uint32_t steps, 
                  int8_t rootPitch, uint16_t rootAccidental,
                  std::string & baseName, std::string & extName, std::string & rootName,
-                 const char * names[] = kVLFancyNames);
+                 const char * names[] = kVLFancyChordNames);
 
 //
 // Parse chord name, erase from string
