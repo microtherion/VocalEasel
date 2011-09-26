@@ -601,6 +601,88 @@ void VLSong::DelChord(VLLocation at)
 		fMeasures.pop_back();
 }
 
+VLLyricsNote VLSong::FindNote(VLLocation at)
+{
+	VLNoteList::iterator	i = fMeasures[at.fMeasure].fMelody.begin();
+	VLFraction			  	t(0);
+    
+	for (;;) {
+		VLFraction tEnd = t+i->fDuration;
+		if (tEnd > at.fAt) 
+            return *i;
+		t = tEnd;
+		++i;
+	}
+    return ++at.fMeasure < fMeasures.size() 
+        ? fMeasures[at.fMeasure].fMelody.front() : VLLyricsNote();
+}
+
+bool VLSong::PrevNote(VLLocation &at)
+{
+    uint32_t    meas    = at.fMeasure;
+    VLFraction  where   = at.fAt;
+    for (;;) {
+        bool                    found   = false;
+        VLNoteList::iterator    i       = fMeasures[meas].fMelody.begin();
+        VLNoteList::iterator    end     = fMeasures[meas].fMelody.end();
+        VLFraction			  	t(0);
+        VLFraction              prevAt(0);
+        while (i != end) {
+            VLFraction tEnd = t+i->fDuration;
+            if (tEnd > where) 
+                break;
+            if (i->fPitch != VLNote::kNoPitch && !(i->fTied & VLNote::kTiedWithPrev)) {
+                prevAt  = t;
+                found   = true;
+            }
+            t       = tEnd;
+            ++i;
+        }
+        if (found) {
+            at.fMeasure = meas;
+            at.fAt      = prevAt;
+            
+            return true;
+        }
+        if (!meas--)
+            break;
+        where = VLFraction(1000);
+    }
+    return false;
+}
+
+bool VLSong::NextNote(VLLocation &at)
+{
+    uint32_t    meas    = at.fMeasure;
+    VLFraction  where   = at.fAt;
+    bool        first   = false;
+    for (;;) {
+        VLNoteList::iterator    i       = fMeasures[meas].fMelody.begin();
+        VLNoteList::iterator    end     = fMeasures[meas].fMelody.end();
+        VLFraction			  	t(0);
+        while (i != end) {
+            VLFraction tEnd = t+i->fDuration;
+            if ((t > where || first) && i->fPitch != VLNote::kNoPitch
+                && !(i->fTied & VLNote::kTiedWithPrev)
+            ) {
+                at.fMeasure = meas;
+                at.fAt      = t;
+                
+                return true;
+            }
+            first   = false;
+            t       = tEnd;
+            ++i;
+        }
+        if (++meas < fMeasures.size()) {
+            where = VLFraction(0);
+            first = true;
+        } else
+            break;
+    }
+    return false;
+}
+
 static uint8_t & FirstTie(VLMeasure & measure)
 {
 	VLNoteList::iterator i = measure.fMelody.begin();

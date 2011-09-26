@@ -43,6 +43,32 @@
 	}
 }
 
+- (void) playNoteAtCursor
+{
+    VLNote note = [self song]->FindNote(fCursorLocation);
+    if (note.fPitch != VLNote::kNoPitch) {
+        fCursorRegion   = kRegionNote;
+        int section     = [self song]->fMeasures[fCursorLocation.fMeasure].fPropIdx;
+        fCursorVertPos  = [self gridInSection:section withPitch:note.fPitch visual:note.fVisual];
+        fCursorVisual   = note.fVisual & VLNote::kAccidentalsMask;
+        [self setNeedsDisplay:YES];
+        
+        VLSoundOut::Instance()->PlayNote(note);
+    }
+}
+
+- (void) moveCursorToNextNote
+{
+    if ([self song]->NextNote(fCursorLocation))
+        [self playNoteAtCursor];
+}
+
+- (void) moveCursorToPrevNote
+{
+    if ([self song]->PrevNote(fCursorLocation))
+        [self playNoteAtCursor];
+}
+
 - (void) drawLedgerLines:(int)vertPos at:(NSPoint)p
 {
 	p.x        += kLedgerX;

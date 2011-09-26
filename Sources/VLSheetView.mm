@@ -896,6 +896,15 @@ const float kSemiFloor = -1.0f*kLineH;
 			fClickMode = 'k';
 		[self setNeedsDisplay:YES];
         break;
+    case '?':
+        [self playNoteAtCursor];
+        break;
+    case 0xF702: // Left arrow
+        [self moveCursorToPrevNote];
+        break;    
+    case 0xF703: // Right arrow
+        [self moveCursorToNextNote];
+        break;    
 	}
 }
 

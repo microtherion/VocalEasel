@@ -420,6 +420,9 @@ public:
 	iterator 	begin() { return iterator(*this, false); }
 	iterator 	end() 	{ return iterator(*this, true);  }
 
+    VLLyricsNote    FindNote(VLLocation at);
+    bool            PrevNote(VLLocation & at);
+    bool            NextNote(VLLocation & at);
 	void AddChord(VLChord chord, VLLocation at);
 	void AddNote(VLLyricsNote note, VLLocation at);
 	void DelChord(VLLocation at);

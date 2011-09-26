@@ -15,6 +15,9 @@
 - (void) drawNotesForSystem:(int)system;
 - (void) addNoteAtCursor;
 - (void) drawNoteCursor:(int)vertPos at:(VLLocation)at visual:(uint16_t)visual;
+- (void) playNoteAtCursor;
+- (void) moveCursorToNextNote;
+- (void) moveCursorToPrevNote;
 
 @end
 
