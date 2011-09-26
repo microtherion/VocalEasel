@@ -972,6 +972,8 @@ void VLSong::ChangeKey(int section, int newKey, int newMode, bool transpose)
                 FlipAccidentals(i->fVisual);
                 FlipAccidentals(i->fRootAccidental);
             }
+            i->fVisual          = VLPitchAccidental(i->fPitch, i->fVisual, newKey);
+            i->fRootAccidental  = VLPitchAccidental(i->fRootPitch, i->fRootAccidental, newKey);
 		}
 	}
 	for (int pass=0; pass<2 && semi;) {
@@ -990,6 +992,7 @@ void VLSong::ChangeKey(int section, int newKey, int newMode, bool transpose)
 				i->fPitch	+= semi;
                 if (flipAcc)
                     FlipAccidentals(i->fVisual);
+                i->fVisual          = VLPitchAccidental(i->fPitch, i->fVisual, newKey);
 				low			 = std::min(low, i->fPitch);
 				high		 = std::max(high, i->fPitch);
 			}
