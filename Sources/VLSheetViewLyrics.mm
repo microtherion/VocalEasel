@@ -136,7 +136,8 @@
         if (text.size())
             text += ' ';
         text += fSong->GetWord(fStanza, textAt);
-        fSong->NextWord(fStanza, textAt);
+        if (!fSong->NextWord(fStanza, textAt))
+            break;
     }
     [fText release];
 	fText = [[NSString alloc] initWithUTF8String:text.c_str()];
