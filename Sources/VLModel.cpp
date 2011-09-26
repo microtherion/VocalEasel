@@ -2033,23 +2033,27 @@ void VLSong::PasteMeasures(size_t beginMeasure, const VLSong & measures, int mod
 	size_t nextMeasure 	= mode==kInsert ? beginMeasure : beginMeasure+numMeas;
 
 	if (mode == kInsert) {
-		int propAt     = fMeasures[beginMeasure].fPropIdx;
-		int propOffset = 0;
+		int     propAt      = fMeasures[beginMeasure].fPropIdx;
+		int     propOffset  = 0;
+        bool    sectionBreak= false;
 		VLPropertyList::const_iterator	beginProp = measures.fProperties.begin();
 		VLPropertyList::const_iterator	endProp	  = measures.fProperties.end();
 		
 		if (beginMeasure) {
-			propOffset = fMeasures[beginMeasure-1].fPropIdx;
+			propOffset  = fMeasures[beginMeasure-1].fPropIdx;
+            sectionBreak= propAt > propOffset;
 			if (fProperties[propOffset] == beginProp[0])
 				++beginProp;
 			else 
 				++propOffset;
-			if (endProp > beginProp && fProperties[propAt] == endProp[-1])
-				--endProp;
 		}
+        if (endProp > beginProp && fProperties[propAt] == endProp[-1] 
+         && (sectionBreak || (endProp-beginProp) == 1)
+        )
+            --endProp;
 		ptrdiff_t postOffset = endProp - beginProp;
 		
-		fProperties.insert(fProperties.begin()+propAt, beginProp, endProp);
+		fProperties.insert(fProperties.begin()+propAt+!sectionBreak, beginProp, endProp);
 		fMeasures.insert(fMeasures.begin()+beginMeasure, 
 						 measures.fMeasures.begin(), measures.fMeasures.end());
 		if (propOffset)
