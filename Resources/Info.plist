@@ -51,7 +51,7 @@
 			<key>NSExportableTypes</key>
 			<array>
 				<string>com.adobe.pdf</string>
-				<string>public.midi</string>
+				<string>public.midi-audio</string>
 				<string>VLMusicXMLType</string>
 				<string>org.lilypond.lilypond-source</string>
 				<string>VLMMAType</string>
@@ -136,7 +136,7 @@
 			<string>None</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>public.midi</string>
+				<string>public.midi-audio</string>
 			</array>
 			<key>LSTypeIsPackage</key>
 			<false/>
@@ -234,16 +234,12 @@
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
 	<string>VçEz</string>
-	<key>CFBundleURLTypes</key>
-	<array/>
 	<key>CFBundleVersion</key>
 	<string>1.5a1</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>NSServices</key>
-	<array/>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

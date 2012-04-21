@@ -982,7 +982,7 @@
 		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0410;
+				LastUpgradeCheck = 0440;
 			};
 			buildConfigurationList = 95D7BF740AA699C600D5E02C /* Build configuration list for PBXProject "VocalEasel" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1655,7 +1655,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = VocalEasel;
-				SDKROOT = macosx10.7;
+				SDKROOT = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -1676,7 +1676,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = VocalEasel;
-				SDKROOT = macosx10.7;
+				SDKROOT = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
@@ -1696,7 +1696,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = VocalEasel;
-				SDKROOT = macosx10.7;
+				SDKROOT = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Default;

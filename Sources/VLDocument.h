@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2011 Matthias Neeracher
+// Copyright © 2005-2012 Matthias Neeracher
 //
 
 #import "VLModel.h"
@@ -20,7 +20,7 @@
 #define VLLilypondType  @"org.lilypond.lilypond-source"
 #define VLMusicXMLType  @"VLMusicXMLType"
 #define VLMMAType       @"VLMMAType"
-#define VLMIDIType      @"public.midi"
+#define VLMIDIType      @"public.midi-audio"
 #define VLPDFType       @"com.adobe.pdf"
 #define VLAIFFType      @"public.aifc-audio"
 #define VLMP3Type       @"public.mp3"
