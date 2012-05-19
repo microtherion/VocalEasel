@@ -93,6 +93,7 @@
     NSNotificationCenter * nc   = [NSNotificationCenter defaultCenter];
     [nc removeObserver:soundStartObserver];
     [nc removeObserver:soundStopObserver];
+    [super dealloc];
 }
 
 - (VLEditable *)editTarget
