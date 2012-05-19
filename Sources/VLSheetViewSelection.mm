@@ -289,21 +289,23 @@ VLSequenceCallback(
 - (BOOL)validateUserInterfaceItem:(id) item
 {
 	SEL action = [item action];
+    bool hasSelection       = fSelEnd != kNoMeasure && fSelStart <= fSelEnd;
+    bool hasSelectionRange  = fSelEnd != kNoMeasure && fSelStart < fSelEnd;
 	if (action == @selector(cut:) 
 	 || action == @selector(copy:)
 	 || action == @selector(delete:)
     )
-		return fSelStart < fSelEnd;
+		return hasSelectionRange;
 	else if (action == @selector(editRepeat:))
-		return fSelEnd > fSelStart 
+		return hasSelectionRange 
 			&& [self song]->CanBeRepeat(fSelStart, fSelEnd);
 	else if (action == @selector(editRepeatEnding:))
-		return fSelEnd > fSelStart
+		return hasSelectionRange
 			&& [self song]->CanBeEnding(fSelStart, fSelEnd);
 	else if (action == @selector(paste:))
-		return fSelStart <= fSelEnd;
+		return hasSelection;
     else if (action == @selector(insertMeasure:))
-        return fSelStart == fSelEnd;
+        return hasSelection && !hasSelectionRange;
 	else
 		return YES;
 }
