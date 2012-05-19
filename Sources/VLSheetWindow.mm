@@ -88,6 +88,12 @@
 	return self;
 }
 
+- (void)awakeFromNib
+{
+    [[self document] addWindowController:pdfWin];
+    [[self document] addWindowController:logWin];
+}
+
 - (void) dealloc
 {
     NSNotificationCenter * nc   = [NSNotificationCenter defaultCenter];
