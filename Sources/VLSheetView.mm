@@ -296,7 +296,7 @@ static float sFlatPos[] = {
 
 	delete fLayout;
 	fLayout 	= new VLLayout(*[self song], sz.width / fDisplayScale);
-	sz.height	= std::max(2.0f, fLayout->NumSystems()+0.25f)*kSystemH*fDisplayScale;
+	sz.height	= std::max<float>(sz.height, std::max(2.0f, fLayout->NumSystems()+0.25f)*kSystemH*fDisplayScale);
 
 	NSSize boundsSz	= {sz.width / fDisplayScale, sz.height / fDisplayScale};
 
