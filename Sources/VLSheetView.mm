@@ -457,9 +457,7 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 				[bz setLineWidth:2.0];
 			}
 			if (song->fGoToCoda == m || song->fCoda == m) 
-				[[self musicElement:kMusicCoda] 
-					compositeToPoint: NSMakePoint(x+kCodaX, yy+kCodaY)
-					operation: NSCompositeSourceOver];
+				[[self musicElement:kMusicCoda] drawAllAtPoint:NSMakePoint(x+kCodaX, yy+kCodaY)];
 		}
 	}
 
@@ -485,9 +483,7 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 	//
 	// Draw clef
 	//
-	[[self musicElement:kMusicGClef] 
-		compositeToPoint: NSMakePoint(kClefX, kSystemY+kClefY)
-		operation: NSCompositeSourceOver];
+	[[self musicElement:kMusicGClef] drawAllAtPoint:NSMakePoint(kClefX, kSystemY+kClefY)];
 	//
 	// Draw measure #
 	//
@@ -500,19 +496,13 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 	if (kProp.fKey > 0) {
 		float x = kClefX+kClefW;
 		for (int i=0; i<kProp.fKey; ++i) {
-			[[self musicElement:kMusicSharp] 
-				compositeToPoint: 
-					NSMakePoint(x, kSystemY+sSharpPos[i]+kSharpY)
-				operation: NSCompositeSourceOver];
+			[[self musicElement:kMusicSharp] drawAllAtPoint:NSMakePoint(x, kSystemY+sSharpPos[i]+kSharpY)];
 			x += kAccW;
 		}
 	} else if (kProp.fKey < 0) {
 		float x = kClefX+kClefW;
 		for (int i=0; -i>kProp.fKey; ++i) {
-			[[self musicElement: kMusicFlat] 
-				compositeToPoint: 
-					NSMakePoint(x, kSystemY+sFlatPos[i]+kFlatY)
-				operation: NSCompositeSourceOver];
+			[[self musicElement: kMusicFlat] drawAllAtPoint:NSMakePoint(x, kSystemY+sFlatPos[i]+kFlatY)];
 			x += kAccW;
 		}
 	}
@@ -1050,4 +1040,18 @@ const float kSemiFloor = -1.0f*kLineH;
 }
 
 @end
-	
+
+@implementation NSImage (VLSheetViewDrawing)
+
+- (void) drawAllAtPoint:(NSPoint)p operation:(NSCompositingOperation)op
+{
+    [self compositeToPoint:p operation:op];
+}
+
+- (void) drawAllAtPoint:(NSPoint)p
+{
+    [self compositeToPoint:p operation:NSCompositeSourceOver];
+}
+
+@end
+

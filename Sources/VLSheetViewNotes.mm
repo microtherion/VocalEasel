@@ -127,9 +127,7 @@
     }
 	
 	NSPoint	xy = NSMakePoint(cursorX-kNoteX, cursorY);
-	[[self musicElement:cursorElt] 
-		compositeToPoint:xy
-		operation: NSCompositeSourceOver];
+	[[self musicElement:cursorElt] drawAllAtPoint:xy];
     
 	if (accidental) {
 		xy.y               += kNoteY;
@@ -156,9 +154,7 @@
 			xy.y	+= kNaturalY;
 			break;
 		}
-		[[self musicElement:accidental] 
-			compositeToPoint:xy
-			operation: NSCompositeSourceOver];
+		[[self musicElement:accidental] drawAllAtPoint:xy];
 	}
 }
 
@@ -198,8 +194,7 @@
 		s.x	-= 2.0f;
 		break;
 	}
-	[head compositeToPoint:p
-		  operation: NSCompositePlusDarker];	
+	[head drawAllAtPoint:p operation:NSCompositePlusDarker];
 	//
 	// Draw accidental
 	//
@@ -230,8 +225,7 @@
         default:
             break;
 		}
-		[[self musicElement:accidental] 
-			compositeToPoint:at operation: NSCompositeSourceOver];
+		[[self musicElement:accidental] drawAllAtPoint:at];
 	}
 	//
 	// Draw stem
@@ -261,8 +255,7 @@
 		[bz lineToPoint:s1];
 		[bz stroke];
 		if (flag) 
-			[flag compositeToPoint:s
-				  operation: NSCompositePlusDarker];
+			[flag drawAllAtPoint:s operation:NSCompositePlusDarker];
 	}
 	//
 	// Draw tie
@@ -319,8 +312,7 @@
 		p.x -= kNoteX;
 		break;
 	}
-	[head compositeToPoint:p
-		  operation: NSCompositeSourceOver];
+	[head drawAllAtPoint:p];
 }
 
 - (void) drawTuplet:(uint16_t)tuplet bracketFrom:(int)startX to:(int)endX atY:(int)y

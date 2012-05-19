@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2011 Matthias Neeracher
+// Copyright © 2005-2012 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>
@@ -158,6 +158,13 @@ const uint32_t kNoMeasure = (uint32_t)-1;
 
 - (NSColor *)textBackgroundColorForSystem:(int)system;
 - (void)removeObservers:(id)target;
+
+@end
+
+@interface NSImage (VLSheetViewDrawing)
+
+- (void) drawAllAtPoint:(NSPoint)p operation:(NSCompositingOperation)op;
+- (void) drawAllAtPoint:(NSPoint)p;
 
 @end
 
