@@ -944,13 +944,6 @@ const float kSemiFloor = -1.0f*kLineH;
 
 - (void) setScaleFactor:(float)scale
 {
-	float ratio = scale/fDisplayScale;
-	for (int i=0; i<kMusicElements; ++i) {
-		NSSize sz = [fMusic[i] size];
-		sz.width *= ratio;
-		sz.height*= ratio;
-		[fMusic[i] setSize:sz];
-	}
 	fDisplayScale= scale;
 	fNeedsRecalc = kRecalc;
 	[self setNeedsDisplay: YES];	
@@ -1045,12 +1038,12 @@ const float kSemiFloor = -1.0f*kLineH;
 
 - (void) drawAllAtPoint:(NSPoint)p operation:(NSCompositingOperation)op
 {
-    [self compositeToPoint:p operation:op];
+    [self drawAtPoint:p fromRect:NSZeroRect operation:op fraction:1.0f];
 }
 
 - (void) drawAllAtPoint:(NSPoint)p
 {
-    [self compositeToPoint:p operation:NSCompositeSourceOver];
+    [self drawAtPoint:p fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0f];
 }
 
 @end
