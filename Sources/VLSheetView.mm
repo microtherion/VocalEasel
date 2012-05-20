@@ -907,7 +907,7 @@ const float kSemiFloor = -1.0f*kLineH;
 {
 	NSWindow * 		win 			= [self window];
 	NSResponder * 	hasResponder	= [win firstResponder];
-	if ([self editTarget]) 
+	if ([self editTarget] && ![[self editTarget] hidden])
 		if (hasResponder != [win fieldEditor:NO forObject:nil] 
 		 || [(id)hasResponder delegate] != fFieldEditor
 		)
