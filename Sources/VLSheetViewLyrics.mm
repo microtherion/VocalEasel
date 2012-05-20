@@ -50,6 +50,7 @@
 - (void)dealloc
 {
     [fText release];
+    [super dealloc];
 }
 
 - (NSString *) stringValue
