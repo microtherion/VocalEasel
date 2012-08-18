@@ -2229,7 +2229,7 @@ std::string VLSong::PrimaryGroove() const
 {
 	std::string bestGroove = fProperties[0].fGroove;
 
-	for (size_t p=1; p<fProperties.size()-EmptyEnding(); ++p)
+	for (size_t p=1; p<fProperties.size(); ++p)
 		if (fProperties[p].fGroove != bestGroove) {
 			//
 			// Multiple grooves in song, count them the hard way
