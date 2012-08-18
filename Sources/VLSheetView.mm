@@ -834,6 +834,8 @@ const float kSemiFloor = -1.0f*kLineH;
 
 - (void) mouseDown:(NSEvent *)event
 {
+    [[self document] endSong];
+    
     BOOL        extend = ([event modifierFlags] & NSShiftKeyMask) != 0;
     VLRegion    region = [self findRegionForEvent:event];
     if (extend && [[self editTarget] canExtendSelection:region])

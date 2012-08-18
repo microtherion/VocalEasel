@@ -86,6 +86,7 @@ enum {
 - (void) setRepeatVolta:(int)repeatVolta;
 
 - (void) playSong;
+- (void) endSong;
 
 - (NSURL *)    tmpURL;
 - (NSURL *)    workURL;

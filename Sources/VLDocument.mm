@@ -490,6 +490,11 @@
     [self setPlayElements:[self playElements]];
 }
 
+- (void) endSong
+{
+    musicSequence = nil;
+}
+
 - (void) playWithGroove:(NSString *)groove inSections:(NSRange)sections
 {
 	NSString * savedGroove	= songGroove;
