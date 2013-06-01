@@ -124,7 +124,7 @@ def _pitch(name, pitch, accidental, prefix="")
   oct   = pitch/12 - 1
   stp   = (pitch%12)+2
   step  = STEPS[stp]
-  if step == 0x20
+  if step == ' '
     if $LAST_KEY > 0
         step       =  STEPS[stp-1]
         accidental =  1
@@ -531,7 +531,7 @@ def _melody
       end
       type = ending['last'] ? "discontinue" : "stop"
       eEnding = REXML::Element.new('ending')
-      eEnding.add_attributes({'type', type, 'number', num})
+      eEnding.add_attributes({'type' => type, 'number' => num})
       if !ending['last'] && !eRepeat
         eRepeat = REXML::Element.new('repeat')
         eRepeat.add_attribute('direction', 'backward')

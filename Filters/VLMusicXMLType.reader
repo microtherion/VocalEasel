@@ -20,6 +20,7 @@ PITCH = {
   'A' => 9,
   'B' => 11
 }
+PITCH.default = 0
 
 SYLL = {
   'single' => 0,
@@ -27,6 +28,7 @@ SYLL = {
   'end'    => 2,
   'middle' => 3
 }
+SYLL.default = 0
 
 CHORD = {
   #
@@ -80,6 +82,7 @@ CHORD = {
   'other'              => VL::Unison,
   'none'               => 0
 }
+CHORD.default = 0
 
 DEGREE = [
   [VL::Unison, VL::Unison],
