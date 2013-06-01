@@ -233,8 +233,8 @@ void VLMMAWriter::VisitChord(VLChord & c)
 		size_t bestBits	= 32;
 		size_t bestScore= 0;
 		for (size_t i=0; kMMAModifiers[i].fName; ++i) {
-			uint32_t steps = (VLChord::kmUnison | VLChord::kmMaj3rd | VLChord::km5th)
-				| kMMAModifiers[i].fAddSteps
+			uint32_t steps = ((VLChord::kmUnison | VLChord::kmMaj3rd | VLChord::km5th)
+				| kMMAModifiers[i].fAddSteps)
 				&~kMMAModifiers[i].fDelSteps;
 			if (c.fSteps == steps) {
 				//
