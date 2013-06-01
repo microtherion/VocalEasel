@@ -116,7 +116,7 @@ void VLMMAWriter::VisitNote(VLLyricsNote & n)
 {
 	char buf[4];
 	std::string dur;
-	if (n.fDuration.fNum == 1) 
+	if (n.fDuration.fNum == 1) {
 		if (n.fDuration.IsPowerOfTwo()) {
 			sprintf(buf, "%d", n.fDuration.fDenom);
 			dur = buf;
@@ -135,6 +135,7 @@ void VLMMAWriter::VisitNote(VLLyricsNote & n)
 		} else if (n.fDuration.fDenom == 24) {
 			dur = "6"; // 16th note triplet
 		}
+    }
 	if (fTied) {
 		fMeasures.replace(fLastDur+1, 0, '+'+dur);
 		fLastDur += 1+dur.size();
