@@ -94,6 +94,7 @@ vlExceptions = #(append
     	\set chordNameExceptions = #vlExceptions
 	\set chordNameSeparator = ""
 	\set chordRootNamer = #note-name->markup
+	\set slashChordSeparator = ""
 	\set chordNoteNamer = #vlBassNamer
 	\set majorSevenSymbol = \vlMaj
         <{CHORDS}>
