@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2006-2011 Matthias Neeracher
+// Copyright Â© 2006-2011 Matthias Neeracher
 //
 
 #import "VLSheetView.h"

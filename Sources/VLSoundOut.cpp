@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2011 Matthias Neeracher
+// Copyright Â© 2005-2017 Matthias Neeracher
 //
 
 #include "VLSoundOut.h"
@@ -47,15 +47,21 @@ public:
     
 	virtual 	   ~VLAUSoundOut();
     void            PollMusic();
+    void            PropagateProperty(AudioUnitPropertyID inID,
+                                      AudioUnitScope inScope,
+                                      AudioUnitElement inElement);
 protected:
 	VLAUSoundOut(bool fileOutput);
 
 	void			InitSoundOutput(bool fileOutput);
+    void            TeardownSoundOutput();
 	virtual void 	SetupOutput(AUNode outputNode);
     void            SkipTimeInterval();
 
 	AUGraph             fGraph;
 	MusicPlayer         fPlayer;
+    AudioUnit           fOutputUnit;
+    AudioUnit           fSynthUnit;
 private:
 	MusicSequence       fMusic;
 	MusicTimeStamp      fMusicEnd;
@@ -182,8 +188,18 @@ VLAUSoundOut::~VLAUSoundOut()
 {
 	Stop(false);
     dispatch_release(fMusicPoll);
-	DisposeMusicPlayer(fPlayer);
-	DisposeAUGraph(fGraph);
+    TeardownSoundOutput();
+}
+
+extern "C" void
+VLAUSoundOutPropagateProperty(void * inRefCon,
+                              AudioUnit, AudioUnitPropertyID inID,
+                              AudioUnitScope inScope,
+                              AudioUnitElement inElement)
+{
+    VLAUSoundOut * liveAudioObject = reinterpret_cast<VLAUSoundOut *>(inRefCon);
+
+    liveAudioObject->PropagateProperty(inID, inScope, inElement);
 }
 
 void VLAUSoundOut::InitSoundOutput(bool fileOutput)
@@ -219,25 +235,74 @@ void VLAUSoundOut::InitSoundOutput(bool fileOutput)
 	AUGraphConnectNodeInput(fGraph, synthNode, 0, limiterNode, 0);
 	AUGraphConnectNodeInput(fGraph, limiterNode, 0, outNode, 0);
 
+    R(AUGraphNodeInfo(fGraph, outNode, NULL, &fOutputUnit));
+    R(AUGraphNodeInfo(fGraph, synthNode, NULL, &fSynthUnit));
+
 	if (fileOutput) {
 		UInt32 		value = 1;
-		AudioUnit	synth;
-		R(AUGraphNodeInfo(fGraph, synthNode, NULL, &synth));
-		R(AudioUnitSetProperty(synth,
+		R(AudioUnitSetProperty(fSynthUnit,
 							   kAudioUnitProperty_OfflineRender,
 							   kAudioUnitScope_Global, 0,
 							   &value, sizeof(value)));
 		value = 512;
-		R(AudioUnitSetProperty(synth,
+		R(AudioUnitSetProperty(fSynthUnit,
 							   kAudioUnitProperty_OfflineRender,
 							   kAudioUnitScope_Global, 0,
 							   &value, sizeof(value)));
-	}
+    } else {
+        AudioUnitAddPropertyListener(fOutputUnit,
+                                     kAudioUnitProperty_MaximumFramesPerSlice,
+                                     VLAUSoundOutPropagateProperty,
+                                     this);
+    }
+
 	SetupOutput(outNode);
 
 	R(AUGraphInitialize(fGraph));
 	
 	NewMusicPlayer(&fPlayer);
+}
+
+void VLAUSoundOut::PropagateProperty(AudioUnitPropertyID inID,
+                                     AudioUnitScope inScope,
+                                     AudioUnitElement inElement)
+{
+    Boolean running     = false;
+    if (MusicPlayerIsPlaying(fPlayer, &running))
+        running = false;
+    else if (running)
+        MusicPlayerStop(fPlayer);
+
+    std::vector<char> data;
+    UInt32     sz = 0;
+    Boolean    wr;
+    if (AudioUnitGetPropertyInfo(fOutputUnit, inID, inScope, inElement, &sz, &wr))
+        goto reinitialize;
+    data.resize(sz);
+    if (!AudioUnitGetProperty(fOutputUnit, inID, inScope, inElement, &data[0], &sz)) {
+        if (OSStatus status = AudioUnitSetProperty(fSynthUnit, inID, inScope, inElement,
+                                                   &data[0], sz)) {
+            if (status == kAudioUnitErr_Initialized) {
+                AudioUnitUninitialize(fSynthUnit);
+                status = AudioUnitSetProperty(fSynthUnit, inID, inScope, inElement,
+                                              &data[0], sz);
+                AudioUnitInitialize(fSynthUnit);
+            }
+        }
+    }
+reinitialize:
+    if (running)
+        MusicPlayerStart(fPlayer);
+}
+
+void VLAUSoundOut::TeardownSoundOutput()
+{
+    AudioUnitRemovePropertyListenerWithUserData(fOutputUnit,
+                                                kAudioUnitProperty_MaximumFramesPerSlice,
+                                                VLAUSoundOutPropagateProperty,
+                                                this);
+    DisposeMusicPlayer(fPlayer);
+    DisposeAUGraph(fGraph);
 }
 
 void VLAUSoundOut::SetupOutput(AUNode)
