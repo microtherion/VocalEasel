@@ -45,10 +45,11 @@
 	[log setString: logText];
 	while ((data = [h availableData]) && [data length]) {
 		NSString * append = [[[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding] autorelease];
-		[logText appendString: append];
-		[log setString: logText];
-		[log scrollRangeToVisible: NSMakeRange([logText length], 0)];
-		
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [logText appendString: append];
+            [log setString: logText];
+            [log scrollRangeToVisible: NSMakeRange([logText length], 0)];
+        });
 		[pool release];
 		pool	= [[NSAutoreleasePool alloc] init];
 	}
