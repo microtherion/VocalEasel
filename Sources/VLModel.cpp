@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2011 Matthias Neeracher
+// Copyright © 2005-2017 Matthias Neeracher
 //
 
 #include "VLModel.h"
@@ -129,9 +129,11 @@ void VLNote::MakeRepresentable()
 			fDuration = part;
 			return;
 		} else if (fVisual > kWhole && !nonTriplet && fDuration >= triplet) {
-			fDuration = triplet;
-			fVisual	 |= kTriplet;
-			return;
+            if (fDuration == triplet || (fDuration-triplet) >= VLFraction(1,16)) {
+                fDuration = triplet;
+                fVisual	 |= kTriplet;
+                return;
+            }
 		}
 		part	/= 2;
 		triplet /= 2;
