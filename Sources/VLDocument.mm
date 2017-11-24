@@ -145,7 +145,9 @@
 
 - (void) close
 {
-	[super close];
+    VLSoundOut::Instance()->Stop(false);
+
+    [super close];
 }
 
 - (void) dealloc
