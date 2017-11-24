@@ -11,9 +11,9 @@
 #import <Cocoa/Cocoa.h>
 
 @interface VLAppController : NSObject {
-	IBOutlet id			lilypondPath;
+	IBOutlet NSPopUpButton *    lilypondPath;
 	IBOutlet id			mirrorWin;
-	IBOutlet id			debugMenu;
+	IBOutlet NSMenu *			debugMenu;
 
 	NSString *			toolPath;
 	NSString *			appPath;
