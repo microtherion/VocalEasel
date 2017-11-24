@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2006-2011 Matthias Neeracher
+// Copyright © 2006-2017 Matthias Neeracher
 //
 
 #import "VLLilypondDocument.h"
@@ -116,7 +116,7 @@ static NSSize 		sPaperSizes[] = {
 	{612.0f, 1008.0f}, {612.0f, 792.0f}, {792.0f, 1224.0f}
 };
 static const char * 	sPaperNames[] = {
-	"a3", "a4", "a5", "a6", "letter", "legal", "11x17", 0
+	"a3", "a4", "a5", "a6", "legal", "letter", "11x17", 0
 };
 
 @implementation VLDocument (Lilypond)
