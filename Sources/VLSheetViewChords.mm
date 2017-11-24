@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2006-2007 Matthias Neeracher
+// Copyright © 2006-2017 Matthias Neeracher
 //
 
 #import "VLSheetView.h"
@@ -140,7 +140,7 @@ std::string NormalizeName(NSString* rawName)
 
 - (void) moveToNext
 {	
-	const VLProperties & prop = fSong->fProperties.front();
+	const VLProperties & prop = fSong->Properties(fSelection.fMeasure);
 
 	fSelection.fAt = fSelection.fAt+VLFraction(1,4);
 	if (fSelection.fAt >= prop.fTime) {
@@ -153,10 +153,10 @@ std::string NormalizeName(NSString* rawName)
 - (void) moveToPrev
 {
 	if (fSelection.fAt < VLFraction(1,4)) {
-		const VLProperties & prop   = fSong->fProperties.front();
+        fSelection.fMeasure         =
+            (fSelection.fMeasure+fSong->CountMeasures()-1) % fSong->CountMeasures();
+		const VLProperties & prop   = fSong->Properties(fSelection.fMeasure);
 		fSelection.fAt              = prop.fTime - VLFraction(1,4);
-		fSelection.fMeasure         = 
-			(fSelection.fMeasure+fSong->CountMeasures()-1) % fSong->CountMeasures();
 		[fView scrollMeasureToVisible:fSelection.fMeasure];
 	} else
 		fSelection.fAt = fSelection.fAt-VLFraction(1,4);
@@ -256,7 +256,7 @@ std::string NormalizeName(NSString* rawName)
 
 - (void) highlightChord:(VLLocation)at
 {
-	const VLProperties & 	prop = [self song]->fProperties.front();
+	const VLProperties & 	prop = [self song]->Properties(at.fMeasure);
 	const float 	   	kSystemY = [self systemY:fLayout->SystemForMeasure(at.fMeasure)];
 	NSRect 				r 	   	 =
 		NSMakeRect([self noteXAt:at]-kNoteW*0.5f,
