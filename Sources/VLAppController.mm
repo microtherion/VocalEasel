@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2011 Matthias Neeracher
+// Copyright © 2005-2017 Matthias Neeracher
 //
 
 #import "VLAppController.h"
@@ -192,7 +192,9 @@
 	} else if (toolPath && !appPath) {
 		wantTool = true;
 		[defaults setObject:toolPath forKey:@"VLLilypondPath"];
-	}
+    } else {
+        [defaults setObject:(wantTool ? toolPath : appPath) forKey:@"VLLilypondPath"];
+    }
 	[lilypondPath selectItemWithTag:wantTool ? 0 : 1];	
 
 	if (VLDebugFlags::ShowDebugMenu()) {
@@ -216,7 +218,7 @@
 				  ? @"Install through fink" 
 				  : label
 				  alternateButton:@"Continue"
-				  otherButton:hasFink 
+				  otherButton:hasFink
 				  ? label
 				  : @""
 				  informativeTextWithFormat: expl, hasFink 
@@ -258,11 +260,11 @@
 				  url:[NSURL URLWithString:@"http://lilypond.org/web/install"]]
 		)
 			quit = YES;
-	if (![self getLineFromCommand:@"bash -l -c 'which python2.5'"]) 
+	if (![self getLineFromCommand:@"bash -l -c 'which python2.7'"])
 		if ([self promptForSoftwareInstallation:@"Download from python.org"
-				  withTitle: @"Python 2.5 Not Found!"
+				  withTitle: @"Python 2.7 Not Found!"
 				  explanation: 
-					  @"Python 2.5 is needed to play accompaniments. The "
+					  @"Python 2.7 is needed to play accompaniments. The "
 				  "version preinstalled on your computer is not recent "
 				  "enough. If you continue without installing, you will be "
 				  "unable to play accompaniments, or save as MIDI.%@"
