@@ -61,6 +61,7 @@ protected:
 	AUGraph             fGraph;
 	MusicPlayer         fPlayer;
     AudioUnit           fOutputUnit;
+    AudioUnit           fLimiterUnit;
     AudioUnit           fSynthUnit;
 private:
 	MusicSequence       fMusic;
@@ -236,6 +237,7 @@ void VLAUSoundOut::InitSoundOutput(bool fileOutput)
 	AUGraphConnectNodeInput(fGraph, limiterNode, 0, outNode, 0);
 
     R(AUGraphNodeInfo(fGraph, outNode, NULL, &fOutputUnit));
+    R(AUGraphNodeInfo(fGraph, limiterNode, NULL, &fLimiterUnit));
     R(AUGraphNodeInfo(fGraph, synthNode, NULL, &fSynthUnit));
 
 	if (fileOutput) {
@@ -250,6 +252,7 @@ void VLAUSoundOut::InitSoundOutput(bool fileOutput)
 							   kAudioUnitScope_Global, 0,
 							   &value, sizeof(value)));
     } else {
+        PropagateProperty(kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0);
         AudioUnitAddPropertyListener(fOutputUnit,
                                      kAudioUnitProperty_MaximumFramesPerSlice,
                                      VLAUSoundOutPropagateProperty,
@@ -280,13 +283,22 @@ void VLAUSoundOut::PropagateProperty(AudioUnitPropertyID inID,
         goto reinitialize;
     data.resize(sz);
     if (!AudioUnitGetProperty(fOutputUnit, inID, inScope, inElement, &data[0], &sz)) {
-        if (OSStatus status = AudioUnitSetProperty(fSynthUnit, inID, inScope, inElement,
+        if (OSStatus status = AudioUnitSetProperty(fSynthUnit, inID, kAudioUnitScope_Global, inElement,
                                                    &data[0], sz)) {
             if (status == kAudioUnitErr_Initialized) {
                 AudioUnitUninitialize(fSynthUnit);
-                status = AudioUnitSetProperty(fSynthUnit, inID, inScope, inElement,
+                status = AudioUnitSetProperty(fSynthUnit, inID, kAudioUnitScope_Global, inElement,
                                               &data[0], sz);
                 AudioUnitInitialize(fSynthUnit);
+            }
+        }
+        if (OSStatus status = AudioUnitSetProperty(fLimiterUnit, inID, kAudioUnitScope_Global, inElement,
+                                                   &data[0], sz)) {
+            if (status == kAudioUnitErr_Initialized) {
+                AudioUnitUninitialize(fLimiterUnit);
+                status = AudioUnitSetProperty(fLimiterUnit, inID, kAudioUnitScope_Global, inElement,
+                                              &data[0], sz);
+                AudioUnitInitialize(fLimiterUnit);
             }
         }
     }
