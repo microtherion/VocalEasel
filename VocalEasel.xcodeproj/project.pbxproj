@@ -889,7 +889,7 @@
 			name = TVLPitchGrid;
 			productName = TVLPitchGrid;
 			productReference = 953F4B431409C42100C627F9 /* TVLPitchGrid.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 		955E595B0957C0FC0045FDA5 /* TVLChord */ = {
 			isa = PBXNativeTarget;
@@ -940,7 +940,7 @@
 			name = TVLXML;
 			productName = TVLXML;
 			productReference = 95A7C16F141074AB00833DBE /* TVLXML.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 		95CFA8461409291500D0DB0D /* TVLPitchNames */ = {
 			isa = PBXNativeTarget;
@@ -958,7 +958,7 @@
 			name = TVLPitchNames;
 			productName = TVLPitchNames;
 			productReference = 95CFA8471409291500D0DB0D /* TVLPitchNames.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 		95E04D9F0AEB4837006F30A0 /* TVLLilypond */ = {
 			isa = PBXNativeTarget;
@@ -1655,7 +1655,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = VocalEasel;
-				SDKROOT = "";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -1676,7 +1676,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = VocalEasel;
-				SDKROOT = "";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
@@ -1696,7 +1696,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = VocalEasel;
-				SDKROOT = "";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Default;
