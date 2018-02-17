@@ -258,7 +258,7 @@
 				  url:[NSURL URLWithString:@"http://lilypond.org/web/install"]]
 		)
 			quit = YES;
-	if (![self getLineFromCommand:@"bash -l -c 'which python2.5'"]) 
+	if (![self getLineFromCommand:@"bash -l -c 'which python2.7'"]) 
 		if ([self promptForSoftwareInstallation:@"Download from python.org"
 				  withTitle: @"Python 2.5 Not Found!"
 				  explanation: 
