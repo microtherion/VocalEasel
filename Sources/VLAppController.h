@@ -5,14 +5,14 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2008 Matthias Neeracher
+// Copyright © 2005-2018 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>
 
 @interface VLAppController : NSObject {
 	IBOutlet NSPopUpButton *    lilypondPath;
-	IBOutlet id			mirrorWin;
+	IBOutlet id			        mirrorWin;
 	IBOutlet NSMenu *			debugMenu;
 
 	NSString *			toolPath;
