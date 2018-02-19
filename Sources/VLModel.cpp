@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2017 Matthias Neeracher
+// Copyright © 2005-2018 Matthias Neeracher
 //
 
 #include "VLModel.h"
@@ -107,11 +107,13 @@ VLNote::VLNote(VLFraction dur, int pitch, uint16_t visual)
 
 std::string VLNote::Name(uint16_t accidental) const
 {
-	if (uint16_t acc = (fVisual & kAccidentalsMask))
-        if (acc == kWantNatural)
+    if (uint16_t acc = (fVisual & kAccidentalsMask)) {
+        if (acc == kWantNatural) {
             accidental |= acc;
-        else
+        } else {
             accidental = acc;
+        }
+    }
 
 	return VLPitchName(fPitch, accidental);
 }
@@ -603,6 +605,57 @@ void VLSong::DelChord(VLLocation at)
 		fMeasures.pop_back();
 }
 
+VLSong::note_iterator::note_iterator(const VLMeasureList::iterator &meas, const VLNoteList::iterator &note)
+  : fMeasIter(meas), fNoteIter(note)
+{
+}
+
+VLSong::note_iterator &
+VLSong::note_iterator::operator--()
+{
+    if (fNoteIter == fMeasIter->fMelody.begin()) {
+        --fMeasIter;
+        fNoteIter = fMeasIter->fMelody.end();
+    }
+    --fNoteIter;
+    return *this;
+}
+
+VLSong::note_iterator &
+VLSong::note_iterator::operator++()
+{
+    ++fNoteIter;
+    if (fNoteIter == fMeasIter->fMelody.end()) {
+        ++fMeasIter;
+        fNoteIter = fMeasIter->fMelody.begin();
+    }
+    return *this;
+}
+
+bool
+VLSong::note_iterator::operator==(const note_iterator &other)
+{
+    return fMeasIter == other.fMeasIter && fNoteIter == other.fNoteIter;
+}
+
+VLSong::note_iterator
+VLSong::begin_note(size_t measure)
+{
+    return note_iterator(fMeasures.begin()+measure, fMeasures[measure].fMelody.begin());
+}
+
+VLSong::note_iterator
+VLSong::end_note(size_t measure)
+{
+    return note_iterator(fMeasures.begin()+measure, fMeasures[measure].fMelody.end());
+}
+
+VLSong::note_iterator
+VLSong::end_note()
+{
+    return end_note(fMeasures.size()-1);
+}
+
 VLLyricsNote VLSong::FindNote(VLLocation at)
 {
 	VLNoteList::iterator	i = fMeasures[at.fMeasure].fMelody.begin();
@@ -781,15 +834,19 @@ void VLSong::AddNote(VLLyricsNote note, VLLocation at)
 		++i;
 	}
 	i->fTied = 0;
-	if (note.fTied & VLNote::kTiedWithPrev) // kTiedWithNext is NEVER user set
-		if (at.fMeasure && i == fMeasures[at.fMeasure].fMelody.begin()) {
-			VLNoteList::iterator	j = fMeasures[at.fMeasure-1].fMelody.end();
-			--j;
-			if (j->fPitch == i->fPitch) {
-				j->fTied |= VLNote::kTiedWithNext;
-				i->fTied |= VLNote::kTiedWithPrev;
-			}
-		}	
+    if (note.fTied & VLNote::kTiedWithPrev) {// kTiedWithNext is NEVER user set
+        auto j = i;
+        if (at.fAt != VLFraction(0) || at.fMeasure) {
+            if (at.fAt == VLFraction(0)) {
+                j = fMeasures[at.fMeasure-1].fMelody.end();
+            }
+            --j;
+            if (note.fPitch != VLNote::kNoPitch && j->fPitch != VLNote::kNoPitch) {
+                j->fTied |= VLNote::kTiedWithNext;
+                i->fTied |= VLNote::kTiedWithPrev;
+            }
+        }
+    }
 }
 
 void VLSong::DelNote(VLLocation at)
@@ -904,6 +961,97 @@ VLNote VLSong::ExtendNote(VLLocation at)
 		break;
 	} 
     return *i;
+}
+
+VLLocation VLSong::TieNote(VLLocation at, bool tieWithPrev)
+{
+    VLNoteList::iterator i  = fMeasures[at.fMeasure].fMelody.begin();
+    VLNoteList::iterator end= fMeasures[at.fMeasure].fMelody.end();
+
+    if (i==end)
+        return VLLocation(); // Empty song, do nothing
+
+    for (VLFraction t(0); i != end && t+i->fDuration <= at.fAt; ++i)
+        t += i->fDuration;
+
+    if (i == end)
+        --i;
+    if (i->fPitch == VLNote::kNoPitch)
+        return VLLocation(); // Don't tie rests
+
+    VLNoteList::iterator j=i;
+    auto startMeasure = at.fMeasure;
+    if (tieWithPrev) {
+        if (j != fMeasures[at.fMeasure].fMelody.begin()) {
+            --j;
+            //
+            // Extend across next note/rest
+            //
+            if (i->fPitch == j->fPitch) {
+                // Consolidate identical pitches
+                j->fDuration += i->fDuration;
+                fMeasures[at.fMeasure].fMelody.erase(i);
+                i = j;
+            } else {
+                i->fTied |= VLNote::kTiedWithPrev;
+                j->fTied |= VLNote::kTiedWithNext;
+                i->fLyrics.clear();
+            }
+        } else if (at.fMeasure-- > 0) {
+            //
+            // Extend into previous measure
+            //
+            j = fMeasures[at.fMeasure].fMelody.end();
+            --j;
+            if (j->fPitch != VLNote::kNoPitch) { // Don't tie with rests
+                i->fTied |= VLNote::kTiedWithPrev;
+                j->fTied |= VLNote::kTiedWithNext;
+                i->fLyrics.clear();
+            }
+        }
+    } else {
+        ++j;
+        if (j != fMeasures[at.fMeasure].fMelody.end()) {
+            //
+            // Extend across next note/rest
+            //
+            if (i->fPitch == j->fPitch) {
+                // Consolidate identical pitches
+                i->fDuration += j->fDuration;
+                fMeasures[at.fMeasure].fMelody.erase(j);
+            } else {
+                i->fTied |= VLNote::kTiedWithNext;
+                j->fTied |= VLNote::kTiedWithPrev;
+                j->fLyrics.clear();
+            }
+        } else if (++at.fMeasure < fMeasures.size()) {
+            //
+            // Extend into next measure
+            //
+            j = fMeasures[at.fMeasure].fMelody.begin();
+            if (j->fPitch != VLNote::kNoPitch) { // Don't tie with rests
+                i->fTied |= VLNote::kTiedWithNext;
+                j->fTied |= VLNote::kTiedWithPrev;
+                j->fLyrics.clear();
+            }
+        }
+    }
+    while (i->fTied & VLNote::kTiedWithPrev) {
+        if (i == fMeasures[startMeasure].fMelody.begin()) {
+            if (startMeasure) {
+                i = fMeasures[--startMeasure].fMelody.end();
+            } else {
+                break;
+            }
+        }
+        --i;
+    }
+    at.fMeasure = startMeasure;
+    at.fAt      = VLFraction();
+    for (j = fMeasures[startMeasure].fMelody.begin(); j != i; ++j) {
+        at.fAt  = at.fAt+j->fDuration;
+    }
+    return at;
 }
 
 bool VLSong::IsNonEmpty() const
@@ -1346,7 +1494,6 @@ bool VLSong::PrevWord(size_t stanza, VLLocation & at)
 	do {
 		VLMeasure & 			meas	= fMeasures[at.fMeasure];
 		VLNoteList::iterator 	note 	= fMeasures[at.fMeasure].fMelody.begin();
-		VLNoteList::iterator 	end  	= fMeasures[at.fMeasure].fMelody.end();
 		bool					hasWord	= false;
 		VLFraction				word(0);
 		VLFraction				now(0);
@@ -1384,7 +1531,6 @@ bool VLSong::NextWord(size_t stanza, VLLocation & at)
 	do {
 		VLMeasure & 			meas	= fMeasures[at.fMeasure];
 		VLNoteList::iterator 	note 	= fMeasures[at.fMeasure].fMelody.begin();
-		VLNoteList::iterator 	end  	= fMeasures[at.fMeasure].fMelody.end();
 		VLFraction				now(0);
 
 		while (note != meas.fMelody.end()) {
@@ -1459,7 +1605,6 @@ void VLSong::SetWord(size_t stanza, VLLocation at, std::string word, VLLocation 
 	do {
 		VLMeasure & 			meas	= fMeasures[at.fMeasure];
 		VLNoteList::iterator 	note 	= fMeasures[at.fMeasure].fMelody.begin();
-		VLNoteList::iterator 	end  	= fMeasures[at.fMeasure].fMelody.end();
 		VLFraction				now(0);
 
 		while (note != meas.fMelody.end()) {
@@ -1550,7 +1695,7 @@ void VLSong::AddRepeat(size_t beginMeasure, size_t endMeasure, int times)
 		VLRepeat & rp = fRepeats[r];
 		if (rp.fEndings[0].fBegin == beginMeasure
 		 && rp.fEndings[0].fEnd >= endMeasure
-		) 
+        ) {
 			if (rp.fEndings[0].fEnd == endMeasure) {
 				//
 				// Exact match, just change times
@@ -1569,6 +1714,7 @@ void VLSong::AddRepeat(size_t beginMeasure, size_t endMeasure, int times)
 			
 				break;
 			}
+        }
 	}
 	
 	VLRepeat	rep;
@@ -1795,13 +1941,15 @@ bool VLSong::DoesBeginEnding(size_t measure, bool * repeat, size_t * volta) cons
 			size_t v = (1<<rp.fTimes)-1;
 			for (size_t e=1; e<rp.fEndings.size(); ++e)
 				if (rp.fEndings[e].fBegin == measure) {
-					if (repeat)
+                    if (repeat) {
 						if (e == rp.fEndings.size()-1 
 						 && rp.fEndings[e].fVolta == v
-						)
+                        ) {
 							*repeat = false; // Not after last alternative
-						else
+                        } else {
 							*repeat = true;
+                        }
+                    }
 					if (volta)
 						*volta = rp.fEndings[e].fVolta;
 
@@ -2279,6 +2427,7 @@ VLSongVisitor::~VLSongVisitor()
 
 void VLSongVisitor::VisitMeasures(VLSong & song, bool performanceOrder)
 {
+    fSong = &song;
 	if (performanceOrder) {
 		VLSong::iterator e = song.end();
 		
@@ -2309,6 +2458,75 @@ void VLSongVisitor::VisitNotes(VLMeasure & measure, const VLProperties & prop,
 
 	if (decomposed) {	
 		measure.DecomposeNotes(prop, decomp);
+        // Set slur flags
+        bool    inSlur             = false;
+        bool    inTie              = false;
+        uint8_t prevPitch          = 0;
+        if ((decomp.front().fTied & VLNote::kTiedWithPrev)) {
+            inTie               = true;
+            prevPitch           = decomp.front().fPitch;
+            auto predecessor    = fSong->begin_note(&measure-&fSong->fMeasures[0]);
+            bool seenNote       = false;
+            do {
+                --predecessor;
+                if (predecessor->fPitch != decomp.front().fPitch) {
+                    inSlur  = true;
+                    if (!seenNote) {
+                        decomp.front().fTied |= VLNote::kSlurWithPrev;
+                    }
+                    break;
+                }
+                seenNote = true;
+            } while (predecessor->fTied & VLNote::kTiedWithPrev);
+        }
+        VLLyricsNote *firstInTie = nullptr;
+        VLLyricsNote *prevInTie  = nullptr;
+        for (auto &note: decomp) {
+            if ((note.fTied & VLNote::kTiedWithPrev) && note.fPitch != prevPitch) {
+                if (prevInTie) {
+                    prevInTie->fTied |= VLNote::kSlurWithNext;
+                }
+                note.fTied |= VLNote::kSlurWithPrev;
+                inSlur      = true;
+            }
+            if (note.fTied & VLNote::kTiedWithNext) {
+                if (!inTie) {
+                    firstInTie  = &note;
+                    inTie       = true;
+                }
+                prevInTie       = &note;
+                prevPitch       = note.fPitch;
+            } else {
+                if (inSlur) {
+                    if (firstInTie) {
+                        firstInTie->fTied |= VLNote::kStartSlur;
+                    }
+                    note.fTied |= VLNote::kEndSlur;
+                }
+                inSlur  = false;
+                inTie   = false;
+            }
+        }
+        if (inTie) {
+            // Find out if measure-final tie contains slur
+            auto successor = fSong->begin_note(&measure-&fSong->fMeasures[0]+1);
+            if (successor->fPitch != prevPitch) {
+                prevInTie->fTied |= VLNote::kSlurWithNext;
+            }
+            while (!inSlur) {
+                if (successor->fPitch != prevPitch) {
+                    inSlur  = true;
+                } else if (!(successor->fTied & VLNote::kTiedWithNext)) {
+                    break;
+                } else {
+                    ++successor;
+                }
+            }
+        }
+        if (inSlur && firstInTie) {
+            firstInTie->fTied |= VLNote::kStartSlur;
+        }
+
 		n = decomp.begin();
 		e = decomp.end();
 	} else {

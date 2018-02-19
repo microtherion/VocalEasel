@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2011 Matthias Neeracher
+// Copyright © 2005-2018 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>
@@ -18,6 +18,11 @@
 - (void) playNoteAtCursor;
 - (void) moveCursorToNextNote;
 - (void) moveCursorToPrevNote;
+
+- (IBAction) tieNoteWithPrev:(id)sender;
+- (IBAction) tieNoteWithNext:(id)sender;
+- (IBAction) addRest:(id)sender;
+- (IBAction) deleteNote:(id)sender;
 
 @end
 

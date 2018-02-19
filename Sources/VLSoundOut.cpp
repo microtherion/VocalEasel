@@ -132,8 +132,8 @@ void VLSoundScheduler::Schedule(VLSoundEvent * what, float when)
     what->Perform();
 }
 
-static std::auto_ptr<VLSoundOut>		sSoundOut;
-static std::auto_ptr<VLSoundScheduler> sSoundScheduler;
+static std::unique_ptr<VLSoundOut>		sSoundOut;
+static std::unique_ptr<VLSoundScheduler> sSoundScheduler;
 
 VLSoundOut * VLSoundOut::Instance()
 {
@@ -160,7 +160,7 @@ void VLSoundOut::PlayFile(CFDataRef file)
 	MusicSequence	music;
 	
 	NewMusicSequence(&music);
-	MusicSequenceFileLoadData(music, file, 0, 0);
+	MusicSequenceFileLoadData(music, file, kMusicSequenceFile_MIDIType, 0);
 	PlaySequence(music);
 }
 
@@ -517,7 +517,7 @@ void VLAUSoundOut::Play(const int8_t * note, size_t numNotes)
 	
 	const int8_t kNoteVelocity = 127;
 	for (int i=0; i<numNotes; ++i) {
-		MIDINoteMessage	n = {0, note[i], kNoteVelocity, 0, 1.0}; 
+        MIDINoteMessage	n = {0, static_cast<UInt8>(note[i]), kNoteVelocity, 0, 1.0}; 
 		MusicTrackNewMIDINoteEvent(track, 0.0, &n);
 	}
 		

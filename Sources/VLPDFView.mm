@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2007 Matthias Neeracher
+// Copyright © 2005-2018 Matthias Neeracher
 //
 
 #import "VLPDFView.h"
@@ -45,14 +45,14 @@
 {
 	// Display single page mode.
 	if ([self displayMode] > kPDFDisplaySinglePageContinuous)
-		[self setDisplayMode: [self displayMode] - 2];
+		[self setDisplayMode: static_cast<PDFDisplayMode>([self displayMode] - 2)];
 }
 
 - (IBAction) displayTwoUp: (id) sender
 {
 	// Display two-up.
 	if ([self displayMode] < kPDFDisplayTwoUp)
-		[self setDisplayMode: [self displayMode] + 2];
+		[self setDisplayMode: static_cast<PDFDisplayMode>([self displayMode] + 2)];
 }
 
 - (IBAction) zoomToFit: (id) sender

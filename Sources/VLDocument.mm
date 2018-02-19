@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2011 Matthias Neeracher
+// Copyright © 2005-2018 Matthias Neeracher
 //
 
 #import "VLDocument.h"
@@ -470,7 +470,7 @@
 		NewMusicSequence(&musicSequence);
 
         MusicSequenceFileLoad(musicSequence, (CFURLRef)[self fileURLWithExtension:@"mid"], 
-                              0, 0);
+                              kMusicSequenceFile_MIDIType, 0);
 
 		size_t countIn = 0;
 		if (playElements & kVLPlayCountIn) 

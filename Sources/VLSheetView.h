@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2012 Matthias Neeracher
+// Copyright © 2005-2018 Matthias Neeracher
 //
 
 #import <Cocoa/Cocoa.h>
@@ -109,6 +109,7 @@ const uint32_t kNoMeasure = (uint32_t)-1;
 	IBOutlet id			fKeyMenu;
 	IBOutlet id			fTimeMenu;
 	IBOutlet id			fDivisionMenu;
+    IBOutlet NSMenu    *fNoteActionMenu;
 }
 
 @property (nonatomic) int   numTopLedgers;

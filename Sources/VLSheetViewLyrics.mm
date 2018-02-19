@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2006-2007 Matthias Neeracher
+// Copyright © 2006-2018 Matthias Neeracher
 //
 
 #import "VLSheetView.h"
@@ -211,7 +211,7 @@ float VLCocoaFontHandler::Width(const char * utf8Text)
 	// Build new list
 	//
 	for (int m = 0; m<kLayout.NumMeasures(); ++m) {
-		int	measIdx = m+kFirstMeas;
+		uint32_t	measIdx = m+kFirstMeas;
 		if (measIdx >= song->CountMeasures())
 			break;
 		const VLMeasure		measure = song->fMeasures[measIdx];

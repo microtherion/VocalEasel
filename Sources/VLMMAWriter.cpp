@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2007 Matthias Neeracher
+// Copyright © 2007-2018 Matthias Neeracher
 //
 
 #include "VLMMAWriter.h"
@@ -22,7 +22,7 @@ void VLMMAWriter::Visit(VLSong & song)
 	VisitMeasures(song, true);
 }
 
-void VLMMAWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas) 
+void VLMMAWriter::VisitMeasure(uint32_t m, VLProperties & p, VLMeasure & meas)
 {
 	if (fPreview)
 		if (meas.fPropIdx < fBeginSection || meas.fPropIdx >= fEndSection)

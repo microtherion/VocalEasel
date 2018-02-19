@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2008 Matthias Neeracher
+// Copyright © 2005-2018 Matthias Neeracher
 //
 
 #import "VLSheetView.h"
@@ -804,6 +804,11 @@ const float kSemiFloor = -1.0f*kLineH;
    	if ([event modifierFlags] & NSAlphaShiftKeyMask)
 		return; // Keyboard mode, ignore mouse
 
+    if ([event modifierFlags] & NSControlKeyMask) {
+        [[NSCursor contextualMenuCursor] set];
+    } else {
+        [[NSCursor arrowCursor] set];
+    }
 	bool hadCursor = fCursorRegion == kRegionNote;
 	[self findRegionForEvent:event];
 	bool hasCursor = fCursorRegion == kRegionNote;
@@ -830,17 +835,36 @@ const float kSemiFloor = -1.0f*kLineH;
 	fCursorRegion = kRegionNowhere;
 	[[self window] setAcceptsMouseMovedEvents:NO];
 	[self setNeedsDisplay:YES];
+    [[NSCursor arrowCursor] set];
+}
+
+- (void) rightMouseDown:(NSEvent *)event
+{
+    [[self document] endSong];
+    VLRegion    region = [self findRegionForEvent:event];
+    switch (region) {
+    case kRegionNote:
+        [NSMenu popUpContextMenu:fNoteActionMenu withEvent:event forView:self];
+        break;
+    default:
+        break;
+    }
 }
 
 - (void) mouseDown:(NSEvent *)event
 {
+    if ([event modifierFlags] & NSControlKeyMask) {
+        [self rightMouseDown:event];
+        return;
+    }
+
     [[self document] endSong];
     
     BOOL        extend = ([event modifierFlags] & NSShiftKeyMask) != 0;
     VLRegion    region = [self findRegionForEvent:event];
     if (extend && [[self editTarget] canExtendSelection:region])
         [[self editTarget] extendSelection:fCursorLocation];
-    else 
+    else
         switch (region) {
         case kRegionNote:
             [self setEditTarget:nil];

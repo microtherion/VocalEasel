@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2011 Matthias Neeracher
+// Copyright © 2005-2018 Matthias Neeracher
 //
 
 #import "VLSheetView.h"
@@ -18,6 +18,43 @@
 #include <algorithm>
 
 @implementation VLSheetView (Notes)
+
+- (IBAction)tieNoteWithPrev:(id)sender
+{
+    if (fCursorLocation.fMeasure != kNoMeasure) {
+        [[self document] willChangeSong];
+        [self song]->TieNote(fCursorLocation, true);
+        [[self document] didChangeSong];
+    }
+}
+
+- (IBAction)tieNoteWithNext:(id)sender
+{
+    if (fCursorLocation.fMeasure != kNoMeasure) {
+        [[self document] willChangeSong];
+        [self song]->TieNote(fCursorLocation, false);
+        [[self document] didChangeSong];
+    }
+}
+
+- (IBAction)addRest:(id)sender
+{
+    if (fCursorLocation.fMeasure != kNoMeasure) {
+        VLLyricsNote note;
+        [[self document] willChangeSong];
+        [self song]->AddNote(note, fCursorLocation);
+        [[self document] didChangeSong];
+    }
+}
+
+- (IBAction)deleteNote:(id)sender
+{
+    if (fCursorLocation.fMeasure != kNoMeasure) {
+        [[self document] willChangeSong];
+        [self song]->DelNote(fCursorLocation);
+        [[self document] didChangeSong];
+    }
+}
 
 - (void) addNoteAtCursor
 {	
@@ -349,7 +386,7 @@
 
 	for (int m = 0; m<kLayout.NumMeasures(); ++m) {
 		VLVisualFilter  filterVisuals(kProp.fKey);
-		int	measIdx = m+kFirstMeas;
+		uint32_t	        measIdx = m+kFirstMeas;
 		if (measIdx >= song->CountMeasures())
 			break;
 		const VLMeasure	&	measure = song->fMeasures[measIdx];

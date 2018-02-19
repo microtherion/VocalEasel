@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2006-2017 Matthias Neeracher
+// Copyright © 2006-2018 Matthias Neeracher
 //
 
 #import "VLSheetView.h"
@@ -224,7 +224,7 @@ std::string NormalizeName(NSString* rawName)
 	// Build new list
 	//
 	for (int m = 0; m<kLayout.NumMeasures(); ++m) {
-		int	measIdx = m+kFirstMeas;
+		uint32_t	measIdx = m+kFirstMeas;
 		if (measIdx >= song->CountMeasures())
 			break;
 		const VLMeasure		measure = song->fMeasures[measIdx];

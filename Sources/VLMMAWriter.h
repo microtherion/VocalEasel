@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2007 Matthias Neeracher
+// Copyright © 2007-2018 Matthias Neeracher
 //
 
 #include "VLModel.h"
@@ -16,10 +16,10 @@ public:
 		: fPreview(preview), fBeginSection(beginSection), fEndSection(endSection)
 	{}
 
-	virtual void Visit(VLSong & song);
-	virtual void VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas);
-	virtual void VisitNote(VLLyricsNote & n);
-	virtual void VisitChord(VLChord & c);
+	void Visit(VLSong & song) override;
+	void VisitMeasure(uint32_t m, VLProperties & p, VLMeasure & meas) override;
+	void VisitNote(VLLyricsNote & n) override;
+	void VisitChord(VLChord & c) override;
 
 	const std::string & Measures() const { return fMeasures; }
 private:	

@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2008-2011 Matthias Neeracher
+// Copyright © 2008-2018 Matthias Neeracher
 //
 
 #include "VLMIDIWriter.h"
@@ -77,7 +77,7 @@ void VLMIDIWriter::Visit(VLSong & song)
 	VisitMeasures(song, true);
 }
 
-void VLMIDIWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
+void VLMIDIWriter::VisitMeasure(uint32_t m, VLProperties & p, VLMeasure & meas)
 {
     const VLLocation kStartOfMeasure = {m, VLFraction(0)};
 	if (fVolta.size() <= m)
@@ -98,7 +98,7 @@ void VLMIDIWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
 void VLMIDIWriter::VisitNote(VLLyricsNote & n)
 {
 	if (!(n.fTied & VLNote::kTiedWithPrev)) {
-		VLMIDIUserEvent	event = {12, n.fPitch, fStanza, n.fVisual, fAt};
+        VLMIDIUserEvent	event = {12, n.fPitch, static_cast<uint8_t>(fStanza), n.fVisual, fAt};
 		MusicTrackNewUserEvent(fTrack, fNoteTime, 
 			 reinterpret_cast<const MusicEventUserData *>(&event));
 	}
@@ -109,7 +109,7 @@ void VLMIDIWriter::VisitNote(VLLyricsNote & n)
 void VLMIDIWriter::VisitChord(VLChord & c)
 {
 	if (c.fPitch != VLNote::kNoPitch) {
-		VLMIDIUserEvent	event = {12, 0, fStanza, 0, fAt};
+        VLMIDIUserEvent	event = {12, 0, static_cast<uint8_t>(fStanza), 0, fAt};
 		MusicTrackNewUserEvent(fTrack, fChordTime, 
 			 reinterpret_cast<const MusicEventUserData *>(&event));
 	}

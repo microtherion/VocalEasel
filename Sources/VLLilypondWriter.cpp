@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2007-2011 Matthias Neeracher
+// Copyright Â© 2007-2018 Matthias Neeracher
 //
 
 #include "VLLilypondWriter.h"
@@ -41,7 +41,7 @@ void VLLilypondWriter::Visit(VLSong & song)
 		fMelody	+= fSeenEnding ? "}}\n" : "}\n";
 }
 
-void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas) 
+void VLLilypondWriter::VisitMeasure(uint32_t m, VLProperties & p, VLMeasure & meas) 
 {
 	char measNo[8];	
 	if (!(m % 4))
@@ -166,8 +166,10 @@ void VLLilypondWriter::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas
 		fAccum.erase(trip, 15);
 	while ((trip = fAccum.find(" ~ } \\times 2/3 { ")) != std::string::npos)
 		fAccum.erase(trip+2, 17);
-	while ((trip = fAccum.find(" ~.")) != std::string::npos)
-		fAccum.erase(trip, 2);
+	while ((trip = fAccum.find("~.")) != std::string::npos)
+		fAccum.erase(trip, 1);
+    while ((trip = fAccum.find("~(.")) != std::string::npos)
+        fAccum.replace(trip, 3, ".(");
 
 	if (fSong->fGoToCoda == m+1)
 		fAccum += "\n"
@@ -257,25 +259,43 @@ void VLLilypondWriter::VisitNote(VLLyricsNote & n)
 		nm = "s";
 	}
 	const char * space = fAccum.size() ? " " : "";
-	const char * tie   = n.fTied & VLNote::kTiedWithNext ? " ~" : "";
+	const char * tie;
+    switch (n.fTied & (VLNote::kTiedWithNext|VLNote::kSlurWithNext|VLNote::kStartSlur|VLNote::kEndSlur)) {
+    case VLNote::kTiedWithNext|VLNote::kSlurWithNext|VLNote::kStartSlur:
+        tie = "(";
+        break;
+    case VLNote::kTiedWithNext|VLNote::kStartSlur:
+        tie = "~(";
+        break;
+    case VLNote::kTiedWithNext:
+        tie = "~";
+        break;
+    case VLNote::kEndSlur:
+        tie = ")";
+        break;
+    case VLNote::kTiedWithNext|VLNote::kSlurWithNext:
+    default:
+        tie = "";
+        break;
+    }
 	char duration[32];
-	if (n.fTied == VLNote::kTiedWithPrev && n.fVisual == fPrevNote.fVisual+1
+    if ((n.fTied & VLNote::kTiedWithPrev) && n.fVisual == fPrevNote.fVisual+1
 		&& n.fPitch == fPrevNote.fPitch
-	) 
+    ) {
 		strcpy(duration, ".");
-	else if (n.fVisual & VLNote::kTupletMask)
-		sprintf(duration, "%s\\times %d/%d { %s%d%s }", 
-				space, VLNote::TupletDenom(n.fVisual), VLNote::TupletNum(n.fVisual), 
+    } else if (n.fVisual & VLNote::kTupletMask) {
+        sprintf(duration, "%s\\times %d/%d { %s%d%s }",
+                space, VLNote::TupletDenom(n.fVisual), VLNote::TupletNum(n.fVisual),
                 nm.c_str(), kValue[n.fVisual & VLNote::kNoteHeadMask], tie);
-	else 
-		sprintf(duration, "%s%s%d%s", 
-				space, nm.c_str(), kValue[n.fVisual & VLNote::kNoteHeadMask], tie); 
+    } else {
+        sprintf(duration, "%s%s%d%s",
+                space, nm.c_str(), kValue[n.fVisual & VLNote::kNoteHeadMask], tie);
+    }
+    fAccum     += duration;
+	fPrevNote   = n;
 
-	fAccum	+= duration;
-	fPrevNote= n;
-
-	if (n.fPitch != VLNote::kNoPitch && !(n.fTied & VLNote::kTiedWithPrev))
-		for (size_t i=0; i<fL.size(); ++i) 
+    if (n.fPitch != VLNote::kNoPitch && !(n.fTied & VLNote::kTiedWithPrev)) {
+        for (size_t i=0; i<fL.size(); ++i) {
 			if (n.fLyrics.size() <= i || !n.fLyrics[i]) {
 				fL[i] += " \\skip1";
 			} else {
@@ -283,6 +303,8 @@ void VLLilypondWriter::VisitNote(VLLyricsNote & n)
 				if (n.fLyrics[i].fKind & VLSyllable::kHasNext)
 					fL[i] += " --";
 			}
+        }
+    }
 }
 
 static const char * kLilypondStepNames[] = {

@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2005-2011 Matthias Neeracher
+// Copyright © 2005-2018 Matthias Neeracher
 //
 
 #include <list>
@@ -159,14 +159,18 @@ struct VLNote {
 		kOctave	 = 12
 	};
 	//
-	// We only allow ties BETWEEN measures. Within measures, we just store
-	// a combined note length.
+	// We only allow ties BETWEEN measures or different pitches. Within measures, we
+    // just store a combined note length.
 	//
-	uint8_t		fTied;		// Tied with note in adjacent measure
+	uint8_t		fTied;		// Tied with adjacent note
 	enum {
 		kNotTied		= 0,
 		kTiedWithNext	= 1,
 		kTiedWithPrev	= 2,
+        kSlurWithNext   = 4,
+        kSlurWithPrev   = 8,
+        kStartSlur      = 16,
+        kEndSlur        = 32,
 	};
 	//
 	// Hint at visual representation (Computed in DecomposeNotes)
@@ -198,8 +202,8 @@ struct VLNote {
         
 		kTupletMask     = 0xFF00
 	};
-    static int TupletNum(uint16_t visual) { return visual >> 12; }
-    static int TupletDenom(uint16_t visual) { return (visual >> 8) & 0x0F; }  
+    static uint16_t TupletNum(uint16_t visual) { return visual >> 12; }
+    static uint16_t TupletDenom(uint16_t visual) { return (visual >> 8) & 0x0F; }  
     static uint16_t Tuplet(int num, int denom) { return (num << 12) | (denom << 8); }
 	VLNote(VLFraction dur=0, int pitch=kNoPitch, uint16_t visual=0);
 	VLNote(std::string name);
@@ -342,6 +346,8 @@ struct VLMeasure {
 	bool IsEmpty() const;
 	bool NoChords() const;
     bool CanSkipRests() const;
+    bool SlurAtStart() const;
+    bool SlurAtEnd() const;
 
 	void DecomposeNotes(const VLProperties & prop, VLNoteList & decomposed) const;
 };
@@ -420,6 +426,26 @@ public:
 	iterator 	begin() { return iterator(*this, false); }
 	iterator 	end() 	{ return iterator(*this, true);  }
 
+    // Iterate over all notes in song
+    class note_iterator {
+    public:
+        note_iterator(const VLMeasureList::iterator &meas, const VLNoteList::iterator &note);
+
+        VLLyricsNote   &operator*()     { return *fNoteIter;    }
+        VLLyricsNote   *operator->()    { return &*fNoteIter;   }
+        note_iterator  &operator--();
+        note_iterator  &operator++();
+        bool operator==(const note_iterator &other);
+        bool operator!=(const note_iterator &other) { return !(*this == other); }
+    private:
+        VLNoteList::iterator    fNoteIter;
+        VLMeasureList::iterator fMeasIter;
+    };
+
+    note_iterator   begin_note(size_t measure=0);
+    note_iterator   end_note(size_t measure);
+    note_iterator   end_note();
+
     VLLyricsNote    FindNote(VLLocation at);
     bool            PrevNote(VLLocation & at);
     bool            NextNote(VLLocation & at);
@@ -428,6 +454,7 @@ public:
 	void DelChord(VLLocation at);
 	void DelNote(VLLocation at);
 	VLNote ExtendNote(VLLocation at);
+    VLLocation TieNote(VLLocation at, bool tieWithPrev);
 	void AddRepeat(size_t beginMeasure, size_t endMeasure, int times);
 	void DelRepeat(size_t beginMeasure, size_t endMeasure);
 	void AddEnding(size_t beginMeasure, size_t endMeasure, size_t volta);
@@ -493,10 +520,10 @@ class VLSongVisitor {
 public:
 	virtual ~VLSongVisitor();
 
-	virtual void Visit(VLSong & song) 										{}
-	virtual void VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas) {}
-	virtual void VisitNote(VLLyricsNote & n)								{}
-	virtual void VisitChord(VLChord & c)									{}
+	virtual void Visit(VLSong & song) 										    {}
+	virtual void VisitMeasure(uint32_t m, VLProperties & p, VLMeasure & meas)   {}
+	virtual void VisitNote(VLLyricsNote & n)								    {}
+	virtual void VisitChord(VLChord & c)									    {}
 protected:
 	VLSongVisitor() {}
 
@@ -504,6 +531,8 @@ protected:
 	void VisitNotes(VLMeasure & measure, const VLProperties & prop, 
 					bool decomposed);
 	void VisitChords(VLMeasure & measure);
+private:
+    VLSong  *fSong;
 };
 
 #endif

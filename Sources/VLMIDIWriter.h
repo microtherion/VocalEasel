@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2008-2011 Matthias Neeracher
+// Copyright © 2008-2018 Matthias Neeracher
 //
 
 #include "VLModel.h"
@@ -35,10 +35,10 @@ public:
 	VLMIDIWriter(MusicSequence music, size_t countIn) 
 		: fMusic(music), fCountIn(countIn) {}
 
-	virtual void Visit(VLSong & song);
-	virtual void VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas);
-	virtual void VisitNote(VLLyricsNote & n);
-	virtual void VisitChord(VLChord & c);
+	void Visit(VLSong & song) override;
+	void VisitMeasure(uint32_t m, VLProperties & p, VLMeasure & meas) override;
+	void VisitNote(VLLyricsNote & n) override;
+	void VisitChord(VLChord & c) override;
 private:	
 	MusicSequence			fMusic;
 	size_t					fCountIn;

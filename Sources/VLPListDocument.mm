@@ -5,7 +5,7 @@
 //
 //      (MN)    Matthias Neeracher
 //
-// Copyright © 2007-2011 Matthias Neeracher
+// Copyright © 2007-2018 Matthias Neeracher
 //
 
 #import "VLPListDocument.h"
@@ -26,11 +26,11 @@ public:
 	VLPlistVisitor(NSMutableDictionary * plist, bool performanceOrder)
 		: fPlist(plist), fPerfOrder(performanceOrder) {}
 
-	virtual void Visit(VLSong & song);
+	void Visit(VLSong & song) override;
 protected:
-	virtual void VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas);
-	virtual void VisitNote(VLLyricsNote & n);
-	virtual void VisitChord(VLChord & c);
+	void VisitMeasure(uint32_t m, VLProperties & p, VLMeasure & meas) override;
+	void VisitNote(VLLyricsNote & n) override;
+	void VisitChord(VLChord & c) override;
 	
 	NSArray *		EncodeProperties(const std::vector<VLProperties> & properties);
 	NSDictionary *	EncodeProperties(const VLProperties & properties);
@@ -82,7 +82,7 @@ void VLPlistVisitor::Visit(VLSong & song)
 	[fPlist setObject:fMeasures forKey:@"measures"];
 }
 
-void VLPlistVisitor::VisitMeasure(size_t m, VLProperties & p, VLMeasure & meas)
+void VLPlistVisitor::VisitMeasure(uint32_t m, VLProperties & p, VLMeasure & meas)
 {
 	fNotes = [NSMutableArray arrayWithCapacity:1];
 	fChords= [NSMutableArray arrayWithCapacity:1];
@@ -303,7 +303,7 @@ enum {
 	kPotentialSwing16th
 };
 
-- (void)readMelody:(NSArray *)melody inMeasure:(size_t)measNo onsets:(int *)onsets lyrics:(uint8_t *)prevKind
+- (void)readMelody:(NSArray *)melody inMeasure:(uint32_t)measNo onsets:(int *)onsets lyrics:(uint8_t *)prevKind
 {
 	VLLocation		at          = {measNo, VLFraction(0)};
 	int				lastOnset   = 0;
@@ -328,7 +328,7 @@ enum {
                                            [[ndict objectForKey:@"normalNotes"] intValue]);
 		
 		if ([[ndict objectForKey:@"tied"] intValue] & VLNote::kTiedWithPrev) {
-			if (at.fAt != VLFraction(0)) {
+			if (at.fAt != VLFraction(0) && note.fPitch == tiedNote.fPitch) {
 				//
 				// Extend preceding note
 				//
@@ -339,9 +339,9 @@ enum {
 				goto advanceAt;
 			} else {
 				//
-				// Extend previous measure
+				// Slur or extend previous measure
 				//
-				note.fTied |= VLNote::kTiedWithPrev;
+				note.fTied     |= VLNote::kTiedWithPrev;
 			}
 		} else {
 			for (NSEnumerator * le 	  = [[ndict objectForKey:@"lyrics"] objectEnumerator];
@@ -402,7 +402,7 @@ advanceAt:
 	}
 }
 
-- (void)readChords:(NSArray *)chords inMeasure:(size_t)measNo
+- (void)readChords:(NSArray *)chords inMeasure:(uint32_t)measNo
 {
 	VLLocation	at  = {measNo, VLFraction(0)};
 
