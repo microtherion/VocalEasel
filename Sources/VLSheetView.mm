@@ -92,10 +92,17 @@ static float sFlatPos[] = {
 				[b pathForResource:sElementNames[i] ofType:@"eps"
 				   inDirectory:@"Music"];
 			fMusic[i] = [[NSImage alloc] initByReferencingFile: name];
+            if (![sElementNames[i] containsString:@"cursor"]) {
+                [fMusic[i] lockFocus];
+                [NSColor.textColor set];
+                NSRectFillUsingOperation(
+                    NSMakeRect(0, 0, fMusic[i].size.width, fMusic[i].size.height),
+                    NSCompositeSourceAtop);
+                [fMusic[i] unlockFocus];
+            }
 			NSSize sz = [fMusic[i] size];
 			sz.width *= kImgScale;
 			sz.height*= kImgScale;
-			[fMusic[i] setScalesWhenResized:YES];
 			[fMusic[i] setSize:sz];
 		}
 		fNeedsRecalc		= kFirstRecalc;
@@ -331,15 +338,15 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 	if (!sMeasNoFont)
 		sMeasNoFont =
 			[[NSDictionary alloc] initWithObjectsAndKeys:
-				[NSFont fontWithName: @"Helvetica" size: 10],
-                NSFontAttributeName,
+				[NSFont fontWithName: @"Helvetica" size: 10], NSFontAttributeName,
+                NSColor.textColor, NSForegroundColorAttributeName,
 				nil];
 	if (!sBreakFont)
 		sBreakFont =
 			[[NSDictionary alloc] initWithObjectsAndKeys:
-				[NSFont fontWithName: @"Symbol" size: 30],
-                NSFontAttributeName,
-				nil];		
+				[NSFont fontWithName: @"Symbol" size: 30], NSFontAttributeName,
+                NSColor.textColor, NSForegroundColorAttributeName,
+				nil];
 
 	const VLSystemLayout &  kLayout = (*fLayout)[system];
 	const VLSong * 			song  	= [self song];
@@ -354,6 +361,7 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 	//
 	// Draw lines
 	//
+    [NSColor.textColor set];
 	[bz setLineWidth:0.0];
 	for (int line = 0; line<5; ++line) {
 		const float y	= kSystemY+line*kLineH;
@@ -465,7 +473,7 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 	// Draw division lines
 	//
 	[bz setLineWidth:0.0];
-	[[NSColor colorWithDeviceWhite:0.8f alpha:1.0f] set];
+	[NSColor.systemGrayColor set];
 	for (int measure = 0; measure<kLayout.NumMeasures(); ++measure) {
 		const float mx	= kLayout.MeasurePosition(measure);
 		const float y0	= kSystemY-(fNumBotLedgers+1)*kLineH;
@@ -601,7 +609,7 @@ const char * sBreak[3] = {"", "\xE2\xA4\xBE", "\xE2\x8E\x98"};
 		rect = [self bounds];
 	}
 	[NSGraphicsContext saveGraphicsState];
-	[[NSColor whiteColor] setFill];
+	[NSColor.windowBackgroundColor setFill];
 	[NSBezierPath fillRect:rect];
 	[NSGraphicsContext restoreGraphicsState];
 

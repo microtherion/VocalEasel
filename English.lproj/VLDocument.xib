@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14092" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14092"/>
-        <capability name="box content view" minToolsVersion="7.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.13.2"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -25,7 +24,7 @@
             <rect key="contentRect" x="25" y="304" width="971" height="397"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <value key="minSize" type="size" width="890" height="350"/>
-            <view key="contentView" id="6">
+            <view key="contentView" wantsLayer="YES" id="6">
                 <rect key="frame" x="0.0" y="0.0" width="971" height="397"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -39,9 +38,9 @@
                                 <popUpButton verticalHuggingPriority="750" id="23">
                                     <rect key="frame" x="656" y="42" width="82" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" allowsMixedState="YES" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="100427" id="100023">
+                                    <popUpButtonCell key="cell" type="push" title="C#m" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="1279" allowsMixedState="YES" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="100427" id="100023">
                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system"/>
+                                        <font key="font" metaFont="menu"/>
                                         <menu key="menu" title="OtherViews" id="24">
                                             <items>
                                                 <menuItem title="C" tag="1" id="25"/>
@@ -54,7 +53,7 @@
                                                 <menuItem title="A♭" tag="-1023" id="31"/>
                                                 <menuItem title="D♭" tag="-1279" id="32"/>
                                                 <menuItem title="G♭" tag="-1535" id="100416"/>
-                                                <menuItem isSeparatorItem="YES" state="on" id="33">
+                                                <menuItem isSeparatorItem="YES" id="33">
                                                     <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                                                 </menuItem>
                                                 <menuItem title="G" tag="257" id="34"/>
@@ -97,7 +96,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                     <popUpButtonCell key="cell" type="push" title="4/4" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="1028" allowsMixedState="YES" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="63" id="100061">
                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system"/>
+                                        <font key="font" metaFont="menu"/>
                                         <menu key="menu" title="OtherViews" id="62">
                                             <items>
                                                 <menuItem title="4/4" state="on" tag="1028" id="63"/>
@@ -117,7 +116,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                     <popUpButtonCell key="cell" type="push" title="12" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="12" allowsMixedState="YES" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="80" id="100073">
                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system"/>
+                                        <font key="font" metaFont="menu"/>
                                         <menu key="menu" title="OtherViews" id="74">
                                             <items>
                                                 <menuItem title="2 (Straight)" tag="2" id="78"/>
@@ -138,7 +137,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="Softly, As In A Morning Sunrise" drawsBackground="YES" id="100162">
                                         <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                     <connections>
@@ -172,7 +171,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="Dizzy Gillespie" drawsBackground="YES" id="100165">
                                         <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                     <connections>
@@ -193,7 +192,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="Dizzy Gillespie" drawsBackground="YES" id="100167">
                                         <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                     <connections>
@@ -214,7 +213,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="276" drawsBackground="YES" id="100177">
                                         <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                     <connections>
@@ -245,7 +244,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <popUpButtonCell key="cell" type="push" title="Select..." bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="1" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="257" id="100254">
                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system"/>
+                                        <font key="font" metaFont="menu"/>
                                         <menu key="menu" title="OtherViews" id="255">
                                             <items>
                                                 <menuItem title="Select..." state="on" tag="1" id="257">
@@ -294,11 +293,11 @@
                             </subviews>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </clipView>
-                        <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="100341">
+                        <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="100341">
                             <rect key="frame" x="1" y="328" width="969" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="100340">
+                        <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="100340">
                             <rect key="frame" x="954" y="1" width="16" height="343"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
@@ -315,7 +314,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" drawsBackground="YES" id="100097">
                                         <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                     <connections>
@@ -350,17 +349,17 @@
                             </subviews>
                         </view>
                         <connections>
+                            <binding destination="-2" name="hidden" keyPath="editTarget" id="141">
+                                <dictionary key="options">
+                                    <string key="NSValueTransformerName">NSIsNil</string>
+                                </dictionary>
+                            </binding>
                             <binding destination="-2" name="hidden2" keyPath="editTarget.hidden" previousBinding="141" id="100528">
                                 <dictionary key="options">
                                     <integer key="NSMultipleValuesPlaceholder" value="-1"/>
                                     <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                     <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                     <integer key="NSNullPlaceholder" value="-1"/>
-                                </dictionary>
-                            </binding>
-                            <binding destination="-2" name="hidden" keyPath="editTarget" id="141">
-                                <dictionary key="options">
-                                    <string key="NSValueTransformerName">NSIsNil</string>
                                 </dictionary>
                             </binding>
                         </connections>
@@ -517,7 +516,7 @@
                                 <decimal key="maximum" value="16"/>
                             </numberFormatter>
                             <font key="font" metaFont="system"/>
-                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
@@ -649,7 +648,7 @@ DQ
                         <rect key="frame" x="95" y="60" width="186" height="37"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <clipView key="contentView" id="oB6-uG-0Zv">
-                            <rect key="frame" x="1" y="23" width="184" height="13"/>
+                            <rect key="frame" x="1" y="0.0" width="184" height="36"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" headerView="100344" id="223">
@@ -755,11 +754,11 @@ DQ
                                 </tableView>
                             </subviews>
                         </clipView>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="100343">
+                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="100343">
                             <rect key="frame" x="-100" y="-100" width="143" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="100342">
+                        <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="100342">
                             <rect key="frame" x="-100" y="-100" width="15" height="37"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
@@ -813,7 +812,7 @@ DQ
                         <rect key="frame" x="17" y="200" width="246" height="116"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <view key="contentView" id="OBR-i5-AKj">
-                            <rect key="frame" x="1" y="1" width="244" height="100"/>
+                            <rect key="frame" x="3" y="3" width="240" height="98"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textField verticalHuggingPriority="750" id="305">
@@ -830,7 +829,7 @@ DQ
                                     <autoresizingMask key="autoresizingMask"/>
                                     <popUpButtonCell key="cell" type="push" title="0" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="303" id="100290">
                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system"/>
+                                        <font key="font" metaFont="menu"/>
                                         <menu key="menu" title="OtherViews" id="291">
                                             <items>
                                                 <menuItem title="0" state="on" id="303"/>
@@ -862,7 +861,7 @@ Ledger Lines</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <popUpButtonCell key="cell" type="push" title="0" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="312" id="100306">
                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system"/>
+                                        <font key="font" metaFont="menu"/>
                                         <menu key="menu" title="OtherViews" id="307">
                                             <items>
                                                 <menuItem title="0" state="on" id="312"/>
@@ -900,7 +899,7 @@ Ledger Lines</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <popUpButtonCell key="cell" type="push" title="8" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="324" id="100314">
                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system"/>
+                                        <font key="font" metaFont="menu"/>
                                         <menu key="menu" title="OtherViews" id="315">
                                             <items>
                                                 <menuItem title="0" id="318"/>
@@ -926,11 +925,11 @@ Ledger Lines</string>
                         <rect key="frame" x="293" y="56" width="233" height="259"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <view key="contentView" id="TRB-GN-jRe">
-                            <rect key="frame" x="1" y="1" width="231" height="243"/>
+                            <rect key="frame" x="3" y="3" width="227" height="241"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <comboBox verticalHuggingPriority="750" textCompletion="NO" id="100358">
-                                    <rect key="frame" x="156" y="153" width="60" height="26"/>
+                                    <rect key="frame" x="156" y="151" width="60" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="6" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="100361">
                                         <font key="font" metaFont="system"/>
@@ -948,7 +947,7 @@ Ledger Lines</string>
                                     </connections>
                                 </comboBox>
                                 <textField verticalHuggingPriority="750" id="100359">
-                                    <rect key="frame" x="99" y="158" width="54" height="17"/>
+                                    <rect key="frame" x="99" y="156" width="54" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Lyrics:" id="100360">
                                         <font key="font" metaFont="system"/>
@@ -957,7 +956,7 @@ Ledger Lines</string>
                                     </textFieldCell>
                                 </textField>
                                 <textField verticalHuggingPriority="750" id="100364">
-                                    <rect key="frame" x="97" y="214" width="54" height="17"/>
+                                    <rect key="frame" x="97" y="212" width="54" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="100365">
                                         <font key="font" metaFont="system"/>
@@ -966,7 +965,7 @@ Ledger Lines</string>
                                     </textFieldCell>
                                 </textField>
                                 <textField verticalHuggingPriority="750" id="100354">
-                                    <rect key="frame" x="15" y="185" width="69" height="17"/>
+                                    <rect key="frame" x="15" y="183" width="69" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Font Sizes" id="100355">
                                         <font key="font" metaFont="system"/>
@@ -975,7 +974,7 @@ Ledger Lines</string>
                                     </textFieldCell>
                                 </textField>
                                 <textField verticalHuggingPriority="750" id="100356">
-                                    <rect key="frame" x="99" y="185" width="54" height="17"/>
+                                    <rect key="frame" x="99" y="183" width="54" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Chords:" id="100357">
                                         <font key="font" metaFont="system"/>
@@ -984,7 +983,7 @@ Ledger Lines</string>
                                     </textFieldCell>
                                 </textField>
                                 <comboBox verticalHuggingPriority="750" textCompletion="NO" id="100352">
-                                    <rect key="frame" x="156" y="181" width="60" height="26"/>
+                                    <rect key="frame" x="156" y="179" width="60" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="6" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="100353">
                                         <font key="font" metaFont="system"/>
@@ -1002,7 +1001,7 @@ Ledger Lines</string>
                                     </connections>
                                 </comboBox>
                                 <textField verticalHuggingPriority="750" id="100452">
-                                    <rect key="frame" x="76" y="103" width="77" height="17"/>
+                                    <rect key="frame" x="76" y="101" width="77" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Below Title:" id="100459">
                                         <font key="font" metaFont="system"/>
@@ -1011,7 +1010,7 @@ Ledger Lines</string>
                                     </textFieldCell>
                                 </textField>
                                 <textField verticalHuggingPriority="750" id="100453">
-                                    <rect key="frame" x="15" y="130" width="55" height="17"/>
+                                    <rect key="frame" x="15" y="128" width="55" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Padding" id="100458">
                                         <font key="font" metaFont="system"/>
@@ -1020,7 +1019,7 @@ Ledger Lines</string>
                                     </textFieldCell>
                                 </textField>
                                 <textField verticalHuggingPriority="750" id="100454">
-                                    <rect key="frame" x="120" y="130" width="33" height="17"/>
+                                    <rect key="frame" x="120" y="128" width="33" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Top:" id="100457">
                                         <font key="font" metaFont="system"/>
@@ -1029,7 +1028,7 @@ Ledger Lines</string>
                                     </textFieldCell>
                                 </textField>
                                 <comboBox verticalHuggingPriority="750" textCompletion="NO" id="100455">
-                                    <rect key="frame" x="156" y="126" width="60" height="26"/>
+                                    <rect key="frame" x="156" y="124" width="60" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="6" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="100456">
                                         <font key="font" metaFont="system"/>
@@ -1048,7 +1047,7 @@ Ledger Lines</string>
                                     </connections>
                                 </comboBox>
                                 <comboBox verticalHuggingPriority="750" textCompletion="NO" id="100463">
-                                    <rect key="frame" x="156" y="99" width="60" height="26"/>
+                                    <rect key="frame" x="156" y="97" width="60" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="6" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="100464">
                                         <font key="font" metaFont="system"/>
@@ -1067,7 +1066,7 @@ Ledger Lines</string>
                                     </connections>
                                 </comboBox>
                                 <textField verticalHuggingPriority="750" id="100466">
-                                    <rect key="frame" x="55" y="75" width="98" height="17"/>
+                                    <rect key="frame" x="55" y="73" width="98" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Between Lines:" id="100469">
                                         <font key="font" metaFont="system"/>
@@ -1076,7 +1075,7 @@ Ledger Lines</string>
                                     </textFieldCell>
                                 </textField>
                                 <comboBox verticalHuggingPriority="750" textCompletion="NO" id="100467">
-                                    <rect key="frame" x="156" y="71" width="60" height="26"/>
+                                    <rect key="frame" x="156" y="69" width="60" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="6" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="100468">
                                         <font key="font" metaFont="system"/>
@@ -1095,7 +1094,7 @@ Ledger Lines</string>
                                     </connections>
                                 </comboBox>
                                 <textField verticalHuggingPriority="750" id="100471">
-                                    <rect key="frame" x="59" y="47" width="94" height="17"/>
+                                    <rect key="frame" x="59" y="45" width="94" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Below Chords:" id="100474">
                                         <font key="font" metaFont="system"/>
@@ -1104,7 +1103,7 @@ Ledger Lines</string>
                                     </textFieldCell>
                                 </textField>
                                 <comboBox verticalHuggingPriority="750" textCompletion="NO" id="100472">
-                                    <rect key="frame" x="156" y="43" width="60" height="26"/>
+                                    <rect key="frame" x="156" y="41" width="60" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="6" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="100473">
                                         <font key="font" metaFont="system"/>
@@ -1123,7 +1122,7 @@ Ledger Lines</string>
                                     </connections>
                                 </comboBox>
                                 <textField verticalHuggingPriority="750" id="100476">
-                                    <rect key="frame" x="65" y="19" width="88" height="17"/>
+                                    <rect key="frame" x="65" y="17" width="88" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Above Lyrics:" id="100479">
                                         <font key="font" metaFont="system"/>
@@ -1132,7 +1131,7 @@ Ledger Lines</string>
                                     </textFieldCell>
                                 </textField>
                                 <comboBox verticalHuggingPriority="750" textCompletion="NO" id="100477">
-                                    <rect key="frame" x="156" y="15" width="60" height="26"/>
+                                    <rect key="frame" x="156" y="13" width="60" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="6" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="100478">
                                         <font key="font" metaFont="system"/>
@@ -1151,7 +1150,7 @@ Ledger Lines</string>
                                     </connections>
                                 </comboBox>
                                 <comboBox verticalHuggingPriority="750" textCompletion="NO" id="100363">
-                                    <rect key="frame" x="156" y="209" width="60" height="26"/>
+                                    <rect key="frame" x="156" y="207" width="60" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="19.5" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="100366">
                                         <font key="font" metaFont="system"/>
@@ -1169,7 +1168,7 @@ Ledger Lines</string>
                                     </connections>
                                 </comboBox>
                                 <textField verticalHuggingPriority="750" id="100362">
-                                    <rect key="frame" x="15" y="214" width="69" height="17"/>
+                                    <rect key="frame" x="15" y="212" width="69" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Staff Size" id="100367">
                                         <font key="font" metaFont="system"/>
@@ -1189,7 +1188,7 @@ Ledger Lines</string>
                 <outlet property="sheetWin" destination="-2" id="100521"/>
             </connections>
         </customObject>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <userDefaultsController representsSharedInstance="YES" id="100371"/>
         <menu id="uBd-jz-Vlv" userLabel="Note Actions">
             <items>

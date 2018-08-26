@@ -163,7 +163,8 @@ VLCocoaFontHandler::VLCocoaFontHandler(NSString * name, float size)
 	
 	fTextAttr = 
 		[[NSDictionary alloc] initWithObjectsAndKeys:
-			font, NSFontAttributeName, nil];
+         font, NSFontAttributeName, NSColor.textColor, NSForegroundColorAttributeName,
+nil];
 }
 
 static NSColor * sHighlightColor;

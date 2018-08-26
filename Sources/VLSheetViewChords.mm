@@ -181,16 +181,15 @@ std::string NormalizeName(NSString* rawName)
 	if (!sBigFont)
 		sBigFont =
 			[[NSDictionary alloc] initWithObjectsAndKeys:
-				[NSFont fontWithName: @"Helvetica" size: 14],
-                NSFontAttributeName,
+				[NSFont fontWithName: @"Helvetica" size: 14], NSFontAttributeName,
+                NSColor.textColor, NSForegroundColorAttributeName,
 				nil];
 	if (!sSuperFont)
 		sSuperFont =
 			[[NSDictionary alloc] initWithObjectsAndKeys:
-				[NSFont fontWithName: @"Helvetica" size: 12],
-				NSFontAttributeName,
-				[NSNumber numberWithInt: 1],
-                NSSuperscriptAttributeName,
+				[NSFont fontWithName: @"Helvetica" size: 12], NSFontAttributeName,
+				[NSNumber numberWithInt: 1], NSSuperscriptAttributeName,
+                NSColor.textColor, NSForegroundColorAttributeName,
 				nil];
 
 	std::string name, ext, root;

@@ -231,7 +231,7 @@
 		s.x	-= 2.0f;
 		break;
 	}
-	[head drawAllAtPoint:p operation:NSCompositePlusDarker];
+	[head drawAllAtPoint:p];
 	//
 	// Draw accidental
 	//
@@ -286,13 +286,12 @@
 			s1.y += 13.0f;
 			break;
 		}
-		[[NSColor blackColor] set];
 		[bz setLineWidth:2.0f];
 		[bz moveToPoint:s];
 		[bz lineToPoint:s1];
 		[bz stroke];
 		if (flag) 
-			[flag drawAllAtPoint:s operation:NSCompositePlusDarker];
+			[flag drawAllAtPoint:s];
 	}
 	//
 	// Draw tie
@@ -358,8 +357,8 @@
 	if (!sTripletFont)
 		sTripletFont =
 			[[NSDictionary alloc] initWithObjectsAndKeys:
-				[NSFont fontWithName: @"Helvetica" size: 12],
-                NSFontAttributeName,
+				[NSFont fontWithName: @"Helvetica" size: 12], NSFontAttributeName,
+                NSColor.textColor, NSForegroundColorAttributeName,
 				nil];
 
 	NSBezierPath * bz = [NSBezierPath bezierPath];
@@ -399,7 +398,9 @@
         int                 inTuplet	= 0;
         uint16_t            tuplet;
         VLFraction          tupletDur;
-        
+
+        [NSColor.textColor set];
+
 		for (VLNoteList::const_iterator note = melody.begin(); 
 			 note != melody.end(); 
 			 ++note
