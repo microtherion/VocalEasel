@@ -65,6 +65,7 @@
 		95784D870BFAD795009ABEA4 /* VLMirrorWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95784D860BFAD795009ABEA4 /* VLMirrorWindow.mm */; };
 		95795CE60C88B25D00E4A21F /* vl.rb in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95795CE40C88B25D00E4A21F /* vl.rb */; };
 		95795CE70C88B25D00E4A21F /* VLMusicXMLType.reader in Copy Filters */ = {isa = PBXBuildFile; fileRef = 95795CE50C88B25D00E4A21F /* VLMusicXMLType.reader */; };
+		957CE3A421A7B6DB009F0FE8 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 957CE3A321A7B6DA009F0FE8 /* libc++.tbd */; };
 		9588363C0C6F9C7D004B4162 /* VLPListDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9588363B0C6F9C7D004B4162 /* VLPListDocument.mm */; };
 		9588365C0C6FABBA004B4162 /* VLDebugFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9588365A0C6FABBA004B4162 /* VLDebugFlags.cpp */; };
 		9593E4E80AE0ED1F00035816 /* vlsong.icns in Resources */ = {isa = PBXBuildFile; fileRef = 9593E4E60AE0ED1F00035816 /* vlsong.icns */; };
@@ -301,6 +302,7 @@
 		95784D860BFAD795009ABEA4 /* VLMirrorWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLMirrorWindow.mm; path = Sources/VLMirrorWindow.mm; sourceTree = "<group>"; };
 		95795CE40C88B25D00E4A21F /* vl.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = vl.rb; sourceTree = "<group>"; };
 		95795CE50C88B25D00E4A21F /* VLMusicXMLType.reader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = VLMusicXMLType.reader; sourceTree = "<group>"; };
+		957CE3A321A7B6DA009F0FE8 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
 		958139C20DE2FBE4003C00B4 /* installLame.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; name = installLame.scpt; path = Resources/installLame.scpt; sourceTree = "<group>"; };
 		9588363A0C6F9C7D004B4162 /* VLPListDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLPListDocument.h; path = Sources/VLPListDocument.h; sourceTree = "<group>"; };
 		9588363B0C6F9C7D004B4162 /* VLPListDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VLPListDocument.mm; path = Sources/VLPListDocument.mm; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				957CE3A421A7B6DB009F0FE8 /* libc++.tbd in Frameworks */,
 				95AC70091409A291007EA050 /* Carbon.framework in Frameworks */,
 				95AC700714099CF0007EA050 /* Quartz.framework in Frameworks */,
 				95AC700414099C64007EA050 /* AudioToolbox.framework in Frameworks */,
@@ -532,6 +535,7 @@
 		2A37F4C3FDCFA73011CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				957CE3A321A7B6DA009F0FE8 /* libc++.tbd */,
 				95AC6FFF14094107007EA050 /* Cocoa.framework */,
 				95AC70081409A291007EA050 /* Carbon.framework */,
 				95AC700214099C64007EA050 /* AudioToolbox.framework */,
